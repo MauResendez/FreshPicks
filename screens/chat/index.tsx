@@ -21,16 +21,18 @@ const Chat = () => {
   }, [])
 
   useEffect(() => {
-    if (user) {
-      if (user.role) {
-        onSnapshot(query(collection(db, "Chats"), where("farmer.id", "==", auth.currentUser.uid)), async (snapshot) => {
-          setChats(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
-        });
-      } else {
-        onSnapshot(query(collection(db, "Chats"), where("consumer.id", "==", auth.currentUser.uid)), async (snapshot) => {
-          setChats(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
-        });
-      }
+    if (!user) {
+      return;
+    }
+
+    if (user.role) {
+      onSnapshot(query(collection(db, "Chats"), where("farmer", "==", auth.currentUser.uid)), async (snapshot) => {
+        setChats(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+      });
+    } else {
+      onSnapshot(query(collection(db, "Chats"), where("consumer", "==", auth.currentUser.uid)), async (snapshot) => {
+        setChats(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+      });
     }
   }, [user]);
 
@@ -67,7 +69,8 @@ const Chat = () => {
         data={chats}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
-          <ChatRow chat={item.id} cover={item.cover} title={item.farmer?.name} subtitle={item.messages?.length === 0 ? "No messages" : `${item.messages[0]?.user.name === auth.currentUser.displayName ? "You" : item.messages[0]?.user.name}: ${item.messages[0]?.text}`} />
+          <ChatRow id={item.id} />
+          // <ChatRow chat={item.id} cover={item.cover} title={item.farmer?.name} subtitle={item.messages?.length === 0 ? "No messages" : `${item.messages[0]?.user.name === auth.currentUser.displayName ? "You" : item.messages[0]?.user.name}: ${item.messages[0]?.text}`} />
         )}
       />
       {!user?.role && <Button style={{ width: 64, height: 64, margin: 16 }} round animateLayout animateTo={'right'} onPress={() => navigation.navigate("Search")} backgroundColor="green" size={Button.sizes.small} iconSource={() => <Ionicon name="search" color="white" size={24} />} />}

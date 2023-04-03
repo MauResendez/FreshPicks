@@ -11,7 +11,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
-const Dashboard = () => {
+const Products = () => {
   const navigation = useNavigation<any>();
   const [farmer, setFarmer] = useState<any>(null);
   const [listings, setListings] = useState<any>([]);
@@ -184,4 +184,4 @@ const Dashboard = () => {
   );
 }
 
-export default Dashboard
+export default Products

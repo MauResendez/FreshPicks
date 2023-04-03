@@ -8,7 +8,7 @@ import { PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import PhoneInput from 'react-native-phone-input';
 import Toast from 'react-native-toast-message';
@@ -31,7 +31,6 @@ const Register = ({ route }) => {
 
   const [active, setActive] = useState(0);
   const [completedStep, setCompletedStep] = useState(undefined);
-  const [toast, setToast] = useState(undefined);
   const [phone, setPhone] = useState<any>("");
   const [vid, setVID] = useState<any>();
   const [sms, setSMS] = useState<any>("");
@@ -41,7 +40,6 @@ const Register = ({ route }) => {
   const [coordinates, setCoordinates] = useState<any>(null);
   const [logo, setLogo] = useState<any>(null);
   const [cover, setCover] = useState<any>(null);
-  const [images, setImages] = useState([]);
   const [business, setBusiness] = useState<any>("");
   const [description, setDescription] = useState<any>("");
   const [website, setWebsite] = useState<any>(null);
@@ -52,8 +50,6 @@ const Register = ({ route }) => {
   const [friday, setFriday] = useState<any>({ enable: false, start: null, end: null });
   const [saturday, setSaturday] = useState<any>({ enable: false, start: null, end: null });
   const [sunday, setSunday] = useState<any>({ enable: false, start: null, end: null });
-  const [pickup, setPickUp] = useState(true);
-  const [delivery, setDelivery] = useState(false);
   const [paypal, setPaypal] = useState<any>(null);
   const [cashapp, setCashapp] = useState<any>(null);
   const [venmo, setVenmo] = useState<any>(null);
@@ -223,7 +219,7 @@ const Register = ({ route }) => {
       return
     }
 
-    if ((!paypal && !cashapp && !venmo)) {
+    if (!paypal && !cashapp && !venmo) {
       error = true;
       showToast("error", "Error", "A payment method is required");
       return
@@ -504,7 +500,7 @@ const Register = ({ route }) => {
 
   const FarmerSchedule = () => {
     return (
-      <View style={styles.stepContainer}>
+      <ScrollView style={global.flex} contentContainerStyle={styles.stepContainer}>
         <Text title>Farmer Schedule</Text>
         <View style={global.field}>
           <View style={[global.row, global.spaceBetween]}>
@@ -513,8 +509,8 @@ const Register = ({ route }) => {
           </View>
 
           {monday.enable && <View style={[global.row, global.spaceBetween]}>
-            <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField />
-            <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
+            <DateTimePicker style={global.input} mode="time" placeholder="Start Time" timeFormat={'HH:mm'} onChange={(time) => setMonday(time)} migrateTextField />
+            <DateTimePicker style={global.input} mode="time" placeholder="End Time" timeFormat={'HH:mm'} onChange={(time) => setMonday(time)} migrateTextField />
           </View>}
         </View>
         <View style={global.field}>
@@ -524,8 +520,8 @@ const Register = ({ route }) => {
           </View>
 
           {tuesday.enable && <View style={[global.row, global.spaceBetween]}>
-            <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField />
-            <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
+            <DateTimePicker style={global.input} mode="time" placeholder="Start Time" timeFormat={'HH:mm'} onChange={(time) => setTuesday(time)} minimumDate={new Date()} migrateTextField />
+            <DateTimePicker style={global.input} mode="time" placeholder="End Time" timeFormat={'HH:mm'} onChange={(time) => setTuesday(time)} minimumDate={new Date()} migrateTextField />
           </View>}
         </View>
         <View style={global.field}>
@@ -590,7 +586,7 @@ const Register = ({ route }) => {
           {Prev()}
           {Next()}
         </View>
-      </View>
+      </ScrollView>
     );
   };
 
@@ -745,7 +741,7 @@ const Register = ({ route }) => {
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAvoidingView style={global.flex} behavior={Platform.OS == "ios" ? "padding" : "height"}>
-          <ScrollView contentContainerStyle={global.flex}>
+          <View flex>
             {route.params.farmer 
               ? <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
                   <Wizard.Step state={getStepState(0)} label={'Personal Information'} />
@@ -762,7 +758,7 @@ const Register = ({ route }) => {
                 </Wizard>
             }
             {Current()}
-          </ScrollView>
+          </View>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
       <Toast topOffset={0} />

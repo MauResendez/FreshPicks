@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
-import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
+import { collection, documentId, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { FlatList, StyleSheet, useWindowDimensions } from "react-native";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { Avatar, ListItem, Text, TextField, View } from "react-native-ui-lib";
+import { Avatar, Icon, ListItem, Text, TextField, View } from "react-native-ui-lib";
 import Loading from "../../components/extra/loading";
 import OrderRow from "../../components/orders/order-row";
 import { auth, db } from "../../firebase";
@@ -21,10 +21,10 @@ const Orders = () => {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: "first", title: "All Farmers" },
-    { key: "second", title: "Highest Rated" },
-    { key: "third", title: "A-Z" },
-    { key: "fourth", title: "Z-A" }
+    { key: "first", title: "All Orders" },
+    { key: "second", title: "Pending" },
+    { key: "third", title: "Confirmed" },
+    { key: "fourth", title: "Cancelled" }
   ]);
 
   const FirstRoute = () => (
@@ -144,11 +144,11 @@ const Orders = () => {
 
   useEffect(() => { 
     if (search.length == 0 || orders.length == 0) {
-      onSnapshot(query(collection(db, "Orders"), where("farmer.id", "==", auth.currentUser.uid)), async (snapshot) => {
+      onSnapshot(query(collection(db, "Orders"), where("farmer", "==", auth.currentUser.uid), orderBy("createdAt", "desc")), async (snapshot) => {
         setOrders(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
       });  
     } else {
-      onSnapshot(query(collection(db, "Orders"), where("farmer.id", "==", auth.currentUser.uid), where(documentId(), ">=", search), where(documentId(), "<=", search + "\uf8ff")), async (snapshot) => {
+      onSnapshot(query(collection(db, "Orders"), where("farmer", "==", auth.currentUser.uid), where(documentId(), ">=", search), where(documentId(), "<=", search + "\uf8ff")), async (snapshot) => {
         setOrders(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
       });  
     }

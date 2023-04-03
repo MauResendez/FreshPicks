@@ -423,12 +423,12 @@ const styles = StyleSheet.create({
       ios: {
         padding: 16, 
         width: "100%", 
-        height: 150 
+        height: 200 
       },
       android: {
         padding: 16, 
         width: "100%", 
-        height: 150
+        height: 200
       }
     })
   },

@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Alert, Image, ImageBackground, StyleSheet } from "react-native";
-import { Button, ListItem, Text, View } from "react-native-ui-lib";
+import { Alert, StyleSheet } from "react-native";
+import Toast from "react-native-toast-message";
+import { Button, Colors, Image, ListItem, Text, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
 import { addToOrder, clearOrder, getOrderFarmer, getOrderUser, removeFromOrder, selectOrderItemsWithId } from "../../features/order-slice";
@@ -31,13 +32,17 @@ const DisplayRow = (product) => {
     if (product.quantity > items.length) {
       dispatch(addToOrder({ product: product, farmer: product.farmer, user: product.user }));
     } else {
-      // Toast.show("You have reached the maximum remaining left for this product", {
-      //   duration: Toast.durations.SHORT,
-      //   backgroundColor: "blue",
-      //   position: Platform.OS == "web" ? 650 : 700
-      // });
+      showToast("error", "Error", "You have reached the maximum remaining left for this product");
     }
   });
+
+  const clearOrderItems = (() => {
+    dispatch(clearOrder());
+  });
+
+  const deleteListing = async (product) => {
+    await deleteDoc(doc(db, "Listings", product.id));
+  }
 
   const removeItemFromOrder = (() => {
     if (orderFarmer && product.farmer.id !== orderFarmer.id) {
@@ -54,12 +59,12 @@ const DisplayRow = (product) => {
     dispatch(removeFromOrder(product));
   });
 
-  const clearOrderItems = (() => {
-    dispatch(clearOrder());
-  });
-
-  const deleteListing = async (product) => {
-    await deleteDoc(doc(db, "Listings", product.id));
+  const showToast = (type, title, message) => {
+    Toast.show({
+      type: type,
+      text1: title,
+      text2: message
+    });
   }
 
   useEffect(() => {
@@ -79,53 +84,86 @@ const DisplayRow = (product) => {
   }, [product.quantity]);
 
   return (
-    <ListItem
-      activeBackgroundColor={"white"}
-      activeOpacity={0.3}
-      style={{ backgroundColor: "white", padding: 8, height: "auto" }}
-      onPress={() => setIsPressed(!isPressed)}
-    >
-      <ListItem.Part left>
-        {/* <Avatar source={{ uri: product.image }} size={50} containerStyle={{ marginRight: 8 }}/> */}
-        <View>
+    <View>
+      {/* <ListItem
+        activeBackgroundColor={"white"}
+        activeOpacity={0.3}
+        style={{ backgroundColor: "white", padding: 8, height: "auto" }}
+        onPress={() => setIsPressed(!isPressed)}
+      >
+        <ListItem.Part left>
           {product.quantity > 0 
-          ? <Image source={{ uri: product.image }} style={styles.image} />
-          : <ImageBackground source={{ uri: product.image }} style={styles.image} imageStyle={{ opacity: 0.2 }}>
-              <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, justifyContent: "center", alignItems: "center" }}>
-                <Text style={{ fontWeight: "bold", textAlign: "center" }}>Out of stock</Text>
-              </View>
-            </ImageBackground>
+            ? <Avatar source={{ uri: product.image }} size={75} containerStyle={{ marginRight: 8 }}/>
+            : <Avatar source={{ uri: product.image }} size={75} imageStyle={{ opacity: 0.2 }}>
+                <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, justifyContent: "center", alignItems: "center" }}>
+                  <Text style={{ fontWeight: "bold", textAlign: "center" }}>Out of stock</Text>
+                </View>
+              </Avatar>
           }
-        </View>
-      </ListItem.Part>
-      <ListItem.Part column>
-        <Text h2 numberOfLines={1}>{product.title}</Text>
-        <Text h3>{product.description}</Text>
-        <Text h3>{product.price.toFixed(2)}</Text>
-      </ListItem.Part>
-      {!user?.role && isPressed && product.quantity > 0 && (
-        <View style={global.buttons}>
-          <Button style={styles.left} color="darkred" size="small" icon={<Ionicon name="remove" color={"white"} size={20} />} onPress={removeItemFromOrder} />
-          <Text>{items.length}</Text>
-          <Button style={styles.right} color="green" size="small" icon={<Ionicon name="add" color={"white"} size={20} />} onPress={addItemToOrder} />
-        </View>
-      )}
-      {user?.role && isPressed && (
-        <View style={global.buttons}>
-          <Button style={styles.left} color="blue" size="small" icon={<Ionicon name="pencil" color={"white"} size={20} />} onPress={() => navigation.navigate("Edit Listing", { id: product.id })}/>
-          <Button 
-            style={styles.right} 
-            color="darkred" 
-            size="small" 
-            icon={<Ionicon name="trash" color={"white"} size={20} />} 
-            onPress={() => Alert.alert("Delete Chat", "Would you like to delete this listing?", [
-              {text: 'Cancel', style: 'cancel'},
-              {text: 'OK', onPress: async () => deleteListing(product)},
-            ])} 
-          />          
-        </View>
-      )}
-    </ListItem>
+        </ListItem.Part>
+        <ListItem.Part column>
+          <Text h2 numberOfLines={1}>{product.title}</Text>
+          <Text h3>{product.description}</Text>
+          <Text h3>${product.price.toFixed(2)}</Text>
+        </ListItem.Part>
+      </ListItem> */}
+      <ListItem
+        activeBackgroundColor={Colors.grey60}
+        activeOpacity={0.3}
+        backgroundColor={Colors.white}
+        onPress={() => Alert.alert(product.title, product.description, [
+          {text: 'Edit', onPress: () => navigation.navigate("Edit Listing", { id: product.id })},
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'Delete', onPress: async () => deleteListing(product)},
+        ])}
+        style={{ borderRadius: 8, marginBottom: 8, padding: 8 }}
+      >
+        <ListItem.Part left>
+          <Image source={{ uri: product.image }} style={{ width: 50, height: 50, marginRight: 12 }}/>
+        </ListItem.Part>
+        <ListItem.Part middle column>
+          <View row style={global.spaceBetween}>
+            <Text h2>{product.title}</Text>
+            <Text h2>${product.price.toFixed(2)}</Text>
+          </View>
+          <View row style={global.spaceBetween}>
+            <Text h3>{product.quantity} remaining</Text>
+            {/* <Text h3>Expiring in {product.expiration.toDate().toLocaleDateString()}</Text> */}
+          </View>
+        </ListItem.Part>
+      </ListItem>
+      <ListItem
+        activeBackgroundColor={"white"}
+        activeOpacity={0.3}
+        style={{ backgroundColor: "white", height: "auto" }}
+        onPress={() => setIsPressed(!isPressed)}
+      >
+        <ListItem.Part column>
+          {!user?.role && isPressed && product.quantity > 0 && (
+            <View style={global.buttons}>
+              <Button style={{ width: 50, height: 50, margin: 16 }} round onPress={removeItemFromOrder} backgroundColor={Colors.red10} iconSource={() => <Ionicon name="remove" color="white" size={24} />} />
+              <Text>{items.length}</Text>
+              <Button style={{ width: 50, height: 50, margin: 16 }} round onPress={addItemToOrder} backgroundColor={Colors.green30} iconSource={() => <Ionicon name="add" color="white" size={24} />} />
+            </View>
+          )}
+          {user?.role && isPressed && (
+            <View style={global.buttons}>
+              <Button style={styles.left} color="blue" size={Button.sizes.large} iconSource={() => <Ionicon name="pencil" color={"white"} size={20} />} onPress={() => navigation.navigate("Edit Listing", { id: product.id })}/>
+              <Button 
+                style={styles.right} 
+                color="darkred" 
+                size={Button.sizes.large} 
+                iconSource={() => <Ionicon name="trash" color={"white"} size={20} />} 
+                onPress={() => Alert.alert("Delete Chat", "Would you like to delete this listing?", [
+                  {text: 'Cancel', style: 'cancel'},
+                  {text: 'OK', onPress: async () => deleteListing(product)},
+                ])} 
+              />          
+            </View>
+          )}
+        </ListItem.Part>
+      </ListItem>
+    </View>
   );
 };
 

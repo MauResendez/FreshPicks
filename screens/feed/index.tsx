@@ -4,8 +4,9 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { FlatList } from "react-native";
 import { View } from "react-native-ui-lib";
 import Loading from "../../components/extra/loading";
-import Card from "../../components/feed/card";
+import PostCard from "../../components/feed/post-card";
 import { db } from "../../firebase";
+import { global } from "../../style";
 
 const Timeline = () => {
   const navigation = useNavigation<any>();
@@ -42,8 +43,9 @@ const Timeline = () => {
         data={posts}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
-          <Card id={item.id} business={item.business} address={item.address} logo={item.logo} message={item.message} image={item.image} />
+          <PostCard id={item.id} business={item.business} address={item.address} logo={item.logo} title={item.title} description={item.description} image={item.image} />
         )}
+        contentContainerStyle={[global.container]}
       />
     </View>
   )

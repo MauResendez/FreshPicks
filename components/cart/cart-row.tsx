@@ -23,7 +23,7 @@ const CartRow = (product) => {
     <ListItem
       activeBackgroundColor={"white"}
       activeOpacity={0.3}
-      style={{ backgroundColor: "white", padding: 8, height: "auto" }}
+      style={{ backgroundColor: "white", padding: 8, height: "auto", flex: 1 }}
       onPress={() => setIsPressed(!isPressed)}
     >
       <ListItem.Part left>

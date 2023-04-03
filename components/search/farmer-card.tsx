@@ -18,7 +18,7 @@ const FarmerCard = ({
   };
 
   return (
-    <Card style={{ width: 250, height: "auto", marginRight: 16 }} onPress={() => handlePress()}>
+    <Card style={{ width: 250, height: "auto", marginRight: 16, shadowColor: "transparent", borderWidth: 0.2 }} onPress={() => handlePress()}>
       <Card.Image source={{ uri: image }} height={125} />
       <View padding-12>
         <Text h2>

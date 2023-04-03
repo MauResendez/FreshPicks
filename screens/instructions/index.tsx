@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from "react-native";
 import { Image, Text, TouchableOpacity, View, Wizard } from 'react-native-ui-lib';
 import { global } from '../../style';
 // import Toast from 'react-native-simple-toast';

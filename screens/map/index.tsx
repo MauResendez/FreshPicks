@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
+import * as Linking from 'expo-linking';
 import * as Location from "expo-location";
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, Image, Linking, Platform, StyleSheet } from "react-native";
+import { FlatList, Image, Platform, StyleSheet } from "react-native";
 import getDirections from "react-native-google-maps-directions";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { View } from "react-native-ui-lib";

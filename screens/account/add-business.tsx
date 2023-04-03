@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { doc, setDoc } from 'firebase/firestore';
 import _ from 'lodash';
 import React, { useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback } from "react-native";
 import { DateTimePicker, Switch, Text, TextField, Toast, TouchableOpacity, View, Wizard } from 'react-native-ui-lib';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';

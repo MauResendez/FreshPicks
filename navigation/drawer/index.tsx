@@ -1,5 +1,5 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 
@@ -11,10 +11,16 @@ import AccountStack from "../stack/account-stack";
 
 import MainTabs from "../tabs";
 
+import { Colors } from "react-native-ui-lib";
+import Ionicon from 'react-native-vector-icons/Ionicons';
+import Recipes from "../../screens/recipes";
+import ChatStack from "../stack/chat-stack";
+
 const Drawer = createDrawerNavigator();
 
 const MainDrawer = () => {
   const navigation = useNavigation<any>();
+  const isFocused = useIsFocused();
   const [user, setUser] = useState<any>(null)
 
   useEffect(() => {
@@ -205,10 +211,20 @@ const MainDrawer = () => {
     // </Drawer.Navigator>
 
     <Drawer.Navigator
+      id="MainDrawer"
       initialRouteName="Main"
-      useLegacyImplementation
-      screenOptions={{
-        headerTintColor: "#EF4723",
+      // useLegacyImplementation
+      // drawerContent={props => <CustomDrawer {...props} />}
+      screenOptions={({ navigation, route }) => ({ 
+        drawerStyle: { backgroundColor: "#32CD32" },
+        drawerLabelStyle: {
+          color: "white",
+          fontSize: 16,
+        },
+        // headerShown: !isFocused,
+        // headerStyle: { backgroundColor: "#32CD32" },
+        // headerTintColor: "#EF4723",
+        headerTintColor: Colors.black,
         headerTitle: () => (
           <Image
             style={{ width: 200, height: 50 }}
@@ -216,11 +232,9 @@ const MainDrawer = () => {
             resizeMode="contain"
           />
         ),
-        drawerLabelStyle: {
-          fontSize: 16,
-        },
         headerTitleAlign: "center",
-      }}
+        unmountOnBlur: true
+      })}
     >
       <Drawer.Screen
         name="Main"
@@ -237,8 +251,19 @@ const MainDrawer = () => {
         //     drawerActiveTintColor: "green",
         //   };
         // }}
+        options={({ route }) => {
+          // const current = getFocusedRouteNameFromRoute(route) ?? "Index";
+
+          return {
+            drawerIcon: ({ color }) => (
+              <Ionicon name="home" size={24} color={"white"} />
+            ),
+            // headerShown: current != "Index" ? false : true,
+            // swipeEnabled: current != "Index" ? false : true,
+            // drawerActiveTintColor: "green",
+          };
+        }}
       />
-      
       <Drawer.Screen
         name="Cart"
         component={Cart}
@@ -251,6 +276,44 @@ const MainDrawer = () => {
         //     drawerItemStyle: { display: "none" },
         //   };
         // }}
+        options={({ route }) => {
+          // const current = getFocusedRouteNameFromRoute(route) ?? "Index";
+
+          return {
+            drawerIcon: ({ color }) => (
+              <Ionicon name="cart" size={24} color={"white"} />
+            ),
+            br: "bottom"
+            // headerShown: current != "Index" ? false : true,
+            // swipeEnabled: current != "Index" ? false : true,
+            // drawerActiveTintColor: "green",
+          };
+        }}
+      />
+      <Drawer.Screen
+        name="Chat"
+        component={ChatStack}
+        // options={({ route }) => {
+        //   const current = getFocusedRouteNameFromRoute(route) ?? "Cart";
+
+        //   return {
+        //     headerShown: current != "Cart" ? false : true,
+        //     swipeEnabled: current != "Cart" ? false : true,
+        //     drawerItemStyle: { display: "none" },
+        //   };
+        // }}
+        options={({ route }) => {
+          // const current = getFocusedRouteNameFromRoute(route) ?? "Index";
+
+          return {
+            drawerIcon: ({ color }) => (
+              <Ionicon name="chat" size={24} color={"white"} />
+            ),
+            // headerShown: current != "Index" ? false : true,
+            // swipeEnabled: current != "Index" ? false : true,
+            // drawerActiveTintColor: "green",
+          };
+        }}
       />
       <Drawer.Screen
         name="Notifications"
@@ -264,6 +327,75 @@ const MainDrawer = () => {
         //     drawerItemStyle: { display: "none" },
         //   };
         // }}
+        options={({ route }) => {
+          // const current = getFocusedRouteNameFromRoute(route) ?? "Index";
+
+          return {
+            drawerIcon: ({ color }) => (
+              <Ionicon name="notifications" size={24} color={"white"} />
+            ),
+            // headerShown: current != "Index" ? false : true,
+            // swipeEnabled: current != "Index" ? false : true,
+            // drawerActiveTintColor: "green",
+          };
+        }}
+      />
+      <Drawer.Screen
+        name="Recipes"
+        component={Recipes}
+        options={() => {
+
+          return {
+            drawerIcon: ({ color }) => (
+              <Ionicon name="reader" size={24} color={"white"} />
+            ),
+
+            // headerShown: current != "Index" ? false : true,
+            // swipeEnabled: current != "Index" ? false : true,
+            // drawerActiveTintColor: "green",
+          };
+        }}
+      />
+      <Drawer.Screen
+        name="About Us"
+        component={Recipes}
+        options={() => {
+
+          return {
+            drawerIcon: ({ color }) => (
+              <Ionicon name="information-circle" size={24} color={"white"} />
+            ),
+
+            // headerShown: current != "Index" ? false : true,
+            // swipeEnabled: current != "Index" ? false : true,
+            // drawerActiveTintColor: "green",
+          };
+        }}
+      />
+      <Drawer.Screen
+        name="Report an Issue"
+        component={AccountStack}
+        // options={({ route }) => {
+        //   const current = getFocusedRouteNameFromRoute(route) ?? "Index";
+
+        //   return {
+        //     headerShown: current != "Index" ? false : true,
+        //     swipeEnabled: current != "Index" ? false : true,
+        //     drawerItemStyle: { display: "none" },
+        //   };
+        // }}
+        options={({ route }) => {
+          // const current = getFocusedRouteNameFromRoute(route) ?? "Index";
+
+          return {
+            drawerIcon: ({ color }) => (
+              <Ionicon name="bug" size={24} color={"white"} />
+            ),
+            // headerShown: current != "Index" ? false : true,
+            // swipeEnabled: current != "Index" ? false : true,
+            // drawerActiveTintColor: "green",
+          };
+        }}
       />
     </Drawer.Navigator>
   );

@@ -1,17 +1,16 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
+import { StatusBar } from 'expo-status-bar';
 import { onAuthStateChanged, User } from "firebase/auth";
+import { doc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
-import { Platform, StatusBar } from "react-native";
+import { Platform } from "react-native";
+import { Typography } from "react-native-ui-lib";
 import { Provider } from "react-redux";
 import { auth, db } from "./firebase";
-import { store } from "./redux/store";
-
-import { doc, updateDoc } from "firebase/firestore";
-import { RootSiblingParent } from "react-native-root-siblings";
-import { Typography } from "react-native-ui-lib";
 import AuthStack from "./navigation/stack/auth-stack";
 import MainStack from "./navigation/stack/main-stack";
+import { store } from "./redux/store";
 
 Typography.loadTypographies({ 
   title: {
@@ -146,12 +145,10 @@ const App = () => {
   }, [user, expoPushToken]);
 
   return (
-    <RootSiblingParent>
-      <Provider store={store}>
-        <StatusBar barStyle="dark-content" />
-        {!auth.currentUser ? <AuthStack /> : <MainStack />}
-      </Provider>
-    </RootSiblingParent>
+    <Provider store={store}>
+      <StatusBar style="auto" />
+      {!auth.currentUser ? <AuthStack /> : <MainStack />}
+    </Provider>
   );
 }
 

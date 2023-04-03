@@ -71,6 +71,12 @@ export const global = StyleSheet.create({
   spaceEvenly: {
     justifyContent: "space-evenly"
   },
+  justifyContent: {
+    justifyContent: "center"
+  },
+  alignItems: {
+    alignItems: "center"
+  },
   flexWrap: {
     flexWrap: "wrap"
   },

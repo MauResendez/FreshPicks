@@ -1,11 +1,12 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
+import * as Linking from 'expo-linking';
 import { addDoc, collection, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Linking, Platform, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
-import { Avatar, Chip, Colors, Image, ListItem, Text, View } from "react-native-ui-lib";
+import { Platform, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { Avatar, Chip, Image, ListItem, Text, View } from "react-native-ui-lib";
 import { useSelector } from "react-redux";
 import Loading from "../../components/extra/loading";
-import DisplayRow from "../../components/profile/display-row";
+import ProfileRow from "../../components/profile/profile-row";
 import { selectOrderItems } from "../../features/order-slice";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
@@ -20,7 +21,7 @@ const Profile = () => {
   const navigation = useNavigation<any>();
   const [listings, setListings] = useState([]);
   const [chat, setChat] = useState(null);
-  const [user, setUser] = useState(null);
+  const [consumer, setConsumer] = useState(null);
   const [farmer, setFarmer] = useState(null);
   const items = useSelector(selectOrderItems);
   const [loading, setLoading] = useState(true);
@@ -36,8 +37,8 @@ const Profile = () => {
     }
 
     await addDoc(collection(db, "Chats"), {
-      consumer: user,
-      farmer: farmer,
+      consumer: consumer.id,
+      farmer: farmer.id,
       messages: []
     })
     .then((doc) => {
@@ -63,7 +64,7 @@ const Profile = () => {
   useEffect(() => {
     getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnapshot) => {
       const data = docSnapshot.data();
-      setUser({...data, id: auth.currentUser.uid});
+      setConsumer({...data, id: auth.currentUser.uid});
     });
 
     getDoc(doc(db, "Users", id)).then((docSnapshot) => {
@@ -87,12 +88,12 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    if (user && farmer) {
+    if (consumer && farmer) {
       onSnapshot(query(collection(db, "Chats"), where("consumer.id", "==", auth.currentUser.uid), where("farmer.id", "==", id)), async (snapshot) => {
         setChat(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
       });
     }
-  }, [user, farmer]);
+  }, [consumer, farmer]);
 
   useEffect(() => {
     if (chat) {
@@ -108,85 +109,78 @@ const Profile = () => {
 
   return (
     <View useSafeArea flex>
-      <ScrollView contentContainerStyle={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
-        <View flex>
-          <View style={styles.cover}>
-            <Image source={{ uri: farmer.cover }} style={styles.image} />
+      <ScrollView style={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
+        <View style={styles.cover}>
+          <Image source={{ uri: farmer.cover }} style={styles.image} />
+        </View>
+
+        <View style={styles.header}>
+          <View row>
+            {consumer.logo 
+              ? <Avatar size={75} source={{ uri: farmer.logo }} imageStyle={{ borderWidth: 1 }} />
+              : <Avatar size={75} source={require("../../assets/profile.png")} imageStyle={{ borderWidth: 1 }} />
+            }
           </View>
 
-          <View style={styles.header}>
-            <View row>
-              {user.logo 
-                ? <Avatar size={75} source={{ uri: farmer.logo }} imageStyle={{ borderWidth: 1 }} />
-                : <Avatar size={75} source={require("../../assets/profile.png")} imageStyle={{ borderWidth: 1 }} />
-              }
-            </View>
-
-            <View row>
-              <Text style={styles.title}>{farmer.business}</Text>
-            </View>
-
-            <View row>
-              <Text style={styles.address}>{farmer.address}</Text>
-            </View>
-
-            {/* <View row>
-              <Text style={styles.address}>{farmer.rating?.toFixed(2)}/5 Rating</Text>
-              <AirbnbRating showRating={false} size={16} defaultRating={5} onFinishRating={(rating) => rateFarmer(rating)}/>
-            </View> */}
-
-            {/* <View row>
-              <Text style={styles.address}>{farmer.description}</Text>
-            </View> */}
-
-            <View row style={[global.spaceBetween, global.flexWrap]}>
-              {farmer?.payments?.paypal && <Chip
-                backgroundColor="#0079C1"
-                containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
-                label={"PayPal: " + user.payments.paypal}
-                labelStyle={{ color: "white" }}
-                onPress={() => Linking.openURL(`https://paypal.me/${farmer.payments.paypal}`)}
-              />}
-
-              {farmer?.payments?.cashapp && <Chip
-                backgroundColor="#00D632"
-                containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
-                label={"CashApp: " + user.payments.cashapp}
-                labelStyle={{ color: "white" }}
-                onPress={() => Linking.openURL(`https://cash.app/${farmer.payments.cashapp}/`)}
-              />}
-
-              {farmer?.payments?.venmo && <Chip
-                backgroundColor="#008CFF"
-                containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
-                label={"Venmo: " + user.payments.venmo}
-                labelStyle={{ color: "white" }}
-                onPress={() => Linking.openURL(`venmo://paycharge?recipients=${farmer.payments.venmo}`)}
-              />}
-            </View>
-
-            <View row style={[global.spaceBetween, global.flexWrap]}>
-              <Chip backgroundColor="green" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${farmer.name}`} labelStyle={{ color: "white" }} onPress={handleChat}/>
-              <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`tel:${farmer.phone}`) }}/>
-              <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`mailto:${farmer.email}`) }}/>
-            </View>
+          <View row>
+            <Text h2>{farmer.business}</Text>
           </View>
 
-          <ListItem
-            activeBackgroundColor={Colors.white}
-            activeOpacity={0.3}
-            height={60}
-          >
-            <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
-              <Text subtitle numberOfLines={1}>
-              Products
-              </Text>
+          <View row>
+            <Text h3>{farmer.address}</Text>
+          </View>
+
+          {/* <View row>
+            <Text style={styles.address}>{farmer.rating?.toFixed(2)}/5 Rating</Text>
+            <AirbnbRating showRating={false} size={16} defaultRating={5} onFinishRating={(rating) => rateFarmer(rating)}/>
+          </View> */}
+
+          {/* <View row>
+            <Text style={styles.address}>{farmer.description}</Text>
+          </View> */}
+
+          <View row style={[global.spaceBetween, global.flexWrap]}>
+            {farmer.payments.paypal && <Chip
+              backgroundColor="#0079C1"
+              containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
+              label={"PayPal: " + farmer.payments.paypal}
+              labelStyle={{ color: "white" }}
+              onPress={() => Linking.openURL(`https://paypal.me/${farmer.payments.paypal}`)}
+            />}
+
+            {farmer.payments.cashapp && <Chip
+              backgroundColor="#00D632"
+              containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
+              label={"CashApp: " + farmer.payments.cashapp}
+              labelStyle={{ color: "white" }}
+              onPress={() => Linking.openURL(`https://cash.app/${farmer.payments.cashapp}/`)}
+            />}
+
+            {farmer.payments.venmo && <Chip
+              backgroundColor="#008CFF"
+              containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
+              label={"Venmo: " + farmer.payments.venmo}
+              labelStyle={{ color: "white" }}
+              onPress={() => Linking.openURL(`venmo://paycharge?recipients=${farmer.payments.venmo}`)}
+            />}
+          </View>
+
+          <View row style={[global.spaceBetween, global.flexWrap]}>
+            <Chip backgroundColor="green" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${farmer.name}`} labelStyle={{ color: "white" }} onPress={handleChat}/>
+            <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`tel:${farmer.phone}`) }}/>
+            <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`mailto:${farmer.email}`) }}/>
+          </View>
+        </View>
+
+        <View style={{ padding: 16 }}>
+          <ListItem>
+            <ListItem.Part>
+              <Text subtitle>Products</Text>
             </ListItem.Part>
           </ListItem>
 
-
           {listings.map((product) => (
-            <DisplayRow
+            <ProfileRow
               key={product.id}
               id={product.id}
               title={product.title}
@@ -194,21 +188,22 @@ const Profile = () => {
               price={product.price}
               image={product.image}
               quantity={product.quantity}
+              expiration={product.expiration}
               farmer={farmer}
-              user={user}
+              user={consumer}
             />
           ))}
+        </View>
 
-          <View flexG />
+        <View flexG />
 
-          <View style={styles.cart}>
-            <TouchableOpacity disabled={items.length == 0} onPress={() => navigation.navigate("Cart")} style={items.length == 0 ? styles.disabled : styles.checkout}>
-              {items.length == 0 
-                ? <Text style={styles.checkoutText}>Add items to Cart</Text>
-                : <Text style={styles.checkoutText}>Go to Cart</Text>
-              }
-            </TouchableOpacity>
-          </View>
+        <View style={styles.cart}>
+          <TouchableOpacity disabled={items.length == 0} onPress={() => navigation.navigate("Cart")} style={items.length == 0 ? styles.disabled : styles.checkout}>
+            {items.length == 0 
+              ? <Text style={styles.checkoutText}>Add items to Cart</Text>
+              : <Text style={styles.checkoutText}>Go to Cart</Text>
+            }
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
@@ -217,7 +212,7 @@ const Profile = () => {
 
 const styles = StyleSheet.create({
   cover: {
-    height: 150,
+    height: 200,
     width: "100%",
   },
   logo: {
@@ -234,12 +229,12 @@ const styles = StyleSheet.create({
       ios: {
         padding: 16,
         width: "100%",
-        height: "100%",
+        height: 200,
       },
       android: {
         padding: 16,
         width: "100%",
-        height: "100%",
+        height: 200,
       },
     }),
   },
@@ -288,7 +283,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     color: "#666",
-    textAlign: "center",
+    textAlign: "left",
     marginTop: 4,
     marginBottom: 4,
   },

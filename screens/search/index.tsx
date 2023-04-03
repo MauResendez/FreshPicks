@@ -78,7 +78,6 @@ const Search = () => {
       </View>
 
       <ScrollView
-        style={styles.body}
         contentContainerStyle={{ paddingBottom: 16 }}
         showsVerticalScrollIndicator={Platform.OS == "web"}
       >
@@ -92,7 +91,6 @@ const Search = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white"
   },
   content: {
     paddingVertical: 8
@@ -114,11 +112,7 @@ const styles = StyleSheet.create({
   },
   search: {
     padding: 6,
-    backgroundColor: "white"
   }, 
-  body: {
-    backgroundColor: "#F3F4F6"
-  }
 });
 
 export default Search

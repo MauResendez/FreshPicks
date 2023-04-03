@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { ListItem, Text } from 'react-native-ui-lib';
+import { Colors, ListItem, Text } from 'react-native-ui-lib';
 
 const MapRow = ({ farmer, cover, business, name, address }) => {
 	const navigation = useNavigation<any>();
@@ -11,9 +11,8 @@ const MapRow = ({ farmer, cover, business, name, address }) => {
 
 	return (
 		<ListItem
-			activeBackgroundColor={"white"}
 			activeOpacity={0.3}
-			style={{ backgroundColor: "white", padding: 8, height: "auto" }}
+			style={{ backgroundColor: Colors.white, padding: 8, height: "auto" }}
 			onPress={() => navigateToFarmer(farmer)}
 		>
 			<ListItem.Part column>
