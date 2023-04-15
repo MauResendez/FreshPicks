@@ -6,7 +6,7 @@ import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
-import { Alert, Keyboard, Platform, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import PhoneInput from 'react-native-phone-input';
 import Toast from "react-native-toast-message";
 import { Image, LoaderScreen, Text, View } from "react-native-ui-lib";
@@ -110,8 +110,7 @@ const Login = () => {
 
         await updateDoc(doc(db, "Users", user.uid), {
           token: arrayUnion(token),
-          createdAt: new Date(Date.now()),
-          createdAtTest: new Date(Date.now() - 1 * 60 * 60 * 1000)
+          createdAt: new Date(),
         });
       });
     } catch (err: any) {
@@ -131,14 +130,14 @@ const Login = () => {
 
   if (loading) {
     return (
-      <LoaderScreen />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 
   return (
     <View useSafeArea flex>
-      <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <View style={[global.container, global.spaceEvenly]}>
+      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
+        <KeyboardAvoidingView style={[global.container, global.spaceEvenly]} behavior={Platform.OS == "ios" ? "padding" : "height"}>
           <Image
             style={{ width: "auto", height: 100 }}
             source={require("../../assets/logo.png")}
@@ -192,7 +191,7 @@ const Login = () => {
           </View>         
 
           {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
-        </View>
+        </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
     </View>
   );

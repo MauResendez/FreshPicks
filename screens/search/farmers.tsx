@@ -3,9 +3,8 @@ import { collection, documentId, onSnapshot, query, where } from "firebase/fires
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, useWindowDimensions } from "react-native";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { Text, TextField, View } from "react-native-ui-lib";
+import { LoaderScreen, Text, TextField, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
-import Loading from "../../components/extra/loading";
 import FarmerSearchRow from "../../components/search/farmer-search-row";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
@@ -133,7 +132,7 @@ const Farmers = () => {
 
   if (loading) {
     return (
-      <Loading />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
   
@@ -150,7 +149,7 @@ const Farmers = () => {
           <TabBar
             {...props}
             indicatorStyle={{ backgroundColor: "black" }}
-            style={{ backgroundColor: "white", height: 55 }}
+            style={{ backgroundColor: "white", height: 50 }}
             renderLabel={renderLabel}
           />
         )}

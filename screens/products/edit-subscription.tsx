@@ -5,9 +5,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import React, { useEffect, useState } from "react"
 import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
-import Toast from "react-native-root-toast"
-import { AnimatedImage, Picker, Text, TextField, View } from "react-native-ui-lib"
-import Loading from "../../components/extra/loading"
+import { AnimatedImage, LoaderScreen, Picker, Text, TextField, View } from "react-native-ui-lib"
 import { auth, db, storage } from "../../firebase"
 import { global } from "../../style"
 
@@ -66,49 +64,49 @@ const EditSubscription = ({ route }) => {
 
     if (!title) {
       error = true;
-      Toast.show("Title is required", {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM - 100,
-        backgroundColor: "red",
-        opacity: 1,
-        keyboardAvoiding: true
-      });
+      // Toast.show("Title is required", {
+      //   duration: Toast.durations.LONG,
+      //   position: Toast.positions.BOTTOM - 100,
+      //   backgroundColor: "red",
+      //   opacity: 1,
+      //   keyboardAvoiding: true
+      // });
       return
     }
 
     if (!description) {
       error = true;
-      Toast.show("Description is required", {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM - 100,
-        backgroundColor: "red",
-        opacity: 1,
-        keyboardAvoiding: true
-      });
+      // Toast.show("Description is required", {
+      //   duration: Toast.durations.LONG,
+      //   position: Toast.positions.BOTTOM - 100,
+      //   backgroundColor: "red",
+      //   opacity: 1,
+      //   keyboardAvoiding: true
+      // });
       return
     }
 
     if (!price) {
       error = true;
-      Toast.show("Price is required", {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM - 100,
-        backgroundColor: "red",
-        opacity: 1,
-        keyboardAvoiding: true
-      });
+      // Toast.show("Price is required", {
+      //   duration: Toast.durations.LONG,
+      //   position: Toast.positions.BOTTOM - 100,
+      //   backgroundColor: "red",
+      //   opacity: 1,
+      //   keyboardAvoiding: true
+      // });
       return
     }
 
     if (Number.isNaN(price)) {
       error = true;
-      Toast.show("Price is not a number", {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM - 100,
-        backgroundColor: "red",
-        opacity: 1,
-        keyboardAvoiding: true
-      });
+      // Toast.show("Price is not a number", {
+      //   duration: Toast.durations.LONG,
+      //   position: Toast.positions.BOTTOM - 100,
+      //   backgroundColor: "red",
+      //   opacity: 1,
+      //   keyboardAvoiding: true
+      // });
     }
 
     if (error) {
@@ -171,7 +169,7 @@ const EditSubscription = ({ route }) => {
 
   if (loading) {
     return (
-      <Loading />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 

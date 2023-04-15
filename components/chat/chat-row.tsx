@@ -39,7 +39,6 @@ const ChatRow = ({ id }) => {
 
   useEffect(() => {
     if (consumer && farmer) {
-      console.log(farmer);
       setLoading(false);
     }
   }, [consumer, farmer]);

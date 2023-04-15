@@ -1,24 +1,24 @@
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
-import { TextField, View } from "react-native-ui-lib";
+import { LoaderScreen, TextField, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
-import HistoryRow from "../../components/account/history-row";
-import Loading from "../../components/extra/loading";
+import HistoryRow from "../../components/history/history-row";
 import { auth, db } from "../../firebase";
+import { global } from "../../style";
 
-const OrderHistory = () => {
+const History = () => {
   const [orders, setOrders] = useState<any>(null);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => { 
     if (search.length == 0 || orders.length == 0) {
-      onSnapshot(query(collection(db, "Orders"), where("consumer.id", "==", auth.currentUser.uid)), async (snapshot) => {
+      onSnapshot(query(collection(db, "Meetings"), where("consumer", "==", auth.currentUser.uid)), async (snapshot) => {
         setOrders(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
       });  
     } else {
-      onSnapshot(query(collection(db, "Orders"), where("consumer.id", "==", auth.currentUser.uid), where(documentId(), ">=", search), where(documentId(), "<=", search + "\uf8ff")), async (snapshot) => {
+      onSnapshot(query(collection(db, "Meetings"), where("consumer", "==", auth.currentUser.uid), where(documentId(), ">=", search), where(documentId(), "<=", search + "\uf8ff")), async (snapshot) => {
         setOrders(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
       });  
     }
@@ -32,7 +32,7 @@ const OrderHistory = () => {
 
   if (loading) {
     return (
-      <Loading />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 
@@ -45,7 +45,7 @@ const OrderHistory = () => {
   // }
 
   return (
-    <View useSafeArea flex>
+    <View useSafeArea flex style={global.bgWhite}>
       <View style={styles.search}>
         <TextField fieldStyle={{ backgroundColor: "lightgray", borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Search with Order ID" leadingAccessory={<Ionicon name="search" color={"gray"} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>
@@ -67,4 +67,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default OrderHistory
+export default History

@@ -2,8 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { FlatList } from "react-native";
-import { View } from "react-native-ui-lib";
-import Loading from "../../components/extra/loading";
+import { LoaderScreen, View } from "react-native-ui-lib";
 import PostCard from "../../components/feed/post-card";
 import { db } from "../../firebase";
 import { global } from "../../style";
@@ -33,12 +32,12 @@ const Timeline = () => {
 
   if (loading) {
     return (
-      <Loading />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
   
   return (
-    <View useSafeArea flex>
+    <View useSafeArea flex style={global.bgWhite}>
       <FlatList 
         data={posts}
         keyExtractor={item => item.id}

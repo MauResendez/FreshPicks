@@ -27,7 +27,8 @@ const firebaseConfig = {
   storageBucket: "cfsifreshpicks.appspot.com",
   messagingSenderId: "1011220940974",
   appId: "1:1011220940974:web:ca22b3c99f68866a62c53f",
-  measurementId: "G-4287FXQ4ZB"
+  measurementId: "G-4287FXQ4ZB",
+  databaseURL: "cfsifreshpicks.firebaseio.com"
 };
 
 // Initialize Firebase
@@ -38,4 +39,5 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const RecaptchaVerifier = auth.RecaptchaVerifier;
 
-export { analytics, app, auth, db, firebaseConfig, RecaptchaVerifier, storage };
+export { RecaptchaVerifier, analytics, app, auth, db, firebaseConfig, storage };
+

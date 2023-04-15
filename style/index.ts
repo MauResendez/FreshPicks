@@ -252,4 +252,10 @@ export const global = StyleSheet.create({
     marginVertical: 8,
     width: "100%",
   },
+  activeTabTextColor: {
+    color: "#32CD32"
+  },
+  tabTextColor: {
+    color: "black"
+  }
 });

@@ -50,7 +50,7 @@ const Chat = () => {
 
   if (loading) {
     return (
-      <LoaderScreen message={'Currently retrieving your chats...'} color={"#90EE90"} />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 

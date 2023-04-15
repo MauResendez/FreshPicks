@@ -5,14 +5,13 @@ import { addDoc, collection } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import React, { useState } from "react"
 import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
-import Toast from "react-native-root-toast"
 import { AnimatedImage, DateTimePicker, Picker, Text, TextField, View } from "react-native-ui-lib"
 import { auth, db, storage } from "../../firebase"
 import { global } from "../../style"
 
 const CreateListing = () => {
   const navigation = useNavigation<any>();
-  const produceTypes = [
+  const types = [
     {label: "Fruits", value: "Fruits"},
     {label: "Vegetables", value: "Vegetables"},
     {label: "Dairy", value: "Dairy"},
@@ -22,7 +21,7 @@ const CreateListing = () => {
     {label: "Frozen", value: "Frozen"},
     {label: "Other", value: "Other"},
   ]
-  const quantityTypes = [
+  const amounts = [
     {label: 'Each', value: 'Each'},
     {label: 'LB', value: 'LB'},
     {label: 'Bunch', value: 'Bunch'},
@@ -32,9 +31,9 @@ const CreateListing = () => {
   const [image, setImage] = useState<any>(null);
   const [price, setPrice] = useState<any>(0);
   const [expiration, setExpiration] = useState<any>(new Date());
-  const [produceType, setProduceType] = useState<any>(produceTypes[0]);
+  const [type, setType] = useState<any>(types[0]);
   const [quantity, setQuantity] = useState<any>(null);
-  const [quantityType, setQuantityType] = useState<any>(quantityTypes[0]);
+  const [amount, setAmount] = useState<any>(amounts[0]);
 
   const compress = async (uri: string) => {
     const manipulatedImage = await ImageManipulator.manipulateAsync(uri, [{ resize: { width: 300, height: 150 }}], { compress: 0.5 });
@@ -70,72 +69,72 @@ const CreateListing = () => {
 
     if (!title) {
       error = true;
-      Toast.show("Title is required", {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM - 100,
-        backgroundColor: "red",
-        opacity: 1,
-        keyboardAvoiding: true
-      });
+      // Toast.show("Title is required", {
+      //   duration: Toast.durations.LONG,
+      //   position: Toast.positions.BOTTOM - 100,
+      //   backgroundColor: "red",
+      //   opacity: 1,
+      //   keyboardAvoiding: true
+      // });
       return
     }
 
     if (!description) {
       error = true;
-      Toast.show("Description is required", {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM - 100,
-        backgroundColor: "red",
-        opacity: 1,
-        keyboardAvoiding: true
-      });
+      // Toast.show("Description is required", {
+      //   duration: Toast.durations.LONG,
+      //   position: Toast.positions.BOTTOM - 100,
+      //   backgroundColor: "red",
+      //   opacity: 1,
+      //   keyboardAvoiding: true
+      // });
       return
     }
 
     if (!price) {
       error = true;
-      Toast.show("Price is required", {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM - 100,
-        backgroundColor: "red",
-        opacity: 1,
-        keyboardAvoiding: true
-      });
+      // Toast.show("Price is required", {
+      //   duration: Toast.durations.LONG,
+      //   position: Toast.positions.BOTTOM - 100,
+      //   backgroundColor: "red",
+      //   opacity: 1,
+      //   keyboardAvoiding: true
+      // });
       return
     }
 
     if (Number.isNaN(price)) {
       error = true;
-      Toast.show("Price is not a number", {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM - 100,
-        backgroundColor: "red",
-        opacity: 1,
-        keyboardAvoiding: true
-      });
+      // Toast.show("Price is not a number", {
+      //   duration: Toast.durations.LONG,
+      //   position: Toast.positions.BOTTOM - 100,
+      //   backgroundColor: "red",
+      //   opacity: 1,
+      //   keyboardAvoiding: true
+      // });
     }
 
     if (!quantity) {
       error = true;
-      Toast.show("Quantity is required", {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM - 100,
-        backgroundColor: "red",
-        opacity: 1,
-        keyboardAvoiding: true
-      });
+      // Toast.show("Quantity is required", {
+      //   duration: Toast.durations.LONG,
+      //   position: Toast.positions.BOTTOM - 100,
+      //   backgroundColor: "red",
+      //   opacity: 1,
+      //   keyboardAvoiding: true
+      // });
       return
     }
 
     if (!Number.isInteger(quantity)) {
       error = true;
-      Toast.show("Quantity is not a number", {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM - 100,
-        backgroundColor: "red",
-        opacity: 1,
-        keyboardAvoiding: true
-      });
+      // Toast.show("Quantity is not a number", {
+      //   duration: Toast.durations.LONG,
+      //   position: Toast.positions.BOTTOM - 100,
+      //   backgroundColor: "red",
+      //   opacity: 1,
+      //   keyboardAvoiding: true
+      // });
       return
     }
 
@@ -163,8 +162,8 @@ const CreateListing = () => {
           quantity: quantity,
           price: price,
           image: image,
-          qt: quantityType,
-          pt: produceType,
+          amount: amount,
+          type: type,
           expiration: expiration
         }).then(() => {
           console.log("Data saved!");
@@ -221,7 +220,7 @@ const CreateListing = () => {
             </View>
 
             <View style={global.field}>
-              <Text style={global.subtitle}>Listing Price</Text>
+              <Text style={global.subtitle}>Price</Text>
               <TextField
                 style={global.input}
                 placeholder="Enter the price amount here"
@@ -232,18 +231,18 @@ const CreateListing = () => {
             </View>
 
             <View style={global.field}>
-              <Text style={global.subtitle}>Listing Type</Text>
+              <Text style={global.subtitle}>Type</Text>
               <Picker  
-                value={produceType}
+                value={type}
                 placeholder={'Listing Type'}
-                onChange={(value) => setProduceType(value)}
+                onChange={(value) => setType(value)}
                 style={global.input} 
                 migrate 
                 useSafeArea={true} 
-                topBarProps={{ title: 'Listing Types' }} 
+                topBarProps={{ title: 'Type' }} 
                 migrateTextField           
               >  
-                {produceTypes.map((type) => (   
+                {types.map((type) => (   
                   <Picker.Item key={type.value} value={type.value} label={type.label} />
                 ))}
               </Picker>
@@ -261,16 +260,16 @@ const CreateListing = () => {
             </View>
 
             <View style={global.field}>
-              <Text style={global.subtitle}>Quantity Type</Text>
+              <Text style={global.subtitle}>Amount</Text>
               <Picker  
-                value={quantityType}
+                value={amount}
                 placeholder={'Quantity Type'}
-                onChange={(value) => setQuantityType(value)}
+                onChange={(value) => setAmount(value)}
                 style={global.input}
                 useSafeArea={true} 
-                topBarProps={{ title: 'Quantity Types' }} 
+                topBarProps={{ title: 'Amount' }} 
               >  
-                {quantityTypes.map((type) => (   
+                {amounts.map((type) => (   
                   <Picker.Item key={type.value} value={type.value} label={type.label} />
                 ))}
               </Picker>

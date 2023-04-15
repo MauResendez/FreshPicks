@@ -6,8 +6,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import React, { useEffect, useState } from "react"
 import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import Toast from "react-native-toast-message"
-import { AnimatedImage, Text, TextField, View } from "react-native-ui-lib"
-import Loading from "../../components/extra/loading"
+import { AnimatedImage, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
 import { auth, db, storage } from "../../firebase"
 import { global } from "../../style"
 
@@ -143,7 +142,7 @@ const CreatePost = () => {
 
   if (loading) {
     return (
-      <Loading />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 

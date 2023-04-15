@@ -50,9 +50,6 @@ const Register = ({ route }) => {
   const [friday, setFriday] = useState<any>({ enable: false, start: null, end: null });
   const [saturday, setSaturday] = useState<any>({ enable: false, start: null, end: null });
   const [sunday, setSunday] = useState<any>({ enable: false, start: null, end: null });
-  const [paypal, setPaypal] = useState<any>(null);
-  const [cashapp, setCashapp] = useState<any>(null);
-  const [venmo, setVenmo] = useState<any>(null);
   const [token, setToken] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -219,30 +216,6 @@ const Register = ({ route }) => {
       return
     }
 
-    if (!paypal && !cashapp && !venmo) {
-      error = true;
-      showToast("error", "Error", "A payment method is required");
-      return
-    }
-
-    if (paypal && !emailTest.test(paypal)) {
-      error = true;
-      showToast("error", "Error", "Please type in your PayPal account correctly (With an email address)");
-      return
-    }
-
-    if (cashapp && !cashappTest.test(cashapp)) {
-      error = true;
-      showToast("error", "Error", "Please type in your CashApp account correctly (With the $ in the beginning)");
-      return
-    }
-
-    if (venmo && !venmoTest.test(venmo)) {
-      error = true;
-      showToast("error", "Error", "Please type in your Venmo account correctly (With the @ in the beginning)");
-      return
-    }
-
     if (error) {
       error = false;
       return
@@ -295,11 +268,6 @@ const Register = ({ route }) => {
             // location: new firestore.GeoPoint(coordinates.lat, coordinates.lng)
             schedule: {
               monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday, sunday: sunday
-            },
-            payments: {
-              paypal: paypal,
-              cashapp: cashapp,
-              venmo: venmo,
             },
             rating: 0,
             ratings: 0,
@@ -590,36 +558,6 @@ const Register = ({ route }) => {
     );
   };
 
-  const PaymentInformation = () => {
-    return (
-      <View style={styles.stepContainer}>
-        <Text title>Payment Information</Text>
-
-        <View style={global.field}>
-          <Text subtitle>PayPal</Text>
-          <TextField value={paypal} onChangeText={(value) => setPaypal(value)} style={global.input} placeholder="Ex: example@gmail.com" migrate />
-        </View>
-
-        <View style={global.field}>
-          <Text subtitle>CashApp</Text>
-          <TextField value={cashapp} onChangeText={(value) => setCashapp(value)} style={global.input} placeholder="Ex: $example" migrate />
-        </View>
-
-        <View style={global.field}>
-          <Text subtitle>Venmo</Text>
-          <TextField value={venmo} onChangeText={(value) => setVenmo(value)} style={global.input} placeholder="Ex: @Example" migrate />
-        </View>
-
-        <View flexG />
-        
-        <View style={global.field}>
-          {Prev()}
-          {Next()}
-        </View>
-      </View>
-    );
-  };
-
   const AccountInformation = () => {
     return (
       <View style={[global.container, global.spaceEvenly]}>
@@ -686,7 +624,6 @@ const Register = ({ route }) => {
   const Current = () => {
     switch (active) {
       case 0:
-      default:
         return PersonalInformation();
       case 1:
         return ProfileSetup();
@@ -698,8 +635,6 @@ const Register = ({ route }) => {
       case 3:
         return FarmerSchedule();
       case 4:
-        return PaymentInformation();
-      case 5:
         return AccountInformation();
     }
   };
@@ -733,7 +668,7 @@ const Register = ({ route }) => {
 
   if (loading) {
     return (
-      <LoaderScreen />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 

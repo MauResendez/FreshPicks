@@ -6,8 +6,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { FlatList, Image, Platform, StyleSheet } from "react-native";
 import getDirections from "react-native-google-maps-directions";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import { View } from "react-native-ui-lib";
-import Loading from "../../components/extra/loading";
+import { LoaderScreen, View } from "react-native-ui-lib";
 import MapRow from "../../components/map/map-row";
 import { auth, db } from "../../firebase";
 
@@ -96,7 +95,7 @@ const Map = () => {
   
   if (loading) {
     return (
-      <Loading />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 

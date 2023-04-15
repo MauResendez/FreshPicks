@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { Image } from "expo-image";
 import { Platform } from "expo-modules-core";
 import * as Notifications from 'expo-notifications';
 import { deleteUser, signOut } from "firebase/auth";
@@ -6,10 +7,9 @@ import { arrayRemove, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import * as React from "react";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Alert, ScrollView, Share, StyleSheet } from "react-native";
-import { Avatar, Chip, Colors, Image, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
+import { Avatar, Chip, Colors, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
-
 
 const Account = () => {
   const navigation = useNavigation<any>();
@@ -86,17 +86,20 @@ const Account = () => {
 
   if (loading) {
     return (
-      <LoaderScreen />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
   
   return (
     <View useSafeArea flex>
-      <ScrollView
-        showsVerticalScrollIndicator={Platform.OS == "web"}
-      >
+      <ScrollView showsVerticalScrollIndicator={Platform.OS == "web"}>
         <View style={styles.cover}>
-          <Image source={{ uri: user.cover }} style={styles.image} />
+          <Image
+            style={styles.image}
+            source={{ uri: user.cover }}           
+            contentFit="contain"
+            transition={1000}
+          />
         </View>
 
         <View style={styles.header}>
@@ -115,11 +118,10 @@ const Account = () => {
           </View>
 
           <View row>
-            {user.role ? (
-              <Text h2>{user.business}</Text>
-            ) : (
-              <Text h2>{user.name}</Text>
-            )}
+            {user.role 
+              ? <Text h2>{user.business}</Text>
+              : <Text h2>{user.name}</Text>
+            }
           </View>
 
           <View row>

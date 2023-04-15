@@ -2,12 +2,11 @@ import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { StatusBar } from 'expo-status-bar';
 import { onAuthStateChanged, User } from "firebase/auth";
-import { doc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
-import { Typography } from "react-native-ui-lib";
+import { LoaderScreen, Typography } from "react-native-ui-lib";
 import { Provider } from "react-redux";
-import { auth, db } from "./firebase";
+import { auth } from "./firebase";
 import AuthStack from "./navigation/stack/auth-stack";
 import MainStack from "./navigation/stack/main-stack";
 import { store } from "./redux/store";
@@ -50,18 +49,11 @@ const App = () => {
   const [user, setUser] = useState<User | null>(null);
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
+  const [loading, setLoading] = useState(true);
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
-
-  const updateToken = async (token) =>{
-    try {
-      await updateDoc(doc(db, "Users", auth.currentUser?.uid), {
-        token: token
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const appConfig = require("./app.json");
+  const projectId = appConfig?.expo?.extra?.eas?.projectId;
 
   const registerForPushNotificationsAsync = async () => {
     try {
@@ -81,7 +73,7 @@ const App = () => {
           return;
         }
         
-        token = (await Notifications.getExpoPushTokenAsync()).data;
+        token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
       } else {
         alert("Must use physical device for Push Notifications");
       }
@@ -131,23 +123,27 @@ const App = () => {
       onAuthStateChanged(auth, async (user: any) => {
         if (user) {
           setUser(user);
-  
-          // if (Platform.OS !== "web") {
-          //   updateToken(expoPushToken);
-          // }
+          setLoading(false);
         } else {
           setUser(null);
+          setLoading(false);
         }
       });
     } catch (error) {
       console.log(error);
     }
-  }, [user, expoPushToken]);
+  }, [user]);
+
+  if (loading) {
+    return (
+      <LoaderScreen color={"#32CD32"} />
+    );
+  }
 
   return (
     <Provider store={store}>
       <StatusBar style="auto" />
-      {!auth.currentUser ? <AuthStack /> : <MainStack />}
+      {auth.currentUser ? <MainStack /> : <AuthStack />}
     </Provider>
   );
 }

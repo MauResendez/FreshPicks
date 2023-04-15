@@ -3,10 +3,9 @@ import { FlatList } from "react-native";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import { TextField, View } from "react-native-ui-lib";
+import { LoaderScreen, TextField, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import SearchRow from "../../components/chat/search-row";
-import Loading from "../../components/extra/loading";
 import { db } from "../../firebase";
 
 const Orders = () => {
@@ -34,7 +33,7 @@ const Orders = () => {
 
   if (loading) {
     return (
-      <Loading />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 

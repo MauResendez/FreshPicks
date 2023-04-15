@@ -3,9 +3,8 @@ import { collection, documentId, onSnapshot, query, where } from "firebase/fires
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, useWindowDimensions } from "react-native";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { TextField, View } from "react-native-ui-lib";
+import { LoaderScreen, TextField, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
-import Loading from "../../components/extra/loading";
 import ListingSearchRow from "../../components/search/product-search-row";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
@@ -181,7 +180,7 @@ const Listings = () => {
 
   if (loading) {
     return (
-      <Loading />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
   

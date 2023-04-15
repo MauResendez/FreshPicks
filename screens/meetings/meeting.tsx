@@ -49,7 +49,7 @@
 import React from 'react'
 import { Text, View } from 'react-native-ui-lib'
 
-const Order = () => {
+const Meeting = () => {
 	return (
 		<View>
 			<Text>Order</Text>
@@ -57,4 +57,4 @@ const Order = () => {
 	)
 }
 
-export default Order
+export default Meeting

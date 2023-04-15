@@ -8,11 +8,10 @@ import {
 } from "react-native";
 import Ionicon from "react-native-vector-icons/Ionicons";
 
-import Loading from "../../components/extra/loading";
 import FarmerRow from "../../components/search/farmer-row";
 import ListingRow from "../../components/search/product-row";
 
-import { TextField, View } from "react-native-ui-lib";
+import { Colors, LoaderScreen, TextField, View } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
@@ -67,14 +66,14 @@ const Search = () => {
 
   if (loading) {
     return (
-      <Loading />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 
   return (
     <View useSafeArea flex style={global.bgWhite}>
       <View style={styles.search}>
-        <TextField fieldStyle={{ backgroundColor: "lightgray", borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Search for farmers and produce here..." leadingAccessory={<Ionicon name="search" color={"gray"} size={20} style={{ marginRight: 8 }} />} migrate />
+        <TextField fieldStyle={{ backgroundColor: Colors.grey50, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Search for farmers and produce here..." placeholderTextColor={Colors.black} leadingAccessory={<Ionicon name="search" color={Colors.black} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>
 
       <ScrollView

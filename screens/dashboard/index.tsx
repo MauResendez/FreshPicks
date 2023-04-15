@@ -1,56 +1,115 @@
 import { useNavigation } from "@react-navigation/native";
-import { collection, deleteDoc, doc, onSnapshot, query, where } from "firebase/firestore";
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import {
-  Alert,
-  FlatList,
-  ScrollView
-} from "react-native";
-import { Button, Colors, Image, ListItem, Text, View } from "react-native-ui-lib";
-import Ionicon from 'react-native-vector-icons/Ionicons';
-import { auth, db } from "../../firebase";
+import React, { useLayoutEffect, useState } from "react";
+import { useWindowDimensions } from "react-native";
+// import { PieChart } from "react-native-gifted-charts";
+import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import { Colors, Picker, Text, Toast, View } from "react-native-ui-lib";
 import { global } from "../../style";
 
 const Dashboard = () => {
   const navigation = useNavigation<any>();
-  const [farmer, setFarmer] = useState<any>(null);
-  const [listings, setListings] = useState<any>([]);
-  const [posts, setPosts] = useState<any>([]);
-  const [subscriptions, setSubscriptions] = useState<any>([]);
+  const data = [ {value:50}, {value:80}, {value:90}, {value:70} ];
+  const layout = useWindowDimensions();
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: "first", title: "Categories" },
+    { key: "second", title: "Products" },
+  ]);
 
-  const deleteListing = async (listing) => {
-    // setVisible(true);
-    await deleteDoc(doc(db, "Listings", listing.id));
-  }
+  const FirstRoute = () => (
+    <View useSafeArea flex>
+      <View style={[global.center, global.container]}>
+        <Text subtitle>Generate reports here</Text>
+        <View style={global.field}>
+          <Text h3>Showing statistics for</Text>
+          <Picker  
+            value={data[0]}
+            placeholder={'Listing Type'}
+            placeholderTextColor={Colors.black}
+            style={global.input} 
+            migrate 
+            useSafeArea={true} 
+            topBarProps={{ title: 'Listing Types' }} 
+            migrateTextField           
+          >  
+            {data.map((type) => (   
+              <Picker.Item key={type.value} value={type.value} />
+            ))}
+          </Picker>
+        </View>
+        {/* <PieChart 
+          data={data} 
+          donut 
+          showText
+          textColor="black"
+          innerRadius={50}
+          showTextBackground
+          textBackgroundColor="white"
+          textBackgroundRadius={15} 
+        /> */}
+        <Text h3>Data 1</Text>
+        <Text h3>Data 2</Text>
+        <Text h3>Data 3</Text>
+        <Text h3>Data 4</Text>
+        <Text h2>Report</Text>
+        <Text h2>CSV to Email</Text>
+      </View>
+      <Toast visible={true} message={"dfgdgd"} position={'bottom'} backgroundColor={Colors.black} autoDismiss={1000} />
+    </View>
+  );
 
-  useEffect(() => {
-    onSnapshot(doc(db, "Users", auth.currentUser.uid), (doc) => {
-      setFarmer(doc.data());
-    });
+  const SecondRoute = () => (
+    <View useSafeArea flex>
+      <View style={[global.center, global.container]}>
+        <Text subtitle>Generate reports here</Text>
+        <View style={global.field}>
+          <Text h3>Showing statistics for</Text>
+          <Picker  
+            value={data[0]}
+            placeholder={'Month'}
+            style={global.input} 
+            migrate 
+            useSafeArea={true} 
+            topBarProps={{ title: 'Month' }} 
+            migrateTextField           
+          >  
+            {data.map((type) => (   
+              <Picker.Item key={type.value} value={type.value} />
+            ))}
+          </Picker>
+        </View>
+        {/* <PieChart 
+          data={data} 
+          donut 
+          showText
+          textColor="black"
+          innerRadius={50}
+          showTextBackground
+          textBackgroundColor="white"
+          textBackgroundRadius={15} 
+        /> */}
+        <Text h3>Data 1</Text>
+        <Text h3>Data 2</Text>
+        <Text h3>Data 3</Text>
+        <Text h3>Data 4</Text>
+        <Text h2>Report</Text>
+        <Text h2>CSV to Email</Text>
+      </View>
+    </View>
+  );
 
-    onSnapshot(query(collection(db, "Listings"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
-      setListings(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
-    });
+  const renderLabel = ({ route, focused, color }) => {
+    return (
+      <Text style={[focused ? global.activeTabTextColor : global.tabTextColor]}>
+        {route.title}
+      </Text>
+    );
+  };
 
-    onSnapshot(query(collection(db, "Subscriptions"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
-      setSubscriptions(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
-    });
-
-    onSnapshot(query(collection(db, "Posts"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
-      setPosts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
-    });
-  }, []);
-
-  useEffect(() => {
-    if (listings.length > 0) {
-      console.log(listings);
-    }
-
-    console.log(auth.currentUser.uid);
-
-    console.log("Listings: " + listings);
-
-  }, [listings]);
+  const renderScene = SceneMap({
+    first: FirstRoute,
+    second: SecondRoute
+  });
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -60,126 +119,23 @@ const Dashboard = () => {
 
   return (
     <View useSafeArea flex>
-      <ScrollView contentContainerStyle={[global.container, global.spaceBetween]}>
-        <View>
-          <Text subtitle>Listings</Text>
-
-          <FlatList 
-            data={listings}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => (
-              <ListItem
-                activeBackgroundColor={Colors.grey60}
-                activeOpacity={0.3}
-                backgroundColor={Colors.white}
-                onPress={() => Alert.alert(item.title, item.description, [
-                  {text: 'Edit', onPress: () => navigation.navigate("Edit Listing", { id: item.id })},
-                  {text: 'Cancel', style: 'cancel'},
-                  {text: 'Delete', onPress: async () => deleteListing(item)},
-                ])}
-                style={{ borderRadius: 8, marginBottom: 8, padding: 8 }}
-              >
-                <ListItem.Part left>
-                  <Image source={{ uri: item.image }} style={{ width: 50, height: 50, marginRight: 12 }}/>
-                </ListItem.Part>
-                <ListItem.Part middle column>
-                  <View row style={global.spaceBetween}>
-                    <Text h2>{item.title}</Text>
-                    <Text h2>${item.price}</Text>
-                  </View>
-                  <View row style={global.spaceBetween}>
-                    <Text h3>{item.quantity} remaining</Text>
-                    <Text h3>Expiring in {item.expiration.toDate().toLocaleDateString()}</Text>
-                  </View>
-                </ListItem.Part>
-              </ListItem>
-            )}
+      <TabView
+        style={global.bgWhite}
+        navigationState={{ index, routes }}
+        renderTabBar={(props) => (
+          <TabBar
+            {...props}
+            indicatorStyle={{ backgroundColor: global.activeTabTextColor.color }}
+            style={{ backgroundColor: "white", height: 50 }}
+            renderLabel={renderLabel}
           />
-        </View>
-
-        <View>
-          <Text subtitle>Subscriptions</Text>
-
-          <FlatList 
-            data={subscriptions}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => (
-              <ListItem
-                activeBackgroundColor={Colors.grey60}
-                activeOpacity={0.3}
-                backgroundColor={Colors.white}
-                onPress={() => Alert.alert(item.title, item.description, [
-                  {text: 'Edit', onPress: () => navigation.navigate("Edit Subscription", { id: item.id })},
-                  {text: 'Cancel', style: 'cancel'},
-                  {text: 'Delete', onPress: async () => deleteListing(item)},
-                ])}
-                style={{ borderRadius: 8, marginBottom: 8, padding: 8 }}
-              >
-                <ListItem.Part left>
-                  <Image source={{ uri: item.image }} style={{ width: 50, height: 50, marginRight: 12 }}/>
-                </ListItem.Part>
-                <ListItem.Part middle column>
-                  <View row style={global.spaceBetween}>
-                    <Text h2>{item.title}</Text>
-                    <Text h2>${item.price}/{item.st.charAt(0)}</Text>
-                  </View>
-                  <View row style={global.spaceBetween}>
-                    <Text h3>{item.description}</Text>
-                  </View>
-                </ListItem.Part>
-              </ListItem>
-            )}
-          />
-        </View>
-
-        <View>
-          <Text subtitle>Posts</Text>
-
-          <FlatList 
-            data={posts}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => (
-              <ListItem
-                activeBackgroundColor={Colors.grey60}
-                activeOpacity={0.3}
-                backgroundColor={Colors.white}
-                onPress={() => Alert.alert(item.title, item.description, [
-                  {text: 'Edit', onPress: () => navigation.navigate("Edit Post", { id: item.id })},
-                  {text: 'Cancel', style: 'cancel'},
-                  {text: 'Delete', onPress: async () => deleteListing(item)},
-                ])}
-                style={{ borderRadius: 8, marginBottom: 8, padding: 8 }}
-              >
-                <ListItem.Part left>
-                  <Image source={{ uri: item.image }} style={{ width: 50, height: 50, marginRight: 12 }}/>
-                </ListItem.Part>
-                <ListItem.Part middle column>
-                  <View row style={global.spaceBetween}>
-                    <Text h2>{item.title}</Text>
-                  </View>
-                  <View row style={global.spaceBetween}>
-                    <Text h3>{item.description}</Text>
-                  </View>
-                </ListItem.Part>
-              </ListItem>
-            )}
-          />
-        </View>
-      </ScrollView>
-      <Button 
-        style={{ width: 64, height: 64, margin: 16 }} 
-        round 
-        animateLayout 
-        animateTo={'right'} 
-        onPress={() => Alert.alert("Create", "What would you like to create?", [
-          {text: 'Listing', onPress: () => navigation.navigate("Create Listing")},
-          {text: 'Subscription', onPress: () => navigation.navigate("Create Subscription")},
-          {text: 'Post', onPress: () => navigation.navigate("Create Post")},
-          {text: 'Cancel', style: 'cancel'},
-        ])} 
-        backgroundColor="#32CD32" 
-        iconSource={() => <Ionicon name="create" color="white" size={24} />} 
+        )}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
       />
+      
+      
     </View>
   );
 }

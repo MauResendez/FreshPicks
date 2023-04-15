@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useState } from "react"
 import { Alert, Platform, StyleSheet } from "react-native";
 import { Bubble, GiftedChat, IMessage, Send } from "react-native-gifted-chat";
 import { QuickReplies, QuickRepliesProps } from "react-native-gifted-chat/lib/QuickReplies";
-import { View } from "react-native-ui-lib";
+import { Colors, LoaderScreen, View } from "react-native-ui-lib";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import Loading from "../../components/extra/loading";
@@ -16,20 +16,20 @@ const renderBubble = props => {
     <Bubble {...props} 
       wrapperStyle={{
         right: {
-          backgroundColor: "green",
+          backgroundColor: "#32CD32",
         },
         left: {
-          backgroundColor: "blue",
+          backgroundColor: Colors.white,
         }
       }}
       textStyle={{
         right: {
           marginLeft: margin,
-          color: "white",
+          color: Colors.white,
         },
         left: {
           marginRight: margin,
-          color: "white",
+          color: Colors.black,
         }
       }}
     />
@@ -87,55 +87,32 @@ const Conversation = ({ route }) => {
   }
 
   const onSend = useCallback(async (m = []) => {
-    await setDoc(chatsRef, {
-      messages: GiftedChat.append(messages, m)
-    }, {merge: true});
+    try {
+      await setDoc(chatsRef, {
+        messages: GiftedChat.append(messages, m)
+      }, {merge: true});
 
-    // if (Platform.OS !== "web") {
-    //   const message = {
-    //     to: chat?.consumer?.id !== auth.currentUser.uid ? chat?.consumer?.token : chat?.farmer?.token,
-    //     sound: "default",
-    //     title: "Fresh Picks",
-    //     body: chat?.consumer?.id == auth.currentUser.uid ? chat?.consumer?.name + ": " + m[0].text : chat?.farmer?.name + ": " + m[0].text,
-    //     data: { someData: "goes here" },
-    //   };
-
-    //   await fetch("https://exp.host/--/api/v2/push/send", {
-    //     method: "POST",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Accept-encoding": "gzip, deflate",
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(message),
-    //   });
-    // }
+      await fetch("https://us-central1-cfsifreshpicks.cloudfunctions.net/sendMessage", {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          'message': m[0].text,
+          'sender': auth.currentUser.uid == chat.consumer ? consumer.name : farmer.business,
+          'tokens': auth.currentUser.uid == chat.consumer ? farmer.token : consumer.token,
+        }),
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }, [route.params.id, messages]);
 
   const sendOrderMessage = async (reply) => {
     setDoc(chatsRef, {
       messages: GiftedChat.append(messages, [reply])
     }, {merge: true});
-
-    // if (Platform.OS !== "web") {
-    //   const message = {
-    //     to: chat?.consumer?.id !== auth.currentUser.uid ? chat?.consumer?.token : chat?.farmer?.token,
-    //     sound: "default",
-    //     title: "Fresh Picks",
-    //     body: reply.text,
-    //     data: { someData: "goes here" },
-    //   };
-
-    //   await fetch("https://exp.host/--/api/v2/push/send", {
-    //     method: "POST",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Accept-encoding": "gzip, deflate",
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(message),
-    //   });
-    // }
   }
   
   const scrollToBottomComponent = () => {
@@ -172,15 +149,11 @@ const Conversation = ({ route }) => {
       getDoc(doc(db, "Users", chat.consumer)).then((docSnapshot) => {
         const data = docSnapshot.data();
 
-        console.log("Consumer: " + JSON.stringify(data));
-
         setConsumer({...data, id: chat.consumer});
       });
   
       getDoc(doc(db, "Users", chat.farmer)).then((docSnapshot) => {
         const data = docSnapshot.data();
-
-        console.log("Farmer: " + JSON.stringify(data));
   
         setFarmer({...data, id: chat.farmer});
       });
@@ -192,30 +165,6 @@ const Conversation = ({ route }) => {
       setLoading(false);
     }
   }, [consumer, farmer]);
-
-  // useEffect(() => {
-  //   if (chat) {
-  //     if (messages && route.params.message) {
-  //       let reply = {
-  //         _id: "_" + Math.random().toString(36).substr(2, 9),
-  //         text: route.params.message,
-  //         createdAt: new Date(),
-  //         user: {
-  //           _id: auth.currentUser.uid,
-  //           name: chat?.consumer?.id == auth.currentUser.uid ? chat?.consumer?.name : chat?.farmer?.name,
-  //           avatar: chat?.consumer?.id == auth.currentUser.uid ? chat?.consumer?.logo : chat?.farmer?.logo
-  //         },
-  //       }
-
-  //       route.params.message = null;
-
-  //       sendOrderMessage(reply);
-  //     }
-
-  //     setLoading(false);
-  //   }
-  // }, [chat, messages, route.params.message]);
-
 
   useLayoutEffect(() => {
     if (chat && consumer && farmer) {
@@ -241,7 +190,7 @@ const Conversation = ({ route }) => {
 
   if (loading) {
     return (
-      <Loading />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 

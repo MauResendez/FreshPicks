@@ -1,11 +1,11 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 import * as Linking from 'expo-linking';
 import { addDoc, collection, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Platform, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
-import { Avatar, Chip, Image, ListItem, Text, View } from "react-native-ui-lib";
+import { Platform, ScrollView, StyleSheet, TouchableOpacity, useWindowDimensions } from "react-native";
+import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import { Avatar, Chip, Colors, Image, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { useSelector } from "react-redux";
-import Loading from "../../components/extra/loading";
 import ProfileRow from "../../components/profile/profile-row";
 import { selectOrderItems } from "../../features/order-slice";
 import { auth, db } from "../../firebase";
@@ -19,12 +19,108 @@ const Profile = () => {
   } = useRoute<any>();
 
   const navigation = useNavigation<any>();
+  const parent = navigation.getParent("MainDrawer");
+  const isFocused = useIsFocused();
   const [listings, setListings] = useState([]);
   const [chat, setChat] = useState(null);
   const [consumer, setConsumer] = useState(null);
   const [farmer, setFarmer] = useState(null);
   const items = useSelector(selectOrderItems);
   const [loading, setLoading] = useState(true);
+  const layout = useWindowDimensions();
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: "first", title: "About Us" },
+    { key: "second", title: "Products" },
+    { key: "third", title: "Reviews" },
+  ]);
+
+  const FirstRoute = () => (
+    <View useSafeArea flex style={global.bgWhite}>
+      <ScrollView style={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
+        <View style={{ padding: 16 }}>
+          <ListItem>
+            <ListItem.Part>
+              <Text subtitle>About Us</Text>
+              <Text h3>{farmer.description}</Text>
+            </ListItem.Part>
+          </ListItem>
+        </View>
+      </ScrollView>
+    </View>
+  );
+
+  const SecondRoute = () => (
+    <View useSafeArea flex style={global.bgWhite}>
+      <ScrollView style={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
+        <View style={{ padding: 16 }}>
+          <ListItem>
+            <ListItem.Part>
+              <Text subtitle>Products</Text>
+            </ListItem.Part>
+          </ListItem>
+
+          {listings.map((product) => (
+            <ProfileRow
+              key={product.id}
+              id={product.id}
+              title={product.title}
+              description={product.description}
+              price={product.price}
+              image={product.image}
+              quantity={product.quantity}
+              expiration={product.expiration}
+              farmer={farmer}
+              user={consumer}
+            />
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+  );
+
+  const ThirdRoute = () => (
+    <View useSafeArea flex style={global.bgWhite}>
+      <ScrollView style={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
+        <View style={{ padding: 16 }}>
+          <ListItem>
+            <ListItem.Part>
+              <Text subtitle>Reviews</Text>
+            </ListItem.Part>
+          </ListItem>
+
+          {listings.map((product) => (
+            <ProfileRow
+              key={product.id}
+              id={product.id}
+              title={product.title}
+              description={product.description}
+              price={product.price}
+              image={product.image}
+              quantity={product.quantity}
+              expiration={product.expiration}
+              farmer={farmer}
+              user={consumer}
+            />
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+  );
+
+  const renderLabel = ({ route, focused, color }) => {
+    return (
+      <Text style={[focused ? "#32CD32" : Colors.black]}>
+        {route.title}
+      </Text>
+    );
+  };
+
+  const renderScene = SceneMap({
+    first: FirstRoute,
+    second: SecondRoute,
+    third: ThirdRoute
+  });
 
   const handleChat = async () => {
     // Check user if they have current farmer id saved in chatted
@@ -72,24 +168,14 @@ const Profile = () => {
       setFarmer({...data, id: id});
     });
 
-    // onSnapshot(doc(db, "Users", auth.currentUser.uid), async (doc) => {
-    //   setUser(doc.data());
-    // });
-
     onSnapshot(query(collection(db, "Listings"), where("user", "==", id)), async (snapshot) => {
       setListings(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
-
-    // const unsubscribe = onSnapshot(doc(db, "Users", id), (doc) => {
-    //   setFarmer(doc.data());
-    // });
-
-    // return unsubscribe
   }, []);
 
   useEffect(() => {
     if (consumer && farmer) {
-      onSnapshot(query(collection(db, "Chats"), where("consumer.id", "==", auth.currentUser.uid), where("farmer.id", "==", id)), async (snapshot) => {
+      onSnapshot(query(collection(db, "Chats"), where("consumer", "==", auth.currentUser.uid), where("farmer", "==", id)), async (snapshot) => {
         setChat(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
       });
     }
@@ -101,111 +187,107 @@ const Profile = () => {
     }
   }, [chat]);
 
+  // useLayoutEffect(() => {
+  //   parent.setOptions({
+  //     headerShown: isFocused ? false : true
+  //   });
+  // }, [isFocused]);
+
   if (loading) {
     return (
-      <Loading />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 
   return (
-    <View useSafeArea flex>
-      <ScrollView style={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
-        <View style={styles.cover}>
-          <Image source={{ uri: farmer.cover }} style={styles.image} />
+    <View useSafeArea flex style={global.bgWhite}>
+      <View style={styles.cover}>
+        <Image source={{ uri: farmer.cover }} style={styles.image} />
+      </View>
+
+      <View style={styles.header}>
+        <View row>
+          {consumer.logo 
+            ? <Avatar size={75} source={{ uri: farmer.logo }} imageStyle={{ borderWidth: 1 }} />
+            : <Avatar size={75} source={require("../../assets/profile.png")} imageStyle={{ borderWidth: 1 }} />
+          }
         </View>
 
-        <View style={styles.header}>
-          <View row>
-            {consumer.logo 
-              ? <Avatar size={75} source={{ uri: farmer.logo }} imageStyle={{ borderWidth: 1 }} />
-              : <Avatar size={75} source={require("../../assets/profile.png")} imageStyle={{ borderWidth: 1 }} />
-            }
-          </View>
-
-          <View row>
-            <Text h2>{farmer.business}</Text>
-          </View>
-
-          <View row>
-            <Text h3>{farmer.address}</Text>
-          </View>
-
-          {/* <View row>
-            <Text style={styles.address}>{farmer.rating?.toFixed(2)}/5 Rating</Text>
-            <AirbnbRating showRating={false} size={16} defaultRating={5} onFinishRating={(rating) => rateFarmer(rating)}/>
-          </View> */}
-
-          {/* <View row>
-            <Text style={styles.address}>{farmer.description}</Text>
-          </View> */}
-
-          <View row style={[global.spaceBetween, global.flexWrap]}>
-            {farmer.payments.paypal && <Chip
-              backgroundColor="#0079C1"
-              containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
-              label={"PayPal: " + farmer.payments.paypal}
-              labelStyle={{ color: "white" }}
-              onPress={() => Linking.openURL(`https://paypal.me/${farmer.payments.paypal}`)}
-            />}
-
-            {farmer.payments.cashapp && <Chip
-              backgroundColor="#00D632"
-              containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
-              label={"CashApp: " + farmer.payments.cashapp}
-              labelStyle={{ color: "white" }}
-              onPress={() => Linking.openURL(`https://cash.app/${farmer.payments.cashapp}/`)}
-            />}
-
-            {farmer.payments.venmo && <Chip
-              backgroundColor="#008CFF"
-              containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
-              label={"Venmo: " + farmer.payments.venmo}
-              labelStyle={{ color: "white" }}
-              onPress={() => Linking.openURL(`venmo://paycharge?recipients=${farmer.payments.venmo}`)}
-            />}
-          </View>
-
-          <View row style={[global.spaceBetween, global.flexWrap]}>
-            <Chip backgroundColor="green" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${farmer.name}`} labelStyle={{ color: "white" }} onPress={handleChat}/>
-            <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`tel:${farmer.phone}`) }}/>
-            <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`mailto:${farmer.email}`) }}/>
-          </View>
+        <View row>
+          <Text h2>{farmer.business}</Text>
         </View>
 
-        <View style={{ padding: 16 }}>
-          <ListItem>
-            <ListItem.Part>
-              <Text subtitle>Products</Text>
-            </ListItem.Part>
-          </ListItem>
-
-          {listings.map((product) => (
-            <ProfileRow
-              key={product.id}
-              id={product.id}
-              title={product.title}
-              description={product.description}
-              price={product.price}
-              image={product.image}
-              quantity={product.quantity}
-              expiration={product.expiration}
-              farmer={farmer}
-              user={consumer}
-            />
-          ))}
+        <View row>
+          <Text h3>{farmer.address}</Text>
         </View>
 
-        <View flexG />
+        {/* <View row>
+          <Text style={styles.address}>{farmer.rating?.toFixed(2)}/5 Rating</Text>
+          <AirbnbRating showRating={false} size={16} defaultRating={5} onFinishRating={(rating) => rateFarmer(rating)}/>
+        </View> */}
 
-        <View style={styles.cart}>
-          <TouchableOpacity disabled={items.length == 0} onPress={() => navigation.navigate("Cart")} style={items.length == 0 ? styles.disabled : styles.checkout}>
-            {items.length == 0 
-              ? <Text style={styles.checkoutText}>Add items to Cart</Text>
-              : <Text style={styles.checkoutText}>Go to Cart</Text>
-            }
-          </TouchableOpacity>
+        {/* <View row>
+          <Text style={styles.address}>{farmer.description}</Text>
+        </View> */}
+
+        <View row style={[global.spaceBetween, global.flexWrap]}>
+          {farmer.payments.paypal && <Chip
+            backgroundColor="#0079C1"
+            containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
+            label={"PayPal: " + farmer.payments.paypal}
+            labelStyle={{ color: "white" }}
+            onPress={() => Linking.openURL(`https://paypal.me/${farmer.payments.paypal}`)}
+          />}
+
+          {farmer.payments.cashapp && <Chip
+            backgroundColor="#00D632"
+            containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
+            label={"CashApp: " + farmer.payments.cashapp}
+            labelStyle={{ color: "white" }}
+            onPress={() => Linking.openURL(`https://cash.app/${farmer.payments.cashapp}/`)}
+          />}
+
+          {farmer.payments.venmo && <Chip
+            backgroundColor="#008CFF"
+            containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
+            label={"Venmo: " + farmer.payments.venmo}
+            labelStyle={{ color: "white" }}
+            onPress={() => Linking.openURL(`venmo://paycharge?recipients=${farmer.payments.venmo}`)}
+          />}
         </View>
-      </ScrollView>
+
+        <View row style={[global.spaceBetween, global.flexWrap]}>
+          <Chip backgroundColor="green" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${farmer.name}`} labelStyle={{ color: "white" }} onPress={handleChat}/>
+          <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`tel:${farmer.phone}`) }}/>
+          <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`mailto:${farmer.email}`) }}/>
+        </View>
+      </View>
+      <TabView
+        style={[global.bgWhite, global.flex]}
+        navigationState={{ index, routes }}
+        renderTabBar={(props) => (
+          <TabBar
+            {...props}
+            indicatorStyle={{ backgroundColor: "black" }}
+            style={{ backgroundColor: "white", height: 50 }}
+            renderLabel={renderLabel}
+          />
+        )}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+      />
+
+      {/* <View flexG /> */}
+
+      <View style={styles.cart}>
+        <TouchableOpacity disabled={items.length == 0} onPress={() => parent.navigate("Cart")} style={items.length == 0 ? styles.disabled : styles.checkout}>
+          {items.length == 0 
+            ? <Text style={styles.checkoutText}>Add items to Cart</Text>
+            : <Text style={styles.checkoutText}>Go to Cart</Text>
+          }
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

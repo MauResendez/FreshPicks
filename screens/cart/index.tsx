@@ -63,7 +63,7 @@ const Cart = () => {
   }, []);
 
   const createOrder = async () => {
-    await addDoc(collection(db, "Orders"), {
+    await addDoc(collection(db, "Meetings"), {
       consumer: orderUser.id,
       farmer: orderFarmer.id,
       listings: result,
@@ -133,7 +133,7 @@ const Cart = () => {
     if (order) {
       console.log("Getting data...");
 
-      getDoc(doc(db, "Orders", order)).then((docSnapshot) => {
+      getDoc(doc(db, "Meetings", order)).then((docSnapshot) => {
         const data = docSnapshot.data();
         setData(data);
       });
@@ -155,7 +155,7 @@ const Cart = () => {
 
   if (loading) {
     return (
-      <LoaderScreen />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 
@@ -168,10 +168,10 @@ const Cart = () => {
   }
 
   return (
-    <View useSafeArea flex>
+    <View useSafeArea flex style={global.bgWhite}>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAvoidingView style={global.flex} behavior={Platform.OS == "ios" ? "padding" : "height"}>
-          <ScrollView style={[global.container, global.bgGray]} contentContainerStyle={global.spaceEvenly} showsVerticalScrollIndicator={Platform.OS == "web"}>
+          <ScrollView style={global.container} contentContainerStyle={[global.flex]} showsVerticalScrollIndicator={Platform.OS == "web"}>
             <View style={global.field}>
               <Text title>Checkout</Text>
             </View>
@@ -206,7 +206,7 @@ const Cart = () => {
 
             <View style={global.field}>
               <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={createOrder}>
-                <Text style={[global.btnText, global.white]}>Next</Text>
+                <Text style={[global.btnText, global.white]}>Send Meeting Request</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>

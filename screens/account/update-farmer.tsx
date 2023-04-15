@@ -2,8 +2,7 @@ import { useNavigation } from "@react-navigation/native"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 import React, { useEffect, useState } from "react"
 import { Keyboard, KeyboardAvoidingView, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
-import { Text, TextField, View } from "react-native-ui-lib"
-import Loading from "../../components/extra/loading"
+import { LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
 import { auth, db } from "../../firebase"
 import { global } from "../../style"
 
@@ -76,7 +75,9 @@ const UpdateFarmer = () => {
   }, [business, description]);
 
   if (loading) {
-    <Loading />;
+    return (
+      <LoaderScreen color={"#32CD32"} />
+    )
   }
   
   return (

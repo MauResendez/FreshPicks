@@ -1,14 +1,15 @@
 import React, { useLayoutEffect } from "react";
 
-import Map from "../../screens/map";
-import Profile from "../../screens/profile";
-
 import { getFocusedRouteNameFromRoute, useNavigation, useRoute } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
+import Conversation from "../../screens/chat/conversation";
+import Meetings from "../../screens/meetings";
+import Meeting from "../../screens/meetings/meeting";
+
 const Stack = createStackNavigator();
 
-const MapStack = () => {
+const MeetingStack = () => {
   const navigation = useNavigation<any>();
   const parent = navigation.getParent("MainDrawer");
   const route = useRoute();
@@ -23,10 +24,11 @@ const MapStack = () => {
   
   return (
     <Stack.Navigator initialRouteName="Index" screenOptions={{ headerShown: true }}>
-      <Stack.Screen name="Index" component={Map} />
-      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Index" component={Meetings} />
+      <Stack.Screen name="Order" component={Meeting} />
+      <Stack.Screen name="Conversation" component={Conversation} />
     </Stack.Navigator>
   )
 }
 
-export default MapStack
+export default MeetingStack

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 
+import { getFocusedRouteNameFromRoute, useNavigation, useRoute } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+
 import Account from "../../screens/account";
 import AddBusiness from "../../screens/account/add-business";
-import OrderHistory from "../../screens/account/order-history";
 import UpdateFarmer from "../../screens/account/update-farmer";
 import UpdatePayments from "../../screens/account/update-payments";
 import UpdatePersonal from "../../screens/account/update-personal";
@@ -14,10 +15,21 @@ import Conversation from "../../screens/chat/conversation";
 const Stack = createStackNavigator();
 
 const AccountStack = () => {
+  const navigation = useNavigation<any>();
+  const parent = navigation.getParent("MainDrawer");
+  const route = useRoute();
+
+  useLayoutEffect(() => {
+    const current = getFocusedRouteNameFromRoute(route) ?? "Index";
+
+    parent.setOptions({
+      headerShown: current == "Index" ? true : false
+    });
+  }, [route]);
+  
   return (
-    <Stack.Navigator initialRouteName="Index">
+    <Stack.Navigator initialRouteName="Index" screenOptions={{ headerShown: true }}>
       <Stack.Screen name="Index" component={Account} />
-      <Stack.Screen name="Order History" component={OrderHistory} />
       <Stack.Screen name="Conversation" component={Conversation} />
       <Stack.Screen name="Change Phone" component={ChangePhone} />
       <Stack.Screen name="Add Your Business" component={AddBusiness} />

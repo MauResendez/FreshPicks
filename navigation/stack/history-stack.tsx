@@ -1,14 +1,13 @@
 import React, { useLayoutEffect } from "react";
 
-import Map from "../../screens/map";
-import Profile from "../../screens/profile";
-
 import { getFocusedRouteNameFromRoute, useNavigation, useRoute } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
+import History from "../../screens/history";
+
 const Stack = createStackNavigator();
 
-const MapStack = () => {
+const HistoryStack = () => {
   const navigation = useNavigation<any>();
   const parent = navigation.getParent("MainDrawer");
   const route = useRoute();
@@ -23,10 +22,9 @@ const MapStack = () => {
   
   return (
     <Stack.Navigator initialRouteName="Index" screenOptions={{ headerShown: true }}>
-      <Stack.Screen name="Index" component={Map} />
-      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Index" component={History} />
     </Stack.Navigator>
   )
 }
 
-export default MapStack
+export default HistoryStack

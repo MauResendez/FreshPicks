@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 
-const OrderRow = ({ id, listings, consumer, farmer, total, status, createdAt }) => {
+const MeetingRow = ({ id, listings, consumer, farmer, total, status, createdAt }) => {
   const navigation = useNavigation<any>();
   const [chats, setChats] = useState([]);
   const [chat, setChat] = useState([]);
@@ -14,7 +14,7 @@ const OrderRow = ({ id, listings, consumer, farmer, total, status, createdAt }) 
 
   const changeStatus = async (order) => {
     if (visible2) {
-      await updateDoc(doc(db, "Orders", id), {
+      await updateDoc(doc(db, "Meetings", id), {
         status: status
       });
 
@@ -34,7 +34,7 @@ const OrderRow = ({ id, listings, consumer, farmer, total, status, createdAt }) 
       return
     }
 
-    await updateDoc(doc(db, "Orders", id), {
+    await updateDoc(doc(db, "Meetings", id), {
       status: status
     });
 
@@ -118,4 +118,4 @@ const OrderRow = ({ id, listings, consumer, farmer, total, status, createdAt }) 
   );
 }
 
-export default OrderRow
+export default MeetingRow

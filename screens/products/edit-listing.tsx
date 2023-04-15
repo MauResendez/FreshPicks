@@ -5,8 +5,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import React, { useEffect, useState } from "react"
 import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
-import { AnimatedImage, Picker, Text, TextField, View } from "react-native-ui-lib"
-import Loading from "../../components/extra/loading"
+import { AnimatedImage, LoaderScreen, Picker, Text, TextField, View } from "react-native-ui-lib"
 import { auth, db, storage } from "../../firebase"
 import { global } from "../../style"
 
@@ -167,7 +166,7 @@ const EditListing = ({ route }) => {
 
   if (loading) {
     return (
-      <Loading />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
   
