@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Colors, Image, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
+import { Colors, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { db } from "../../firebase";
 import { global } from "../../style";
 
@@ -40,9 +40,6 @@ const HistoryRow = (meeting) => {
       onPress={() => navigation.navigate("Meeting")}
       style={{ borderRadius: 8, marginBottom: 8, padding: 8, height: "auto" }}
     >
-      <ListItem.Part left>
-        <Image source={{ uri: farmer.logo }} style={{ width: 50, height: 50, marginRight: 12 }}/>
-      </ListItem.Part>
       <ListItem.Part middle column>
         <View row style={global.spaceBetween}>
           <Text h2>{farmer.business}</Text>

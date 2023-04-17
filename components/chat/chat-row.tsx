@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Avatar, ListItem, Text } from "react-native-ui-lib";
+import { ListItem, Text } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 
 const ChatRow = ({ id }) => {
@@ -65,9 +65,6 @@ const ChatRow = ({ id }) => {
 			style={{ backgroundColor: "white", padding: 8, height: "auto" }}
       onPress={conversation}
     >
-      <ListItem.Part left>
-        <Avatar source={{ uri: farmer.logo }} size={50} containerStyle={{ marginRight: 8 }}/>
-      </ListItem.Part>
       <ListItem.Part column>
         <Text h2 numberOfLines={1}>{farmer.business}</Text>
         <Text h3>{chat.messages?.length === 0 ? "No messages" : `${chat.messages[0]?.user.name === auth.currentUser.displayName ? "You" : chat.messages[0]?.user.name}: ${chat.messages[0]?.text}`}</Text>

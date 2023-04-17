@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import { Image } from "expo-image";
 import { Platform } from "expo-modules-core";
 import * as Notifications from 'expo-notifications';
 import { deleteUser, signOut } from "firebase/auth";
@@ -7,9 +6,8 @@ import { arrayRemove, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import * as React from "react";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Alert, ScrollView, Share, StyleSheet } from "react-native";
-import { Avatar, Chip, Colors, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
+import { Colors, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
-import { global } from "../../style";
 
 const Account = () => {
   const navigation = useNavigation<any>();
@@ -93,79 +91,6 @@ const Account = () => {
   return (
     <View useSafeArea flex>
       <ScrollView showsVerticalScrollIndicator={Platform.OS == "web"}>
-        <View style={styles.cover}>
-          <Image
-            style={styles.image}
-            source={{ uri: user.cover }}           
-            contentFit="contain"
-            transition={1000}
-          />
-        </View>
-
-        <View style={styles.header}>
-          <View row>
-            {user.logo ? (
-              <Avatar
-                size={75}
-                source={{ uri: user.logo }}
-              />
-            ) : (
-              <Avatar
-                size={75}
-                source={require("../../assets/profile.png")}
-              />
-            )}
-          </View>
-
-          <View row>
-            {user.role 
-              ? <Text h2>{user.business}</Text>
-              : <Text h2>{user.name}</Text>
-            }
-          </View>
-
-          <View row>
-            <Text h3>{user.address}</Text>
-          </View>
-
-          <View row>
-            {user.role && <Text h3>{user.description}</Text>}
-          </View>
-
-          {/* <View row>
-            {user.role && <Text style={{ paddingTop: 4, paddingBottom: 8 }}>{user.rating?.toFixed(2)}/5 Rating</Text>}
-          </View> */}
-
-          <View row style={[global.spaceBetween, global.flexWrap]}>
-            {user.role && user?.payments?.paypal && (
-              <Chip
-                backgroundColor="#0079C1"
-                containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
-                label={"PayPal: " + user.payments.paypal}
-                labelStyle={{ color: "white" }}
-              />
-            )}
-
-            {user.role && user?.payments?.cashapp && (
-              <Chip
-                backgroundColor="#00D632"
-                containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
-                label={"CashApp: " + user.payments.cashapp}
-                labelStyle={{ color: "white" }}
-              />
-            )}
-
-            {user.role && user?.payments?.venmo && (
-              <Chip
-                backgroundColor="#008CFF"
-                containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
-                label={"Venmo: " + user.payments.venmo}
-                labelStyle={{ color: "white" }}
-              />
-            )}
-          </View>
-
-        </View>
         <ListItem
           activeBackgroundColor={Colors.grey60}
           activeOpacity={0.3}
@@ -301,20 +226,6 @@ const Account = () => {
             <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
               <Text h3 numberOfLines={1}>
                 Update Farmer Schedule
-              </Text>
-            </ListItem.Part>
-          </ListItem>
-        )}
-        {user?.farmer && (
-          <ListItem
-            backgroundColor={Colors.white}
-            activeOpacity={0.3}
-            height={60}
-            onPress={() => navigation.navigate("Update Payment Information")}
-          >
-            <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
-              <Text h3 numberOfLines={1}>
-                Update Payment Information
               </Text>
             </ListItem.Part>
           </ListItem>

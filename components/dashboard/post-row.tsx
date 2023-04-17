@@ -27,7 +27,7 @@ const DisplayRow = (product) => {
   });
 
   const deleteListing = async (product) => {
-    await deleteDoc(doc(db, "Listings", product.id));
+    await deleteDoc(doc(db, "Products", product.id));
   }
 
   useEffect(() => {

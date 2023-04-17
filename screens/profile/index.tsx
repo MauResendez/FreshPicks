@@ -1,10 +1,10 @@
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 import * as Linking from 'expo-linking';
 import { addDoc, collection, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { Platform, ScrollView, StyleSheet, TouchableOpacity, useWindowDimensions } from "react-native";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { Avatar, Chip, Colors, Image, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
+import { Carousel, Chip, Image, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { useSelector } from "react-redux";
 import ProfileRow from "../../components/profile/profile-row";
 import { selectOrderItems } from "../../features/order-slice";
@@ -21,7 +21,8 @@ const Profile = () => {
   const navigation = useNavigation<any>();
   const parent = navigation.getParent("MainDrawer");
   const isFocused = useIsFocused();
-  const [listings, setListings] = useState([]);
+  const carousel = createRef<typeof Carousel>();
+  const [products, setProducts] = useState([]);
   const [chat, setChat] = useState(null);
   const [consumer, setConsumer] = useState(null);
   const [farmer, setFarmer] = useState(null);
@@ -29,11 +30,18 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
+  const [current, setCurrent] = useState(0);
   const [routes] = useState([
     { key: "first", title: "About Us" },
     { key: "second", title: "Products" },
     { key: "third", title: "Reviews" },
   ]);
+
+  const IMAGES = [
+    'https://images.pexels.com/photos/2529159/pexels-photo-2529159.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+    'https://images.pexels.com/photos/2529146/pexels-photo-2529146.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+    'https://images.pexels.com/photos/2529158/pexels-photo-2529158.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+  ];
 
   const FirstRoute = () => (
     <View useSafeArea flex style={global.bgWhite}>
@@ -60,7 +68,7 @@ const Profile = () => {
             </ListItem.Part>
           </ListItem>
 
-          {listings.map((product) => (
+          {products.map((product) => (
             <ProfileRow
               key={product.id}
               id={product.id}
@@ -69,7 +77,6 @@ const Profile = () => {
               price={product.price}
               image={product.image}
               quantity={product.quantity}
-              expiration={product.expiration}
               farmer={farmer}
               user={consumer}
             />
@@ -89,7 +96,7 @@ const Profile = () => {
             </ListItem.Part>
           </ListItem>
 
-          {listings.map((product) => (
+          {products.map((product) => (
             <ProfileRow
               key={product.id}
               id={product.id}
@@ -98,7 +105,7 @@ const Profile = () => {
               price={product.price}
               image={product.image}
               quantity={product.quantity}
-              expiration={product.expiration}
+              // expiration={product.expiration}
               farmer={farmer}
               user={consumer}
             />
@@ -110,7 +117,7 @@ const Profile = () => {
 
   const renderLabel = ({ route, focused, color }) => {
     return (
-      <Text style={[focused ? "#32CD32" : Colors.black]}>
+      <Text style={[focused ? global.activeTabTextColor : global.tabTextColor]}>
         {route.title}
       </Text>
     );
@@ -168,8 +175,8 @@ const Profile = () => {
       setFarmer({...data, id: id});
     });
 
-    onSnapshot(query(collection(db, "Listings"), where("user", "==", id)), async (snapshot) => {
-      setListings(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+    onSnapshot(query(collection(db, "Products"), where("user", "==", id)), async (snapshot) => {
+      setProducts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
   }, []);
 
@@ -201,18 +208,41 @@ const Profile = () => {
 
   return (
     <View useSafeArea flex style={global.bgWhite}>
-      <View style={styles.cover}>
+      {/* <View style={styles.cover}>
         <Image source={{ uri: farmer.cover }} style={styles.image} />
-      </View>
+      </View> */}
+
+      <Carousel
+        containerStyle={{
+          height: 200
+        }}
+        autoplay
+        loop
+        pageControlProps={{
+          size: 10,
+          containerStyle: {position: 'absolute',
+          bottom: 15,
+          left: 10}
+        }}
+        pageControlPosition={Carousel.pageControlPositions.OVER}
+        showCounter
+      >
+        {IMAGES.map((image, i) => {
+          return (
+            <View flex centerV key={i}>
+              <Image
+                overlayType={Image.overlayTypes.BOTTOM}
+                style={{flex: 1}}
+                source={{
+                  uri: image
+                }}
+              />
+            </View>
+          );
+        })}
+      </Carousel>
 
       <View style={styles.header}>
-        <View row>
-          {consumer.logo 
-            ? <Avatar size={75} source={{ uri: farmer.logo }} imageStyle={{ borderWidth: 1 }} />
-            : <Avatar size={75} source={require("../../assets/profile.png")} imageStyle={{ borderWidth: 1 }} />
-          }
-        </View>
-
         <View row>
           <Text h2>{farmer.business}</Text>
         </View>
@@ -221,39 +251,8 @@ const Profile = () => {
           <Text h3>{farmer.address}</Text>
         </View>
 
-        {/* <View row>
-          <Text style={styles.address}>{farmer.rating?.toFixed(2)}/5 Rating</Text>
-          <AirbnbRating showRating={false} size={16} defaultRating={5} onFinishRating={(rating) => rateFarmer(rating)}/>
-        </View> */}
-
-        {/* <View row>
-          <Text style={styles.address}>{farmer.description}</Text>
-        </View> */}
-
-        <View row style={[global.spaceBetween, global.flexWrap]}>
-          {farmer.payments.paypal && <Chip
-            backgroundColor="#0079C1"
-            containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
-            label={"PayPal: " + farmer.payments.paypal}
-            labelStyle={{ color: "white" }}
-            onPress={() => Linking.openURL(`https://paypal.me/${farmer.payments.paypal}`)}
-          />}
-
-          {farmer.payments.cashapp && <Chip
-            backgroundColor="#00D632"
-            containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
-            label={"CashApp: " + farmer.payments.cashapp}
-            labelStyle={{ color: "white" }}
-            onPress={() => Linking.openURL(`https://cash.app/${farmer.payments.cashapp}/`)}
-          />}
-
-          {farmer.payments.venmo && <Chip
-            backgroundColor="#008CFF"
-            containerStyle={{ paddingVertical: 8, marginVertical: 8 }}
-            label={"Venmo: " + farmer.payments.venmo}
-            labelStyle={{ color: "white" }}
-            onPress={() => Linking.openURL(`venmo://paycharge?recipients=${farmer.payments.venmo}`)}
-          />}
+        <View row>
+          <Text h3>{farmer.description}</Text>
         </View>
 
         <View row style={[global.spaceBetween, global.flexWrap]}>
@@ -268,7 +267,7 @@ const Profile = () => {
         renderTabBar={(props) => (
           <TabBar
             {...props}
-            indicatorStyle={{ backgroundColor: "black" }}
+            indicatorStyle={{ backgroundColor: global.activeTabTextColor.color }}
             style={{ backgroundColor: "white", height: 50 }}
             renderLabel={renderLabel}
           />
@@ -295,10 +294,6 @@ const Profile = () => {
 const styles = StyleSheet.create({
   cover: {
     height: 200,
-    width: "100%",
-  },
-  logo: {
-    height: "auto",
     width: "100%",
   },
   image: {
@@ -330,17 +325,7 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "white",
-    padding: 16,
-  },
-  headerContainer: {
-    paddingHorizontal: 16,
-    paddingTop: 16,
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
-    width: "100%",
+    padding: 12,
   },
   title: {
     fontSize: 18,

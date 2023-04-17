@@ -16,7 +16,7 @@ import { global } from "../../style";
 const Products = () => {
   const navigation = useNavigation<any>();
   const [farmer, setFarmer] = useState<any>(null);
-  const [listings, setListings] = useState<any>([]);
+  const [products, setProducts] = useState<any>([]);
   const [posts, setPosts] = useState<any>([]);
   const [subscriptions, setSubscriptions] = useState<any>([]);
   const layout = useWindowDimensions();
@@ -29,9 +29,9 @@ const Products = () => {
 
   const FirstRoute = () => (
     <View useSafeArea flex style={[global.center, global.container]}>
-      {listings.length != 0 
+      {products.length != 0 
         ? <FlatList 
-            data={listings}
+            data={products}
             keyExtractor={item => item.id}
             renderItem={({item}) => (
               <ListItem
@@ -55,7 +55,7 @@ const Products = () => {
                   </View>
                   <View row style={global.spaceBetween}>
                     <Text h3>{item.quantity} remaining</Text>
-                    <Text h3>Expiring in {item.expiration.toDate().toLocaleDateString()}</Text>
+                    {/* <Text h3>Expiring in {item.expiration.toDate().toLocaleDateString()}</Text> */}
                   </View>
                 </ListItem.Part>
               </ListItem>
@@ -185,7 +185,7 @@ const Products = () => {
 
   const deleteListing = async (listing) => {
     // setVisible(true);
-    await deleteDoc(doc(db, "Listings", listing.id));
+    await deleteDoc(doc(db, "Products", listing.id));
   }
 
   useEffect(() => {
@@ -193,8 +193,8 @@ const Products = () => {
       setFarmer(doc.data());
     });
 
-    onSnapshot(query(collection(db, "Listings"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
-      setListings(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+    onSnapshot(query(collection(db, "Products"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
+      setProducts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
     });
 
     onSnapshot(query(collection(db, "Subscriptions"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {

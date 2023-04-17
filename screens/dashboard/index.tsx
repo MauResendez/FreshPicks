@@ -3,7 +3,7 @@ import React, { useLayoutEffect, useState } from "react";
 import { useWindowDimensions } from "react-native";
 // import { PieChart } from "react-native-gifted-charts";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { Colors, Picker, Text, Toast, View } from "react-native-ui-lib";
+import { Colors, Picker, Text, View } from "react-native-ui-lib";
 import { global } from "../../style";
 
 const Dashboard = () => {
@@ -54,7 +54,6 @@ const Dashboard = () => {
         <Text h2>Report</Text>
         <Text h2>CSV to Email</Text>
       </View>
-      <Toast visible={true} message={"dfgdgd"} position={'bottom'} backgroundColor={Colors.black} autoDismiss={1000} />
     </View>
   );
 

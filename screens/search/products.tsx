@@ -9,10 +9,10 @@ import ListingSearchRow from "../../components/search/product-search-row";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
-const Listings = () => {
+const Products = () => {
   const navigation = useNavigation<any>();
   const [search, setSearch] = useState("");
-  const [listings, setListings] = useState(null);
+  const [products, setProducts] = useState(null);
   const [fruits, setFruits] = useState(null);
   const [vegetables, setVegetables] = useState(null);
   const [dairy, setDairy] = useState(null);
@@ -35,7 +35,7 @@ const Listings = () => {
   const FirstRoute = () => (
     <View useSafeArea flex>
       <FlatList 
-        data={listings}
+        data={products}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
           <ListingSearchRow farmer={item.farmer} title={item.title} description={item.description} price={item.price.toFixed(2)} quantity={item.quantity} cover={item.cover} />
@@ -137,9 +137,9 @@ const Listings = () => {
   });
 
   useEffect(() => {
-    if (search.length == 0 || listings.length == 0) {
+    if (search.length == 0 || products.length == 0) {
       onSnapshot(query(collection(db, "Listings"), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
-        setListings(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+        setProducts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
       });
 
       onSnapshot(query(collection(db, "Listings"), where(documentId(), "!=", auth.currentUser.uid), where("pt", "==", "Fruits")), async (snapshot) => {
@@ -167,16 +167,16 @@ const Listings = () => {
       });
     } else {
       onSnapshot(query(collection(db, "Listings"), where("title", ">=", search), where("title", "<=", search + "\uf8ff")), async (snapshot) => {
-        setListings(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})).filter(doc => doc.id != auth.currentUser.uid));
+        setProducts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})).filter(doc => doc.id != auth.currentUser.uid));
       });
     }
   }, [search]);
 
   useEffect(() => {
-    if (listings && fruits && vegetables && dairy && herbs && microgreens & other) {
+    if (products && fruits && vegetables && dairy && herbs && microgreens & other) {
       setLoading(false);
     }
-  }, [listings, fruits, vegetables, dairy, herbs, microgreens, other]);
+  }, [products, fruits, vegetables, dairy, herbs, microgreens, other]);
 
   if (loading) {
     return (
@@ -242,4 +242,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Listings
+export default Products

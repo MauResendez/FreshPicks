@@ -80,7 +80,6 @@ const CreatePost = () => {
           // Then we create the Market with it's image on it
           await addDoc(collection(db, "Posts"), {
             user: auth.currentUser.uid,
-            logo: user.logo,
             business: user.business,
             address: user.address,
             title: title,
@@ -102,7 +101,6 @@ const CreatePost = () => {
     } else {
       await addDoc(collection(db, "Posts"), {
         user: auth.currentUser.uid,
-        logo: user.logo,
         business: user.business,
         address: user.address,
         title: title,

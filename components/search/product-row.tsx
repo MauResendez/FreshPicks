@@ -5,7 +5,7 @@ import { Text, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import ProductCard from "./product-card";
 
-const ListingRow = ({ title, description, listings }) => {
+const ProductRow = ({ title, description, products }) => {
   const navigation = useNavigation<any>();
   const handlePress = (user) => {
     console.log("SFLDJFKLdjk");
@@ -18,13 +18,13 @@ const ListingRow = ({ title, description, listings }) => {
     <View>
       <View style={styles.title}>
         <Text style={styles.titleText}>{title}</Text>
-        <Ionicon name={"arrow-forward"} size={36} onPress={() => navigation.navigate("Listings")}/>
+        <Ionicon name={"arrow-forward"} size={36} onPress={() => navigation.navigate("Products")}/>
       </View>
 
       <Text style={styles.description}>{description}</Text>
 
       <FlatList 
-        data={listings}
+        data={products}
         keyExtractor={item => item.id}
         horizontal
         contentContainerStyle={{
@@ -49,7 +49,7 @@ const ListingRow = ({ title, description, listings }) => {
   );
 };
 
-export default ListingRow;
+export default ProductRow;
 
 const styles = StyleSheet.create({
   title: {

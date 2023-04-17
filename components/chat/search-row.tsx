@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Avatar, ListItem, Text } from "react-native-ui-lib";
+import { ListItem, Text } from "react-native-ui-lib";
 
 const SearchRow = ({ farmer, cover, business, name, address }) => {
   const navigation = useNavigation<any>();
@@ -21,7 +21,6 @@ const SearchRow = ({ farmer, cover, business, name, address }) => {
       underlayColor="black"
     >
       <ListItem.Part left>
-        <Avatar source={{ uri: cover }} size={50} containerStyle={{ marginRight: 8 }}/>
       </ListItem.Part>
       <ListItem.Part column>
         <Text h2 numberOfLines={1}>{business}</Text>

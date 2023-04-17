@@ -5,7 +5,6 @@ const PostCard = ({
   id,
   business,
   address,
-  logo,
   title,
   description,
   image

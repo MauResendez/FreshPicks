@@ -4,8 +4,7 @@ import * as Location from "expo-location";
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { FlatList, Image, Platform, StyleSheet } from "react-native";
-import getDirections from "react-native-google-maps-directions";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { LoaderScreen, View } from "react-native-ui-lib";
 import MapRow from "../../components/map/map-row";
 import { auth, db } from "../../firebase";
@@ -33,37 +32,12 @@ const Map = () => {
     navigation.navigate("Profile", { id: farmer.id })
   }
 
-  const navigateToApp = (coordinates) => {
+  const navigateToApp = (farmer) => {
     if (Platform.OS == "android") {
-      Linking.openURL(`google.navigation:q=${coordinates.lat}+${coordinates.lng}`);
+      Linking.openURL(`google.navigation:q=${farmer.latitude}+${farmer.longitude}`);
     } else {
-      Linking.openURL(`maps://app?saddr=${location.coords.latitude}+${location.coords.longitude}&daddr=${coordinates.lat}+${coordinates.lng}`);
+      Linking.openURL(`maps://app?saddr=${location.coords.latitude}+${location.coords.longitude}&daddr=${farmer.latitude}+${farmer.longitude}`);
     }
-  }
-
-  const handleGetDirections = (lat, lng) => {
-    const data = {
-      source: {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude
-      },
-      destination: {
-        latitude: lat,
-        longitude: lng
-      },
-      params: [
-        {
-          key: "travelmode",
-          value: "driving"        // may be "walking", "bicycling" or "transit" as well
-        },
-        {
-          key: "dir_action",
-          value: "navigate"       // this instantly initializes navigation using the given travel mode
-        }
-      ],
-    }
-
-    getDirections(data)
   }
 
   useEffect(() => { 
@@ -101,87 +75,41 @@ const Map = () => {
 
   return (
     <View useSafeArea flex>
-      {Platform.OS === "web" ? 
-        <View style={styles.map}>
-          <MapView
-            ref={map => (this.map = map)} 
-            provider={PROVIDER_GOOGLE}
-            style={styles.mapview}
-            region={mapRegion}
-            showsUserLocation={true}
-            showsMyLocationButton={true}
-            followsUserLocation={true}
-            showsPointsOfInterest={false}
-          >
-            {farmers.map((farmer, index) => {
-              return (
-                <MapView.Marker  
-                  title={farmer.business} 
-                  description={farmer.address} 
-                  coordinate={{ latitude: farmer?.coordinates?.lat, longitude: farmer?.coordinates?.lng }} 
-                  icon={require("../../assets/marker.png")} 
-                  onPress={() => {
-                    // const zoom = this.map.getCamera().zoom === 20 ? 15 : 20;
-                    // this.map.animateCamera({
-                    //   zoom,
-                    //   center: {
-                    //     lat: farmer?.coordinates?.lat,
-                    //     lng: farmer?.coordinates?.lng,
-                    //   },
-                    // });
-                    handleGetDirections(farmer.coordinates.lat, farmer.coordinates.lng);
-                  }}
-                />
-              );
-            })}
-          </MapView>
-        </View>
-      :
-        <View style={styles.map}>
-          <MapView
-            ref={map => (this.map = map)} 
-            style={styles.mapview}
-            region={mapRegion}
-            showsUserLocation={true}
-            showsMyLocationButton={true}
-            followsUserLocation={false}
-            showsPointsOfInterest={false}
-            moveOnMarkerPress={true}
-          >
-            {farmers.map((farmer, index) => {
-              return (
-                <Marker 
-                  key={index} 
-                  focusable 
-                  title={farmer.business} 
-                  description={farmer.address} 
-                  coordinate={{ latitude: farmer?.coordinates?.lat, longitude: farmer?.coordinates?.lng }}
-                  onPress={() => {
-                    // const zoom = this.map.getCamera().zoom === 17 ? 15 : 17;
-                    // this.map.animateCamera({
-                    //   zoom,
-                    //   center: {
-                    //     latitude: farmer?.coordinates?.lat,
-                    //     longitude: farmer?.coordinates?.lng,
-                    //   },
-                    // });
-                    // handleGetDirections(farmer.coordinates.lat, farmer.coordinates.lng);
-                    navigateToApp(farmer.coordinates);
-                  }}
-                >
-                  <Image source={require("../../assets/marker.png")} />
-                </Marker>
-              );
-            })}
-          </MapView>
-        </View>
-      }
+      <View style={styles.map}>
+        <MapView
+          ref={map => (this.map = map)} 
+          style={styles.mapview}
+          region={mapRegion}
+          showsUserLocation={true}
+          showsMyLocationButton={true}
+          followsUserLocation={false}
+          showsPointsOfInterest={false}
+          moveOnMarkerPress={true}
+        >
+          {farmers.map((farmer, index) => {
+            return (
+              <Marker 
+                key={index} 
+                focusable 
+                title={farmer.business} 
+                description={farmer.address} 
+                coordinate={{ latitude: farmer?.location?.latitude, longitude: farmer?.location?.longitude }}
+                onPress={() => {
+                  navigateToApp(farmer.location);
+                }}
+              >
+                <Image source={require("../../assets/marker.png")} />
+              </Marker>
+            );
+          })}
+        </MapView>
+      </View>
       <View style={styles.farmers}>
         <FlatList 
           data={farmers}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
-            <MapRow farmer={item.id} cover={item.cover} business={item.business} name={item.name} address={item.address} />
+            <MapRow farmer={item.id} cover={item.cover} business={item.business} name={item.name} address={item.address} onPress={navigateToFarmer} />
           )}
         />
       </View>

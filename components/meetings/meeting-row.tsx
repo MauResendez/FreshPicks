@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 
-const MeetingRow = ({ id, listings, consumer, farmer, total, status, createdAt }) => {
+const MeetingRow = ({ id, products, consumer, farmer, total, status, createdAt }) => {
   const navigation = useNavigation<any>();
   const [chats, setChats] = useState([]);
   const [chat, setChat] = useState([]);
@@ -18,8 +18,8 @@ const MeetingRow = ({ id, listings, consumer, farmer, total, status, createdAt }
         status: status
       });
 
-      listings.map(async (listing) => {
-        await updateDoc(doc(db, "Listings", listing.id), {
+      products.map(async (listing) => {
+        await updateDoc(doc(db, "Products", listing.id), {
           quantity: increment(-listing.count)
         });
       });
@@ -40,8 +40,8 @@ const MeetingRow = ({ id, listings, consumer, farmer, total, status, createdAt }
 
     toggleDialog();
 
-    // // listings?.map(async (product) => (
-    // //   await updateDoc(doc(db, "Listings", product.id), {
+    // // products?.map(async (product) => (
+    // //   await updateDoc(doc(db, "Products", product.id), {
     // //     quantity: product.quantity - product.count
     // //   })
     // // ));

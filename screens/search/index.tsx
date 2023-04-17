@@ -9,9 +9,9 @@ import {
 import Ionicon from "react-native-vector-icons/Ionicons";
 
 import FarmerRow from "../../components/search/farmer-row";
-import ListingRow from "../../components/search/product-row";
 
-import { Colors, LoaderScreen, TextField, View } from "react-native-ui-lib";
+import { Colors, GridView, LoaderScreen, TextField, View } from "react-native-ui-lib";
+import ProductRow from "../../components/search/product-row";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
@@ -20,8 +20,7 @@ const Search = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [farmers, setFarmers] = useState(null);
-  const [listings, setListings] = useState(null);
-  const [consumers, setConsumers] = useState(null);
+  const [products, setProducts] = useState(null);
 
   useEffect(() => {
     try {
@@ -30,8 +29,8 @@ const Search = () => {
           setFarmers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
         })
   
-        onSnapshot(query(collection(db, "Listings"), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
-          setListings(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+        onSnapshot(query(collection(db, "Products"), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
+          setProducts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
         });
   
         return
@@ -41,22 +40,22 @@ const Search = () => {
         return result.business.toLowerCase().indexOf(search.toLowerCase()) !== -1;
       });
   
-      const filtered_listings = listings.filter(result => {
+      const filtered_listings = products.filter(result => {
         return result.title.toLowerCase().indexOf(search.toLowerCase()) !== -1;
       });
   
       setFarmers(filtered_farmers);
-      setListings(filtered_listings);
+      setProducts(filtered_listings);
     } catch (error) {
       console.log(error);
     }
   }, [search]);
 
   useEffect(() => {
-    if (farmers && listings) {
+    if (farmers && products) {
       setLoading(false);
     }
-  }, [farmers, listings]);
+  }, [farmers, products]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -81,8 +80,16 @@ const Search = () => {
         showsVerticalScrollIndicator={Platform.OS == "web"}
       >
         <FarmerRow title={"Farmers"} description={"Available Farmers"} farmers={farmers} />
-        <ListingRow title={"Listings"} description={"Available Listings"} listings={listings} />
+        <ProductRow title={"Products"} description={"Available Products"} products={products} />
       </ScrollView>
+
+      <GridView
+            items={products}
+            numColumns={4}
+            lastItemOverlayColor={Colors.rgba(Colors.$backgroundPrimaryHeavy, 0.6)}
+            lastItemLabel={42}
+            keepItemSize
+          />
     </View>
   )
 }

@@ -1,4 +1,5 @@
 import { Platform, StyleSheet } from "react-native";
+import { Colors } from "react-native-ui-lib";
 
 export const colors = {
   primary: "white",
@@ -58,6 +59,9 @@ export const global = StyleSheet.create({
   },
   bgGreen: {
     backgroundColor: "green"
+  },
+  bgDarkGreen: {
+    backgroundColor: Colors.green5
   },
   bgBlue: {
     backgroundColor: "blue"

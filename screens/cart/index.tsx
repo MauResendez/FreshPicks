@@ -66,7 +66,7 @@ const Cart = () => {
     await addDoc(collection(db, "Meetings"), {
       consumer: orderUser.id,
       farmer: orderFarmer.id,
-      listings: result,
+      products: result,
       total: Number(orderTotal.toFixed(2)),
       status: "PENDING",
       createdAt: new Date(),

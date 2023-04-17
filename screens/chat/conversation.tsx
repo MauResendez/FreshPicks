@@ -202,7 +202,6 @@ const Conversation = ({ route }) => {
         user={{
           _id: auth.currentUser.uid,
           name: chat.consumer == auth.currentUser.uid ? consumer.name : farmer.name,
-          avatar: chat.consumer == auth.currentUser.uid ? consumer.logo : farmer.logo,
         }}
         // multiline={false}
         renderBubble={renderBubble}

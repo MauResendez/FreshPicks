@@ -1,14 +1,12 @@
-import * as admin from "firebase-admin";
-import * as functions from "firebase-functions";
+import functions = require('firebase-functions');
+import admin = require('firebase-admin');
+import vision = require('@google-cloud/vision');
+import { Expo, ExpoPushMessage } from 'expo-server-sdk';
 
 admin.initializeApp();
 
-// Vision API
-const vision = require('@google-cloud/vision');
-
-// Firestore
-const db = admin.firestore();
-const batch = db.batch();
+// Start writing Firebase Functions
+// https://firebase.google.com/docs/functions/typescript
 
 export const checkIfUserExists = functions.https.onCall((data: { phoneNumber: any; }, context: any) => {
   const phoneNumber = data.phoneNumber;
@@ -31,101 +29,17 @@ export const checkIfUserExists = functions.https.onCall((data: { phoneNumber: an
     });
 });
 
-export const deletePendingOrders = functions.pubsub.schedule('every 24 hours').onRun(async (context: any) => {
-  const cutoffDate = new Date(Date.now() - 24 * 60 * 60 * 1000); // 24 hours ago
-  const querySnapshot = await admin.firestore().collection('Orders').where('status', '==', 'PENDING').where('createdAt', '<=', cutoffDate).get();
+export const checkIfImageIsAppropriate = functions.https.onCall(async (data: { image: any; }, context: any) => {
+  const image = data.image;
+  const buffer = Buffer.from(image, 'base64');
 
-  querySnapshot.forEach(async (docSnapshot: { data: () => any; id: any; }) => {
-    const docData = docSnapshot.data();
-    const updatedAt = docData.updatedAt.toDate();
-    if (updatedAt <= cutoffDate) {
-      await admin.firestore().collection('Orders').doc(docSnapshot.id).delete();
-      console.log(`Deleted document ${docSnapshot.id}`);
-    } else {
-      console.log(`Skipping document ${docSnapshot.id} because its status has changed`);
-    }
-  });
-});
-
-export const sendMessage = functions.https.onCall(async (data, context) => {
-	const message = data.message;
-	const sender = data.sender;
-	const token = data.token;
-
-	const payload = {
-		notification: {
-			title: sender,
-			body: message,
-		},
-	};
-
-	functions.logger.info("Message: ", message);
-	functions.logger.info("Sender name: ", sender);
-	functions.logger.info("Token: ", token);
-
-	try {
-		await admin.messaging().sendToDevice(token, payload).then((response) => {
-			functions.logger.info("Notification sent to device");
-			functions.logger.info(response.results);
-		});
-	} catch (error) {
-		functions.logger.error("Error sending notification to devices: ", error);
-	}
-});
-
-export const sendOrder = functions.database.ref('Orders/{orderId}').onCreate(async (snapshot, context) => {
-  const message = snapshot.val();
-  const senderName = message.user.name;
-  const recipientId = message.recipientId;
-  const recipientToken = await admin.database().ref(`/Users/${recipientId}/token`).once('value');
-  
-  const payload = {
-    notification: {
-      title: `${senderName} sent you a new message`,
-      body: message.text,
-      sound: 'default',
-      badge: '1'
-    }
-  };
-  
-  return admin.messaging().sendToDevice(recipientToken as unknown as string, payload);
-});
-
-export const signOutAllUsers = functions.https.onCall((data: any, context: any) => {
-  // Get the list of all active users
-  return admin.auth().listUsers().then((users: { users: any[]; }) => {
-    // Get the user"s token and sign them out
-    const promises = users.users.map((user: { uid: any; }) => admin.auth().revokeRefreshTokens(user.uid));
-    return Promise.all(promises).then(() => {
-      console.log(`Signed out ${promises.length} users`);
-      return {message: `Signed out ${promises.length} users`};
-    });
-  });
-});
-
-export const checkIfImageIsAppropriate = functions.https.onRequest(async (req, res) => {
-	try {
-		const image = req.body.image;
-		const buffer = Buffer.from(image, 'base64');
-
+  try {
 		// Check the image content using the Cloud Vision API.
 		const visionClient = new vision.ImageAnnotatorClient();
 
-		const [result] = await visionClient.faceDetection(buffer);
-
-		const faces = result.faceAnnotations;
-
-		functions.logger.log(`Faces:`, faces.length);
-		functions.logger.log("TEST");
-
-		if (faces.length == 0) {
-			res.status(200).send({ selfie: false, appropriate: false });
-			return;
-		}
-
 		const [data] = await visionClient.safeSearchDetection(buffer);
 
-		const safeSearchResult = data.safeSearchAnnotation;
+		const safeSearchResult = data.safeSearchAnnotation!;
 		
 		functions.logger.log(`SafeSearch results on image "${buffer}"`, safeSearchResult);
 
@@ -148,112 +62,110 @@ export const checkIfImageIsAppropriate = functions.https.onRequest(async (req, r
 			functions.logger.log(safeSearchResult.spoof !== 'VERY_UNLIKELY' && safeSearchResult.spoof !== 'UNLIKELY');
 			functions.logger.log(safeSearchResult.violence !== 'VERY_UNLIKELY' && safeSearchResult.violence !== 'UNLIKELY');
 
-			res.status(200).send({ selfie: true, appropriate: false });
-			return;
+			return false;
 		}
 
-		res.status(200).send({ selfie: true, appropriate: true });
-		return;
+		return true;
 	} catch (error) {
 		functions.logger.log('Error: ${error}');
-		return;
+		return false;
 	}
 });
 
-export const checkIfPhoneWasReported = functions.https.onRequest(async (req, res) => {
-  const phoneNumber = req.body.phoneNumber;		
+export const createMeeting = functions.firestore.document('Meetings/{meetingId}').onCreate(async (snapshot: any) => {
+  try {
+    const meeting = snapshot.data();
+    const expo = new Expo();
+    const consumer = meeting.consumer;
+    const farmer = meeting.farmer;
 
-	functions.logger.info(`Phone Number: ${phoneNumber}`);
+    const consumerDoc = await admin.firestore().doc(`/Users/${consumer}`).get();
+    const farmerDoc = await admin.firestore().doc(`/Users/${farmer}`).get();
 
-	db.collection("Reports").where("phone", "==", phoneNumber).get().then((reportDocs) => {
-		functions.logger.info(`Report Docs Count: ${reportDocs.size}`);
+    functions.logger.info("Consumer: ", consumerDoc);
+    functions.logger.info("Farmer: ", farmerDoc);
 
-		return res.status(200).send({ reported: reportDocs.size >= 2 });
-	});
+    const consumerTokens = consumerDoc.get('token');
+    const farmerTokens = farmerDoc.get('token');
+
+    consumerTokens.forEach(async (token: any) => {
+      try {
+        functions.logger.info("Token: ", token);
+
+        const message: ExpoPushMessage = {
+          to: token,
+          sound: 'default',
+          title: "Your order request has been sent to the farmer!",
+          body: `${farmerDoc.get("business")} will respond to you in 24 hours with a scheduled date to go to purchase your order.`
+        };
+
+        await expo.sendPushNotificationsAsync([message]);
+      } catch (error) {
+        functions.logger.error("Error sending notification to devices: ", error);
+        return;
+      }
+    });
+
+    farmerTokens.forEach(async (token: any) => {
+      try {
+        functions.logger.info("Token: ", token);
+
+        const message: ExpoPushMessage = {
+          to: token,
+          sound: 'default',
+          title: "A new meeting request has been received!",
+          body: `${consumerDoc.get("name")} has sent a meeting request to purchase an order and is currently waiting for your response. You have 24 hours to respond.`
+        };
+
+        await expo.sendPushNotificationsAsync([message]);
+      } catch (error) {
+        functions.logger.error("Error sending notification to devices: ", error);
+        return;
+      }
+    });
+  } catch (error) {
+    functions.logger.error("Error getting snapshot data: ", error);
+    return;
+  }
 });
 
-export const deleteAccount = functions.https.onCall(async (data, context) => {
-	const uid = context.auth!.uid;
+export const deleteMeetings = functions.pubsub.schedule('every 24 hours').onRun(async (context: any) => {
+  const cutoffDate = new Date(Date.now() - 24 * 60 * 60 * 1000); // 24 hours ago
+  const querySnapshot = await admin.firestore().collection('Meetings').where('status', '==', 'PENDING').where('createdAt', '<=', cutoffDate).get();
 
-	await admin.auth().revokeRefreshTokens(uid);
+  querySnapshot.forEach(async (docSnapshot: { data: () => any; id: any; }) => {
+    const docData = docSnapshot.data();
+    const updatedAt = docData.updatedAt.toDate();
+    if (updatedAt <= cutoffDate) {
+      await admin.firestore().collection('Meetings').doc(docSnapshot.id).delete();
+      console.log(`Deleted document ${docSnapshot.id}`);
+    } else {
+      console.log(`Skipping document ${docSnapshot.id} because its status has changed`);
+    }
+  });
+});
 
-	try {
-		// Delete documents where the document id matches the user's uid
-		const userDoc = db.collection('Users').doc(uid);
+export const sendMessage = functions.https.onRequest(async (req, res) => {
+  const expo = new Expo();
+  const body = req.body.message;
+	const sender = req.body.sender;
+	const tokens = req.body.tokens;
 
-		functions.logger.info(`User: ${userDoc}`);
+  tokens.forEach(async (token: any) => {
+    try {
+      functions.logger.info("Token: ", token);
 
-		if (userDoc) {
-			// await userDocRef.delete();
-			batch.delete(userDoc);
-		}
-	} catch (error) {
-		functions.logger.error(error);
-		return;
-	}
+      const message: ExpoPushMessage = {
+        to: token,
+        sound: 'default',
+        title: sender,
+        body: body
+      };
 
-	try {
-		// Delete chats where the user's uid is inside an array of users
-		const chats = await db.collection('Chats').get();
-
-		chats.forEach((doc) => {
-			const data = doc.data();
-	
-			if (data.consumer === uid || data.farmer === uid) {
-        functions.logger.info(`Chat: ${doc}`);
-				batch.delete(doc.ref);
-			}
-		});
-	} catch (error) {
-		functions.logger.error(error);
-		return;
-	}
-  
-	try {
-		// Remove user where the user's uid is inside an array of rsvps
-		const events = await db.collection('events').get();
-
-		events.forEach(async (doc) => {
-			// Make a copy of the rsvps array of maps from the document
-			const rsvps = doc.data().rsvps.slice();
-	
-			// Modify the copy of the array to remove the element that you want to delete
-			const rsvp_index = rsvps.findIndex((item: { gender: string, user_id: string }) => item.user_id === uid);
-	
-			if (rsvp_index !== -1) {
-				rsvps.splice(rsvp_index, 1);
-			}
-	
-			// Update the document with the modified copy of the array
-			// await doc.ref.update({ rsvps: rsvps });
-
-			batch.update(doc.ref, { rsvps: rsvps });
-		});
-	} catch (error) {
-		functions.logger.error(error);
-		return;
-	}
-  
-	try {
-		// Delete all image files associated with this user
-		const bucket = admin.storage().bucket();
-
-		const [files] = await bucket.getFiles({
-			prefix: `users/${uid}/`,
-		});
-	
-		await Promise.all(
-			files.map((file) => {
-				functions.logger.info(file.name);
-				return file.delete();
-			})
-		);
-	} catch (error) {
-		functions.logger.error(error);
-		return;
-	}
-
-	await admin.auth().deleteUser(uid);
-	
-	return batch.commit()
+      await expo.sendPushNotificationsAsync([message]);
+    } catch (error) {
+      functions.logger.error("Error sending notification to devices: ", error);
+      return;
+    }
+  });
 });

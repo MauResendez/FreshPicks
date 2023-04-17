@@ -66,7 +66,7 @@ const ProfileRow = (product) => {
         </View>
         <View row style={global.spaceBetween}>
           <Text h3>{product.quantity} remaining</Text>
-          <Text h3>Expiring in {product.expiration.toDate().toLocaleDateString()}</Text>
+          {/* <Text h3>Expiring in {product.expiration.toDate().toLocaleDateString()}</Text> */}
         </View>
         {isPressed && product.quantity > 0 && (
           // <View style={global.buttons}>

@@ -5,7 +5,7 @@ import { addDoc, collection } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import React, { useState } from "react"
 import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
-import { AnimatedImage, DateTimePicker, Picker, Text, TextField, View } from "react-native-ui-lib"
+import { AnimatedImage, Picker, Text, TextField, View } from "react-native-ui-lib"
 import { auth, db, storage } from "../../firebase"
 import { global } from "../../style"
 
@@ -30,7 +30,6 @@ const CreateListing = () => {
   const [description, setDescription] = useState<any>(null);
   const [image, setImage] = useState<any>(null);
   const [price, setPrice] = useState<any>(0);
-  const [expiration, setExpiration] = useState<any>(new Date());
   const [type, setType] = useState<any>(types[0]);
   const [quantity, setQuantity] = useState<any>(null);
   const [amount, setAmount] = useState<any>(amounts[0]);
@@ -144,7 +143,7 @@ const CreateListing = () => {
     }
 
     // How the image will be addressed inside the storage
-    const storage_ref = ref(storage, `images/${auth.currentUser.uid}/listings/${Date.now()}`);
+    const storage_ref = ref(storage, `images/${auth.currentUser.uid}/products/${Date.now()}`);
 
     // Convert image to bytes
     const img = await fetch(image);
@@ -155,7 +154,7 @@ const CreateListing = () => {
       // We retrieve the URL of where the image is located at
       await getDownloadURL(storage_ref).then(async (image) => {
         // Then we create the Market with it's image on it
-        await addDoc(collection(db, "Listings"), {
+        await addDoc(collection(db, "Products"), {
           user: auth.currentUser.uid,
           title: title,
           description: description,
@@ -164,7 +163,6 @@ const CreateListing = () => {
           image: image,
           amount: amount,
           type: type,
-          expiration: expiration
         }).then(() => {
           console.log("Data saved!");
           navigation.navigate("Index");
@@ -273,11 +271,6 @@ const CreateListing = () => {
                   <Picker.Item key={type.value} value={type.value} label={type.label} />
                 ))}
               </Picker>
-            </View>
-
-            <View style={global.field}>
-              <Text subtitle>Expiration Date</Text>
-              <DateTimePicker style={global.input} mode="date" placeholder="Expiration Date" onChange={(date) => setExpiration(date)} minimumDate={new Date()} migrateTextField />
             </View>
 
             <View style={global.field}>

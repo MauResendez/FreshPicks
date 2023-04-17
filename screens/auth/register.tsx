@@ -5,14 +5,14 @@ import * as ImageManipulator from 'expo-image-manipulator';
 import * as ImagePicker from "expo-image-picker";
 import * as Notifications from 'expo-notifications';
 import { PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { GeoPoint, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import PhoneInput from 'react-native-phone-input';
-import Toast from 'react-native-toast-message';
-import { ActionSheet, AnimatedImage, Avatar, DateTimePicker, Image, LoaderScreen, Switch, Text, TextField, TouchableOpacity, View, Wizard } from 'react-native-ui-lib';
+// import Toast from 'react-native-toast-message';
+import { Button, Colors, DateTimePicker, Image, LoaderScreen, Picker, Text, TextField, Toast, TouchableOpacity, View, Wizard } from 'react-native-ui-lib';
 import { app, auth, db, storage } from '../../firebase';
 import { global } from '../../style';
 // import Toast from 'react-native-simple-toast';
@@ -28,6 +28,15 @@ const Register = ({ route }) => {
   const phoneRef = useRef<any>(null);
   const recaptchaVerifier = useRef<any>(null);
   const attemptInvisibleVerification = true;
+  const days = [
+    {label: 'Monday', value: 'Monday'},
+    {label: 'Tuesday', value: 'Tuesday'},
+    {label: 'Wednesday', value: 'Wednesday'},
+    {label: 'Thursday', value: 'Thursday'},
+    {label: 'Friday', value: 'Friday'},
+    {label: 'Saturday', value: 'Saturday'},
+    {label: 'Sunday', value: 'Sunday'},
+  ]
 
   const [active, setActive] = useState(0);
   const [completedStep, setCompletedStep] = useState(undefined);
@@ -37,8 +46,7 @@ const Register = ({ route }) => {
   const [name, setName] = useState<any>("");
   const [email, setEmail] = useState<any>("");
   const [address, setAddress] = useState<any>(null);
-  const [coordinates, setCoordinates] = useState<any>(null);
-  const [logo, setLogo] = useState<any>(null);
+  const [location, setLocation] = useState<GeoPoint>(null);
   const [cover, setCover] = useState<any>(null);
   const [business, setBusiness] = useState<any>("");
   const [description, setDescription] = useState<any>("");
@@ -50,12 +58,15 @@ const Register = ({ route }) => {
   const [friday, setFriday] = useState<any>({ enable: false, start: null, end: null });
   const [saturday, setSaturday] = useState<any>({ enable: false, start: null, end: null });
   const [sunday, setSunday] = useState<any>({ enable: false, start: null, end: null });
+  const [day, setDay] = useState<any>(days[0]);
+  const [toast, setToast] = useState<string>("");
+  const [visible, setVisible] = useState<boolean>(false);
   const [token, setToken] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   const checkIfUserExists = async () => {
     try {
-      const response = await fetch("https://us-central1-cfsifreshpicks.cloudfunctions.net/checkIfUserExists", {
+      const response = await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/checkIfUserExists", {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -68,11 +79,7 @@ const Register = ({ route }) => {
         }),
       });
 
-      console.log(response);
-
       const json = await response.json();
-
-      console.log(json);
 
       return json;
     } catch (error) {
@@ -82,107 +89,22 @@ const Register = ({ route }) => {
 
   const compress = async (uri: string) => {
     const manipulatedImage = await ImageManipulator.manipulateAsync(uri, [{ resize: { width: 300, height: 300 }}], { compress: 0.5 });
-    setLogo(manipulatedImage.uri);
-  };
-
-  const compress2 = async (uri: string) => {
-    const manipulatedImage = await ImageManipulator.manipulateAsync(uri, [{ resize: { width: 300, height: 300 }}], { compress: 0.5 });
     setCover(manipulatedImage.uri);
   };
 
   const handleKeyPress = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
     if (!data || !details) return;
 
+    const geopoint = new GeoPoint(details.geometry.location.lat, details.geometry.location.lng);
+
     setAddress(data.description);
-    setCoordinates(details.geometry.location);
+    setLocation(geopoint);
   };
 
-  const selectLogo = async () => {
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (permissionResult.granted === false) {
-      alert("You've refused to allow this app to access your photos!");
-      return;
-    }
-
-    try {
-      // No permissions request is necessary for launching the image library
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        aspect: [4, 3],
-        quality: 0,
-      });
-
-      if (!result.canceled) {
-        console.log(result.assets[0].uri);
-        compress(result.assets[0].uri);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const selectCover = async () => {
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (permissionResult.granted === false) {
-      alert("You've refused to allow this app to access your photos!");
-      return;
-    }
-
-    try {
-      // No permissions request is necessary for launching the image library
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        aspect: [4, 3],
-        quality: 0,
-      });
-
-      if (!result.canceled) {
-        console.log(result.assets[0].uri);
-        compress2(result.assets[0].uri);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const showToast = (type, title, message) => {
-    Toast.show({
-      type: type,
-      text1: title,
-      text2: message
-    });
-  }
-
-  const verifyPhone = async () => {
-    try {
-      let i = await checkIfUserExists();
-
-      if (!i.result.exists) {
-        const phoneProvider = new PhoneAuthProvider(auth);
-        const vid = await phoneProvider.verifyPhoneNumber(phone, recaptchaVerifier.current);
-        setVID(vid);
-
-        showToast("success", "Success", "Verification code has been sent to your phone");
-      } else {
-        Alert.alert("User already exists", "There's a user that registered with this phone number.\n\n Would you like to login with it?", [
-          {text: 'Cancel', style: 'cancel'},
-          {text: 'OK', onPress: () => navigation.navigate("Login")},
-        ]);
-      }
-    } catch (error) {
-      console.log(error.message);
-      showToast("error", "Error", `${error.message}`);
-    }
-  }
-
-  const onSubmit = async (sms: string) => {
+  const handleSubmit = async (sms: string) => {
     const nameTest = /^[A-Za-z]+([\s.][A-Za-z]+)*$/;
     const emailTest = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
     const websiteTest = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
-    const cashappTest = /^\$[a-zA-Z0-9_]{1,20}$/;
-    const venmoTest = /^\@[a-zA-Z0-9_]{1,20}$/;
     
     let error = false;
 
@@ -210,11 +132,11 @@ const Register = ({ route }) => {
       return
     }
 
-    if (website.length == 0 || !websiteTest.test(website)) {
-      error = true;
-      showToast("error", "Error", "Website is required")
-      return
-    }
+    // if (website.length == 0 || !websiteTest.test(website)) {
+    //   error = true;
+    //   showToast("error", "Error", "Website is required")
+    //   return
+    // }
 
     if (error) {
       error = false;
@@ -230,47 +152,36 @@ const Register = ({ route }) => {
         let logo_url = null;
         let cover_url = null;
         
-        const logo_ref = ref(storage, `images/${auth.currentUser.uid}/logo/${Date.now()}`);
         const cover_ref = ref(storage, `images/${auth.currentUser.uid}/cover/${Date.now()}`);
 
         // Convert image to bytes
-        const logo_img = await fetch(logo);
-        const logo_bytes = await logo_img.blob();
         const cover_img = await fetch(cover);
         const cover_bytes = await cover_img.blob();
 
-        await uploadBytes(logo_ref, logo_bytes).then(async () => {
+
+        await uploadBytes(cover_ref, cover_bytes).then(async () => {
           // We retrieve the URL of where the image is located at
-          await getDownloadURL(logo_ref).then(async (logo) => {
-            logo_url = logo;
-          });
-        }).then(async () => {
-          await uploadBytes(cover_ref, cover_bytes).then(async () => {
-            // We retrieve the URL of where the image is located at
-            await getDownloadURL(cover_ref).then(async (cover) => {
-              cover_url = cover;
-            });
+          await getDownloadURL(cover_ref).then(async (cover) => {
+            cover_url = cover;
           });
         }).then(async () => {
           await setDoc(doc(db, "Users", user.uid), {
             name: name,
             phone: phone,
             role: farmer,
+            admin: false,
             farmer: farmer,
             email: email,
             address: address,
-            coordinates: coordinates,
+            location: location,
             logo: logo_url,
             cover: cover_url,
             business: business,
             description: description,
             website: website,
-            // location: new firestore.GeoPoint(coordinates.lat, coordinates.lng)
             schedule: {
               monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday, sunday: sunday
             },
-            rating: 0,
-            ratings: 0,
             token: [token],
           });
 
@@ -284,6 +195,71 @@ const Register = ({ route }) => {
       showToast("error", "Error", `${error.message}`);
     }
   };
+
+  const selectCover = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this app to access your photos!");
+      return;
+    }
+
+    try {
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        aspect: [4, 3],
+        quality: 0,
+      });
+
+      if (!result.canceled) {
+        console.log(result.assets[0].uri);
+        compress(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // const showToast = (type, title, message) => {
+  //   Toast.show({
+  //     type: type,
+  //     text1: title,
+  //     text2: message
+  //   });
+  // }
+
+  const hideToast = () => {
+    setToast("");
+    setVisible(false);
+  }
+
+  const showToast = (type, title, message) => {
+    setToast(message);
+    setVisible(true);
+  }
+
+  const verifyPhone = async () => {
+    try {
+      let i = await checkIfUserExists();
+
+      if (!i.result.exists) {
+        const phoneProvider = new PhoneAuthProvider(auth);
+        const vid = await phoneProvider.verifyPhoneNumber(phone, recaptchaVerifier.current);
+        setVID(vid);
+
+        showToast("success", "Success", "Verification code has been sent to your phone");
+      } else {
+        Alert.alert("User already exists", "There's a user that registered with this phone number.\n\n Would you like to login with it?", [
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'OK', onPress: () => navigation.navigate("Login")},
+        ]);
+      }
+    } catch (error) {
+      console.log(error.message);
+      showToast("error", "Error", `${error.message}`);
+    }
+  }
 
   const onActiveIndexChanged = (activeIndex: number) => {
     setActive(activeIndex);
@@ -351,7 +327,6 @@ const Register = ({ route }) => {
             textInputProps={{
               onSelectionChange(text) {
                 setAddress(text);
-                console.log(text);
               },
               autoCapitalize: "none",
               autoCorrect: false,
@@ -389,52 +364,16 @@ const Register = ({ route }) => {
         </ScrollView>
         
         <View style={global.field}>
-          {Next()}
+          {/* {Next()} */}
+          <View row spread centerV>
+            <Button label={'Prev'} onPress={goToPrevStep} disabled={active === 0}/>
+            <Text>{active}</Text>
+            <Button label={'Next'} onPress={goToNextStep} disabled={active === 5 - 1}/>
+          </View>
         </View>
       </View>
     )
   }
-
-  const ProfileSetup = () => {
-    return (
-      <View style={[global.container, global.spaceEvenly]}>
-        <Text title>Profile Images</Text>
-
-        <View style={global.field}>
-          <TouchableOpacity style={global.center} onPress={selectLogo}>
-            {!logo
-              ? <Avatar size={100} source={require("../../assets/profile.png")} />
-              : <Avatar size={100} source={{ uri: logo }} />
-            }
-          </TouchableOpacity>
-        </View>
-
-        <View style={global.field}>
-          <TouchableOpacity onPress={selectCover}>
-            {!cover
-              ? <AnimatedImage style={{ width: "100%", height: 250 }} source={require("../../assets/image.png")} />
-              : <AnimatedImage style={{ width: "100%", height: 250 }} source={{ uri: cover }} />
-            }
-          </TouchableOpacity>
-        </View>
-
-        <View flexG />
-
-        <View style={global.field}>
-          {Prev()}
-          {Next()}
-          <ActionSheet 
-            containerStyle={{ height: 128 }}
-            dialogStyle={{ borderRadius: 8 }}
-            cancelButtonIndex={3} 
-            destructiveButtonIndex={0}
-            visible={false} 
-            options={[{label: 'Camera', onPress: () => {}},  {label: 'Gallery', onPress: () => {}}]}
-          />
-        </View>
-      </View>
-    );
-  };
 
   const FarmerInformation = () => {
     return (
@@ -448,7 +387,7 @@ const Register = ({ route }) => {
 
         <View style={global.field}>
           <Text subtitle>Describe Your Business *</Text>
-          <TextField value={description} onChangeText={(value) => setDescription(value)} style={global.textArea}  placeholder="Describe what listings and services you sell" multiline maxLength={250} migrate validate={'required'} />
+          <TextField value={description} onChangeText={(value) => setDescription(value)} style={global.textArea}  placeholder="Describe what products and services you sell" multiline maxLength={250} migrate validate={'required'} />
         </View>
 
         <View style={global.field}>
@@ -456,11 +395,33 @@ const Register = ({ route }) => {
           <TextField value={website} onChangeText={(value) => setWebsite(value)} style={global.input} placeholder="Enter your website" migrate />
         </View>
 
+        {/* <View style={global.field}>
+          <TouchableOpacity onPress={selectCover}>
+            {!cover
+              ? <AnimatedImage style={{ width: "100%", height: 200 }} resizeMode='cover' source={require("../../assets/image.png")} />
+              : <AnimatedImage style={{ width: "100%", height: 200 }} resizeMode='cover' source={{ uri: cover }} />
+            }
+          </TouchableOpacity>
+          <ActionSheet 
+            containerStyle={{ height: 128 }}
+            dialogStyle={{ borderRadius: 8 }}
+            cancelButtonIndex={3} 
+            destructiveButtonIndex={0}
+            visible={false} 
+            options={[{label: 'Camera', onPress: () => {}},  {label: 'Gallery', onPress: () => {}}]}
+          />
+        </View> */}
+
         <View flexG />
 
         <View style={global.field}>
-          {Prev()}
-          {Next()}
+          {/* {Prev()}
+          {Next()} */}
+          <View row spread centerV>
+            <Button label={'Prev'} onPress={goToPrevStep} disabled={active === 0}/>
+            <Text>{active}</Text>
+            <Button label={'Next'} onPress={goToNextStep} disabled={active === 4 - 1}/>
+          </View>
         </View>
       </View>
     );
@@ -470,7 +431,25 @@ const Register = ({ route }) => {
     return (
       <ScrollView style={global.flex} contentContainerStyle={styles.stepContainer}>
         <Text title>Farmer Schedule</Text>
-        <View style={global.field}>
+
+        <View row spread style={global.field}>
+          <Picker  
+            value={day}
+            placeholder={'Days'}
+            onChange={(value) => setDay(value)}
+            style={global.input}
+            useSafeArea={true} 
+            topBarProps={{ title: 'Amount' }} 
+          >  
+            {days.map((type) => (   
+              <Picker.Item key={type.value} value={type.value} label={type.label} />
+            ))}
+          </Picker>
+          <DateTimePicker style={global.input} mode="time" placeholder="Start Time" timeFormat={'HH:mm'} onChange={(time) => setTuesday(time)} minimumDate={new Date()} migrateTextField />
+          <DateTimePicker style={global.input} mode="time" placeholder="End Time" timeFormat={'HH:mm'} onChange={(time) => setTuesday(time)} minimumDate={new Date()} migrateTextField />
+        </View>
+
+        {/* <View style={global.field}>
           <View style={[global.row, global.spaceBetween]}>
             <Text subtitle>Monday</Text>
             <Switch value={monday.enable} onValueChange={() => setMonday({...monday, enable: !monday.enable})} />
@@ -546,13 +525,18 @@ const Register = ({ route }) => {
             <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField/>
             <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
           </View>}
-        </View>
+        </View> */}
 
         <View flexG />
 
         <View style={global.field}>
-          {Prev()}
-          {Next()}
+          {/* {Prev()}
+          {Next()} */}
+          <View row spread centerV>
+          <Button label={'Prev'} onPress={goToPrevStep} backgroundColor={Colors.green5} disabled={active === 0} />
+            <Text>{active}</Text>
+            <Button label={'Next'} onPress={goToNextStep} backgroundColor={Colors.green5} disabled={active === 4 - 1} />
+          </View>
         </View>
       </ScrollView>
     );
@@ -560,7 +544,7 @@ const Register = ({ route }) => {
 
   const AccountInformation = () => {
     return (
-      <View style={[global.container, global.spaceEvenly]}>
+      <KeyboardAvoidingView style={[global.container, global.spaceEvenly]}>
 
         <Image
           style={{ width: "auto", height: 100 }}
@@ -585,7 +569,6 @@ const Register = ({ route }) => {
             style={global.input}
             onChangePhoneNumber={(phone) => {
               setPhone(phone);
-              console.log(phone);
             }}
             textProps={{
               placeholder: 'Enter a phone number...'
@@ -609,15 +592,24 @@ const Register = ({ route }) => {
             autoFocusOnLoad={false}
             codeInputFieldStyle={global.otpInput}
             codeInputHighlightStyle={styles.underlineStyleHighLighted}
-            onCodeFilled={code => onSubmit(code)}
+            onCodeFilled={code => handleSubmit(code)}
           />
-        </View>          
-        
+        </View>
+
         <View style={global.field}>
           {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
-          {Prev()}
+        </View>     
+
+        <View flexG />     
+        
+        <View style={global.field}>
+          {/* {Prev()} */}
+          <View row spread centerV>
+            <Button label={'Prev'} onPress={goToPrevStep} backgroundColor={"#FF4500"} disabled={active === 0}/>
+            <Button label={'Next'} onPress={goToNextStep} backgroundColor={"#FF4500"} disabled={active === 4 - 1}/>
+          </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   };
 
@@ -626,15 +618,13 @@ const Register = ({ route }) => {
       case 0:
         return PersonalInformation();
       case 1:
-        return ProfileSetup();
-      case 2:
         if (route.params.farmer)
           return FarmerInformation();
 
         return AccountInformation();
-      case 3:
+      case 2:
         return FarmerSchedule();
-      case 4:
+      case 3:
         return AccountInformation();
     }
   };
@@ -673,30 +663,28 @@ const Register = ({ route }) => {
   }
 
   return (
-    <View useSafeArea flex>
+    <View useSafeArea flex style={[global.container, global.spaceEvenly]}>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAvoidingView style={global.flex} behavior={Platform.OS == "ios" ? "padding" : "height"}>
           <View flex>
             {route.params.farmer 
               ? <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
                   <Wizard.Step state={getStepState(0)} label={'Personal Information'} />
-                  <Wizard.Step state={getStepState(1)} label={'Profile Setup'} />
-                  <Wizard.Step state={getStepState(2)} label={'Farmer Information'} />
-                  <Wizard.Step state={getStepState(3)} label={'Farmer Schedule'} />
-                  <Wizard.Step state={getStepState(4)} label={'Payment Information'} />
-                  <Wizard.Step state={getStepState(5)} label={'Account Information'} />
+                  <Wizard.Step state={getStepState(1)} label={'Farmer Information'} />
+                  <Wizard.Step state={getStepState(2)} label={'Farmer Schedule'} />
+                  <Wizard.Step state={getStepState(3)} label={'Account Information'} />
                 </Wizard>
               : <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
                   <Wizard.Step state={getStepState(0)} label={'Personal Information'} />
-                  <Wizard.Step state={getStepState(1)} label={'Profile Setup'} />
-                  <Wizard.Step state={getStepState(2)} label={'Account Information'} />
+                  <Wizard.Step state={getStepState(1)} label={'Account Information'} />
                 </Wizard>
             }
             {Current()}
           </View>
+          <Toast visible={visible} message={toast} position={'bottom'} backgroundColor={Colors.black} autoDismiss={5000} onDismiss={hideToast} swipeable />
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
-      <Toast topOffset={0} />
+      {/* <Toast topOffset={0} /> */}
     </View>
   );
 }
@@ -720,7 +708,5 @@ const styles = StyleSheet.create({
     borderColor: "#03DAC6",
   },
 });
-
-
 
 export default Register

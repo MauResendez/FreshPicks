@@ -108,7 +108,7 @@ const UpdateFarmer = () => {
               value={description}
               onChangeText={(value) => setDescription(value)}
               style={global.textArea}
-              placeholder="Describe what listings and services you sell"
+              placeholder="Describe what products and services you sell"
               multiline
               maxLength={100}
               migrate

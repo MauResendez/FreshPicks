@@ -42,7 +42,7 @@ const Timeline = () => {
         data={posts}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
-          <PostCard id={item.id} business={item.business} address={item.address} logo={item.logo} title={item.title} description={item.description} image={item.image} />
+          <PostCard id={item.id} business={item.business} address={item.address} title={item.title} description={item.description} image={item.image} />
         )}
         contentContainerStyle={[global.container]}
       />

@@ -1,5 +1,6 @@
+import { useNavigation } from "@react-navigation/native";
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { LoaderScreen, TextField, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
@@ -8,6 +9,7 @@ import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
 const History = () => {
+  const navigation = useNavigation<any>();
   const [orders, setOrders] = useState<any>(null);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -29,6 +31,12 @@ const History = () => {
       setLoading(false);
     }
   }, [orders]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false
+    });
+  }, []);
 
   if (loading) {
     return (
@@ -53,7 +61,7 @@ const History = () => {
         data={orders}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
-          <HistoryRow id={item.id} listings={item.listings} farmer={item.farmer} consumer={item.consumer} total={item.total} status={item.status} createdAt={item.createdAt} />
+          <HistoryRow id={item.id} products={item.products} farmer={item.farmer} consumer={item.consumer} total={item.total} status={item.status} createdAt={item.createdAt} />
         )}
       />
     </View>

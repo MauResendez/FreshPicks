@@ -1,3 +1,4 @@
+import { GeoPoint } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -8,13 +9,15 @@ const UpdatePersonal = () => {
   const [name, setName] = useState<any>(null);
   const [email, setEmail] = useState<any>(null);
   const [address, setAddress] = useState<any>(null);
-  const [coordinates, setCoordinates] = useState<any>(null);
+  const [location, setLocation] = useState<GeoPoint>(null);
   
   const handleKeyPress = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
     if (!data || !details) return;
 
+    const geopoint = new GeoPoint(details.geometry.location.lat, details.geometry.location.lng);
+
     setAddress(data.description);
-    setCoordinates(details.geometry.location);
+    setLocation(geopoint);
   };
 
   return (

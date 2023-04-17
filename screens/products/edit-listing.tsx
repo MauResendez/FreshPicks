@@ -100,7 +100,7 @@ const EditListing = ({ route }) => {
     console.log("Past here 1");
 
     // How the image will be addressed inside the storage
-    const storage_ref = ref(storage, `images/${auth.currentUser.uid}/listings/${Date.now()}`);
+    const storage_ref = ref(storage, `images/${auth.currentUser.uid}/products/${Date.now()}`);
 
     console.log("Past here 2");
 
@@ -117,7 +117,7 @@ const EditListing = ({ route }) => {
       await getDownloadURL(storage_ref).then(async (image) => {
         // Then we create the Market with it's image on it
         console.log("Past here 5");
-        await updateDoc(doc(db, "Listings", route.params.id), {
+        await updateDoc(doc(db, "Products", route.params.id), {
           user: auth.currentUser.uid,
           title: title,
           description: description,
@@ -143,7 +143,7 @@ const EditListing = ({ route }) => {
 
   useEffect(() => {
     if (route.params.id) {
-      getDoc(doc(db, "Listings", route.params.id)).then((docSnapshot) => {
+      getDoc(doc(db, "Products", route.params.id)).then((docSnapshot) => {
         const data = docSnapshot.data();
         setProduct(data);
       });

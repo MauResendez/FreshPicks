@@ -128,7 +128,7 @@ const AddBusiness = () => {
 
         <View style={global.field}>
           <Text subtitle>Describe Your Business *</Text>
-          <TextField value={description} onChangeText={(value) => setDescription(value)} style={global.textArea}  placeholder="Describe what listings and services you sell" multiline maxLength={250} migrate validate={'required'} />
+          <TextField value={description} onChangeText={(value) => setDescription(value)} style={global.textArea}  placeholder="Describe what products and services you sell" multiline maxLength={250} migrate validate={'required'} />
         </View>
 
         <View style={global.field}>
