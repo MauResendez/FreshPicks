@@ -18,7 +18,7 @@ const Farmers = () => {
   const [descending, setDescending] = useState(null);
   const [visible, setVisible] = useState(false);
   const layout = useWindowDimensions();
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: "first", title: "All Farmers" },
     { key: "second", title: "Highest Rated" },
@@ -101,23 +101,7 @@ const Farmers = () => {
       onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
         setFarmers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
       });
-
-      // onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), orderBy("rating", "asc")), async (snapshot) => {
-      //   setRated(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
-      // });
-
-      // onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), orderBy("business", "asc")), async (snapshot) => {
-      //   setAscending(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
-      // });
-
-      // onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), orderBy("business", "desc")), async (snapshot) => {
-      //   setDescending(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
-      // });
     } else {
-      // onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), where("business", ">=", search), where("business", "<=", search + "\uf8ff")), async (snapshot) => {
-      //   setFarmers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})).filter(doc => doc.id != auth.currentUser.uid));
-      // });
-
       onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
         setFarmers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
       });

@@ -19,8 +19,8 @@ import ChatStack from "../stack/chat-stack";
 const Drawer = createDrawerNavigator();
 
 const MainDrawer = () => {
-  const [user, setUser] = useState<any>(null)
-
+  const [user, setUser] = useState<any>(null);
+  
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "Users", auth.currentUser.uid), (doc) => {
       setUser(doc.data());
@@ -37,8 +37,11 @@ const MainDrawer = () => {
       // drawerContent={props => <CustomDrawer {...props} />}
       screenOptions={({ navigation, route }) => ({ 
         drawerLabelStyle: {
-          color: Colors.black,
+          color: Colors.white,
           fontSize: 16,
+        },
+        drawerStyle: {
+          backgroundColor: "#32CD32",
         },
         headerShown: true,
         headerTintColor: Colors.black,
@@ -59,7 +62,7 @@ const MainDrawer = () => {
         options={({ route }) => {
           return {
             drawerIcon: ({ color }) => (
-              <MCIcon name="application-brackets" size={24} color={Colors.black} />
+              <MCIcon name="application-brackets" size={24} color={Colors.white} />
             )
           };
         }}
@@ -70,7 +73,7 @@ const MainDrawer = () => {
         options={({ route }) => {
           return {
             drawerIcon: ({ color }) => (
-              <MCIcon name="cart" size={24} color={Colors.black} />
+              <MCIcon name="cart" size={24} color={Colors.white} />
             ),
           };
         }}
@@ -83,7 +86,7 @@ const MainDrawer = () => {
 
           return {
             drawerIcon: ({ color }) => (
-              <MCIcon name="message" size={24} color={Colors.black} />
+              <MCIcon name="message" size={24} color={Colors.white} />
             ),
             headerShown: current != "Index" ? false : true,
             swipeEnabled: current != "Index" ? false : true,
@@ -97,7 +100,7 @@ const MainDrawer = () => {
         options={() => {
           return {
             drawerIcon: ({ color }) => (
-              <MCIcon name="chef-hat" size={24} color={Colors.black} />
+              <MCIcon name="chef-hat" size={24} color={Colors.white} />
             )
           };
         }}
@@ -108,7 +111,7 @@ const MainDrawer = () => {
         options={() => {
           return {
             drawerIcon: ({ color }) => (
-              <MCIcon name="information-outline" size={24} color={Colors.black} />
+              <MCIcon name="information-outline" size={24} color={Colors.white} />
             )
           };
         }}
@@ -119,7 +122,7 @@ const MainDrawer = () => {
         options={({ route }) => {
           return {
             drawerIcon: ({ color }) => (
-              <MCIcon name="bug" size={24} color={Colors.black} />
+              <MCIcon name="bug" size={24} color={Colors.white} />
             ),
           };
         }}

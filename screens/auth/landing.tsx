@@ -21,7 +21,7 @@ const Landing = () => {
           <Image style={{ width: "auto", height: 100, marginTop: 32 }} source={require("../../assets/logo.png")} resizeMode="contain" />
 
           <View style={global.field}>
-            <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={() => navigation.navigate("Role")}>
+            <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={() => navigation.navigate("Register")}>
               <Text style={[global.btnText, global.white]}>Register</Text>
             </TouchableOpacity>
             

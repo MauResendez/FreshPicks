@@ -46,7 +46,7 @@ const MainTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarActiveBackgroundColor: Colors.white,
-        tabBarActiveTintColor: Colors.black,
+        tabBarActiveTintColor: "#32CD32",
         tabBarInactiveTintColor: Colors.grey40,
       }}
     >

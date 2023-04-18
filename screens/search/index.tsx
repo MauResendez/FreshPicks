@@ -8,10 +8,10 @@ import {
 } from "react-native";
 import Ionicon from "react-native-vector-icons/Ionicons";
 
-import FarmerRow from "../../components/search/farmer-row";
 
-import { Colors, GridView, LoaderScreen, TextField, View } from "react-native-ui-lib";
-import ProductRow from "../../components/search/product-row";
+import { Colors, LoaderScreen, TextField, View } from "react-native-ui-lib";
+import FarmerList from "../../components/search/farmer-list";
+import ProductList from "../../components/search/product-list";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
@@ -79,17 +79,9 @@ const Search = () => {
         contentContainerStyle={{ paddingBottom: 16 }}
         showsVerticalScrollIndicator={Platform.OS == "web"}
       >
-        <FarmerRow title={"Farmers"} description={"Available Farmers"} farmers={farmers} />
-        <ProductRow title={"Products"} description={"Available Products"} products={products} />
+        <FarmerList title={"Farmers"} description={"Available Farmers"} farmers={farmers} />
+        <ProductList title={"Products"} description={"Available Products"} products={products} />
       </ScrollView>
-
-      <GridView
-            items={products}
-            numColumns={4}
-            lastItemOverlayColor={Colors.rgba(Colors.$backgroundPrimaryHeavy, 0.6)}
-            lastItemLabel={42}
-            keepItemSize
-          />
     </View>
   )
 }

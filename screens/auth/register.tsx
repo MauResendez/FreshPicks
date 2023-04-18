@@ -1,4 +1,4 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { FirebaseRecaptchaBanner, FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -12,18 +12,12 @@ import { Alert, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import PhoneInput from 'react-native-phone-input';
 // import Toast from 'react-native-toast-message';
-import { Button, Colors, DateTimePicker, Image, LoaderScreen, Picker, Text, TextField, Toast, TouchableOpacity, View, Wizard } from 'react-native-ui-lib';
+import { Button, Checkbox, Colors, DateTimePicker, Image, LoaderScreen, Picker, Text, TextField, Toast, TouchableOpacity, View, Wizard } from 'react-native-ui-lib';
 import { app, auth, db, storage } from '../../firebase';
 import { global } from '../../style';
 // import Toast from 'react-native-simple-toast';
 
-const Register = ({ route }) => {
-  const {
-    params: {
-      farmer
-    }
-  } = useRoute<any>();
-
+const Register = () => {
   const navigation = useNavigation<any>();
   const phoneRef = useRef<any>(null);
   const recaptchaVerifier = useRef<any>(null);
@@ -43,6 +37,7 @@ const Register = ({ route }) => {
   const [phone, setPhone] = useState<any>("");
   const [vid, setVID] = useState<any>();
   const [sms, setSMS] = useState<any>("");
+  const [farmer, setFarmer] = useState<boolean>(false);
   const [name, setName] = useState<any>("");
   const [email, setEmail] = useState<any>("");
   const [address, setAddress] = useState<any>(null);
@@ -310,6 +305,11 @@ const Register = ({ route }) => {
     return (
       <View style={[global.container, global.spaceEvenly]}>
         <Text title>Personal Information</Text>
+
+        <View style={global.field}>
+          <Text subtitle>Register as a Farmer?</Text>
+          <Checkbox value={farmer} onValueChange={() => setFarmer(!farmer)} style={global.checkbox} />
+        </View>
 
         <View style={global.field}>
           <Text subtitle>Full Name *</Text>
@@ -618,7 +618,7 @@ const Register = ({ route }) => {
       case 0:
         return PersonalInformation();
       case 1:
-        if (route.params.farmer)
+        if (farmer)
           return FarmerInformation();
 
         return AccountInformation();
@@ -667,7 +667,7 @@ const Register = ({ route }) => {
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAvoidingView style={global.flex} behavior={Platform.OS == "ios" ? "padding" : "height"}>
           <View flex>
-            {route.params.farmer 
+            {farmer 
               ? <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
                   <Wizard.Step state={getStepState(0)} label={'Personal Information'} />
                   <Wizard.Step state={getStepState(1)} label={'Farmer Information'} />

@@ -46,14 +46,17 @@ Notifications.setNotificationHandler({
 });
 
 const App = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [expoPushToken, setExpoPushToken] = useState("");
-  const [notification, setNotification] = useState(false);
-  const [loading, setLoading] = useState(true);
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
   const appConfig = require("./app.json");
   const projectId = appConfig?.expo?.extra?.eas?.projectId;
+  // const navigation = useNavigation<any>();
+  // const drawer = navigation.getParent("MainDrawer");
+  // const isDrawerOpen = drawer.isDrawerOpen();
+  const [user, setUser] = useState<User | null>(null);
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const [notification, setNotification] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const registerForPushNotificationsAsync = async () => {
     try {
@@ -142,7 +145,7 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <StatusBar style="auto" />
+      <StatusBar style={"auto"} animated />
       {auth.currentUser ? <MainStack /> : <AuthStack />}
     </Provider>
   );

@@ -22,12 +22,12 @@ const ProductStack = () => {
     const current = getFocusedRouteNameFromRoute(route) ?? "Index";
 
     parent.setOptions({
-      headerShown: current == "Index" ? true : false
+      headerShown: current == "Index" ? true : false,
     });
   }, [route]);
   
   return (
-    <Stack.Navigator initialRouteName="Index" screenOptions={{ headerShown: true }}>
+    <Stack.Navigator initialRouteName="Index" screenOptions={{ headerShown: true, headerBackTitleVisible: false }}>
       <Stack.Screen name="Index" component={Dashboard} />
       <Stack.Screen name="Create Listing" component={CreateListing} />
       <Stack.Screen name="Create Post" component={CreatePost} />

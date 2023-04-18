@@ -79,7 +79,7 @@ const Login = () => {
       } else {
         Alert.alert("User doesn't exist", "There's no user with that registered with this phone number.\n\n Would you like to create an account?", [
           {text: 'Cancel', style: 'cancel'},
-          {text: 'OK', onPress: () => navigation.navigate("Role")},
+          {text: 'OK', onPress: () => navigation.navigate("Register")},
         ]);
       }
     } catch (err: any) {

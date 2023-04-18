@@ -104,6 +104,12 @@ export const global = StyleSheet.create({
     paddingVertical: 8,
     width: "100%"
   },
+  checkbox: {
+    backgroundColor: "white",
+    borderColor: "rgba(0, 0, 0, 0.2)",
+    borderRadius: 8,
+    borderWidth: 1,
+  },
   input: {
     backgroundColor: "white",
     borderColor: "rgba(0, 0, 0, 0.2)",
