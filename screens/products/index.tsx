@@ -1,12 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import { collection, deleteDoc, doc, onSnapshot, query, where } from "firebase/firestore";
-import React, { Fragment, useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   useWindowDimensions
 } from "react-native";
-import { SceneMap } from "react-native-tab-view";
 import { Button, Colors, Image, ListItem, TabController, Text, View } from "react-native-ui-lib";
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProductRow from "../../components/products/product-row";
@@ -19,12 +18,6 @@ const Products = () => {
   const [posts, setPosts] = useState<any>([]);
   const [subscriptions, setSubscriptions] = useState<any>([]);
   const layout = useWindowDimensions();
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: "first", title: "Products" },
-    { key: "second", title: "Subscriptions" },
-    { key: "third", title: "Posts" },
-  ]);
 
   const FirstRoute = () => (
     <View useSafeArea flex style={products.length == 0 && [global.center, global.container]}>
@@ -123,20 +116,6 @@ const Products = () => {
     </View>
   );
 
-  const renderLabel = ({ route, focused, color }) => {
-    return (
-      <Text style={[focused ? global.activeTabTextColor : global.tabTextColor]}>
-        {route.title}
-      </Text>
-    );
-  };
-
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-    third: ThirdRoute
-  });
-
   const deleteListing = async (listing) => {
     // setVisible(true);
     await deleteDoc(doc(db, "Products", listing.id));
@@ -156,29 +135,8 @@ const Products = () => {
     });
   }, []);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, []);
-
   return (
-    <Fragment>
-      {/* <TabView
-        style={global.bgWhite}
-        navigationState={{ index, routes }}
-        renderTabBar={(props) => (
-          <TabBar
-            {...props}
-            indicatorStyle={{ backgroundColor: global.activeTabTextColor.color }}
-            style={{ backgroundColor: "white", height: 50 }}
-            renderLabel={renderLabel}
-          />
-        )}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
-      /> */}
+    <View useSafeArea flex style={global.bgWhite}>
       <TabController items={[{label: 'First'}, {label: 'Second'}, {label: 'Third'}]}>  
         <TabController.TabBar spreadItems enableShadows />  
         <View flex>    
@@ -201,7 +159,7 @@ const Products = () => {
         backgroundColor="#32CD32" 
         iconSource={() => <MCIcon name="plus" color="white" size={24} />} 
       />
-    </Fragment>
+    </View>
   );
 }
 

@@ -1,13 +1,11 @@
-import { useNavigation } from "@react-navigation/native";
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Platform,
   ScrollView,
   StyleSheet,
 } from "react-native";
 import Ionicon from "react-native-vector-icons/Ionicons";
-
 
 import { Colors, LoaderScreen, TextField, View } from "react-native-ui-lib";
 import FarmerList from "../../components/search/farmer-list";
@@ -16,7 +14,6 @@ import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
 const Search = () => {
-  const navigation = useNavigation<any>();
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [farmers, setFarmers] = useState(null);
@@ -29,7 +26,7 @@ const Search = () => {
           setFarmers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
         })
   
-        onSnapshot(query(collection(db, "Products"), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
+        onSnapshot(query(collection(db, "Products"), where("user", "!=", auth.currentUser.uid)), async (snapshot) => {
           setProducts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
         });
   
@@ -56,12 +53,6 @@ const Search = () => {
       setLoading(false);
     }
   }, [farmers, products]);
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false
-    });
-  }, []);
 
   if (loading) {
     return (

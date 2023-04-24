@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import { collection, onSnapshot, query } from "firebase/firestore";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LoaderScreen, View } from "react-native-ui-lib";
 import PostCard from "../../components/feed/post-card";
 import { db } from "../../firebase";
@@ -24,12 +24,6 @@ const Timeline = () => {
       setLoading(false);
     }
   }, [posts]);
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false
-    });
-  }, []);
 
   if (loading) {
     return (

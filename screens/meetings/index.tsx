@@ -1,13 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { collection, doc, onSnapshot, query, where } from 'firebase/firestore';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import { Agenda, AgendaEntry, AgendaSchedule, DateData } from 'react-native-calendars';
 import { Button, TabController, Text, View } from 'react-native-ui-lib';
 import Ionicon from "react-native-vector-icons/Ionicons";
 import ChatRow from '../../components/chat/chat-row';
 import { auth, db } from '../../firebase';
+import { global } from '../../style';
 interface State {
   items?: AgendaSchedule;
 }
@@ -143,20 +144,16 @@ const Meetings = () => {
     return date.toISOString().split('T')[0];
   }
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false
-    });
-  }, []);
-
   return (
-    <TabController items={[{label: 'Calendar'}, {label: 'Inbox'}]}>  
-      <TabController.TabBar spreadItems indicatorStyle={global.activeTabTextColor} />  
-      <View flex style={global.bgWhite}>    
-        <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
-        <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
-      </View>
-    </TabController>
+    <View useSafeArea flex style={global.bgWhite}>
+      <TabController items={[{label: 'Calendar'}, {label: 'Inbox'}]}>  
+        <TabController.TabBar spreadItems indicatorStyle={global.activeTabTextColor} />  
+        <View flex style={global.bgWhite}>    
+          <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
+          <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
+        </View>
+      </TabController>
+    </View>
   );
 }
 

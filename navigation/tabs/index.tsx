@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { doc, onSnapshot } from "firebase/firestore";
+import { Image } from "react-native";
 import { auth, db } from "../../firebase";
 
 import { Colors, LoaderScreen } from "react-native-ui-lib";
@@ -45,6 +46,14 @@ const MainTabs = () => {
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
+        headerTintColor: Colors.black,
+        headerTitle: () => (
+          <Image
+            style={{ width: 200, height: 50 }}
+            source={require("../../assets/logo.png")}
+            resizeMode="contain"
+          />
+        ),
         tabBarActiveBackgroundColor: Colors.white,
         tabBarActiveTintColor: "#32CD32",
         tabBarInactiveTintColor: Colors.grey40,

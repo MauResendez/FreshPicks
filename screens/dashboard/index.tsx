@@ -1,21 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useLayoutEffect, useState } from "react";
+import React from "react";
 import { useWindowDimensions } from "react-native";
 // import { PieChart } from "react-native-gifted-charts";
-import { SceneMap } from "react-native-tab-view";
 import { Colors, Picker, TabController, Text, View } from "react-native-ui-lib";
 import { global } from "../../style";
 
 const Dashboard = () => {
   const navigation = useNavigation<any>();
-  const parent = navigation.getParent("MainDrawer");
   const data = [ {value:50}, {value:80}, {value:90}, {value:70} ];
   const layout = useWindowDimensions();
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: "first", title: "Categories" },
-    { key: "second", title: "Products" },
-  ]);
 
   const FirstRoute = () => (
     <View useSafeArea flex>
@@ -98,45 +91,11 @@ const Dashboard = () => {
     </View>
   );
 
-  const renderLabel = ({ route, focused, color }) => {
-    return (
-      <Text style={[focused ? global.activeTabTextColor : global.tabTextColor]}>
-        {route.title}
-      </Text>
-    );
-  };
-
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute
-  });
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, []);
-
   return (
-    <View useSafeArea flex>
-      {/* <TabView
-        style={global.bgWhite}
-        navigationState={{ index, routes }}
-        renderTabBar={(props) => (
-          <TabBar
-            {...props}
-            indicatorStyle={{ backgroundColor: global.activeTabTextColor.color }}
-            style={{ backgroundColor: "white", height: 50 }}
-            renderLabel={renderLabel}
-          />
-        )}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
-      /> */}
+    <View useSafeArea flex style={global.bgWhite}>
       <TabController items={[{label: 'Categories'}, {label: 'Products'}]}>  
         <TabController.TabBar spreadItems indicatorStyle={global.activeTabTextColor} />  
-        <View flex style={global.bgWhite}>    
+        <View flex>    
           <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
           <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
         </View>

@@ -19,7 +19,6 @@ const Profile = () => {
   } = useRoute<any>();
 
   const navigation = useNavigation<any>();
-  const parent = navigation.getParent("MainDrawer");
   const isFocused = useIsFocused();
   const carousel = createRef<typeof Carousel>();
   const [products, setProducts] = useState([]);
@@ -280,7 +279,7 @@ const Profile = () => {
       {/* <View flexG /> */}
 
       <View style={styles.cart}>
-        <TouchableOpacity disabled={items.length == 0} onPress={() => parent.navigate("Cart")} style={items.length == 0 ? styles.disabled : styles.checkout}>
+        <TouchableOpacity disabled={items.length == 0} onPress={() => navigation.navigate("Cart")} style={items.length == 0 ? styles.disabled : styles.checkout}>
           {items.length == 0 
             ? <Text style={styles.checkoutText}>Add items to Cart</Text>
             : <Text style={styles.checkoutText}>Go to Cart</Text>

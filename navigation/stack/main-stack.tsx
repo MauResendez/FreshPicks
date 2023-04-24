@@ -1,13 +1,13 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import Drawer from "../drawer";
+import { Platform } from "react-native";
+import MainDrawer from "../drawer";
+import MainTabs from "../tabs";
 
 const MainStack = () => {
   return (
     <NavigationContainer>
-      <StatusBar style={"auto"} animated />
-      <Drawer />
+      {Platform.OS !== "web" ? <MainTabs /> : <MainDrawer />}
     </NavigationContainer>
   )
 }

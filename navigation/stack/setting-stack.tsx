@@ -1,34 +1,46 @@
-import React, { useLayoutEffect } from "react";
+import React from "react";
 
-import { getFocusedRouteNameFromRoute, useNavigation, useRoute } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import Account from "../../screens/account";
-import AddBusiness from "../../screens/account/add-business";
-import UpdateFarmer from "../../screens/account/update-farmer";
-import UpdatePersonal from "../../screens/account/update-personal";
-import UpdateSchedule from "../../screens/account/update-schedule";
+import { Image } from "react-native-ui-lib";
 import ChangePhone from "../../screens/auth/change-phone";
 import Conversation from "../../screens/chat/conversation";
+import Settings from "../../screens/settings";
+import AddBusiness from "../../screens/settings/add-business";
+import UpdateFarmer from "../../screens/settings/update-farmer";
+import UpdatePersonal from "../../screens/settings/update-personal";
+import UpdateSchedule from "../../screens/settings/update-schedule";
 
 const Stack = createStackNavigator();
 
 const SettingStack = () => {
-  const navigation = useNavigation<any>();
-  const parent = navigation.getParent("MainDrawer");
-  const route = useRoute();
+  // const navigation = useNavigation<any>();
+  // const parent = navigation.getParent("MainDrawer");
+  // const route = useRoute();
 
-  useLayoutEffect(() => {
-    const current = getFocusedRouteNameFromRoute(route) ?? "Index";
+  // useLayoutEffect(() => {
+  //   const current = getFocusedRouteNameFromRoute(route) ?? "Index";
 
-    parent.setOptions({
-      headerShown: current == "Index" ? true : false
-    });
-  }, [route]);
+  //   parent.setOptions({
+  //     headerShown: current == "Index" ? true : false
+  //   });
+  // }, [route]);
   
   return (
-    <Stack.Navigator initialRouteName="Index" screenOptions={{ headerShown: true }}>
-      <Stack.Screen name="Index" component={Account} />
+    <Stack.Navigator 
+      initialRouteName="Index" 
+      screenOptions={{ 
+        headerShown: true,
+        headerTitle: () => (
+          <Image
+            style={{ width: 200, height: 50 }}
+            source={require("../../assets/logo.png")}
+            resizeMode="contain"
+          />
+        ), 
+      }}
+    >
+      <Stack.Screen name="Index" component={Settings} />
       <Stack.Screen name="Conversation" component={Conversation} />
       <Stack.Screen name="Change Phone" component={ChangePhone} />
       <Stack.Screen name="Add Your Business" component={AddBusiness} />

@@ -4,12 +4,12 @@ import * as Notifications from 'expo-notifications';
 import { deleteUser, signOut } from "firebase/auth";
 import { arrayRemove, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import * as React from "react";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, ScrollView, Share, StyleSheet } from "react-native";
 import { Colors, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 
-const Account = () => {
+const Settings = () => {
   const navigation = useNavigation<any>();
   const [user, setUser] = useState<any>(null);
   const [token, setToken] = useState(null);
@@ -75,12 +75,6 @@ const Account = () => {
       setLoading(false);
     }
   }, [user, token]);
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false
-    });
-  }, []);
 
   if (loading) {
     return (
@@ -461,4 +455,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Account;
+export default Settings;

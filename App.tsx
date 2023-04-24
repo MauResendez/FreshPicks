@@ -1,5 +1,6 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
+import { StatusBar } from "expo-status-bar";
 import { onAuthStateChanged, User } from "firebase/auth";
 import React, { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
@@ -141,7 +142,7 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      {/* <StatusBar style={isDrawerOpen ? "light" : "auto"} animated /> */}
+      <StatusBar style={"auto"} animated />
       {auth.currentUser ? <MainStack /> : <AuthStack />}
     </Provider>
   );
