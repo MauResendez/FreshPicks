@@ -1,7 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
+import { FlashList } from "@shopify/flash-list";
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { LoaderScreen, TextField, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import HistoryRow from "../../components/history/history-row";
@@ -57,9 +58,10 @@ const History = () => {
       <View style={styles.search}>
         <TextField fieldStyle={{ backgroundColor: "lightgray", borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Search with Order ID" leadingAccessory={<Ionicon name="search" color={"gray"} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>
-      <FlatList 
+      <FlashList 
         data={orders}
-        keyExtractor={item => item.id}
+        keyExtractor={(item: any) => item.id}
+        estimatedItemSize={orders.length}
         renderItem={({item}) => (
           <HistoryRow id={item.id} products={item.products} farmer={item.farmer} consumer={item.consumer} total={item.total} status={item.status} createdAt={item.createdAt} />
         )}

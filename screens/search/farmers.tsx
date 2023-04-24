@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
+import { FlashList } from "@shopify/flash-list";
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, useWindowDimensions } from "react-native";
-import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { LoaderScreen, Text, TextField, View } from "react-native-ui-lib";
+import { StyleSheet } from "react-native";
+import { LoaderScreen, TextField, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import FarmerSearchRow from "../../components/search/farmer-search-row";
 import { auth, db } from "../../firebase";
@@ -13,88 +13,7 @@ const Farmers = () => {
   const navigation = useNavigation<any>();
   const [search, setSearch] = useState("");
   const [farmers, setFarmers] = useState(null);
-  const [rated, setRated] = useState(null);
-  const [ascending, setAscending] = useState(null);
-  const [descending, setDescending] = useState(null);
-  const [visible, setVisible] = useState(false);
-  const layout = useWindowDimensions();
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: "first", title: "All Farmers" },
-    { key: "second", title: "Highest Rated" },
-    { key: "third", title: "A-Z" },
-    { key: "fourth", title: "Z-A" }
-  ]);
   const [loading, setLoading] = useState(true);
-
-  const FirstRoute = () => (
-    <View useSafeArea flex>
-      <FlatList 
-        data={farmers}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <FarmerSearchRow farmer={item.id} business={item.business} address={item.address} cover={item.cover} />
-        )}
-      />
-    </View>
-  );
-
-  const SecondRoute = () => (
-    <View useSafeArea flex>
-      <FlatList 
-        data={rated}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <FarmerSearchRow farmer={item.id} business={item.business} address={item.address} cover={item.cover} />
-        )}
-      />
-    </View>
-  );
-
-  const ThirdRoute = () => (
-    <View useSafeArea flex>
-      <FlatList 
-        data={ascending}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <FarmerSearchRow farmer={item.id} business={item.business} address={item.address} cover={item.cover} />
-        )}
-      />
-    </View>
-  );
-
-  const FourthRoute = () => (
-    <View useSafeArea flex>
-      <FlatList 
-        data={descending}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <FarmerSearchRow farmer={item.id} business={item.business} address={item.address} cover={item.cover} />
-        )}
-      />
-    </View>
-  );
-
-  const renderLabel = ({ route, focused, color }) => {
-    return (
-      <View>
-        <Text style={[focused ? styles.activeTabTextColor : styles.tabTextColor]}>
-          {route.title}
-        </Text>
-      </View>
-    )
-  }
-
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-    third: ThirdRoute,
-    fourth: FourthRoute,
-  });
-
-  const toggleDialog = () => {
-    setVisible(false);
-  };
 
   useEffect(() => {
     if (search.length == 0 || farmers.length == 0) {
@@ -112,7 +31,7 @@ const Farmers = () => {
     if (farmers) {
       setLoading(false);
     }
-  }, [farmers, rated, ascending, descending]);
+  }, [farmers]);
 
   if (loading) {
     return (
@@ -126,20 +45,13 @@ const Farmers = () => {
         <TextField fieldStyle={{ backgroundColor: "lightgray", borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Search for farmers and produce here" leadingAccessory={<Ionicon name="search" color={"gray"} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>
 
-      <TabView
-        style={global.bgWhite}
-        navigationState={{ index, routes }}
-        renderTabBar={(props) => (
-          <TabBar
-            {...props}
-            indicatorStyle={{ backgroundColor: "black" }}
-            style={{ backgroundColor: "white", height: 50 }}
-            renderLabel={renderLabel}
-          />
+      <FlashList 
+        data={farmers}
+        keyExtractor={(item: any) => item.id}
+        estimatedItemSize={farmers.length}
+        renderItem={({item}) => (
+          <FarmerSearchRow farmer={item.id} business={item.business} address={item.address} cover={item.cover} />
         )}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
       />
     </View>
   );

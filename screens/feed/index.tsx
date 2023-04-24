@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
+import { FlashList } from "@shopify/flash-list";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList } from "react-native";
 import { LoaderScreen, View } from "react-native-ui-lib";
 import PostCard from "../../components/feed/post-card";
 import { db } from "../../firebase";
@@ -9,7 +9,7 @@ import { global } from "../../style";
 
 const Timeline = () => {
   const navigation = useNavigation<any>();
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,6 +20,7 @@ const Timeline = () => {
 
   useEffect(() => {
     if (posts) {
+      console.log(posts.length);
       setLoading(false);
     }
   }, [posts]);
@@ -38,13 +39,13 @@ const Timeline = () => {
   
   return (
     <View useSafeArea flex style={global.bgWhite}>
-      <FlatList 
+      <FlashList 
         data={posts}
-        keyExtractor={item => item.id}
+        keyExtractor={(item: any) => item.id}
         renderItem={({item}) => (
           <PostCard id={item.id} business={item.business} address={item.address} title={item.title} description={item.description} image={item.image} />
         )}
-        contentContainerStyle={[global.container]}
+        contentContainerStyle={global.container}
       />
     </View>
   )

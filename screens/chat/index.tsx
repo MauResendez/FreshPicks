@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
+import { FlashList } from "@shopify/flash-list";
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList } from "react-native";
 import { Button, LoaderScreen, Text, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import ChatRow from "../../components/chat/chat-row";
@@ -65,9 +65,10 @@ const Chat = () => {
 
   return (
     <View useSafeArea flex>
-      <FlatList 
+      <FlashList 
         data={chats}
-        keyExtractor={item => item.id}
+        keyExtractor={(item: any) => item.id}
+        estimatedItemSize={chats.length}
         renderItem={({item}) => (
           <ChatRow id={item.id} />
           // <ChatRow chat={item.id} cover={item.cover} title={item.farmer?.name} subtitle={item.messages?.length === 0 ? "No messages" : `${item.messages[0]?.user.name === auth.currentUser.displayName ? "You" : item.messages[0]?.user.name}: ${item.messages[0]?.text}`} />

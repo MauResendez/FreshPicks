@@ -1,5 +1,5 @@
-import React from 'react'
-import { Colors, ListItem, Text } from 'react-native-ui-lib'
+import React, { memo } from 'react';
+import { Colors, ListItem, Text } from 'react-native-ui-lib';
 
 const ProductRow = ({ image, title, price, quantity, onPress }) => {
 	return (
@@ -17,4 +17,4 @@ const ProductRow = ({ image, title, price, quantity, onPress }) => {
 	)
 }
 
-export default ProductRow
+export default memo(ProductRow);

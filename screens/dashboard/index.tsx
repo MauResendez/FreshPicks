@@ -2,12 +2,13 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useLayoutEffect, useState } from "react";
 import { useWindowDimensions } from "react-native";
 // import { PieChart } from "react-native-gifted-charts";
-import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { Colors, Picker, Text, View } from "react-native-ui-lib";
+import { SceneMap } from "react-native-tab-view";
+import { Colors, Picker, TabController, Text, View } from "react-native-ui-lib";
 import { global } from "../../style";
 
 const Dashboard = () => {
   const navigation = useNavigation<any>();
+  const parent = navigation.getParent("MainDrawer");
   const data = [ {value:50}, {value:80}, {value:90}, {value:70} ];
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
@@ -26,14 +27,14 @@ const Dashboard = () => {
             value={data[0]}
             placeholder={'Listing Type'}
             placeholderTextColor={Colors.black}
-            style={global.input} 
+            style={[global.input, { marginBottom: -16 }]}
             migrate 
             useSafeArea={true} 
             topBarProps={{ title: 'Listing Types' }} 
             migrateTextField           
           >  
             {data.map((type) => (   
-              <Picker.Item key={type.value} value={type.value} />
+              <Picker.Item key={type.value} value={type.value} label={type.value.toString()} />
             ))}
           </Picker>
         </View>
@@ -66,15 +67,15 @@ const Dashboard = () => {
           <Picker  
             value={data[0]}
             placeholder={'Month'}
-            style={global.input} 
+            style={[global.input, { marginBottom: -16 }]}
             migrate 
             useSafeArea={true} 
             topBarProps={{ title: 'Month' }} 
             migrateTextField           
           >  
             {data.map((type) => (   
-              <Picker.Item key={type.value} value={type.value} />
-            ))}
+              <Picker.Item key={type.value} value={type.value} label={type.value.toString()} />
+              ))}
           </Picker>
         </View>
         {/* <PieChart 
@@ -112,13 +113,13 @@ const Dashboard = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerShown: false
+      headerShown: false,
     });
   }, []);
 
   return (
     <View useSafeArea flex>
-      <TabView
+      {/* <TabView
         style={global.bgWhite}
         navigationState={{ index, routes }}
         renderTabBar={(props) => (
@@ -132,9 +133,14 @@ const Dashboard = () => {
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
-      />
-      
-      
+      /> */}
+      <TabController items={[{label: 'Categories'}, {label: 'Products'}]}>  
+        <TabController.TabBar spreadItems indicatorStyle={global.activeTabTextColor} />  
+        <View flex style={global.bgWhite}>    
+          <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
+          <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
+        </View>
+      </TabController>
     </View>
   );
 }

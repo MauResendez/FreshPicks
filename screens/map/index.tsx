@@ -1,9 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
+import { FlashList } from "@shopify/flash-list";
 import * as Linking from 'expo-linking';
 import * as Location from "expo-location";
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, Image, Platform, StyleSheet } from "react-native";
+import { Image, Platform, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { LoaderScreen, View } from "react-native-ui-lib";
 import MapRow from "../../components/map/map-row";
@@ -105,9 +106,10 @@ const Map = () => {
         </MapView>
       </View>
       <View style={styles.farmers}>
-        <FlatList 
+        <FlashList 
           data={farmers}
-          keyExtractor={item => item.id}
+          keyExtractor={(item: any) => item.id}
+          estimatedItemSize={farmers.length}
           renderItem={({item}) => (
             <MapRow farmer={item.id} cover={item.cover} business={item.business} name={item.name} address={item.address} onPress={navigateToFarmer} />
           )}

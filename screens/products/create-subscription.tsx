@@ -144,14 +144,9 @@ const CreateSubscription = () => {
         <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
           <KeyboardAvoidingView style={global.container} behavior={Platform.OS == "ios" ? "padding" : "height"}>
             <View style={global.field}>
-              <Text title>Create Subscription</Text>
-            </View>
-
-            <View style={global.field}>
               <Text subtitle>Subscription Title</Text>
               <TextField
                 style={global.input}
-                placeholder="Enter the subscription title here"
                 onChangeText={(value) => setTitle(value)}
                 migrate
               />
@@ -161,7 +156,6 @@ const CreateSubscription = () => {
               <Text style={global.subtitle}>Subscription Description</Text>
               <TextField
                 style={global.textArea}
-                placeholder="Enter the subscription description here"
                 multiline
                 maxLength={100}
                 onChangeText={(value) => setDescription(value)}
@@ -183,7 +177,6 @@ const CreateSubscription = () => {
               <Text style={global.subtitle}>Subscription Price</Text>
               <TextField
                 style={global.input}
-                placeholder="Enter the price amount here"
                 keyboardType="numeric"
                 onChangeText={(value) => setPrice(Number(value))}
                 migrate
@@ -194,9 +187,8 @@ const CreateSubscription = () => {
               <Text style={global.subtitle}>Subscription Type</Text>
               <Picker  
                 value={subscriptionType}
-                placeholder={'Subscription Type'}
                 onChange={(value) => setSubscriptionType(value)}
-                style={global.input} 
+                style={[global.input, { marginBottom: -16 }]}
                 migrate 
                 useSafeArea={true} 
                 topBarProps={{ title: 'Subscription Types' }} 

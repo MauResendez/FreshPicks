@@ -86,7 +86,7 @@ const MainDrawer = () => {
 
           return {
             drawerIcon: ({ color }) => (
-              <MCIcon name="message" size={24} color={Colors.white} />
+              <MCIcon name="chat" size={24} color={Colors.white} />
             ),
             headerShown: current != "Index" ? false : true,
             swipeEnabled: current != "Index" ? false : true,

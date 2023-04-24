@@ -223,6 +223,15 @@ export const global = StyleSheet.create({
     lineHeight: 28,
     textAlign: "center"
   },
+  fab: {
+    bottom: 16,
+    right: 16,
+    backgroundColor: '#32CD32',
+    padding: 16,
+    width: 64,
+    height: 64,
+    position: 'absolute'
+  },
   link: {
     color: "black",
     fontSize: 16,

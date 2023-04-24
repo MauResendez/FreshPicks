@@ -234,7 +234,7 @@ const EditSubscription = ({ route }) => {
                 value={subscriptionType}
                 placeholder={'Subscription Type'}
                 onChange={(value) => setSubscriptionType(value)}
-                style={global.input} 
+                style={[global.input, { marginBottom: -16 }]}
                 migrate 
                 useSafeArea={true} 
                 topBarProps={{ title: 'Subscription Types' }} 

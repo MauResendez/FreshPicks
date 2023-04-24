@@ -7,12 +7,14 @@ import Role from "../../screens/auth/role";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { StatusBar } from "expo-status-bar";
 
 const Stack = createStackNavigator();
 
 const AuthStack = () => {
   return (
     <NavigationContainer>
+      <StatusBar style={"auto"} animated />
       <Stack.Navigator initialRouteName="Landing" screenOptions={{ headerShown: true }}>
         <Stack.Screen name="Landing" component={Landing} />
         <Stack.Screen name="Login" component={Login} />

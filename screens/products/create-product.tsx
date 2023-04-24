@@ -9,13 +9,30 @@ import { Button, NumberInput, Picker, Text, TextField, View } from "react-native
 import { auth, db } from "../../firebase"
 import { global } from "../../style"
 
-const CreateTransaction = () => {
+const CreateProduct = () => {
   const navigation = useNavigation<any>();
   const types = [
-    {label: "Expense", value: "Expense"},
-    {label: "Revenue", value: "Revenue"},
+    {label: "Fruits", value: "Fruits"},
+    {label: "Vegetables", value: "Vegetables"},
+    {label: "Dairy", value: "Dairy"},
+    {label: "Meat", value: "Meat"},
+    {label: "Deli", value: "Deli"},
+    {label: "Bakery", value: "Bakery"},
+    {label: "Frozen", value: "Frozen"},
+    {label: "Other", value: "Other"},
   ]
+  const amounts = [
+    {label: 'Each', value: 'Each'},
+    {label: 'LB', value: 'LB'},
+    {label: 'Bunch', value: 'Bunch'},
+  ]
+  const [title, setTitle] = useState<any>(null);
+  const [description, setDescription] = useState<any>(null);
   const [image, setImage] = useState<any>(null);
+  const [price, setPrice] = useState<any>(0);
+  const [type, setType] = useState<any>(types[0]);
+  const [quantity, setQuantity] = useState<any>(null);
+  const [amount, setAmount] = useState<any>(amounts[0]);
 
   const compress = async (uri: string) => {
     const manipulatedImage = await ImageManipulator.manipulateAsync(uri, [{ resize: { width: 300, height: 150 }}], { compress: 0.5 });
@@ -74,7 +91,7 @@ const CreateTransaction = () => {
   //   });
   // };
 
-    await addDoc(collection(db, "Transactions"), values).then(() => {
+    await addDoc(collection(db, "Products"), values).then(() => {
       console.log("Data saved!");
       navigation.navigate("Index");
     }).catch((error) => {
@@ -94,31 +111,14 @@ const CreateTransaction = () => {
   return (
     <View useSafeArea flex>
       <ScrollView style={global.flex}>
-        <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
+        <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
           <KeyboardAvoidingView style={global.container} behavior={Platform.OS == "ios" ? "padding" : "height"}>
             <Formik
-              initialValues={{ user: auth.currentUser.uid, title: '', vendor: '', type: '', price: 0.00, product: '', category: '', notes: '', date: new Date() }}
+              initialValues={{ user: auth.currentUser.uid, title: '', description: '', type: '', amount: '', price: 5.00, quantity: 1 }}
               onSubmit={onSubmit}
             >
               {({ handleChange, handleBlur, handleSubmit, values }) => (
-                <View flex>
-                  <View style={global.field}>
-                    <Text subtitle>Type</Text>
-                    <Picker  
-                      value={values.type}
-                      style={[global.input, { marginBottom: -16 }]}
-                      placeholder={'Type'}
-                      onChange={handleChange('type')}
-                      onBlur={handleBlur('type')}
-                      useSafeArea={true} 
-                      topBarProps={{ title: 'Type' }} 
-                    >  
-                      {types.map((type) => (   
-                        <Picker.Item key={type.value} value={type.value} label={type.label} />
-                      ))}
-                    </Picker>
-                  </View>
-
+                <View>
                   <View style={global.field}>
                     <Text subtitle>Title</Text>
                     <TextField
@@ -130,44 +130,73 @@ const CreateTransaction = () => {
                     />
                   </View>
 
-									<View style={global.field}>
-                    {values.type == 'Expense' 
-                      ? <Text subtitle>Vendor Name</Text>
-                      : <Text subtitle>Customer Name</Text>
-                    }
+                  <View style={global.field}>
+                    <Text subtitle>Description</Text>
                     <TextField
-                      style={global.input}
-                      onChangeText={handleChange('vendor')}
-                      onBlur={handleBlur('vendor')}
-                      value={values.vendor}
+                      style={global.textArea}
+                      multiline
+                      maxLength={100}
+                      onChangeText={handleChange('description')}
+                      onBlur={handleBlur('description')}
+                      value={values.description}
                       migrate
                     />
                   </View>
 
-									<View style={global.field}>
+                  <View style={global.field}>
+                    <Text subtitle>Type</Text>
+                    <Picker  
+                      value={values.type}
+                      style={[global.input, { marginBottom: -16 }]}
+                      onChange={handleChange('type')}
+                      onBlur={handleBlur('type')}
+                      useSafeArea={true} 
+                      topBarProps={{ title: 'Type' }} 
+                      customPickerProps={{ padding: 64, margin: 64 }}
+                    >  
+                      {types.map((type) => (   
+                        <Picker.Item key={type.value} value={type.value} label={type.label} />
+                      ))}
+                    </Picker>
+                  </View>
+
+                  <View style={global.field}>
                     <Text style={global.subtitle}>Price</Text>
                     <NumberInput
                       initialNumber={values.price}
                       style={global.input}
-                      placeholder="Enter the price here"
                       onChangeNumber={() => handleChange('price')}
                       fractionDigits={2}
                       migrate
                     />
                   </View>
 
-									<View style={global.field}>
-                    <Text subtitle>Notes</Text>
-                    <TextField
-                      style={global.textArea}
-                      multiline
-                      maxLength={100}
-                      onChangeText={handleChange('notes')}
-                      onBlur={handleBlur('notes')}
-                      value={values.notes}
+                  <View style={global.field}>
+                    <Text style={global.subtitle}>Amount</Text>
+                    <Picker 
+                      value={values.amount} 
+                      style={[global.input, { marginBottom: -16 }]}
+                      onChange={handleChange('amount')}
+                      onBlur={handleBlur('amount')}
+                      useSafeArea={true} 
+                      topBarProps={{ title: 'Amount' }} 
+                      customPickerProps={{ padding: 0, margin: 0 }}
+                    >  
+                      {amounts.map((type) => (   
+                        <Picker.Item key={type.value} value={type.value} label={type.label} />
+                      ))}
+                    </Picker>
+                  </View>
+
+                  <View style={global.field}>
+                    <Text style={global.subtitle}>Quantity</Text>
+                    <NumberInput
+                      initialNumber={values.quantity}
+                      style={global.input}
+                      onChangeNumber={() => handleChange('quantity')}
                       migrate
                     />
-                  </View>
+                  </View> 
 
                   {/* <View style={global.field}>
                     <Text style={global.subtitle}>Listing Image</Text>
@@ -185,8 +214,6 @@ const CreateTransaction = () => {
                     </TouchableOpacity>
                   </View> */}
 
-                  <View flexG />
-
                   <Button onPress={handleSubmit} title="Submit" />
                 </View>
               )}
@@ -198,4 +225,4 @@ const CreateTransaction = () => {
   );
 }
 
-export default CreateTransaction
+export default CreateProduct

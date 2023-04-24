@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
+import { FlashList } from "@shopify/flash-list";
 import React from "react";
-import { FlatList, Platform, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Text, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import ProductCard from "./product-card";
@@ -8,7 +9,6 @@ import ProductCard from "./product-card";
 const ProductList = ({ title, description, products }) => {
   const navigation = useNavigation<any>();
   const handlePress = (user) => {
-    console.log("SFLDJFKLdjk");
     navigation.navigate("Profile", {
       id: user
     });
@@ -23,15 +23,13 @@ const ProductList = ({ title, description, products }) => {
 
       <Text style={styles.description}>{description}</Text>
 
-      <FlatList 
+      <FlashList 
         data={products}
-        keyExtractor={item => item.id}
+        keyExtractor={(item: any) => item.id}
         horizontal
-        contentContainerStyle={{
-          paddingHorizontal: 15,
-        }}
-        showsHorizontalScrollIndicator={Platform.OS == "web"}
-        style={styles.body}
+        contentContainerStyle={{ padding: 15 }}
+        showsHorizontalScrollIndicator={false}
+        estimatedItemSize={products.length}
         renderItem={({item}) => (
           <ProductCard
             key={item?.id}

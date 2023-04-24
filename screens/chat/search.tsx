@@ -1,5 +1,4 @@
-import { FlatList } from "react-native";
-
+import { FlashList } from "@shopify/flash-list";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -51,9 +50,10 @@ const Orders = () => {
         <TextField fieldStyle={{ backgroundColor: "lightgray", borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Search for Farmers" leadingAccessory={<Ionicon name="search" color={"gray"} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>
       
-      <FlatList 
+      <FlashList 
         data={farmers}
-        keyExtractor={item => item.id}
+        keyExtractor={(item: any) => item.id}
+        estimatedItemSize={farmers.length}
         renderItem={({item}) => (
           <SearchRow farmer={item.id} cover={item.cover} business={item.business} name={item.name} address={item.address} />
         )}

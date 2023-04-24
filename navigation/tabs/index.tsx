@@ -8,8 +8,6 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 
 import { Colors, LoaderScreen } from "react-native-ui-lib";
-import Transactions from "../../screens/transactions";
-import AccountStack from "../stack/account-stack";
 import DashboardStack from "../stack/dashboard-stack";
 import FeedStack from "../stack/feed-stack";
 import HistoryStack from "../stack/history-stack";
@@ -18,6 +16,8 @@ import MapStack from "../stack/map-stack";
 import MeetingStack from "../stack/meeting-stack";
 import ProductStack from "../stack/product-stack";
 import SearchStack from "../stack/search-stack";
+import SettingStack from "../stack/setting-stack";
+import TransactionStack from "../stack/transaction-stack";
 
 const Tab = createBottomTabNavigator();
 
@@ -96,7 +96,7 @@ const MainTabs = () => {
       />
       <Tab.Screen
         name={user?.role ? "Transactions" : "Map"}
-        component={user?.role ? Transactions : MapStack}
+        component={user?.role ? TransactionStack : MapStack}
         options={({ route }) => {
           let routeName = user?.role ? "Transactions" : "Map";
           const current = getFocusedRouteNameFromRoute(route) ?? "Index";
@@ -139,16 +139,16 @@ const MainTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Account"
-        component={AccountStack}
+        name="Settings"
+        component={SettingStack}
         options={({ route }) => {
           const current = getFocusedRouteNameFromRoute(route) ?? "Index";
           
           return {
             tabBarIcon: ({ color }) => (
-              <MCIcon name="account" size={24} color={color} />
+              <MCIcon name="cog" size={24} color={color} />
             ),
-            tabBarLabel: "Account",
+            tabBarLabel: "Settings",
             tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
             swipeEnabled: current != "Index" ? false : true,

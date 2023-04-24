@@ -1,12 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useLayoutEffect, useState } from 'react';
-import { Alert, StyleSheet, useWindowDimensions } from 'react-native';
-import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
-import { ActionSheet, Button, Text, View } from 'react-native-ui-lib';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { StyleSheet, useWindowDimensions } from 'react-native';
+import { Button, TabController, Text, View } from 'react-native-ui-lib';
+import { auth, db } from '../../firebase';
 import { global } from '../../style';
 
 const Transactions = () => {
   const navigation = useNavigation<any>();
+  const parent = navigation.getParent("MainDrawer");
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
@@ -14,10 +16,10 @@ const Transactions = () => {
     { key: "second", title: "Revenue" },
     { key: "third", title: "Expenses" },
   ]);
+  const [products, setProducts] = useState([]);
 
   const FirstRoute = () => (
     <View useSafeArea flex>
-
     </View>
   );
 
@@ -28,7 +30,6 @@ const Transactions = () => {
 
 	const ThirdRoute = () => (
     <View useSafeArea flex>
-
     </View>
   );
 
@@ -39,12 +40,12 @@ const Transactions = () => {
       </Text>
     );
   };
-
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-		third: ThirdRoute
-  });
+  
+  useEffect(() => {
+    onSnapshot(query(collection(db, "Products"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
+      setProducts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+    });
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -54,7 +55,7 @@ const Transactions = () => {
 	
 	return (
 		<View useSafeArea flex style={global.bgWhite}>
-      <TabView
+      {/* <TabView
         style={global.bgWhite}
         navigationState={{ index, routes }}
         renderTabBar={(props) => (
@@ -68,28 +69,21 @@ const Transactions = () => {
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
-      />
-      <ActionSheet 
-        title={'What transaction would you like to save?'}
-        message={'Message goes here'} 
-        visible={true}
-        containerStyle={{ height: 256 }}
-        dialogStyle={{ borderRadius: 8 }}
-        cancelButtonIndex={3} 
-        destructiveButtonIndex={0} 
-        options={[{label: 'Expense'},  {label: 'Revenue'},  {label: 'Cancel', onPress: () => console.log('cancel')}]}
-      />
+      /> */}
+      <TabController items={[{label: 'All'}, {label: 'Revenue'}, {label: 'Expenses'}]}>  
+        <TabController.TabBar spreadItems indicatorStyle={global.activeTabTextColor} />  
+        <View flex>    
+          <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
+          <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
+          <TabController.TabPage index={2} lazy>{ThirdRoute()}</TabController.TabPage>  
+        </View>
+      </TabController>
       <Button 
         style={{ width: 64, height: 64, margin: 16, display: "absolute" }} 
         round 
         animateLayout 
         animateTo={'right'} 
-        onPress={() => Alert.alert("Create", "What would you like to create?", [
-          {text: 'Listing', onPress: () => navigation.navigate("Create Listing")},
-          {text: 'Subscription', onPress: () => navigation.navigate("Create Subscription")},
-          {text: 'Post', onPress: () => navigation.navigate("Create Post")},
-          {text: 'Cancel', style: 'cancel'},
-        ])} 
+        onPress={() => navigation.navigate("Create Transaction")} 
         backgroundColor="#32CD32" 
         // iconSource={() => <Ionicon name="create" color="white" size={24} />} 
       />

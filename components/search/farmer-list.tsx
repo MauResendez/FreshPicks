@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
+import { FlashList } from "@shopify/flash-list";
 import React from "react";
-import { FlatList, Platform, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Text, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import FarmerCard from "./farmer-card";
@@ -17,15 +18,13 @@ const FarmerList = ({ title, description, farmers }) => {
 
       <Text style={styles.description}>{description}</Text>
 
-      <FlatList 
+      <FlashList 
         data={farmers}
-        keyExtractor={item => item.id}
+        keyExtractor={(item: any) => item.id}
         horizontal
-        contentContainerStyle={{
-          paddingHorizontal: 15,
-        }}
-        showsHorizontalScrollIndicator={Platform.OS == "web"}
-        style={styles.body}
+        contentContainerStyle={{ padding: 15 }}
+        showsHorizontalScrollIndicator={false}
+        estimatedItemSize={farmers.length}
         renderItem={({item}) => (
           <FarmerCard
             key={item?.id}
@@ -65,6 +64,6 @@ const styles = StyleSheet.create({
     lineHeight: 16
   },
   body: {
-    paddingTop: 16
+    paddingTop: 0
   }
 });

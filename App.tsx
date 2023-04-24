@@ -1,6 +1,5 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
-import { StatusBar } from 'expo-status-bar';
 import { onAuthStateChanged, User } from "firebase/auth";
 import React, { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
@@ -50,9 +49,6 @@ const App = () => {
   const responseListener = useRef<any>();
   const appConfig = require("./app.json");
   const projectId = appConfig?.expo?.extra?.eas?.projectId;
-  // const navigation = useNavigation<any>();
-  // const drawer = navigation.getParent("MainDrawer");
-  // const isDrawerOpen = drawer.isDrawerOpen();
   const [user, setUser] = useState<User | null>(null);
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
@@ -145,7 +141,7 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <StatusBar style={"auto"} animated />
+      {/* <StatusBar style={isDrawerOpen ? "light" : "auto"} animated /> */}
       {auth.currentUser ? <MainStack /> : <AuthStack />}
     </Provider>
   );

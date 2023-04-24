@@ -83,7 +83,7 @@ const Register = () => {
   };
 
   const compress = async (uri: string) => {
-    const manipulatedImage = await ImageManipulator.manipulateAsync(uri, [{ resize: { width: 300, height: 300 }}], { compress: 0.5 });
+    const manipulatedImage = await ImageManipulator.manipulateAsync(uri, [{ resize: { height: 200 }}], { compress: 0.5 });
     setCover(manipulatedImage.uri);
   };
 
@@ -437,7 +437,7 @@ const Register = () => {
             value={day}
             placeholder={'Days'}
             onChange={(value) => setDay(value)}
-            style={global.input}
+            style={[global.input, { marginBottom: -16 }]}
             useSafeArea={true} 
             topBarProps={{ title: 'Amount' }} 
           >  
