@@ -4,12 +4,19 @@ import { StatusBar } from "expo-status-bar";
 import { onAuthStateChanged, User } from "firebase/auth";
 import React, { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
-import { LoaderScreen, Typography } from "react-native-ui-lib";
+import { Typography } from "react-native-ui-lib";
 import { Provider } from "react-redux";
 import { auth } from "./firebase";
 import AuthStack from "./navigation/stack/auth-stack";
 import MainStack from "./navigation/stack/main-stack";
 import { store } from "./redux/store";
+import Splash from "./screens/splash";
+
+// ThemeManager.setComponentTheme('Wizard', (props, context) => {
+//   // const containerStyle = {width, marginLeft, paddingVertical, paddingHorizontal};
+//   const activeConfig = {color: "black", circleBackgroundColor: "#32CD32", circleColor: "black"};
+//   return {activeConfig};
+// });
 
 Typography.loadTypographies({ 
   title: {
@@ -136,7 +143,7 @@ const App = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <Splash />
     );
   }
 

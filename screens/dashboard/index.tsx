@@ -93,10 +93,16 @@ const Dashboard = () => {
 
   return (
     <View useSafeArea flex style={global.bgWhite}>
-      <TabController items={[{label: 'Categories'}, {label: 'Products'}]}>  
-        <TabController.TabBar spreadItems indicatorStyle={global.activeTabTextColor} />  
+      <TabController items={[{label: 'Categories'}, {label: 'Products'}, {label: 'Type'}]}>  
+        <TabController.TabBar 
+          indicatorInsets={0}
+          indicatorStyle={{ backgroundColor: "#32CD32", flex: 1 }} 
+          selectedLabelColor={global.activeTabTextColor.color}
+          equalSize
+        />  
         <View flex>    
           <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
+          <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
           <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
         </View>
       </TabController>

@@ -47,8 +47,6 @@ const ProductList = ({ title, description, products }) => {
   );
 };
 
-export default ProductList;
-
 const styles = StyleSheet.create({
   title: {
     paddingLeft: 16,
@@ -74,3 +72,5 @@ const styles = StyleSheet.create({
     paddingTop: 16
   }
 });
+
+export default ProductList;

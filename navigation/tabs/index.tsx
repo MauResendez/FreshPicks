@@ -57,6 +57,7 @@ const MainTabs = () => {
         tabBarActiveBackgroundColor: Colors.white,
         tabBarActiveTintColor: "#32CD32",
         tabBarInactiveTintColor: Colors.grey40,
+        unmountOnBlur: true
       }}
     >
       <Tab.Screen
@@ -75,7 +76,7 @@ const MainTabs = () => {
               />
             ),
             tabBarLabel: routeName,
-            tabBarStyle: { display: current != "Index" ? "none" : "flex" },
+            // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : false,
             swipeEnabled: current != "Index" ? false : true,
           };
@@ -97,7 +98,7 @@ const MainTabs = () => {
               />
             ),
             tabBarLabel: routeName,
-            tabBarStyle: { display: current != "Index" ? "none" : "flex" },
+            // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
             swipeEnabled: current != "Index" ? false : true,
           };
@@ -119,7 +120,7 @@ const MainTabs = () => {
               />
             ),
             tabBarLabel: routeName,
-            tabBarStyle: { display: current != "Index" ? "none" : "flex" },
+            // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
             swipeEnabled: current != "Index" ? false : true,
           };
@@ -141,7 +142,7 @@ const MainTabs = () => {
               />
             ),
             tabBarLabel: routeName,
-            tabBarStyle: { display: current != "Index" ? "none" : "flex" },
+            // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
             swipeEnabled: current != "Index" ? false : true,
           };
@@ -158,7 +159,7 @@ const MainTabs = () => {
               <MCIcon name="cog" size={24} color={color} />
             ),
             tabBarLabel: "Settings",
-            tabBarStyle: { display: current != "Index" ? "none" : "flex" },
+            // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
             swipeEnabled: current != "Index" ? false : true,
           };

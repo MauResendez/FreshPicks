@@ -6,9 +6,10 @@ import { collection, documentId, onSnapshot, query, where } from "firebase/fires
 import React, { useEffect, useState } from "react";
 import { Image, Platform, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { LoaderScreen, View } from "react-native-ui-lib";
+import { View } from "react-native-ui-lib";
 import MapRow from "../../components/map/map-row";
 import { auth, db } from "../../firebase";
+import Splash from "../splash";
 
 const Map = () => {
   const navigation = useNavigation<any>();
@@ -64,7 +65,7 @@ const Map = () => {
   
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <Splash />
     )
   }
 

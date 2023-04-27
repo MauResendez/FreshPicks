@@ -2,19 +2,18 @@ import { useNavigation } from "@react-navigation/native"
 import * as ImageManipulator from 'expo-image-manipulator'
 import * as ImagePicker from "expo-image-picker"
 import { addDoc, collection, doc, getDoc } from "firebase/firestore"
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
+import { Formik } from "formik"
 import React, { useEffect, useState } from "react"
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import Toast from "react-native-toast-message"
-import { AnimatedImage, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
-import { auth, db, storage } from "../../firebase"
+import { AnimatedImage, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
+import * as Yup from 'yup'
+import { auth, db } from "../../firebase"
 import { global } from "../../style"
 
 const CreatePost = () => {
   const navigation = useNavigation<any>();
   const [user, setUser] = useState(null);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -47,74 +46,92 @@ const CreatePost = () => {
     }
   }
   
-  const onSubmit = async () => {
-    let error = false;
+  // const onSubmit = async () => {
+  //   let error = false;
 
-    if (title.length == 0) {
-      error = true;
-      showToast("error", "Error", "Title is required");
-    }
+  //   if (title.length == 0) {
+  //     error = true;
+  //     showToast("error", "Error", "Title is required");
+  //   }
 
-    if (description.length == 0) {
-      error = true;
-      showToast("error", "Error", "Description is required");
-    }
+  //   if (description.length == 0) {
+  //     error = true;
+  //     showToast("error", "Error", "Description is required");
+  //   }
 
-    if (error) {
-      error = false;
-      return
-    }
+  //   if (error) {
+  //     error = false;
+  //     return
+  //   }
 
-    if (image) {
-      // How the image will be addressed inside the storage
-      const storage_ref = ref(storage, `images/${auth.currentUser.uid}/posts/${Date.now()}`);
+  //   if (image) {
+  //     // How the image will be addressed inside the storage
+  //     const storage_ref = ref(storage, `images/${auth.currentUser.uid}/posts/${Date.now()}`);
 
-      // Convert image to bytes
-      const img = await fetch(image);
-      const bytes = await img.blob();
+  //     // Convert image to bytes
+  //     const img = await fetch(image);
+  //     const bytes = await img.blob();
 
-      // Uploads the image bytes to the Firebase Storage
-      await uploadBytes(storage_ref, bytes).then(async () => {
-        // We retrieve the URL of where the image is located at
-        await getDownloadURL(storage_ref).then(async (image) => {
-          // Then we create the Market with it's image on it
-          await addDoc(collection(db, "Posts"), {
-            user: auth.currentUser.uid,
-            business: user.business,
-            address: user.address,
-            title: title,
-            description: description,
-            image: image
-          })
-          .then(() => {
-            console.log("Data saved!");
-            navigation.navigate("Index");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    } else {
-      await addDoc(collection(db, "Posts"), {
-        user: auth.currentUser.uid,
-        business: user.business,
-        address: user.address,
-        title: title,
-        description: description,
-        image: image
-      })
-      .then(() => {
-        console.log("Data saved!");
-        navigation.navigate("Index");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    }
+  //     // Uploads the image bytes to the Firebase Storage
+  //     await uploadBytes(storage_ref, bytes).then(async () => {
+  //       // We retrieve the URL of where the image is located at
+  //       await getDownloadURL(storage_ref).then(async (image) => {
+  //         // Then we create the Market with it's image on it
+  //         await addDoc(collection(db, "Posts"), {
+  //           user: auth.currentUser.uid,
+  //           business: user.business,
+  //           address: user.address,
+  //           title: title,
+  //           description: description,
+  //           image: image
+  //         })
+  //         .then(() => {
+  //           console.log("Data saved!");
+  //           navigation.navigate("Index");
+  //         })
+  //         .catch((error) => {
+  //           console.log(error);
+  //         });
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  //   } else {
+  //     await addDoc(collection(db, "Posts"), {
+  //       user: auth.currentUser.uid,
+  //       business: user.business,
+  //       address: user.address,
+  //       title: title,
+  //       description: description,
+  //       image: image
+  //     })
+  //     .then(() => {
+  //       console.log("Data saved!");
+  //       navigation.navigate("Index");
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  //   }
+  // };
+
+  const onSubmit = async (values) => {
+    await addDoc(collection(db, "Posts"), {
+      user: auth.currentUser.uid,
+      business: user.business,
+      address: user.address,
+      title: values.title,
+      description: values.description,
+      image: image
+    })
+    .then(() => {
+      console.log("Data saved!");
+      navigation.navigate("Index");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   };
 
   const showToast = (type, title, message) => {
@@ -144,59 +161,70 @@ const CreatePost = () => {
     )
   }
 
+  const validate = Yup.object().shape({
+    title: Yup.string().required('Title is required'),
+    description: Yup.string().required('Description is required'),
+  });
+
   return (
     <View useSafeArea flex>
-      <ScrollView style={global.flex}>
-        <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-          <KeyboardAvoidingView style={global.container} behavior={Platform.OS == "ios" ? "padding" : "height"}>
-            <View style={global.field}>
-              <Text title>Create Post</Text>
-            </View>
-            
-            <View style={global.field}>
-              <Text subtitle>Post Title</Text>
-              <TextField
-                style={global.input}
-                placeholder="Enter the post title here"
-                onChangeText={(value) => setTitle(value)}
-                value={title}
-                migrate
-              />
-            </View>
+      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
+        <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
+          <Formik
+            initialValues={{ user: auth.currentUser.uid, title: '', description: '' }}
+            validationSchema={validate}
+            onSubmit={onSubmit}
+          >
+            {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
+              <View flex>                
+                <View style={global.field}>
+                  <Text subtitle>Title</Text>
+                  <TextField
+                    style={global.input}
+                    onChangeText={handleChange('title')}
+                    onBlur={handleBlur('title')}
+                    value={values.title}
+                    migrate
+                  />
+                </View>
+                {errors.title && touched.title && <Text style={{ color: Colors.red30}}>{errors.title}</Text>}
 
-            <View style={global.field}>
-              <Text style={global.subtitle}>Post Description</Text>
-              <TextField
-                style={global.textArea}
-                placeholder="Enter the post description here"
-                multiline
-                maxLength={100}
-                onChangeText={(value) => setDescription(value)}
-                value={description}
-                migrate
-              />
-            </View>
+                <View style={global.field}>
+                  <Text subtitle>Description</Text>
+                  <TextField
+                    style={global.textArea}
+                    multiline
+                    maxLength={100}
+                    onChangeText={handleChange('description')}
+                    onBlur={handleBlur('description')}
+                    value={values.description}
+                    migrate
+                  />
+                </View>
+                {errors.description && touched.description && <Text style={{ color: Colors.red30}}>{errors.description}</Text>}
 
-            <View style={global.field}>
-              <Text style={global.subtitle}>Listing Image</Text>
-              <TouchableOpacity onPress={gallery}>
-                {!image
-                  ? <AnimatedImage style={{ width: "100%", height: 200 }} source={require("../../assets/image.png")} />
-                  : <AnimatedImage style={{ width: "100%", height: 200 }} source={{ uri: image }} />
-                }
-              </TouchableOpacity>
-            </View>
+                <View style={global.field}>
+                  <Text subtitle>Image</Text>
+                  <TouchableOpacity onPress={gallery}>
+                    {!image
+                      ? <AnimatedImage style={{ width: "100%", height: 200 }} source={require("../../assets/image.png")} />
+                      : <AnimatedImage style={{ width: "100%", height: 200 }} source={{ uri: image }} />
+                    }
+                  </TouchableOpacity>
+                </View>
 
-            <View flexG />
+                <View flexG />
 
-            <View style={global.field}>
-              <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={onSubmit}>
-                <Text style={[global.btnText, global.white]}>Create Post</Text>
-              </TouchableOpacity>
-            </View>
-          </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
-      </ScrollView>
+                <View style={global.field}>
+                  <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={() => handleSubmit()}>
+                    <Text style={[global.btnText, global.white]}>Create Post</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          </Formik>
+        </KeyboardAwareScrollView>
+      </TouchableWithoutFeedback>
     </View>
   )
 }

@@ -40,8 +40,6 @@ const FarmerList = ({ title, description, farmers }) => {
   );
 };
 
-export default FarmerList;
-
 const styles = StyleSheet.create({
   title: {
     paddingLeft: 16,
@@ -67,3 +65,5 @@ const styles = StyleSheet.create({
     paddingTop: 0
   }
 });
+
+export default FarmerList;

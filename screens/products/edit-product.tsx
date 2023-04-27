@@ -4,8 +4,9 @@ import * as ImagePicker from "expo-image-picker"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { Formik } from 'formik'
 import React, { useEffect, useState } from "react"
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback } from "react-native"
-import { Button, LoaderScreen, NumberInput, Picker, Text, TextField, View } from "react-native-ui-lib"
+import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { Colors, KeyboardAwareScrollView, LoaderScreen, NumberInput, Picker, Text, TextField, View } from "react-native-ui-lib"
+import * as Yup from 'yup'
 import { db } from "../../firebase"
 import { global } from "../../style"
 
@@ -35,8 +36,6 @@ const EditProduct = ({ route }) => {
   ]
 
   const [image, setImage] = useState<any>(null);
-  const [initialValues, setInitialValues] = useState<boolean>(false);
-
   const [loading, setLoading] = useState<boolean>(false);
 
 
@@ -70,6 +69,8 @@ const EditProduct = ({ route }) => {
   }
 
   const onSubmit = async (values) => {
+    console.log(values);
+    
     await updateDoc(doc(db, "Products", route.params.id), values).then(() => {
       console.log("Data saved!");
       navigation.navigate("Index");
@@ -99,121 +100,138 @@ const EditProduct = ({ route }) => {
       <LoaderScreen color={"#32CD32"} />
     )
   }
+
+  const validate = Yup.object().shape({
+    title: Yup.string().required('Title is required'),
+    description: Yup.string().required('Description is required'),
+    type: Yup.string().required('Type is required'),
+    amount: Yup.string().required('Amount is required'),
+    price: Yup.number().required('Price is required'),
+    quantity: Yup.string().required('Quantity is required')
+  });
   
   return (
     <View useSafeArea flex>
-      <ScrollView style={global.flex}>
-        <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-          <KeyboardAvoidingView style={global.container} behavior={Platform.OS == "ios" ? "padding" : "height"}>
-            <Formik 
-              initialValues={product || { user: "", title: "", description: "", amount: "", price: "", quantity: "" }} 
-              onSubmit={onSubmit}
-              enableReinitialize={true}
-            >
-              {({ handleChange, handleBlur, handleSubmit, values }) => (
-                <View>
-                  <View style={global.field}>
-                    <Text subtitle>Title</Text>
-                    <TextField
-                      style={global.input}
-                      onChangeText={handleChange('title')}
-                      onBlur={handleBlur('title')}
-                      value={values.title}
-                      migrate
-                    />
-                  </View>
-
-                  <View style={global.field}>
-                    <Text subtitle>Description</Text>
-                    <TextField
-                      style={global.textArea}
-                      multiline
-                      maxLength={100}
-                      onChangeText={handleChange('description')}
-                      onBlur={handleBlur('description')}
-                      value={values.description}
-                      migrate
-                    />
-                  </View>
-
-                  <View style={global.field}>
-                    <Text subtitle>Type</Text>
-                    <Picker  
-                      value={values.type}
-                      style={[global.input, { marginBottom: -16 }]}
-                      onChange={handleChange('type')}
-                      onBlur={handleBlur('type')}
-                      useSafeArea={true} 
-                      topBarProps={{ title: 'Type' }} 
-                      customPickerProps={{ padding: 64, margin: 64 }}
-                    >  
-                      {types.map((type) => (   
-                        <Picker.Item key={type.value} value={type.value} label={type.label} />
-                      ))}
-                    </Picker>
-                  </View>
-
-                  <View style={global.field}>
-                    <Text style={global.subtitle}>Price</Text>
-                    <NumberInput
-                      initialNumber={values.price}
-                      style={global.input}
-                      onChangeNumber={() => handleChange('price')}
-                      fractionDigits={2}
-                      migrate
-                    />
-                  </View>
-
-                  <View style={global.field}>
-                    <Text style={global.subtitle}>Amount</Text>
-                    <Picker 
-                      value={values.amount} 
-                      style={[global.input, { marginBottom: -16 }]}
-                      onChange={handleChange('amount')}
-                      onBlur={handleBlur('amount')}
-                      useSafeArea={true} 
-                      topBarProps={{ title: 'Amount' }} 
-                      customPickerProps={{ padding: 0, margin: 0 }}
-                    >  
-                      {amounts.map((type) => (   
-                        <Picker.Item key={type.value} value={type.value} label={type.label} />
-                      ))}
-                    </Picker>
-                  </View>
-
-                  <View style={global.field}>
-                    <Text style={global.subtitle}>Quantity</Text>
-                    <NumberInput
-                      initialNumber={values.quantity}
-                      style={global.input}
-                      onChangeNumber={() => handleChange('quantity')}
-                      migrate
-                    />
-                  </View> 
-
-                  {/* <View style={global.field}>
-                    <Text style={global.subtitle}>Listing Image</Text>
-                    <TouchableOpacity onPress={gallery}>
-                      {!image
-                        ? <AnimatedImage style={{ width: "100%", height: 200 }} source={require("../../assets/image.png")} />
-                        : <AnimatedImage style={{ width: "100%", height: 200 }} source={{ uri: image }} />
-                      }
-                    </TouchableOpacity>
-                  </View> */}
-
-                  {/* <View style={global.field}>
-                    <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={() => handleSubmit}>
-                      <Text style={[global.btnText, global.white]}>Create Product</Text>
-                    </TouchableOpacity>
-                  </View> */}
-
-                  <Button onPress={handleSubmit} title="Submit" />
+      <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
+        <KeyboardAwareScrollView style={global.container}>
+          <Formik 
+            initialValues={product || { user: "", title: "", description: "", amount: "", price: 1, quantity: 1 }} 
+            onSubmit={onSubmit}
+            validationSchema={validate}
+            enableReinitialize={true}
+          >
+            {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
+              <View flex>
+                <View style={global.field}>
+                  <Text subtitle>Title</Text>
+                  <TextField
+                    style={global.input}
+                    onChangeText={handleChange('title')}
+                    onBlur={handleBlur('title')}
+                    value={values.title}
+                    migrate
+                  />
                 </View>
-              )}
-            </Formik>
-          </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
-      </ScrollView>
+                {errors.title && touched.title && <Text style={{ color: Colors.red30}}>{errors.title}</Text>}
+
+                <View style={global.field}>
+                  <Text subtitle>Description</Text>
+                  <TextField
+                    style={global.textArea}
+                    multiline
+                    maxLength={100}
+                    onChangeText={handleChange('description')}
+                    onBlur={handleBlur('description')}
+                    value={values.description}
+                    migrate
+                  />
+                </View>
+                {errors.description && touched.description && <Text style={{ color: Colors.red30}}>{errors.description}</Text>}
+
+                <View style={global.field}>
+                  <Text subtitle>Type</Text>
+                  <Picker  
+                    value={values.type}
+                    style={[global.input, { marginBottom: -16 }]}
+                    onChange={handleChange('type')}
+                    onBlur={handleBlur('type')}
+                    useSafeArea={true} 
+                    topBarProps={{ title: 'Type' }} 
+                    customPickerProps={{ padding: 64, margin: 64 }}
+                  >  
+                    {types.map((type) => (   
+                      <Picker.Item key={type.value} value={type.value} label={type.label} />
+                    ))}
+                  </Picker>
+                </View>
+                {errors.type && touched.type && <Text style={{ color: Colors.red30}}>{errors.type}</Text>}
+
+                <View style={global.field}>
+                  <Text subtitle>Price</Text>
+                  <NumberInput
+                    initialNumber={values.price}
+                    style={global.input}
+                    onChangeNumber={(data) => setFieldValue("price", data.number)}
+                    onBlur={handleBlur('price')}
+                    keyboardType={'numeric'}
+                    fractionDigits={2}
+                    migrate
+                  />
+                </View>
+                {errors.price && touched.price && <Text style={{ color: Colors.red30}}>{errors.price}</Text>}
+
+                <View style={global.field}>
+                  <Text subtitle>Amount</Text>
+                  <Picker 
+                    value={values.amount} 
+                    style={[global.input, { marginBottom: -16 }]}
+                    onChange={handleChange('amount')}
+                    onBlur={handleBlur('amount')}
+                    useSafeArea={true} 
+                    topBarProps={{ title: 'Amount' }} 
+                    customPickerProps={{ padding: 0, margin: 0 }}
+                  >  
+                    {amounts.map((type) => (   
+                      <Picker.Item key={type.value} value={type.value} label={type.label} />
+                    ))}
+                  </Picker>
+                </View>
+                {errors.amount && touched.amount && <Text style={{ color: Colors.red30}}>{errors.amount}</Text>}
+
+                <View style={global.field}>
+                  <Text subtitle>Quantity</Text>
+                  <NumberInput
+                    initialNumber={values.quantity}
+                    style={global.input}
+                    onChangeNumber={(data) => setFieldValue("quantity", data.number)}
+                    onBlur={handleBlur('quantity')}
+                    keyboardType={'numeric'}
+                    fractionDigits={2}
+                    migrate
+                  />
+                </View> 
+                {errors.quantity && touched.quantity && <Text style={{ color: Colors.red30}}>{errors.quantity}</Text>}
+
+                {/* <View style={global.field}>
+                  <Text subtitle>Listing Image</Text>
+                  <TouchableOpacity onPress={gallery}>
+                    {!image
+                      ? <AnimatedImage style={{ width: "100%", height: 200 }} source={require("../../assets/image.png")} />
+                      : <AnimatedImage style={{ width: "100%", height: 200 }} source={{ uri: image }} />
+                    }
+                  </TouchableOpacity>
+                </View> */}
+
+                <View style={global.field}>
+                  <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={() => handleSubmit()}>
+                    <Text style={[global.btnText, global.white]}>Edit Product</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          </Formik>
+        </KeyboardAwareScrollView>
+      </TouchableWithoutFeedback>
     </View>
   )
 }

@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { doc, getDoc } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Colors, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { db } from "../../firebase";
 import { global } from "../../style";
@@ -54,4 +54,4 @@ const HistoryRow = (meeting) => {
   )
 }
 
-export default HistoryRow
+export default memo(HistoryRow);

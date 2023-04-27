@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Colors, ListItem, Text } from 'react-native-ui-lib';
 
-const ProductRow = ({ image, title, price, quantity, onPress }) => {
+const SubscriptionRow = ({ image, title, price, onPress }) => {
 	return (
 		<ListItem
 			activeOpacity={0.3}
@@ -16,4 +16,4 @@ const ProductRow = ({ image, title, price, quantity, onPress }) => {
 	)
 }
 
-export default memo(ProductRow);
+export default memo(SubscriptionRow);

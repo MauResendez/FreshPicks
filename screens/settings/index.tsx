@@ -120,6 +120,41 @@ const Settings = () => {
         >
           <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
             <Text h2 numberOfLines={1}>
+              App
+            </Text>
+          </ListItem.Part>
+        </ListItem>
+        <ListItem
+          backgroundColor={Colors.white}
+          activeOpacity={0.3}
+          height={60}
+          onPress={share}
+        >
+          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+            <Text h3 numberOfLines={1}>
+              Report an issue
+            </Text>
+          </ListItem.Part>
+        </ListItem>
+        <ListItem
+          backgroundColor={Colors.white}
+          activeOpacity={0.3}
+          height={60}
+          onPress={share}
+        >
+          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+            <Text h3 numberOfLines={1}>
+              Share with your friends
+            </Text>
+          </ListItem.Part>
+        </ListItem>
+        <ListItem
+          activeBackgroundColor={Colors.grey60}
+          activeOpacity={0.3}
+          height={60}
+        >
+          <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
+            <Text h2 numberOfLines={1}>
               Account
             </Text>
           </ListItem.Part>
@@ -255,30 +290,6 @@ const Settings = () => {
           <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
             <Text h2 numberOfLines={1}>
               Other
-            </Text>
-          </ListItem.Part>
-        </ListItem>
-        <ListItem
-          backgroundColor={Colors.white}
-          activeOpacity={0.3}
-          height={60}
-          onPress={share}
-        >
-          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
-            <Text h3 numberOfLines={1}>
-              Report an issue
-            </Text>
-          </ListItem.Part>
-        </ListItem>
-        <ListItem
-          backgroundColor={Colors.white}
-          activeOpacity={0.3}
-          height={60}
-          onPress={share}
-        >
-          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
-            <Text h3 numberOfLines={1}>
-              Share with your friends
             </Text>
           </ListItem.Part>
         </ListItem>

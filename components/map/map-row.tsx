@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { memo } from 'react';
 import { Colors, ListItem, Text } from 'react-native-ui-lib';
 
 const MapRow = ({ farmer, cover, business, name, address, onPress }) => {
@@ -20,4 +20,4 @@ const MapRow = ({ farmer, cover, business, name, address, onPress }) => {
 	)
 }
 
-export default MapRow
+export default memo(MapRow);

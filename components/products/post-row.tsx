@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Colors, ListItem, Text } from 'react-native-ui-lib';
 
-const ProductRow = ({ image, title, price, quantity, onPress }) => {
+const PostRow = ({ image, title, description, onPress }) => {
 	return (
 		<ListItem
 			activeOpacity={0.3}
@@ -10,10 +10,10 @@ const ProductRow = ({ image, title, price, quantity, onPress }) => {
 		>
 			<ListItem.Part column>
 				<Text h2 numberOfLines={3}>{title}</Text>
-				<Text h3>Price: ${price}</Text>
+				<Text h3>{description}</Text>
 			</ListItem.Part>
 		</ListItem> 
 	)
 }
 
-export default memo(ProductRow);
+export default memo(PostRow);

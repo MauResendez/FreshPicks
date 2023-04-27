@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { addDoc, collection, doc, increment, onSnapshot, query, updateDoc, where } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 
@@ -118,4 +118,4 @@ const MeetingRow = ({ id, products, consumer, farmer, total, status, createdAt }
   );
 }
 
-export default MeetingRow
+export default memo(MeetingRow);

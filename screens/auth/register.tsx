@@ -8,7 +8,7 @@ import { PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
 import { GeoPoint, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { Alert, FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableWithoutFeedback, useWindowDimensions } from "react-native";
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import PhoneInput from 'react-native-phone-input';
 // import Toast from 'react-native-toast-message';
@@ -58,6 +58,32 @@ const Register = () => {
   const [visible, setVisible] = useState<boolean>(false);
   const [token, setToken] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  const [images, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { width } = useWindowDimensions();
+
+  const pickImages = async () => {
+    // No permissions request is necessary for launching the image library
+    setIsLoading(true);
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      // allowsEditing: true,
+      allowsMultipleSelection: true,
+      selectionLimit: 10,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    setIsLoading(false);
+    console.log(result);
+    // if (!result.canceled) {
+    //   setImages(result.assets[0].uri ? [result.assets[0].uri] : result.assets[0].);
+    // }
+
+    if (!result.canceled) {
+      setImages([result.assets[0].uri]);
+    }
+  };
 
   const checkIfUserExists = async () => {
     try {
@@ -304,8 +330,6 @@ const Register = () => {
   const PersonalInformation = () => {
     return (
       <View style={[global.container, global.spaceEvenly]}>
-        <Text title>Personal Information</Text>
-
         <View style={global.field}>
           <Text subtitle>Register as a Farmer?</Text>
           <Checkbox value={farmer} onValueChange={() => setFarmer(!farmer)} style={global.checkbox} />
@@ -378,8 +402,6 @@ const Register = () => {
   const FarmerInformation = () => {
     return (
       <View style={styles.stepContainer}>
-        <Text title>Farmer Information</Text>
-
         <View style={global.field}>
           <Text subtitle>Business Name *</Text>
           <TextField value={business} onChangeText={(value) => setBusiness(value)} style={global.input} placeholder="Enter your business" migrate validate={'required'} />
@@ -394,6 +416,27 @@ const Register = () => {
           <Text subtitle>Website</Text>
           <TextField value={website} onChangeText={(value) => setWebsite(value)} style={global.input} placeholder="Enter your website" migrate />
         </View>
+
+        <FlatList
+          data={images}
+          renderItem={({ item }) => (
+            <Image
+              source={{ uri: item.uri }}
+              style={{ width: width / 2, height: 250 }}
+            />
+          )}
+          numColumns={2}
+          keyExtractor={(item) => item.uri}
+          contentContainerStyle={{ marginVertical: 50, paddingBottom: 100 }}
+          ListHeaderComponent={
+            isLoading ? (
+              <LoaderScreen color={"#32CD32"} />
+            ) : (
+              <Button title="Pick images" onPress={pickImages} />
+            )
+          }
+        />
+
 
         {/* <View style={global.field}>
           <TouchableOpacity onPress={selectCover}>
@@ -430,8 +473,6 @@ const Register = () => {
   const FarmerSchedule = () => {
     return (
       <ScrollView style={global.flex} contentContainerStyle={styles.stepContainer}>
-        <Text title>Farmer Schedule</Text>
-
         <View row spread style={global.field}>
           <Picker  
             value={day}
@@ -553,7 +594,6 @@ const Register = () => {
         />
 
         <View>
-          <Text title>Register</Text>
           <FirebaseRecaptchaVerifierModal
             ref={recaptchaVerifier}
             firebaseConfig={app.options}
@@ -669,13 +709,13 @@ const Register = () => {
           <View flex>
             {farmer 
               ? <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
-                  <Wizard.Step state={getStepState(0)} label={'Personal Information'} />
+                  <Wizard.Step state={getStepState(0)} label={'Personal Information'} circleBackgroundColor={"#32CD32"} />
                   <Wizard.Step state={getStepState(1)} label={'Farmer Information'} />
                   <Wizard.Step state={getStepState(2)} label={'Farmer Schedule'} />
                   <Wizard.Step state={getStepState(3)} label={'Account Information'} />
                 </Wizard>
               : <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
-                  <Wizard.Step state={getStepState(0)} label={'Personal Information'} />
+                  <Wizard.Step state={getStepState(0)} label={'Personal Information'} circleBackgroundColor={"#32CD32"} />
                   <Wizard.Step state={getStepState(1)} label={'Account Information'} />
                 </Wizard>
             }

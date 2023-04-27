@@ -160,13 +160,14 @@ const Login = () => {
           >
             {({ handleChange, handleBlur, handleSubmit, values }) => (
               <View flex>
+                
+                
+                <View>
                 <Image
                   style={{ width: "auto", height: 100 }}
                   source={require("../../assets/logo.png")}
                   resizeMode="contain"
                 />
-                
-                <View>
                   <FirebaseRecaptchaVerifierModal
                     ref={recaptchaVerifier}
                     firebaseConfig={app.options}
@@ -177,7 +178,7 @@ const Login = () => {
                 </View>
 
                 <View style={global.field}>
-                  <Text style={global.subtitle}>Phone Number</Text>
+                  <Text subtitle>Phone Number</Text>
                   <PhoneInput
                     ref={phoneRef}
                     initialCountry={'us'}
@@ -196,7 +197,7 @@ const Login = () => {
                 </View>
 
                 <View style={global.field}>
-                  <Text style={global.subtitle}>Verify SMS Code</Text>
+                  <Text subtitle>Verify SMS Code</Text>
                   <OTPInputView
                     style={{width: '100%', height: 50}}
                     pinCount={6}

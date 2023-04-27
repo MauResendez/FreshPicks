@@ -42,12 +42,18 @@ const Transactions = () => {
 	return (
 		<View useSafeArea flex style={global.bgWhite}>
       <TabController items={[{label: 'All'}, {label: 'Revenue'}, {label: 'Expenses'}]}>  
-        <TabController.TabBar spreadItems indicatorStyle={global.activeTabTextColor} />  
-        <View flex>    
+        <TabController.TabBar
+          // containerStyle={{width: layout.width}}
+          // selectedLabelColor={global.activeTabTextColor.color} 
+          indicatorInsets={0} 
+          // indicatorStyle={{ backgroundColor: "#32CD32", flex: 1 }} 
+          // labelStyle={{ textAlign: "center", flexWrap: 'nowrap' }} 
+        />
+        <View flex>
           <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
           <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
-          <TabController.TabPage index={2} lazy>{ThirdRoute()}</TabController.TabPage>  
-        </View>
+          <TabController.TabPage index={2} lazy>{ThirdRoute()}</TabController.TabPage> 
+        </View>      
       </TabController>
       <Button 
         style={global.fab} 

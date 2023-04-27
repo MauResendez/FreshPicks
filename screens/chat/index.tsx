@@ -57,7 +57,7 @@ const Chat = () => {
   if (chats.length == 0) {
     return (
       <View useSafeArea flex style={[global.container, global.center, global.bgGray]}>
-        <Text style={global.subtitle}>Your inbox is empty</Text>
+        <Text subtitle>Your inbox is empty</Text>
         {!user?.role && <Button style={{ width: 64, height: 64, margin: 16 }} round animateLayout animateTo={'right'} onPress={() => navigation.navigate("Search")} backgroundColor="green" size={Button.sizes.small} iconSource={() => <Ionicon name="search" color="white" size={24} />} />}
       </View>
     )

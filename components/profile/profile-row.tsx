@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { Alert } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Colors, Image, ListItem, Stepper, Text, View } from 'react-native-ui-lib';
@@ -81,4 +81,4 @@ const ProfileRow = (product) => {
   );
 };
 
-export default ProfileRow;
+export default memo(ProfileRow);

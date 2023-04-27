@@ -7,7 +7,6 @@ import { QuickReplies, QuickRepliesProps } from "react-native-gifted-chat/lib/Qu
 import { Colors, LoaderScreen, View } from "react-native-ui-lib";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicon from "react-native-vector-icons/Ionicons";
-import Loading from "../../components/extra/loading";
 import { auth, db } from "../../firebase";
 
 const renderBubble = props => {
@@ -38,7 +37,7 @@ const renderBubble = props => {
 
 const renderLoading = () => {
   return (
-    <Loading />
+    <LoaderScreen />
   )
 }
 
@@ -160,16 +159,10 @@ const Conversation = ({ route }) => {
     }
   }, [chat]);
 
-  useEffect(() => {
-    if (consumer && farmer) {
-      setLoading(false);
-    }
-  }, [consumer, farmer]);
-
   useLayoutEffect(() => {
     if (chat && consumer && farmer) {
       navigation.setOptions({
-        headerTitle: chat.consumer == auth.currentUser.uid ? consumer.name : farmer.name,
+        headerTitle: chat?.consumer == auth.currentUser.uid ? consumer.name : farmer.name,
         headerRight: () => (
           <View row>
             <Ionicon 
@@ -185,6 +178,8 @@ const Conversation = ({ route }) => {
           </View>
         ),
       });
+
+      setLoading(false);
     }
   }, [chat, consumer, farmer]);
 
@@ -201,7 +196,7 @@ const Conversation = ({ route }) => {
         onSend={messages => onSend(messages)}
         user={{
           _id: auth.currentUser.uid,
-          name: chat.consumer == auth.currentUser.uid ? consumer.name : farmer.name,
+          name: chat?.consumer == auth.currentUser.uid ? consumer.name : farmer.name,
         }}
         // multiline={false}
         renderBubble={renderBubble}

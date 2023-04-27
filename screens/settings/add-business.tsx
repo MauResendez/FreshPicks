@@ -2,8 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import { doc, setDoc } from 'firebase/firestore';
 import _ from 'lodash';
 import React, { useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback } from "react-native";
-import { DateTimePicker, Switch, Text, TextField, Toast, TouchableOpacity, View, Wizard } from 'react-native-ui-lib';
+import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
+import { DateTimePicker, KeyboardAwareScrollView, Switch, Text, TextField, Toast, TouchableOpacity, View, Wizard } from 'react-native-ui-lib';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
 
@@ -297,17 +297,14 @@ const AddBusiness = () => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAvoidingView style={global.flex} behavior={Platform.OS == "ios" ? "padding" : "height"}>
-          <ScrollView contentContainerStyle={global.flex}>
-            <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
-              <Wizard.Step state={getStepState(0)} label={'Farmer Information'} />
-              <Wizard.Step state={getStepState(1)} label={'Farmer Schedule'} />
-              <Wizard.Step state={getStepState(2)} label={'Payment Information'} />
-            </Wizard>
-            {Current()}
-          </ScrollView>
-
-        </KeyboardAvoidingView>
+        <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
+          <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
+            <Wizard.Step state={getStepState(0)} label={'Farmer Information'} />
+            <Wizard.Step state={getStepState(1)} label={'Farmer Schedule'} />
+            <Wizard.Step state={getStepState(2)} label={'Payment Information'} />
+          </Wizard>
+          {Current()}
+        </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
       {!_.isNil(toast) && <Toast testID={'uilib.toast'} visible position="bottom" message={toast} />}
     </View>

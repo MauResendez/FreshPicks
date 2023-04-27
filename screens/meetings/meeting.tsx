@@ -8,18 +8,18 @@
 //     <ScrollView style={[global.container, global.bgGray]} contentContainerStyle={global.spaceEvenly} showsVerticalScrollIndicator={Platform.OS == "web"}>
 
 //       <View style={global.field}>
-//         <Text style={global.subtitle}>Farmer</Text>
+//         <Text subtitle>Farmer</Text>
 //         <Text>{(items[0]?.farmer.business)}</Text>
 //       </View>
 //       <View style={global.field}>
-//         <Text style={global.subtitle}>Address</Text>
+//         <Text subtitle>Address</Text>
 //         <Text>{items[0]?.farmer.address}</Text>
 //       </View>
 //       <View style={global.field}>
-//         <Text style={global.subtitle}>Options</Text>
+//         <Text subtitle>Options</Text>
 //       </View>
       
-//       <Text style={global.subtitle}>Your Items</Text>
+//       <Text subtitle>Your Items</Text>
 
 //       {/* {Object.entries(groupedItems).map(([key, items]: any) => (
 //         <CartRow

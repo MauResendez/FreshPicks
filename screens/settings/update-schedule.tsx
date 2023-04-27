@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
-import { DateTimePicker, Switch, Text, View } from 'react-native-ui-lib';
+import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { DateTimePicker, KeyboardAwareScrollView, Switch, Text, View } from 'react-native-ui-lib';
 import { global } from '../../style';
 
 const UpdateSchedule = () => {
@@ -14,10 +14,8 @@ const UpdateSchedule = () => {
 
   return (
     <View useSafeArea flex>
-      <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={global.container}>
-          <Text title>Farmer Schedule</Text>
-
+      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
+        <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
           <View style={global.field}>
             <View style={[global.row, global.spaceBetween]}>
               <Text subtitle>Monday</Text>
@@ -103,7 +101,7 @@ const UpdateSchedule = () => {
               <Text style={[global.btnText, global.white]}>Update Farmer Schedule</Text>
             </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
     </View>
   );

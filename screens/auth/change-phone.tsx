@@ -101,9 +101,8 @@ const ChangePhone = () => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <View style={[global.container, global.spaceEvenly]}>
+        <View style={[global.container, global.spaceBetween]}>
           <View>
-            <Text title>Change Phone Number</Text>
             <FirebaseRecaptchaVerifierModal
               ref={recaptchaVerifier}
               firebaseConfig={app.options}
@@ -112,7 +111,7 @@ const ChangePhone = () => {
           </View>
 
           <View style={global.field}>
-            <Text style={global.subtitle}>Phone Number</Text>
+            <Text subtitle>Phone Number</Text>
             <PhoneInput
               ref={phoneRef}
               initialCountry={'us'}
@@ -134,7 +133,7 @@ const ChangePhone = () => {
           </View>
 
           <View style={global.field}>
-            <Text style={global.subtitle}>Verify SMS Code</Text>
+            <Text subtitle>Verify SMS Code</Text>
             <OTPInputView
               style={{width: '100%', height: 50}}
               pinCount={6}

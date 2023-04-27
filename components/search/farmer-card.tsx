@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { memo } from "react";
 import { Card, Text, View } from "react-native-ui-lib";
 
 const FarmerCard = ({
@@ -35,4 +35,4 @@ const FarmerCard = ({
   );
 };
 
-export default FarmerCard;
+export default memo(FarmerCard);

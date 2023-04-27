@@ -2,9 +2,9 @@ import { useNavigation } from '@react-navigation/native';
 import { GeoPoint, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Keyboard, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { LoaderScreen, Text, TextField, View } from 'react-native-ui-lib';
+import { KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from 'react-native-ui-lib';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
 
@@ -57,11 +57,8 @@ const UpdatePersonal = () => {
 
   return (
     <View useSafeArea flex>
-      <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
-          style={global.container}
-        >
+      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
+        <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
           <Formik 
             initialValues={{ name: user.name, email: user.email, address: user.address, location: user.location } || { name: "", email: "", address: "", location: "" }} 
             onSubmit={onSubmit}
@@ -158,9 +155,7 @@ const UpdatePersonal = () => {
               </View>
             )}
           </Formik>
-
-          
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
     </View>
   )

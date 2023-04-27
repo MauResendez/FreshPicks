@@ -39,7 +39,7 @@ const Orders = () => {
   // if (farmers.length == 0) {
   //   return (
   //     <SafeAreaView style={[global.container, global.bgGray]}>
-  //       <Text style={global.subtitle}>No farmers have been made yet</Text>
+  //       <Text subtitle>No farmers have been made yet</Text>
   //     </SafeAreaView>
   //   )
   // }

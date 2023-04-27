@@ -42,7 +42,7 @@ const History = () => {
   // if (orders.length == 0) {
   //   return (
   //     <SafeAreaView style={[global.container, global.bgGray]}>
-  //       <Text style={global.subtitle}>No orders have been made yet</Text>
+  //       <Text subtitle>No orders have been made yet</Text>
   //     </SafeAreaView>
   //   )
   // }

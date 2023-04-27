@@ -230,7 +230,15 @@ export const global = StyleSheet.create({
     padding: 16,
     width: 64,
     height: 64,
-    position: 'absolute'
+    position: 'absolute',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 16,
   },
   link: {
     color: "black",

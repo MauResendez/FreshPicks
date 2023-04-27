@@ -2,8 +2,8 @@ import { useNavigation } from "@react-navigation/native"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { Formik } from "formik"
 import React, { useEffect, useState } from "react"
-import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from "react-native"
-import { Button, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
+import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
 import { auth, db } from "../../firebase"
 import { global } from "../../style"
 
@@ -43,12 +43,13 @@ const UpdateFarmer = () => {
   
   return (
     <View useSafeArea flex>
-      <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAvoidingView style={global.container} behavior={Platform.OS == "ios" ? "padding" : "height"}>
+      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
+        <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
           <Formik 
             initialValues={{ business: user.business, description: user.description, website: user.website } || { business: "", description: "", website: "" }} 
             onSubmit={onSubmit}
             enableReinitialize={true}
+            style={global.flex}
           >
             {({ handleChange, handleBlur, handleSubmit, values }) => (
               <View flex>
@@ -95,11 +96,15 @@ const UpdateFarmer = () => {
                   </TouchableOpacity>
                 </View> */}
 
-                <Button onPress={handleSubmit} title="Submit" />
+                <View style={global.field}>
+                  <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={() => handleSubmit()}>
+                    <Text style={[global.btnText, global.white]}>Create Transaction</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             )}
           </Formik>
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
     </View>
   );

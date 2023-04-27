@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { ListItem, Text } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 
@@ -73,4 +73,4 @@ const ChatRow = ({ id }) => {
   )
 }
 
-export default ChatRow
+export default memo(ChatRow);
