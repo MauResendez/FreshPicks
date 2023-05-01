@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
-import { DateTimePicker, KeyboardAwareScrollView, Switch, Text, View } from 'react-native-ui-lib';
+import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
+import { Button, Colors, DateTimePicker, KeyboardAwareScrollView, Switch, Text, View } from 'react-native-ui-lib';
 import { global } from '../../style';
 
 const UpdateSchedule = () => {
@@ -96,11 +96,14 @@ const UpdateSchedule = () => {
 
           <View flexG />
 
-          <View style={global.field}>
-            <TouchableOpacity style={[global.btn, global.bgOrange]}>
-              <Text style={[global.btnText, global.white]}>Update Farmer Schedule</Text>
-            </TouchableOpacity>
-          </View>
+          <Button 
+            backgroundColor={"#ff4500"}
+            color={Colors.white}
+            label={"Update Farmer Schedule"} 
+            labelStyle={{ fontWeight: '600', padding: 8 }} 
+            style={global.btnTest} 
+            // onPress={() => handleSubmit()}                
+          />
         </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
     </View>

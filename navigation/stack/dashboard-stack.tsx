@@ -2,10 +2,10 @@ import React from "react";
 
 import Dashboard from "../../screens/dashboard";
 
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Image } from "react-native-ui-lib";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const DashboardStack = () => {
   // const navigation = useNavigation<any>();

@@ -4,7 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { onAuthStateChanged, User } from "firebase/auth";
 import React, { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
-import { Typography } from "react-native-ui-lib";
+import { ConnectionStatusBar, ThemeManager, Typography } from "react-native-ui-lib";
 import { Provider } from "react-redux";
 import { auth } from "./firebase";
 import AuthStack from "./navigation/stack/auth-stack";
@@ -17,6 +17,12 @@ import Splash from "./screens/splash";
 //   const activeConfig = {color: "black", circleBackgroundColor: "#32CD32", circleColor: "black"};
 //   return {activeConfig};
 // });
+
+ThemeManager.setComponentTheme('Stepper', (props, context) => {
+  // const containerStyle = {width, marginLeft, paddingVertical, paddingHorizontal};
+  const config = {color: "black", backgroundColor: "#32CD32", circleColor: "black"};
+  return {config};
+});
 
 Typography.loadTypographies({ 
   title: {
@@ -150,6 +156,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <StatusBar style={"auto"} animated />
+      <ConnectionStatusBar label={"LSFKDJlj"} onConnectionChange={() => console.log('connection changed')}/>
       {auth.currentUser ? <MainStack /> : <AuthStack />}
     </Provider>
   );

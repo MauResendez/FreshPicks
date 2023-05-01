@@ -9,6 +9,7 @@ const Dashboard = () => {
   const navigation = useNavigation<any>();
   const data = [ {value:50}, {value:80}, {value:90}, {value:70} ];
   const layout = useWindowDimensions();
+  const width = layout.width/3;
 
   const FirstRoute = () => (
     <View useSafeArea flex>
@@ -93,16 +94,15 @@ const Dashboard = () => {
 
   return (
     <View useSafeArea flex style={global.bgWhite}>
-      <TabController items={[{label: 'Categories'}, {label: 'Products'}, {label: 'Type'}]}>  
+      <TabController items={[{label: 'Categories'}, {label: 'Products'}]}>  
         <TabController.TabBar 
           indicatorInsets={0}
-          indicatorStyle={{ backgroundColor: "#32CD32", flex: 1 }} 
+          indicatorStyle={{ backgroundColor: "#32CD32" }} 
           selectedLabelColor={global.activeTabTextColor.color}
-          equalSize
+          labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
         />  
         <View flex>    
           <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
-          <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
           <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
         </View>
       </TabController>

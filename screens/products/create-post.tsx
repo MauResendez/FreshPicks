@@ -6,7 +6,7 @@ import { Formik } from "formik"
 import React, { useEffect, useState } from "react"
 import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import Toast from "react-native-toast-message"
-import { AnimatedImage, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
+import { AnimatedImage, Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
 import * as Yup from 'yup'
 import { auth, db } from "../../firebase"
 import { global } from "../../style"
@@ -215,11 +215,14 @@ const CreatePost = () => {
 
                 <View flexG />
 
-                <View style={global.field}>
-                  <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={() => handleSubmit()}>
-                    <Text style={[global.btnText, global.white]}>Create Post</Text>
-                  </TouchableOpacity>
-                </View>
+                <Button 
+                  backgroundColor={"#ff4500"}
+                  color={Colors.white}
+                  label={"Create Post"} 
+                  labelStyle={{ fontWeight: '600', padding: 8 }} 
+                  style={global.btnTest} 
+                  onPress={() => handleSubmit()}                
+                />
               </View>
             )}
           </Formik>

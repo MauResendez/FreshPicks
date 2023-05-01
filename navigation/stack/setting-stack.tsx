@@ -1,7 +1,7 @@
 import React from "react";
 
-import { createStackNavigator } from "@react-navigation/stack";
 
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Image } from "react-native-ui-lib";
 import ChangePhone from "../../screens/auth/change-phone";
 import Conversation from "../../screens/chat/conversation";
@@ -11,7 +11,7 @@ import UpdateFarmer from "../../screens/settings/update-farmer";
 import UpdatePersonal from "../../screens/settings/update-personal";
 import UpdateSchedule from "../../screens/settings/update-schedule";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const SettingStack = () => {
   // const navigation = useNavigation<any>();

@@ -16,10 +16,11 @@ import { global } from "../../style";
 
 const Products = () => {
   const navigation = useNavigation<any>();
+  const layout = useWindowDimensions();
+  const width = layout.width/4;
   const [products, setProducts] = useState<any>([]);
   const [posts, setPosts] = useState<any>([]);
   const [subscriptions, setSubscriptions] = useState<any>([]);
-  const layout = useWindowDimensions();
 
   const FirstRoute = () => (
     <View useSafeArea flex style={products.length == 0 && [global.center, global.container]}>
@@ -104,7 +105,12 @@ const Products = () => {
   return (
     <View useSafeArea flex style={global.bgWhite}>
       <TabController items={[{label: 'Products'}, {label: 'Subscriptions'}, {label: 'Posts'}]}>  
-        <TabController.TabBar enableShadows />  
+        <TabController.TabBar 
+          indicatorInsets={0}
+          indicatorStyle={{ backgroundColor: "#32CD32" }} 
+          selectedLabelColor={global.activeTabTextColor.color}
+          labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
+        />  
         <View flex>    
           <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
           <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    

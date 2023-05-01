@@ -1,21 +1,23 @@
 import { useNavigation } from '@react-navigation/native';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { FirebaseRecaptchaBanner, FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
-import * as ImageManipulator from 'expo-image-manipulator';
+import * as ImageManipulator from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 import * as Notifications from 'expo-notifications';
 import { PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
 import { GeoPoint, doc, setDoc } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableWithoutFeedback, useWindowDimensions } from "react-native";
+import { Alert, Keyboard, Platform, ScrollView, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import PhoneInput from 'react-native-phone-input';
 // import Toast from 'react-native-toast-message';
-import { Button, Checkbox, Colors, DateTimePicker, Image, LoaderScreen, Picker, Text, TextField, Toast, TouchableOpacity, View, Wizard } from 'react-native-ui-lib';
+import { Button, Checkbox, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View, Wizard } from 'react-native-ui-lib';
 import { app, auth, db, storage } from '../../firebase';
 import { global } from '../../style';
 // import Toast from 'react-native-simple-toast';
+import { Formik } from 'formik';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Register = () => {
   const navigation = useNavigation<any>();
@@ -42,7 +44,8 @@ const Register = () => {
   const [email, setEmail] = useState<any>("");
   const [address, setAddress] = useState<any>(null);
   const [location, setLocation] = useState<GeoPoint>(null);
-  const [cover, setCover] = useState<any>(null);
+  const [images, setImages] = useState([]);
+  const [urls, setUrls] = useState([]);
   const [business, setBusiness] = useState<any>("");
   const [description, setDescription] = useState<any>("");
   const [website, setWebsite] = useState<any>(null);
@@ -58,32 +61,6 @@ const Register = () => {
   const [visible, setVisible] = useState<boolean>(false);
   const [token, setToken] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-
-  const [images, setImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const { width } = useWindowDimensions();
-
-  const pickImages = async () => {
-    // No permissions request is necessary for launching the image library
-    setIsLoading(true);
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      // allowsEditing: true,
-      allowsMultipleSelection: true,
-      selectionLimit: 10,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    setIsLoading(false);
-    console.log(result);
-    // if (!result.canceled) {
-    //   setImages(result.assets[0].uri ? [result.assets[0].uri] : result.assets[0].);
-    // }
-
-    if (!result.canceled) {
-      setImages([result.assets[0].uri]);
-    }
-  };
 
   const checkIfUserExists = async () => {
     try {
@@ -108,9 +85,20 @@ const Register = () => {
     }
   };
 
-  const compress = async (uri: string) => {
-    const manipulatedImage = await ImageManipulator.manipulateAsync(uri, [{ resize: { height: 200 }}], { compress: 0.5 });
-    setCover(manipulatedImage.uri);
+  const compress = async (result: ImagePicker.ImagePickerResult) => {
+    const compressed = [];
+    
+    result.assets.forEach(async (asset) => {
+      const manipulatedImage = await ImageManipulator.manipulateAsync(asset.uri, [{ resize: { height: 200 }}], { compress: 0.5 });
+
+      compressed.push(manipulatedImage.uri);
+      console.log("Pushed!");
+
+      console.log("Assets:", asset);
+      console.log("Asset URI:", asset.uri);
+    });
+
+    setImages(compressed);
   };
 
   const handleKeyPress = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
@@ -122,102 +110,127 @@ const Register = () => {
     setLocation(geopoint);
   };
 
-  const handleSubmit = async (sms: string) => {
+  // const handleSubmit = async (values) => {
+  //   const nameTest = /^[A-Za-z]+([\s.][A-Za-z]+)*$/;
+  //   const emailTest = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+  //   const websiteTest = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+    
+  //   try {
+  //     const credential = PhoneAuthProvider.credential(vid, sms);
+
+  //     await signInWithCredential(auth, credential).then(async (credential) => {
+  //       const user = credential.user;
+  //       const promise1 = await uploadImages();
+        
+  //       const promise2 = await setDoc(doc(db, "Users", user.uid), {
+  //         name: values.name,
+  //         phone: values.phone,
+  //         role: values.farmer,
+  //         admin: false,
+  //         farmer: values.farmer,
+  //         email: values.email,
+  //         address: values.address,
+  //         location: values.location,
+  //         images: urls,
+  //         business: values.business,
+  //         description: values.description,
+  //         website: values.website,
+  //         // schedule: {
+  //         //   monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday, sunday: sunday
+  //         // },
+  //         token: [values.token],
+  //       });
+  //       // await uploadImages().then(async () => {
+  //       //   console.log(urls);
+  //       //   await setDoc(doc(db, "Users", user.uid), {
+  //       //     name: values.name,
+  //       //     phone: values.phone,
+  //       //     role: values.farmer,
+  //       //     admin: false,
+  //       //     farmer: values.farmer,
+  //       //     email: values.email,
+  //       //     address: values.address,
+  //       //     location: values.location,
+  //       //     images: urls,
+  //       //     business: values.business,
+  //       //     description: values.description,
+  //       //     website: values.website,
+  //       //     // schedule: {
+  //       //     //   monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday, sunday: sunday
+  //       //     // },
+  //       //     token: [values.token],
+  //       //   });
+  //       // });
+
+  //       await Promise.all([promise1, promise2]);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //     showToast("error", "Error", `${error.message}`);
+  //   }
+  // };
+
+  const handleSubmit = async (values) => {
     const nameTest = /^[A-Za-z]+([\s.][A-Za-z]+)*$/;
     const emailTest = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
     const websiteTest = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
     
-    let error = false;
-
-    if (name.length == 0 || !nameTest.test(name)) {
-      error = true;
-      showToast("error", "Error", "Name is required");
-      return
-    }
-
-    if (email.length == 0 || !emailTest.test(email)) {
-      error = true;
-      showToast("error", "Error", "Email is required");
-      return
-    }
-
-    if (business.length == 0) {
-      error = true;
-      showToast("error", "Error", "Business is required");
-      return
-    }
-
-    if (description.length == 0) {
-      error = true;
-      showToast("error", "Error", "Description is required")
-      return
-    }
-
-    // if (website.length == 0 || !websiteTest.test(website)) {
-    //   error = true;
-    //   showToast("error", "Error", "Website is required")
-    //   return
-    // }
-
-    if (error) {
-      error = false;
-      return
-    }
-
     try {
       const credential = PhoneAuthProvider.credential(vid, sms);
 
-      await signInWithCredential(auth, credential).then(async (credential) => {
-        // Registered
-        const user = credential.user;
-        let logo_url = null;
-        let cover_url = null;
-        
-        const cover_ref = ref(storage, `images/${auth.currentUser.uid}/cover/${Date.now()}`);
-
-        // Convert image to bytes
-        const cover_img = await fetch(cover);
-        const cover_bytes = await cover_img.blob();
-
-
-        await uploadBytes(cover_ref, cover_bytes).then(async () => {
-          // We retrieve the URL of where the image is located at
-          await getDownloadURL(cover_ref).then(async (cover) => {
-            cover_url = cover;
-          });
-        }).then(async () => {
-          await setDoc(doc(db, "Users", user.uid), {
-            name: name,
-            phone: phone,
-            role: farmer,
-            admin: false,
-            farmer: farmer,
-            email: email,
-            address: address,
-            location: location,
-            logo: logo_url,
-            cover: cover_url,
-            business: business,
-            description: description,
-            website: website,
-            schedule: {
-              monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday, sunday: sunday
-            },
-            token: [token],
-          });
-
-          showToast("success", "Success", "Your phone number has been authenticated!")
-        })
-        .catch((error) => {
-          showToast("error", "Error", `${error.message}`);
-        });
-      });
+      const auth_credential = await signInWithCredential(auth, credential);
+      const user = auth_credential.user;
+      const imgs = await uploadImages(images);
+      await createUser(values, user, imgs);
     } catch (error) {
+      console.log(error);
       showToast("error", "Error", `${error.message}`);
     }
   };
 
-  const selectCover = async () => {
+  const uploadImage = async (image) => {
+    const storageRef = ref(storage, `${auth.currentUser.uid}/images/${Date.now()}`);
+    const img = await fetch(image);
+    const blob = await img.blob();
+
+    const response = await uploadBytesResumable(storageRef, blob);
+    const url = await getDownloadURL(response.ref);
+    return url;
+  }
+  
+  const uploadImages = async (images) => {
+    const imagePromises = Array.from(images, (image) => uploadImage(image));
+  
+    const imageRes = await Promise.all(imagePromises);
+    return imageRes; // list of url like ["https://..", ...]
+  }
+
+  const createUser = async (values, user, u) => {
+    try {
+      await setDoc(doc(db, "Users", user.uid), {
+        name: values.name,
+        phone: values.phone,
+        role: values.farmer,
+        admin: false,
+        farmer: values.farmer,
+        email: values.email,
+        address: values.address,
+        location: values.location,
+        images: u,
+        business: values.business,
+        description: values.description,
+        website: values.website,
+        // schedule: {
+        //   monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday, sunday: sunday
+        // },
+        token: [values.token],
+      });
+    } catch (error) {
+      console.error('Error uploading images', error);
+    }
+  };
+
+  const selectLibraryImages = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
@@ -226,29 +239,21 @@ const Register = () => {
     }
 
     try {
-      // No permissions request is necessary for launching the image library
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsMultipleSelection: true,
         aspect: [4, 3],
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 0,
+        selectionLimit: 4
       });
-
+    
       if (!result.canceled) {
-        console.log(result.assets[0].uri);
-        compress(result.assets[0].uri);
+        compress(result);
       }
     } catch (error) {
       console.log(error);
     }
-  }
-
-  // const showToast = (type, title, message) => {
-  //   Toast.show({
-  //     type: type,
-  //     text1: title,
-  //     text2: message
-  //   });
-  // }
+  };
 
   const hideToast = () => {
     setToast("");
@@ -294,11 +299,13 @@ const Register = () => {
 
   const Prev = () => {
     return (
-      <View style={global.field}>
-        <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={goToPrevStep}>
-          <Text style={[global.btnText, global.white]}>Back</Text>
-        </TouchableOpacity>
-      </View>
+      // <View style={global.field}>
+      //   <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={goToPrevStep}>
+      //     <Text style={[global.btnText, global.white]}>Back</Text>
+      //   </TouchableOpacity>
+      // </View>
+      <Button style={active !== 0 && {backgroundColor:  "#ff4500"}} iconSource={() => <MCIcon name={"chevron-left"} size={48} color={Colors.white} />} onPress={goToPrevStep} disabled={active === 0} />
+
     );
   };
 
@@ -319,17 +326,20 @@ const Register = () => {
 
   const Next = () => {
     return (
-      <View style={global.field}>
-        <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={goToNextStep}>
-          <Text style={[global.btnText, global.white]}>Next</Text>
-        </TouchableOpacity>
-      </View>
+      // <View style={global.field}>
+      //   <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={goToNextStep}>
+      //     <Text style={[global.btnText, global.white]}>Next</Text>
+      //   </TouchableOpacity>
+      // </View>
+      <Button style={active !== 3 && {backgroundColor: "#ff4500"}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 4 - 1} />
     );
   };
 
-  const PersonalInformation = () => {
+  const PersonalInformation = (props) => {
+    const { handleChange, handleBlur, handleSubmit, values } = props;
+
     return (
-      <View style={[global.container, global.spaceEvenly]}>
+      <View style={global.container}>
         <View style={global.field}>
           <Text subtitle>Register as a Farmer?</Text>
           <Checkbox value={farmer} onValueChange={() => setFarmer(!farmer)} style={global.checkbox} />
@@ -345,63 +355,69 @@ const Register = () => {
           <TextField style={global.input} value={email} onChangeText={(value) => setEmail(value)} autoComplete="email" placeholder="Enter your email address" migrate validate={'required'} />
         </View>
 
-        <ScrollView style={global.field} contentContainerStyle={global.flex}>
-          <Text subtitle>Address</Text>
-          <GooglePlacesAutocomplete
-            textInputProps={{
-              onSelectionChange(text) {
-                setAddress(text);
-              },
-              autoCapitalize: "none",
-              autoCorrect: false,
-              value: address
-            }}
-            styles={{
-              textInput: {
-                height: 50,
-                width: "100%",
-                borderWidth: 1,
-                borderColor: "rgba(0, 0, 0, 0.2)",
-                borderRadius: 8,
-                paddingHorizontal: 8,
-                backgroundColor: "white",
-                marginBottom: 16
-              }
-            }}
-            onPress={(data, details) => handleKeyPress(data, details)}
-            fetchDetails
-            minLength={4}
-            enablePoweredByContainer={false}
-            placeholder="Enter your address here"
-            debounce={1000}
-            nearbyPlacesAPI="GooglePlacesSearch"
-            keepResultsAfterBlur={true}
-            query={{
-              key: "AIzaSyDdDiIwvLlEcpjOK3DVEmbO-ydkrMOS1cM",
-              language: "en",
-            }}
-            requestUrl={{
-              url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
-              useOnPlatform: "web"
-            }}
-          /> 
-        </ScrollView>
+        {farmer 
+          ? <ScrollView style={global.field} contentContainerStyle={global.flex}>
+              <Text subtitle>Address</Text>
+              <GooglePlacesAutocomplete
+                textInputProps={{
+                  onSelectionChange(text) {
+                    setAddress(text);
+                  },
+                  autoCapitalize: "none",
+                  autoCorrect: false,
+                  value: address
+                }}
+                styles={{
+                  textInput: {
+                    height: 50,
+                    width: "100%",
+                    borderWidth: 1,
+                    borderColor: "rgba(0, 0, 0, 0.2)",
+                    borderRadius: 8,
+                    paddingHorizontal: 8,
+                    backgroundColor: "white",
+                    marginBottom: 16
+                  }
+                }}
+                onPress={(data, details) => handleKeyPress(data, details)}
+                fetchDetails
+                minLength={4}
+                enablePoweredByContainer={false}
+                placeholder="Enter your address here"
+                debounce={1000}
+                nearbyPlacesAPI="GooglePlacesSearch"
+                keepResultsAfterBlur={true}
+                query={{
+                  key: "AIzaSyDdDiIwvLlEcpjOK3DVEmbO-ydkrMOS1cM",
+                  language: "en",
+                }}
+                requestUrl={{
+                  url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
+                  useOnPlatform: "web"
+                }}
+              /> 
+            </ScrollView>
+          : <View flexG />
+        }
+          
         
         <View style={global.field}>
           {/* {Next()} */}
           <View row spread centerV>
-            <Button label={'Prev'} onPress={goToPrevStep} disabled={active === 0}/>
+            {Prev()}
             <Text>{active}</Text>
-            <Button label={'Next'} onPress={goToNextStep} disabled={active === 5 - 1}/>
+            {Next()}
           </View>
         </View>
       </View>
     )
   }
 
-  const FarmerInformation = () => {
+  const FarmerInformation = (props) => {
+    const { handleChange, handleBlur, handleSubmit, values } = props;
+
     return (
-      <View style={styles.stepContainer}>
+      <View style={global.container}>
         <View style={global.field}>
           <Text subtitle>Business Name *</Text>
           <TextField value={business} onChangeText={(value) => setBusiness(value)} style={global.input} placeholder="Enter your business" migrate validate={'required'} />
@@ -417,26 +433,10 @@ const Register = () => {
           <TextField value={website} onChangeText={(value) => setWebsite(value)} style={global.input} placeholder="Enter your website" migrate />
         </View>
 
-        <FlatList
-          data={images}
-          renderItem={({ item }) => (
-            <Image
-              source={{ uri: item.uri }}
-              style={{ width: width / 2, height: 250 }}
-            />
-          )}
-          numColumns={2}
-          keyExtractor={(item) => item.uri}
-          contentContainerStyle={{ marginVertical: 50, paddingBottom: 100 }}
-          ListHeaderComponent={
-            isLoading ? (
-              <LoaderScreen color={"#32CD32"} />
-            ) : (
-              <Button title="Pick images" onPress={pickImages} />
-            )
-          }
-        />
-
+        <View style={global.field}>
+          <Text subtitle>Banners</Text>
+          <Button label={"Banners"} labelStyle={{ fontWeight: '600', padding: 4 }} style={global.fwbtn} onPress={selectLibraryImages} iconSource={() => <MCIcon name={"image-multiple"} size={24} color={Colors.white} style={{ marginRight: 4 }} />} />
+        </View>
 
         {/* <View style={global.field}>
           <TouchableOpacity onPress={selectCover}>
@@ -458,214 +458,212 @@ const Register = () => {
         <View flexG />
 
         <View style={global.field}>
-          {/* {Prev()}
-          {Next()} */}
+          {/* {Next()} */}
           <View row spread centerV>
-            <Button label={'Prev'} onPress={goToPrevStep} disabled={active === 0}/>
+            {Prev()}
             <Text>{active}</Text>
-            <Button label={'Next'} onPress={goToNextStep} disabled={active === 4 - 1}/>
+            {Next()}
           </View>
         </View>
       </View>
     );
   };
 
-  const FarmerSchedule = () => {
+  const FarmerSchedule = (props) => {
+    const { handleChange, handleBlur, handleSubmit, values } = props;
+
     return (
-      <ScrollView style={global.flex} contentContainerStyle={styles.stepContainer}>
-        <View row spread style={global.field}>
-          <Picker  
-            value={day}
-            placeholder={'Days'}
-            onChange={(value) => setDay(value)}
-            style={[global.input, { marginBottom: -16 }]}
-            useSafeArea={true} 
-            topBarProps={{ title: 'Amount' }} 
-          >  
-            {days.map((type) => (   
-              <Picker.Item key={type.value} value={type.value} label={type.label} />
-            ))}
-          </Picker>
-          <DateTimePicker style={global.input} mode="time" placeholder="Start Time" timeFormat={'HH:mm'} onChange={(time) => setTuesday(time)} minimumDate={new Date()} migrateTextField />
-          <DateTimePicker style={global.input} mode="time" placeholder="End Time" timeFormat={'HH:mm'} onChange={(time) => setTuesday(time)} minimumDate={new Date()} migrateTextField />
+      <ScrollView contentContainerStyle={global.container}>
+        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+          {/* <Text subtitle>Monday</Text> */}
+          <Button 
+            backgroundColor={"#ff4500"}
+            color={Colors.white}
+            label={"Monday"} 
+            labelStyle={{ fontWeight: '600', padding: 4 }} 
+            style={global.btn} 
+            onPress={() => navigation.navigate("Register")}  
+            disabled={!monday.enable}
+          />
+          <Checkbox value={monday.enable} onValueChange={() => setMonday({ ...monday, enable: !monday.enable })} style={global.checkbox} />
+        </View>
+        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+          <Button 
+            backgroundColor={"#ff4500"}
+            color={Colors.white}
+            label={"Tuesday"} 
+            labelStyle={{ fontWeight: '600', padding: 4 }} 
+            style={global.btn} 
+            onPress={() => navigation.navigate("Register")}
+            disabled={!tuesday.enable}
+          />
+          <Checkbox value={tuesday.enable} onValueChange={() => setTuesday({ ...tuesday, enable: !tuesday.enable })} style={global.checkbox} />
+        </View>
+        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+          <Button 
+            backgroundColor={"#ff4500"}
+            color={Colors.white}
+            label={"Wednesday"} 
+            labelStyle={{ fontWeight: '600', padding: 4 }} 
+            style={global.btn} 
+            onPress={() => navigation.navigate("Register")}
+            disabled={!wednesday.enable}
+          />
+          <Checkbox value={wednesday.enable} onValueChange={() => setWednesday({ ...wednesday, enable: !wednesday.enable })} style={global.checkbox} />
+        </View>
+        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+          <Button 
+            backgroundColor={"#ff4500"}
+            color={Colors.white}
+            label={"Thursday"} 
+            labelStyle={{ fontWeight: '600', padding: 4 }} 
+            style={global.btn} 
+            onPress={() => navigation.navigate("Register")}
+            disabled={!thursday.enable}
+          />
+          <Checkbox value={thursday.enable} onValueChange={() => setThursday({ ...thursday, enable: !thursday.enable })} style={global.checkbox} />
+        </View>
+        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+          <Button 
+            backgroundColor={"#ff4500"}
+            color={Colors.white}
+            label={"Friday"} 
+            labelStyle={{ fontWeight: '600', padding: 4 }} 
+            style={global.btn} 
+            onPress={() => navigation.navigate("Register")}
+            disabled={!friday.enable}  
+          />
+          <Checkbox value={friday.enable} onValueChange={() => setFriday({ ...friday, enable: !friday.enable })} style={global.checkbox} />
+        </View>
+        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+          <Button 
+            backgroundColor={"#ff4500"}
+            color={Colors.white}
+            label={"Saturday"} 
+            labelStyle={{ fontWeight: '600', padding: 4 }} 
+            style={global.btn} 
+            onPress={() => navigation.navigate("Register")}
+            disabled={!saturday.enable}   
+          />
+          <Checkbox value={saturday.enable} onValueChange={() => setSaturday({ ...saturday, enable: !saturday.enable })} style={global.checkbox} />
+        </View>
+        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+          <Button 
+            backgroundColor={"#ff4500"}
+            color={Colors.white}
+            label={"Sunday"} 
+            labelStyle={{ fontWeight: '600', padding: 4 }} 
+            style={global.btn} 
+            onPress={() => navigation.navigate("Register")}
+            disabled={!sunday.enable}    
+          />
+          <Checkbox value={sunday.enable} onValueChange={() => setSunday({ ...sunday, enable: !sunday.enable })} style={global.checkbox} />
         </View>
 
-        {/* <View style={global.field}>
-          <View style={[global.row, global.spaceBetween]}>
-            <Text subtitle>Monday</Text>
-            <Switch value={monday.enable} onValueChange={() => setMonday({...monday, enable: !monday.enable})} />
-          </View>
-
-          {monday.enable && <View style={[global.row, global.spaceBetween]}>
-            <DateTimePicker style={global.input} mode="time" placeholder="Start Time" timeFormat={'HH:mm'} onChange={(time) => setMonday(time)} migrateTextField />
-            <DateTimePicker style={global.input} mode="time" placeholder="End Time" timeFormat={'HH:mm'} onChange={(time) => setMonday(time)} migrateTextField />
-          </View>}
-        </View>
-        <View style={global.field}>
-          <View style={[global.row, global.spaceBetween]}>
-            <Text subtitle>Tuesday</Text>
-            <Switch value={tuesday.enable} onValueChange={() => setTuesday({...tuesday, enable: !tuesday.enable})} />
-          </View>
-
-          {tuesday.enable && <View style={[global.row, global.spaceBetween]}>
-            <DateTimePicker style={global.input} mode="time" placeholder="Start Time" timeFormat={'HH:mm'} onChange={(time) => setTuesday(time)} minimumDate={new Date()} migrateTextField />
-            <DateTimePicker style={global.input} mode="time" placeholder="End Time" timeFormat={'HH:mm'} onChange={(time) => setTuesday(time)} minimumDate={new Date()} migrateTextField />
-          </View>}
-        </View>
-        <View style={global.field}>
-          <View style={[global.row, global.spaceBetween]}>
-            <Text subtitle>Wednesday</Text>
-            <Switch value={wednesday.enable} onValueChange={() => setWednesday({...wednesday, enable: !wednesday.enable})} />
-          </View>
-
-          {wednesday.enable && <View style={[global.row, global.spaceBetween]}>
-            <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField />
-            <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
-          </View>}
-        </View>
-        <View style={global.field}>
-          <View style={[global.row, global.spaceBetween]}>
-            <Text subtitle>Thursday</Text>
-            <Switch value={thursday.enable} onValueChange={() => setThursday({...thursday, enable: !thursday.enable})} />
-          </View>
-
-          {thursday.enable && <View style={[global.row, global.spaceBetween]}>
-            <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField/>
-            <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
-          </View>}
-        </View>
-        <View style={global.field}>
-          <View style={[global.row, global.spaceBetween]}>
-            <Text subtitle>Friday</Text>
-            <Switch value={friday.enable} onValueChange={() => setFriday({...friday, enable: !friday.enable})} />
-          </View>
-
-          {friday.enable && <View style={[global.row, global.spaceBetween]}>
-            <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField/>
-            <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
-          </View>}
-        </View>
-        <View style={global.field}>
-          <View style={[global.row, global.spaceBetween]}>
-            <Text subtitle>Saturday</Text>
-            <Switch value={saturday.enable} onValueChange={() => setSaturday({...saturday, enable: !saturday.enable})} />
-          </View>
-
-          {saturday.enable && <View style={[global.row, global.spaceBetween]}>
-            <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField/>
-            <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
-          </View>}
-        </View>
-        <View style={global.field}>
-          <View style={[global.row, global.spaceBetween]}>
-            <Text subtitle>Sunday</Text>
-            <Switch value={sunday.enable} onValueChange={() => setSunday({...sunday, enable: !sunday.enable})} />
-          </View>
-
-          {sunday.enable && <View style={[global.row, global.spaceBetween]}>
-            <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField/>
-            <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
-          </View>}
-        </View> */}
+        {/* <Dialog visible={true} onDismiss={() => console.log('dismissed')} position={"center"}><Text text60>Content</Text></Dialog> */}
 
         <View flexG />
 
         <View style={global.field}>
-          {/* {Prev()}
-          {Next()} */}
+          {/* {Next()} */}
           <View row spread centerV>
-          <Button label={'Prev'} onPress={goToPrevStep} backgroundColor={Colors.green5} disabled={active === 0} />
+            {Prev()}
             <Text>{active}</Text>
-            <Button label={'Next'} onPress={goToNextStep} backgroundColor={Colors.green5} disabled={active === 4 - 1} />
+            {Next()}
           </View>
         </View>
       </ScrollView>
     );
   };
 
-  const AccountInformation = () => {
+  const AccountInformation = (props) => {
+    const { handleChange, handleBlur, handleSubmit, values } = props;
+
     return (
-      <KeyboardAvoidingView style={[global.container, global.spaceEvenly]}>
+      <View style={global.container}>
+        <View flex style={global.spaceEvenly}>
+          <View style={global.field}>
+            <Image
+              style={{ width: "auto", height: 100 }}
+              source={require("../../assets/logo.png")}
+              resizeMode="contain"
+            />
+            <FirebaseRecaptchaVerifierModal
+              ref={recaptchaVerifier}
+              firebaseConfig={app.options}
+              attemptInvisibleVerification={attemptInvisibleVerification}
+            />
+          </View>
+          
+          <View style={global.field}>
+            <Text subtitle>Phone Number</Text>
+            <PhoneInput
+              ref={phoneRef}
+              initialCountry={'us'}
+              style={global.input}
+              onChangePhoneNumber={(phone) => {
+                setPhone(phone);
+              }}
+              textProps={{
+                placeholder: 'Enter a phone number...'
+              }}
+            />
+          </View>
 
-        <Image
-          style={{ width: "auto", height: 100 }}
-          source={require("../../assets/logo.png")}
-          resizeMode="contain"
-        />
+          <View style={global.field}>
+            <Button 
+              label={"Send Verification Code"} 
+              labelStyle={{ fontWeight: '600', padding: 4 }} 
+              style={global.fwbtn} 
+              onPress={verifyPhone}  
+            />
+          </View>
 
-        <View>
-          <FirebaseRecaptchaVerifierModal
-            ref={recaptchaVerifier}
-            firebaseConfig={app.options}
-            attemptInvisibleVerification={attemptInvisibleVerification}
-          />
+          <View style={global.field}>
+            <Text subtitle>Verify SMS Code</Text>
+            <OTPInputView
+              style={{width: '100%', height: 50}}
+              pinCount={6}
+              code={sms}
+              onCodeChanged={code => setSMS(code)}
+              autoFocusOnLoad={false}
+              codeInputFieldStyle={global.otpInput}
+              codeInputHighlightStyle={styles.underlineStyleHighLighted}
+              onCodeFilled={code => handleSubmit(code)}
+            />
+          </View>
+
+          <View style={global.field}>
+            {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
+          </View>     
+          
+          
         </View>
-        
         <View style={global.field}>
-          <Text subtitle>Phone Number</Text>
-          <PhoneInput
-            ref={phoneRef}
-            initialCountry={'us'}
-            style={global.input}
-            onChangePhoneNumber={(phone) => {
-              setPhone(phone);
-            }}
-            textProps={{
-              placeholder: 'Enter a phone number...'
-            }}
-          />
-        </View>
-
-        <View style={global.field}>
-          <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={verifyPhone}>
-            <Text style={[global.btnText, global.white]}>Send Verification Code</Text>
-          </TouchableOpacity>
-        </View>
-        
-        <View style={global.field}>
-          <Text subtitle>Verify SMS Code</Text>
-          <OTPInputView
-            style={{width: '100%', height: 50}}
-            pinCount={6}
-            code={sms}
-            onCodeChanged={code => setSMS(code)}
-            autoFocusOnLoad={false}
-            codeInputFieldStyle={global.otpInput}
-            codeInputHighlightStyle={styles.underlineStyleHighLighted}
-            onCodeFilled={code => handleSubmit(code)}
-          />
-        </View>
-
-        <View style={global.field}>
-          {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
-        </View>     
-
-        <View flexG />     
-        
-        <View style={global.field}>
-          {/* {Prev()} */}
           <View row spread centerV>
-            <Button label={'Prev'} onPress={goToPrevStep} backgroundColor={"#FF4500"} disabled={active === 0}/>
-            <Button label={'Next'} onPress={goToNextStep} backgroundColor={"#FF4500"} disabled={active === 4 - 1}/>
+            {Prev()}
+            <Text>{active}</Text>
+            {Next()}
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </View>
+      
     );
   };
 
-  const Current = () => {
+  const Current = (props) => {
     switch (active) {
       case 0:
-        return PersonalInformation();
+        return PersonalInformation(props);
       case 1:
         if (farmer)
-          return FarmerInformation();
+          return FarmerInformation(props);
 
-        return AccountInformation();
+        return AccountInformation(props);
       case 2:
-        return FarmerSchedule();
+        return FarmerSchedule(props);
       case 3:
-        return AccountInformation();
+        return AccountInformation(props);
     }
   };
 
@@ -698,31 +696,39 @@ const Register = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={"#ff4500"} />
     )
   }
 
   return (
-    <View useSafeArea flex style={[global.container, global.spaceEvenly]}>
-      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAvoidingView style={global.flex} behavior={Platform.OS == "ios" ? "padding" : "height"}>
-          <View flex>
-            {farmer 
-              ? <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
-                  <Wizard.Step state={getStepState(0)} label={'Personal Information'} circleBackgroundColor={"#32CD32"} />
-                  <Wizard.Step state={getStepState(1)} label={'Farmer Information'} />
-                  <Wizard.Step state={getStepState(2)} label={'Farmer Schedule'} />
-                  <Wizard.Step state={getStepState(3)} label={'Account Information'} />
-                </Wizard>
-              : <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
-                  <Wizard.Step state={getStepState(0)} label={'Personal Information'} circleBackgroundColor={"#32CD32"} />
-                  <Wizard.Step state={getStepState(1)} label={'Account Information'} />
-                </Wizard>
-            }
-            {Current()}
-          </View>
-          <Toast visible={visible} message={toast} position={'bottom'} backgroundColor={Colors.black} autoDismiss={5000} onDismiss={hideToast} swipeable />
-        </KeyboardAvoidingView>
+    <View useSafeArea flex>
+      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}> 
+        <Formik 
+          initialValues={{ farmer: false, name: "", email: "", address: "", location: null, banners: null, business: "", description: "", website: "", token: "", phone: "", sms: ""  }} 
+          onSubmit={handleSubmit}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values }) => (
+            <View flex>
+              {farmer 
+                ? <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
+                    <Wizard.Step state={getStepState(0)} label={'Personal Information'} />
+                    <Wizard.Step state={getStepState(1)} label={'Farmer Information'} />
+                    <Wizard.Step state={getStepState(2)} label={'Farmer Schedule'} />
+                    <Wizard.Step state={getStepState(3)} label={'Account Information'} />
+                  </Wizard>
+                : <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
+                    <Wizard.Step state={getStepState(0)} label={'Personal Information'} />
+                    <Wizard.Step state={getStepState(1)} label={'Account Information'} />
+                  </Wizard>
+              }
+              <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex}> 
+                {Current({ handleChange, handleBlur, handleSubmit, values })}
+              </KeyboardAwareScrollView>
+              {/* <Toast visible={visible} message={toast} position={'bottom'} backgroundColor={Colors.black} autoDismiss={5000} onDismiss={hideToast} swipeable /> */}
+            </View>
+          )}
+        </Formik>
+        
       </TouchableWithoutFeedback>
       {/* <Toast topOffset={0} /> */}
     </View>

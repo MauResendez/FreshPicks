@@ -2,9 +2,9 @@ import { useNavigation } from '@react-navigation/native';
 import { GeoPoint, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Keyboard, Platform, ScrollView, TouchableWithoutFeedback } from "react-native";
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from 'react-native-ui-lib';
+import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from 'react-native-ui-lib';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
 
@@ -146,12 +146,15 @@ const UpdatePersonal = () => {
                 </ScrollView>
 
                 <View flexG />
-                
-                <View style={global.field}>
-                  <TouchableOpacity style={[global.btn, global.bgOrange]}>
-                    <Text style={[global.btnText, global.white]}>Update Personal Information</Text>
-                  </TouchableOpacity>
-                </View>
+
+                <Button 
+                  backgroundColor={"#ff4500"}
+                  color={Colors.white}
+                  label={"Update Personal Information"} 
+                  labelStyle={{ fontWeight: '600', padding: 8 }} 
+                  style={global.btnTest} 
+                  onPress={() => handleSubmit()}                
+                />
               </View>
             )}
           </Formik>

@@ -2,8 +2,8 @@ import { useNavigation } from "@react-navigation/native"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { Formik } from "formik"
 import React, { useEffect, useState } from "react"
-import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
-import { KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
+import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native"
+import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
 import { auth, db } from "../../firebase"
 import { global } from "../../style"
 
@@ -90,17 +90,14 @@ const UpdateFarmer = () => {
 
                 <View flexG />
 
-                {/* <View style={global.field}>
-                  <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={() => handleSubmit()}>
-                    <Text style={[global.btnText, global.white]}>Update Farmer Information</Text>
-                  </TouchableOpacity>
-                </View> */}
-
-                <View style={global.field}>
-                  <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={() => handleSubmit()}>
-                    <Text style={[global.btnText, global.white]}>Create Transaction</Text>
-                  </TouchableOpacity>
-                </View>
+                <Button 
+                  backgroundColor={"#ff4500"}
+                  color={Colors.white}
+                  label={"Update Farmer"} 
+                  labelStyle={{ fontWeight: '600', padding: 8 }} 
+                  style={global.btnTest} 
+                  onPress={() => handleSubmit()}                
+                />
               </View>
             )}
           </Formik>

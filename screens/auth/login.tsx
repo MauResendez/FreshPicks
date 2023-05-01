@@ -7,9 +7,9 @@ import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { Formik } from "formik";
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
-import { Alert, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import PhoneInput from 'react-native-phone-input';
-import { Image, LoaderScreen, Text, View } from "react-native-ui-lib";
+import { Button, Colors, Image, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { app, auth, db } from "../../firebase";
 import { global } from "../../style";
 
@@ -153,21 +153,19 @@ const Login = () => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAvoidingView style={[global.container, global.spaceEvenly]} behavior={Platform.OS == "ios" ? "padding" : "height"}>
+        <KeyboardAvoidingView style={[global.container]} behavior={Platform.OS == "ios" ? "padding" : "height"}>
           <Formik 
             initialValues={{ phone: "", sms: "" }} 
             onSubmit={onSubmit}
           >
             {({ handleChange, handleBlur, handleSubmit, values }) => (
-              <View flex>
-                
-                
-                <View>
-                <Image
-                  style={{ width: "auto", height: 100 }}
-                  source={require("../../assets/logo.png")}
-                  resizeMode="contain"
-                />
+              <View flex style={global.spaceEvenly}>
+                <View style={global.field}>
+                  <Image
+                    style={{ width: "auto", height: 100 }}
+                    source={require("../../assets/logo.png")}
+                    resizeMode="contain"
+                  />
                   <FirebaseRecaptchaVerifierModal
                     ref={recaptchaVerifier}
                     firebaseConfig={app.options}
@@ -191,9 +189,14 @@ const Login = () => {
                 </View>
 
                 <View style={global.field}>
-                  <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={() => verifyPhone(values.phone)}>
-                    <Text style={[global.btnText, global.white]}>Send Verification Code</Text>
-                  </TouchableOpacity>
+                  <Button 
+                    backgroundColor={"#ff4500"}
+                    color={Colors.white}
+                    label={"Login"} 
+                    labelStyle={{ fontWeight: '600', padding: 8 }} 
+                    style={global.btnTest} 
+                    onPress={() => verifyPhone(values.phone)}                
+                  />
                 </View>
 
                 <View style={global.field}>
@@ -208,9 +211,11 @@ const Login = () => {
                     codeInputHighlightStyle={styles.underlineStyleHighLighted}
                     onCodeFilled={() => handleSubmit()}
                   />
-                </View>         
+                </View>   
 
-                {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
+                <View style={global.field}>
+                  {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
+                </View>
               </View>
             )}
           </Formik>

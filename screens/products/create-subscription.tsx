@@ -4,8 +4,8 @@ import * as ImagePicker from "expo-image-picker"
 import { addDoc, collection } from "firebase/firestore"
 import { Formik } from "formik"
 import React, { useState } from "react"
-import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
-import { Colors, KeyboardAwareScrollView, NumberInput, Picker, Text, TextField, View } from "react-native-ui-lib"
+import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native"
+import { Button, Colors, KeyboardAwareScrollView, NumberInput, Picker, Text, TextField, View } from "react-native-ui-lib"
 import * as Yup from 'yup'
 import { auth, db } from "../../firebase"
 import { global } from "../../style"
@@ -241,11 +241,14 @@ const CreateSubscription = () => {
 
                 <View flexG />
 
-                <View style={global.field}>
-                  <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={() => handleSubmit()}>
-                    <Text style={[global.btnText, global.white]}>Create Subscription</Text>
-                  </TouchableOpacity>
-                </View>
+                <Button 
+                  backgroundColor={"#ff4500"}
+                  color={Colors.white}
+                  label={"Create Subscription"} 
+                  labelStyle={{ fontWeight: '600', padding: 8 }} 
+                  style={global.btnTest} 
+                  onPress={() => handleSubmit()}                
+                />
               </View>
             )}
           </Formik>

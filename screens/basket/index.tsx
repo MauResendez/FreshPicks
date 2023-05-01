@@ -1,25 +1,22 @@
 import { useNavigation } from '@react-navigation/native';
 import { addDoc, collection, doc, getDoc, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
-import { LoaderScreen, Text, View } from 'react-native-ui-lib';
+import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { Button, Colors, ListItem, LoaderScreen, Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
-import CartRow from '../../components/cart/cart-row';
+import AddressRow from '../../components/basket/address-row';
+import BasketRow from '../../components/basket/basket-row';
+import BusinessRow from '../../components/basket/business-row';
 import { clearOrder, getOrderFarmer, getOrderUser, selectOrderItems, selectOrderTotal } from '../../features/order-slice';
 import { db } from '../../firebase';
 import { global } from '../../style';
 
-const Cart = () => {
+const Basket = () => {
   const navigation = useNavigation<any>();
-  const [active, setActive] = useState(0);
-  const [completedStep, setCompletedStep] = useState(undefined);
   const [chat, setChat] = useState<any>(null);
   const [chats, setChats] = useState<any>(null);
   const [order, setOrder] = useState<any>(null);
   const [data, setData] = useState<any>(null);
-  const [status, setStatus] = useState<any>(null);
-  const [isPressed, setIsPressed] = useState(false);
-  const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(true);
   const items = useSelector(selectOrderItems);
   const orderFarmer = useSelector(getOrderFarmer);
@@ -50,7 +47,7 @@ const Cart = () => {
       obj.count = 1;
       obj.description = curr.description;
       obj.farmer = curr.farmer;
-      obj.image = curr.image;
+      // obj.image = curr.image;
       obj.price = curr.price;
       obj.title = curr.title;
       obj.quantity = curr.quantity;
@@ -106,10 +103,6 @@ const Cart = () => {
     .catch(e => alert(e.message));
   });
 
-  const toggleDialog = () => {
-    setVisible(false);
-  }
-
   // Get the user"s chats first
   useEffect(() => {
     if (orderUser && orderFarmer) {
@@ -147,11 +140,7 @@ const Cart = () => {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (isPressed) {
-      console.log(isPressed);
-    }
-  }, [isPressed]);
+
 
   if (loading) {
     return (
@@ -162,34 +151,46 @@ const Cart = () => {
   if (items.length == 0) {
     return (
       <View useSafeArea flex style={[global.container, global.center, global.bgGray]}>
-        <Text subtitle>Cart is empty</Text>
+        <Text subtitle>Checkout is empty</Text>
       </View>
     )
   }
 
   return (
-    <View useSafeArea flex style={global.bgWhite}>
+    <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAvoidingView style={global.flex} behavior={Platform.OS == "ios" ? "padding" : "height"}>
-          <ScrollView style={global.container} contentContainerStyle={[global.flex]} showsVerticalScrollIndicator={Platform.OS == "web"}>
-            <View style={global.field}>
-              <Text title>Checkout</Text>
-            </View>
+          <ScrollView style={global.flex} contentContainerStyle={[global.flex]} showsVerticalScrollIndicator={Platform.OS == "web"}>
+            <ListItem
+              backgroundColor={"#ff4500"}
+              activeOpacity={0.3}
+              height={60}
+            >
+              <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
+                <Text h2 numberOfLines={1} style={{ color: "white"}}>
+                  Basket
+                </Text>
+              </ListItem.Part>
+            </ListItem>
 
-            <View style={global.field}>
-              <Text subtitle>Farmer</Text>
-              <Text h3>{(items[0]?.farmer.business)}</Text>
-            </View>
+            <BusinessRow business={(items[0]?.farmer.business)} />
 
-            <View style={global.field}>
-              <Text subtitle>Address</Text>
-              <Text h3>{items[0]?.farmer.address}</Text>
-            </View>
+            <AddressRow address={(items[0]?.farmer.address)} />
             
-            <Text subtitle>Your Items</Text>
+            <ListItem
+              backgroundColor={"#ff4500"}
+              activeOpacity={0.3}
+              height={60}
+            >
+              <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
+                <Text h2 numberOfLines={1} style={{ color: "white"}}>
+                  Your items
+                </Text>
+              </ListItem.Part>
+            </ListItem>
 
             {Object.entries(groupedItems).map(([key, items]: any) => (
-              <CartRow
+              <BasketRow
                 key={key}
                 id={items[0]?.id}
                 title={items[0]?.title}
@@ -203,12 +204,18 @@ const Cart = () => {
             ))}
 
             <View flexG />
+            <View style={styles.cart}>
 
-            <View style={global.field}>
-              <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={createOrder}>
-                <Text style={[global.btnText, global.white]}>Send Meeting Request</Text>
-              </TouchableOpacity>
+            <Button 
+              backgroundColor={"#ff4500"}
+              color={Colors.white}
+              label={"Send Meeting Request"} 
+              labelStyle={{ fontWeight: '600', padding: 8 }} 
+              style={global.btnTest} 
+              onPress={createOrder}          
+            />
             </View>
+            
           </ScrollView>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
@@ -216,4 +223,118 @@ const Cart = () => {
   );
 }
 
-export default Cart
+const styles = StyleSheet.create({
+  cover: {
+    height: 200,
+    width: "100%",
+  },
+  image: {
+    ...Platform.select({
+      web: {
+        padding: 16,
+        width: "100%",
+        height: 250,
+      },
+      ios: {
+        padding: 16,
+        width: "100%",
+        height: 200,
+      },
+      android: {
+        padding: 16,
+        width: "100%",
+        height: 200,
+      },
+    }),
+  },
+  back: {
+    position: "absolute",
+    left: 10,
+    top: 56,
+    padding: 8,
+    backgroundColor: "#F3F4F6",
+    borderRadius: 50,
+  },
+  header: {
+    backgroundColor: "white",
+    padding: 12,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginVertical: 8,
+  },
+  content: {
+    marginVertical: 4,
+    flexDirection: "row",
+  },
+  ratingContainer: {
+    marginLeft: 4,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  rating: {
+    color: "#059669",
+    flex: 1,
+    textAlign: "right",
+  },
+  address: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#666",
+    textAlign: "left",
+    marginTop: 4,
+    marginBottom: 4,
+  },
+  description: {
+    paddingBottom: 16,
+    marginTop: 8,
+    color: "black",
+  },
+  products: {
+  },
+  productsTitle: {
+    paddingHorizontal: 16,
+    paddingTop: 32,
+    marginBottom: 12,
+    fontSize: 20,
+    lineHeight: 32,
+    fontWeight: "700",
+  },
+  basket: {
+    fontSize: 18,
+    lineHeight: 28,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  text: {
+    fontSize: 20,
+    lineHeight: 20,
+    fontWeight: "bold",
+    letterSpacing: 1,
+    color: "white",
+  },
+  cart: {
+    padding: 16,
+    backgroundColor: "white",
+  },
+  checkout: {
+    padding: 16,
+    borderRadius: 8,
+    backgroundColor: "green",
+  },
+  checkoutText: {
+    color: "white",
+    fontSize: 18,
+    lineHeight: 28,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  disabled: {
+    padding: 16,
+    borderRadius: 8,
+    backgroundColor: "lightgray",
+  },
+});
+
+export default Basket

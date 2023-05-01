@@ -4,8 +4,8 @@ import * as ImagePicker from "expo-image-picker"
 import { addDoc, collection } from "firebase/firestore"
 import { Formik } from 'formik'
 import React, { useState } from "react"
-import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
-import { KeyboardAwareScrollView, NumberInput, Picker, Text, TextField, View } from "react-native-ui-lib"
+import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native"
+import { Button, Colors, DateTimePicker, KeyboardAwareScrollView, NumberInput, Picker, Text, TextField, View } from "react-native-ui-lib"
 import { auth, db } from "../../firebase"
 import { global } from "../../style"
 
@@ -101,32 +101,40 @@ const CreateTransaction = () => {
           >
             {({ handleChange, handleBlur, handleSubmit, values }) => (
               <View flex>
-                <View style={global.field}>
-                  <Text subtitle>Type</Text>
-                  <Picker  
-                    value={values.type}
-                    style={[global.input, { marginBottom: -16 }]}
-                    placeholder={'Type'}
-                    onChange={handleChange('type')}
-                    onBlur={handleBlur('type')}
-                    useSafeArea={true} 
-                    topBarProps={{ title: 'Type' }} 
-                  >  
-                    {types.map((type) => (   
-                      <Picker.Item key={type.value} value={type.value} label={type.label} />
-                    ))}
-                  </Picker>
-                </View>
+                <View row spread style={{ paddingVertical: 8 }}>
+                  <View style={{ width: "30%" }}>
+                    <Text subtitle>Type</Text>
+                    <Picker  
+                      value={values.type}
+                      style={[global.input, { marginBottom: -16 }]}
+                      placeholder={'Type'}
+                      onChange={handleChange('type')}
+                      onBlur={handleBlur('type')}
+                      useSafeArea={true} 
+                      topBarProps={{ title: 'Type' }} 
+                    >  
+                      {types.map((type) => (   
+                        <Picker.Item key={type.value} value={type.value} label={type.label} />
+                      ))}
+                    </Picker>
+                  </View>
 
-                <View style={global.field}>
-                  <Text subtitle>Title</Text>
-                  <TextField
-                    style={global.input}
-                    onChangeText={handleChange('title')}
-                    onBlur={handleBlur('title')}
-                    value={values.title}
-                    migrate
-                  />
+                  <View style={{ width: "30%" }}>
+                    <Text subtitle>Price</Text>
+                    <NumberInput
+                      initialNumber={values.price}
+                      style={global.input}
+                      placeholder="Enter the price here"
+                      onChangeNumber={() => handleChange('price')}
+                      fractionDigits={2}
+                      migrate
+                    />
+                  </View>
+
+                  <View style={{ width: "30%" }}>
+                    <Text subtitle>Date</Text>
+                    <DateTimePicker value={new Date()} style={global.input} placeholder="Transaction Date" timeFormat={'HH:mm'}  />
+                  </View>
                 </View>
 
                 <View style={global.field}>
@@ -144,7 +152,24 @@ const CreateTransaction = () => {
                 </View>
 
                 <View style={global.field}>
-                  <Text subtitle>Price</Text>
+                  <Text subtitle>Product</Text>
+                  <Picker  
+                    value={values.type}
+                    style={[global.input, { marginBottom: -16 }]}
+                    placeholder={'Type'}
+                    onChange={handleChange('type')}
+                    onBlur={handleBlur('type')}
+                    useSafeArea={true} 
+                    topBarProps={{ title: 'Type' }} 
+                  >  
+                    {types.map((type) => (   
+                      <Picker.Item key={type.value} value={type.value} label={type.label} />
+                    ))}
+                  </Picker>
+                </View>
+
+                <View style={global.field}>
+                  <Text subtitle>Category</Text>
                   <NumberInput
                     initialNumber={values.price}
                     style={global.input}
@@ -178,19 +203,16 @@ const CreateTransaction = () => {
                   </TouchableOpacity>
                 </View> */}
 
-                {/* <View style={global.field}>
-                  <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={() => handleSubmit}>
-                    <Text style={[global.btnText, global.white]}>Create Product</Text>
-                  </TouchableOpacity>
-                </View> */}
-
                 <View flexG />
 
-                <View style={global.field}>
-                  <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={() => handleSubmit()}>
-                    <Text style={[global.btnText, global.white]}>Create Transaction</Text>
-                  </TouchableOpacity>
-                </View>
+                <Button 
+                  backgroundColor={"#ff4500"}
+                  color={Colors.white}
+                  label={"Create Transaction"} 
+                  labelStyle={{ fontWeight: '600', padding: 8 }} 
+                  style={global.btnTest} 
+                  onPress={() => handleSubmit()}                
+                />
               </View>
             )}
           </Formik>

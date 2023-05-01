@@ -6,12 +6,12 @@ import CreateSubscription from "../../screens/products/create-subscription";
 import EditPost from "../../screens/products/edit-post";
 import EditSubscription from "../../screens/products/edit-subscription";
 
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Image } from "react-native-ui-lib";
 import CreateProduct from "../../screens/products/create-product";
 import EditProduct from "../../screens/products/edit-product";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const ProductStack = () => {
   // const navigation = useNavigation<any>();

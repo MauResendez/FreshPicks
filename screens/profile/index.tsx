@@ -2,9 +2,9 @@ import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
 import * as Linking from 'expo-linking';
 import { addDoc, collection, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
 import React, { createRef, useEffect, useState } from "react";
-import { Platform, ScrollView, StyleSheet, TouchableOpacity, useWindowDimensions } from "react-native";
-import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { Carousel, Chip, Image, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
+import { Platform, ScrollView, StyleSheet, useWindowDimensions } from "react-native";
+import { SceneMap } from "react-native-tab-view";
+import { Button, Carousel, Chip, Colors, Image, ListItem, LoaderScreen, TabController, Text, View } from "react-native-ui-lib";
 import { useSelector } from "react-redux";
 import ProfileRow from "../../components/profile/profile-row";
 import { selectOrderItems } from "../../features/order-slice";
@@ -28,6 +28,7 @@ const Profile = () => {
   const items = useSelector(selectOrderItems);
   const [loading, setLoading] = useState(true);
   const layout = useWindowDimensions();
+  const width = layout.width/4;
   const [index, setIndex] = useState(0);
   const [current, setCurrent] = useState(0);
   const [routes] = useState([
@@ -207,85 +208,102 @@ const Profile = () => {
 
   return (
     <View useSafeArea flex style={global.bgWhite}>
-      {/* <View style={styles.cover}>
-        <Image source={{ uri: farmer.cover }} style={styles.image} />
-      </View> */}
+      <ScrollView style={global.flex} contentContainerStyle={global.flex}>
+        <Carousel
+          containerStyle={{
+            height: 200
+          }}
+          autoplay
+          loop
+          pageControlProps={{
+            size: 10,
+            containerStyle: {position: 'absolute',
+            bottom: 15,
+            left: 10}
+          }}
+          pageControlPosition={Carousel.pageControlPositions.OVER}
+          showCounter
+        >
+          {farmer.images?.map((image, i) => {
+            return (
+              <View flex centerV key={i}>
+                <Image
+                  overlayType={Image.overlayTypes.BOTTOM}
+                  style={{flex: 1}}
+                  source={{
+                    uri: image
+                  }}
+                  cover
+                />
+              </View>
+            );
+          })}
+        </Carousel>
 
-      <Carousel
-        containerStyle={{
-          height: 200
-        }}
-        autoplay
-        loop
-        pageControlProps={{
-          size: 10,
-          containerStyle: {position: 'absolute',
-          bottom: 15,
-          left: 10}
-        }}
-        pageControlPosition={Carousel.pageControlPositions.OVER}
-        showCounter
-      >
-        {IMAGES.map((image, i) => {
-          return (
-            <View flex centerV key={i}>
-              <Image
-                overlayType={Image.overlayTypes.BOTTOM}
-                style={{flex: 1}}
-                source={{
-                  uri: image
-                }}
-              />
-            </View>
-          );
-        })}
-      </Carousel>
+        <View style={styles.header}>
+          <View row>
+            <Text h2>{farmer.business}</Text>
+          </View>
 
-      <View style={styles.header}>
-        <View row>
-          <Text h2>{farmer.business}</Text>
+          <View row>
+            <Text h3>{farmer.address}</Text>
+          </View>
+
+          <View row>
+            <Text h3>{farmer.description}</Text>
+          </View>
+
+          <View row style={[global.spaceBetween, global.flexWrap]}>
+            <Chip backgroundColor="green" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${farmer.name}`} labelStyle={{ color: "white" }} onPress={handleChat}/>
+            <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`tel:${farmer.phone}`) }}/>
+            <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`mailto:${farmer.email}`) }}/>
+          </View>
         </View>
+        {/* <TabView
+          style={[global.bgWhite, global.flex]}
+          navigationState={{ index, routes }}
+          renderTabBar={(props) => (
+            <TabBar
+              {...props}
+              indicatorStyle={{ backgroundColor: global.activeTabTextColor.color }}
+              style={{ backgroundColor: "white", height: 50 }}
+              renderLabel={renderLabel}
+            />
+          )}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          initialLayout={{ width: layout.width }}
+        /> */}
 
-        <View row>
-          <Text h3>{farmer.address}</Text>
+      <TabController items={[{label: 'About Us'}, {label: 'Products'}, {label: 'Reviews'}]}>  
+        <TabController.TabBar 
+          indicatorInsets={0}
+          indicatorStyle={{ backgroundColor: "#32CD32" }} 
+          selectedLabelColor={global.activeTabTextColor.color}
+          labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
+        />  
+        <View flex>    
+          <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
+          <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
+          <TabController.TabPage index={2} lazy>{ThirdRoute()}</TabController.TabPage>  
         </View>
+      </TabController>
 
-        <View row>
-          <Text h3>{farmer.description}</Text>
-        </View>
+        {/* <View flexG /> */}
 
-        <View row style={[global.spaceBetween, global.flexWrap]}>
-          <Chip backgroundColor="green" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${farmer.name}`} labelStyle={{ color: "white" }} onPress={handleChat}/>
-          <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`tel:${farmer.phone}`) }}/>
-          <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`mailto:${farmer.email}`) }}/>
-        </View>
-      </View>
-      <TabView
-        style={[global.bgWhite, global.flex]}
-        navigationState={{ index, routes }}
-        renderTabBar={(props) => (
-          <TabBar
-            {...props}
-            indicatorStyle={{ backgroundColor: global.activeTabTextColor.color }}
-            style={{ backgroundColor: "white", height: 50 }}
-            renderLabel={renderLabel}
+        <View style={styles.cart}>
+          <Button 
+            backgroundColor={"#ff4500"}
+            color={Colors.white}
+            label={items.length != 0 ? "Create Product" : "Add items to Basket"} 
+            labelStyle={{ fontWeight: '600', padding: 8 }} 
+            style={[global.btnTest, items.length == 0 ? styles.disabled : styles.checkout]}
+            onPress={() => items.length != 0 && navigation.navigate("Basket")}               
           />
-        )}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
-      />
+        </View>
 
-      {/* <View flexG /> */}
-
-      <View style={styles.cart}>
-        <TouchableOpacity disabled={items.length == 0} onPress={() => navigation.navigate("Cart")} style={items.length == 0 ? styles.disabled : styles.checkout}>
-          {items.length == 0 
-            ? <Text style={styles.checkoutText}>Add items to Cart</Text>
-            : <Text style={styles.checkoutText}>Go to Cart</Text>
-          }
-        </TouchableOpacity>
-      </View>
+        
+      </ScrollView>
     </View>
   );
 }

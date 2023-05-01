@@ -71,7 +71,6 @@ const Chat = () => {
         estimatedItemSize={chats.length}
         renderItem={({item}) => (
           <ChatRow id={item.id} />
-          // <ChatRow chat={item.id} cover={item.cover} title={item.farmer?.name} subtitle={item.messages?.length === 0 ? "No messages" : `${item.messages[0]?.user.name === auth.currentUser.displayName ? "You" : item.messages[0]?.user.name}: ${item.messages[0]?.text}`} />
         )}
       />
       {!user?.role && <Button style={{ width: 64, height: 64, margin: 16 }} round animateLayout animateTo={'right'} onPress={() => navigation.navigate("Search")} backgroundColor="green" size={Button.sizes.small} iconSource={() => <Ionicon name="search" color="white" size={24} />} />}

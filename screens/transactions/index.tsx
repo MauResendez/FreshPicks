@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, useWindowDimensions } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { Button, TabController, View } from 'react-native-ui-lib';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { auth, db } from '../../firebase';
@@ -10,13 +10,8 @@ import { global } from '../../style';
 const Transactions = () => {
   const navigation = useNavigation<any>();
   const layout = useWindowDimensions();
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: "first", title: "All" },
-    { key: "second", title: "Revenue" },
-    { key: "third", title: "Expenses" },
-  ]);
-  const [products, setProducts] = useState([]);
+  const width = layout.width/4;
+  const [transactions, setTransactions] = useState([]);
 
   const FirstRoute = () => (
     <View useSafeArea flex>
@@ -34,20 +29,19 @@ const Transactions = () => {
   );
   
   useEffect(() => {
-    onSnapshot(query(collection(db, "Products"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
-      setProducts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+    onSnapshot(query(collection(db, "Transactions"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
+      setTransactions(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
     });
   }, []);
 	
 	return (
 		<View useSafeArea flex style={global.bgWhite}>
-      <TabController items={[{label: 'All'}, {label: 'Revenue'}, {label: 'Expenses'}]}>  
+      <TabController items={[{ label: 'All' }, { label: 'Revenue' }, { label: 'Expenses' }]}>  
         <TabController.TabBar
-          // containerStyle={{width: layout.width}}
-          // selectedLabelColor={global.activeTabTextColor.color} 
-          indicatorInsets={0} 
-          // indicatorStyle={{ backgroundColor: "#32CD32", flex: 1 }} 
-          // labelStyle={{ textAlign: "center", flexWrap: 'nowrap' }} 
+          indicatorInsets={0}
+          indicatorStyle={{ backgroundColor: "#32CD32" }} 
+          selectedLabelColor={global.activeTabTextColor.color}
+          labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
         />
         <View flex>
           <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
@@ -67,14 +61,5 @@ const Transactions = () => {
     </View>
 	)
 }
-
-const styles = StyleSheet.create({
-  activeTabTextColor: {
-    color: "#32CD32"
-  },
-  tabTextColor: {
-    color: "black"
-  }
-});
 
 export default Transactions

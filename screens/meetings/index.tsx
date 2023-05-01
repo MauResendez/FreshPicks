@@ -1,7 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { Agenda, AgendaEntry, AgendaSchedule, DateData } from 'react-native-calendars';
 import { TabController, Text, View } from 'react-native-ui-lib';
 import ChatRow from '../../components/chat/chat-row';
@@ -12,6 +12,8 @@ interface State {
 }
 
 const Meetings = () => {
+  const layout = useWindowDimensions();
+  const width = layout.width/4;
   const [items, setItems] = useState({});
   const [chats, setChats] = useState([]);
   const [meetings, setMeetings] = useState([]);
@@ -128,11 +130,17 @@ const Meetings = () => {
 
   return (
     <View useSafeArea flex style={global.bgWhite}>
-      <TabController items={[{label: 'Calendar'}, {label: 'Inbox'}]}>  
-        <TabController.TabBar spreadItems indicatorStyle={global.activeTabTextColor} />  
+      <TabController items={[{label: 'Calendar'}, {label: 'Requests'}, {label: 'Inbox'}]}>  
+        <TabController.TabBar
+          indicatorInsets={0}
+          indicatorStyle={{ backgroundColor: "#32CD32" }} 
+          selectedLabelColor={global.activeTabTextColor.color}
+          labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
+        />  
         <View flex style={global.bgWhite}>    
           <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
-          <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
+          <TabController.TabPage index={1}>{FirstRoute()}</TabController.TabPage>    
+          <TabController.TabPage index={2} lazy>{SecondRoute()}</TabController.TabPage>    
         </View>
       </TabController>
     </View>

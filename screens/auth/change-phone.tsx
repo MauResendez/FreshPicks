@@ -6,7 +6,7 @@ import * as React from "react";
 import { useRef, useState } from "react";
 import { Keyboard, Platform, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import PhoneInput from 'react-native-phone-input';
-import { Text, TouchableOpacity, View } from "react-native-ui-lib";
+import { Button, Colors, Text, View } from "react-native-ui-lib";
 import { app, auth } from "../../firebase";
 import { global } from "../../style";
 
@@ -126,11 +126,14 @@ const ChangePhone = () => {
             />
           </View>
 
-          <View style={global.field}>
-            <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={verifyPhone}>
-              <Text style={[global.btnText, global.white]}>Send Verification Code</Text>
-            </TouchableOpacity>
-          </View>
+          <Button 
+            backgroundColor={"#ff4500"}
+            color={Colors.white}
+            label={"Send Verification Code"} 
+            labelStyle={{ fontWeight: '600', padding: 8 }} 
+            style={global.btnTest} 
+            onPress={verifyPhone}          
+          />
 
           <View style={global.field}>
             <Text subtitle>Verify SMS Code</Text>

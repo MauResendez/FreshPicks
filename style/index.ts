@@ -200,7 +200,7 @@ export const global = StyleSheet.create({
     fontWeight: "bold",
     letterSpacing: 1,
   },
-  btn: {
+  fwbtn: {
     backgroundColor: "#ff4500",
     borderRadius: 8,
     marginVertical: 8,
@@ -213,6 +213,17 @@ export const global = StyleSheet.create({
     marginVertical: 8,
     padding: 16,
     width: "40%"
+  },
+  btnTest: {
+    borderRadius: 8,
+    marginVertical: 8,
+    padding: 16,
+    width: "100%"
+  },
+  btn: {
+    borderRadius: 8,
+    marginVertical: 8,
+    padding: 16,
   },
   btnContainer: {
     marginBottom: 16,

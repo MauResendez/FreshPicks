@@ -137,14 +137,6 @@ const Conversation = ({ route }) => {
 
   useEffect(() => {
     if (chat) {
-      // onSnapshot(doc(db, "Users", chat.consumer), (doc) => {
-      //   setConsumer({...doc.data(), id: chat.consumer});
-      // });
-  
-      // onSnapshot(doc(db, "Users", chat.farmer), (doc) => {
-      //   setFarmer({...doc.data(), id: chat.farmer});
-      // });
-
       getDoc(doc(db, "Users", chat.consumer)).then((docSnapshot) => {
         const data = docSnapshot.data();
 
@@ -169,7 +161,7 @@ const Conversation = ({ route }) => {
               name={"ellipsis-vertical"} 
               size={24} 
               color={"green"} 
-              style={{ marginHorizontal: 16 }} 
+              style={{ marginHorizontal: -8 }} 
               onPress={() => Alert.alert("Delete Chat", "Would you like to delete this chat?", [
                 {text: 'Cancel', style: 'cancel'},
                 {text: 'OK', onPress: () => deleteChat(id)},
@@ -205,8 +197,8 @@ const Conversation = ({ route }) => {
         scrollToBottom
         scrollToBottomComponent={scrollToBottomComponent}
         // renderInputToolbar={renderInputToolbar}
-        wrapInSafeArea={false}
-        bottomOffset={0}
+        showUserAvatar={false}
+        bottomOffset={80}
       />
     </View>
   );

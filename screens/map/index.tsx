@@ -81,6 +81,9 @@ const Map = () => {
           followsUserLocation={false}
           showsPointsOfInterest={false}
           moveOnMarkerPress={true}
+          mapType={"standard"}
+          showsTraffic
+          // cacheEnabled
         >
           {farmers.map((farmer, index) => {
             return (

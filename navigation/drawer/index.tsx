@@ -5,11 +5,11 @@ import { Image } from "react-native";
 import { doc, onSnapshot } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 
-import Cart from "../../screens/cart";
 
 
 import { Colors, LoaderScreen } from "react-native-ui-lib";
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Basket from "../../screens/basket";
 import DashboardStack from "../stack/dashboard-stack";
 import FeedStack from "../stack/feed-stack";
 import HistoryStack from "../stack/history-stack";
@@ -163,8 +163,8 @@ const MainDrawer = () => {
         }}
       />
       <Drawer.Screen
-        name="Cart"
-        component={Cart}
+        name="Basket"
+        component={Basket}
         options={({ route }) => {
           return {
             drawerIcon: ({ color }) => (

@@ -1,13 +1,13 @@
 import React from "react";
 
-import { createStackNavigator } from "@react-navigation/stack";
 
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Image } from "react-native-ui-lib";
 import Conversation from "../../screens/chat/conversation";
 import Meetings from "../../screens/meetings";
 import Meeting from "../../screens/meetings/meeting";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const MeetingStack = () => {
   // const navigation = useNavigation<any>();

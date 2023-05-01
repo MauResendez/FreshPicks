@@ -1,11 +1,11 @@
 import React from "react";
 
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Image } from "react-native-ui-lib";
 import Transactions from "../../screens/transactions";
 import CreateTransaction from "../../screens/transactions/create-transaction";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const TransactionStack = () => {
   // const navigation = useNavigation<any>();
