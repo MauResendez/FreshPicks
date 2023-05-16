@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { memo } from "react";
 import { ListItem, Text } from "react-native-ui-lib";
 
-const SearchRow = ({ farmer, cover, business, name, address }) => {
+const SearchRow = (props) => {
+  const {item} = props;
   const navigation = useNavigation<any>();
 
   const chatWithFarmer = (farmer) => {
@@ -17,17 +18,17 @@ const SearchRow = ({ farmer, cover, business, name, address }) => {
       divider
 			style={{ backgroundColor: "white", padding: 8, height: "auto" }}
       height={60}
-      onPress={() => chatWithFarmer(farmer)}
+      onPress={() => chatWithFarmer(item.farmer)}
       underlayColor="black"
     >
       <ListItem.Part left>
       </ListItem.Part>
       <ListItem.Part column>
-        <Text h2 numberOfLines={1}>{business}</Text>
-        <Text h3>{address}</Text>
+        <Text h2 numberOfLines={1}>{item.business}</Text>
+        <Text h3>{item.address}</Text>
       </ListItem.Part>
     </ListItem>
   )
 }
 
-export default SearchRow
+export default memo(SearchRow);

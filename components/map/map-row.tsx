@@ -2,8 +2,13 @@ import { useNavigation } from '@react-navigation/native';
 import React, { memo } from 'react';
 import { Colors, ListItem, Text } from 'react-native-ui-lib';
 
-const MapRow = ({ farmer, cover, business, name, address, onPress }) => {
+const MapRow = (props) => {
+	const {item} = props;
 	const navigation = useNavigation<any>();
+
+	const onPress = () => {
+    navigation.navigate("Profile", { id: item.id })
+  }
 
 	return (
 		<ListItem
@@ -12,9 +17,9 @@ const MapRow = ({ farmer, cover, business, name, address, onPress }) => {
 			onPress={onPress}
 		>
 			<ListItem.Part column>
-				<Text h2 numberOfLines={3}>{business}</Text>
-				<Text h3>{address}</Text>
-				<Text h3>{name}</Text>
+				<Text h2 numberOfLines={3}>{item.business}</Text>
+				<Text h3>{item.address}</Text>
+				<Text h3>{item.name}</Text>
 			</ListItem.Part>
 		</ListItem> 
 	)

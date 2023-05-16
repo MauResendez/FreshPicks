@@ -3,8 +3,7 @@ import * as Linking from 'expo-linking';
 import { addDoc, collection, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
 import React, { createRef, useEffect, useState } from "react";
 import { Platform, ScrollView, StyleSheet, useWindowDimensions } from "react-native";
-import { SceneMap } from "react-native-tab-view";
-import { Button, Carousel, Chip, Colors, Image, ListItem, LoaderScreen, TabController, Text, View } from "react-native-ui-lib";
+import { Button, Carousel, Chip, Colors, Image, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { useSelector } from "react-redux";
 import ProfileRow from "../../components/profile/profile-row";
 import { selectOrderItems } from "../../features/order-slice";
@@ -42,92 +41,6 @@ const Profile = () => {
     'https://images.pexels.com/photos/2529146/pexels-photo-2529146.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
     'https://images.pexels.com/photos/2529158/pexels-photo-2529158.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
   ];
-
-  const FirstRoute = () => (
-    <View useSafeArea flex style={global.bgWhite}>
-      <ScrollView style={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
-        <View style={{ padding: 16 }}>
-          <ListItem>
-            <ListItem.Part>
-              <Text subtitle>About Us</Text>
-              <Text h3>{farmer.description}</Text>
-            </ListItem.Part>
-          </ListItem>
-        </View>
-      </ScrollView>
-    </View>
-  );
-
-  const SecondRoute = () => (
-    <View useSafeArea flex style={global.bgWhite}>
-      <ScrollView style={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
-        <View style={{ padding: 16 }}>
-          <ListItem>
-            <ListItem.Part>
-              <Text subtitle>Products</Text>
-            </ListItem.Part>
-          </ListItem>
-
-          {products.map((product) => (
-            <ProfileRow
-              key={product.id}
-              id={product.id}
-              title={product.title}
-              description={product.description}
-              price={product.price}
-              image={product.image}
-              quantity={product.quantity}
-              farmer={farmer}
-              user={consumer}
-            />
-          ))}
-        </View>
-      </ScrollView>
-    </View>
-  );
-
-  const ThirdRoute = () => (
-    <View useSafeArea flex style={global.bgWhite}>
-      <ScrollView style={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
-        <View style={{ padding: 16 }}>
-          <ListItem>
-            <ListItem.Part>
-              <Text subtitle>Reviews</Text>
-            </ListItem.Part>
-          </ListItem>
-
-          {products.map((product) => (
-            <ProfileRow
-              key={product.id}
-              id={product.id}
-              title={product.title}
-              description={product.description}
-              price={product.price}
-              image={product.image}
-              quantity={product.quantity}
-              // expiration={product.expiration}
-              farmer={farmer}
-              user={consumer}
-            />
-          ))}
-        </View>
-      </ScrollView>
-    </View>
-  );
-
-  const renderLabel = ({ route, focused, color }) => {
-    return (
-      <Text style={[focused ? global.activeTabTextColor : global.tabTextColor]}>
-        {route.title}
-      </Text>
-    );
-  };
-
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-    third: ThirdRoute
-  });
 
   const handleChat = async () => {
     // Check user if they have current farmer id saved in chatted
@@ -259,43 +172,18 @@ const Profile = () => {
             <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`mailto:${farmer.email}`) }}/>
           </View>
         </View>
-        {/* <TabView
-          style={[global.bgWhite, global.flex]}
-          navigationState={{ index, routes }}
-          renderTabBar={(props) => (
-            <TabBar
-              {...props}
-              indicatorStyle={{ backgroundColor: global.activeTabTextColor.color }}
-              style={{ backgroundColor: "white", height: 50 }}
-              renderLabel={renderLabel}
-            />
-          )}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-        /> */}
 
-      <TabController items={[{label: 'About Us'}, {label: 'Products'}, {label: 'Reviews'}]}>  
-        <TabController.TabBar 
-          indicatorInsets={0}
-          indicatorStyle={{ backgroundColor: "#32CD32" }} 
-          selectedLabelColor={global.activeTabTextColor.color}
-          labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
-        />  
-        <View flex>    
-          <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
-          <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
-          <TabController.TabPage index={2} lazy>{ThirdRoute()}</TabController.TabPage>  
-        </View>
-      </TabController>
+        {products.map((item) => (
+          <ProfileRow item={item} />
+        ))}
 
-        {/* <View flexG /> */}
+        <View flexG />
 
         <View style={styles.cart}>
           <Button 
             backgroundColor={"#ff4500"}
             color={Colors.white}
-            label={items.length != 0 ? "Create Product" : "Add items to Basket"} 
+            label={items.length != 0 ? "Go to Basket" : "Add items to Basket"} 
             labelStyle={{ fontWeight: '600', padding: 8 }} 
             style={[global.btnTest, items.length == 0 ? styles.disabled : styles.checkout]}
             onPress={() => items.length != 0 && navigation.navigate("Basket")}               

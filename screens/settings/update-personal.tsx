@@ -58,14 +58,14 @@ const UpdatePersonal = () => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
+        <KeyboardAwareScrollView>
           <Formik 
             initialValues={{ name: user.name, email: user.email, address: user.address, location: user.location } || { name: "", email: "", address: "", location: "" }} 
             onSubmit={onSubmit}
             enableReinitialize={true}
           >
             {({ handleChange, handleBlur, handleSubmit, values }) => (
-              <View flex>
+              <View flex style={global.container}>
                 <View style={global.field}>
                   <Text subtitle>Full Name *</Text>
                   <TextField 
@@ -144,8 +144,6 @@ const UpdatePersonal = () => {
                     }}
                   /> 
                 </ScrollView>
-
-                <View flexG />
 
                 <Button 
                   backgroundColor={"#ff4500"}

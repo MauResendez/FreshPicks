@@ -63,7 +63,7 @@ const Search = () => {
   return (
     <View useSafeArea flex style={global.bgWhite}>
       <View style={styles.search}>
-        <TextField fieldStyle={{ backgroundColor: Colors.grey50, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Search for farmers and produce here..." placeholderTextColor={Colors.black} leadingAccessory={<Ionicon name="search" color={Colors.black} size={20} style={{ marginRight: 8 }} />} migrate />
+        <TextField fieldStyle={{ backgroundColor: Colors.grey60, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Farmers, produce, subscriptions, etc." placeholderTextColor={Colors.grey30} leadingAccessory={<Ionicon name="search" color={Colors.grey30} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>
 
       <ScrollView

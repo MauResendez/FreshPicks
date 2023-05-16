@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
-import React from "react";
+import React, { useCallback } from "react";
 import { StyleSheet } from "react-native";
 import { Text, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
@@ -8,6 +8,12 @@ import FarmerCard from "./farmer-card";
 
 const FarmerList = ({ title, description, farmers }) => {
   const navigation = useNavigation<any>();
+
+  const renderItem = useCallback(({item}) => {
+    return (
+      <FarmerCard item={item} />
+    );
+  }, []);
 
   return (
     <View>
@@ -24,17 +30,8 @@ const FarmerList = ({ title, description, farmers }) => {
         horizontal
         contentContainerStyle={{ padding: 15 }}
         showsHorizontalScrollIndicator={false}
-        estimatedItemSize={farmers.length}
-        renderItem={({item}) => (
-          <FarmerCard
-            key={item?.id}
-            id={item?.id}
-            image={item?.cover}
-            title={item.business ? item.business : item.name}
-            subtitle={item.address}
-            rating={item?.rating}
-          />
-        )}
+        estimatedItemSize={farmers.length != 0 ? farmers.length : 150}
+        renderItem={renderItem}
       />
     </View>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { Avatar, ListItem, Text } from "react-native-ui-lib";
 import { useDispatch, useSelector } from "react-redux";
 import { selectOrderItemsWithId } from "../../features/order-slice";
@@ -48,4 +48,4 @@ const CartRow = (product) => {
     )} */}
 
 
-export default CartRow;
+export default memo(CartRow);

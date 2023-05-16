@@ -7,9 +7,11 @@ import EditPost from "../../screens/products/edit-post";
 import EditSubscription from "../../screens/products/edit-subscription";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Platform } from "react-native";
 import { Image } from "react-native-ui-lib";
 import CreateProduct from "../../screens/products/create-product";
 import EditProduct from "../../screens/products/edit-product";
+import { global } from "../../style";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,15 +35,16 @@ const ProductStack = () => {
         headerShown: true,
         headerTitle: () => (
           <Image
-            style={{ width: 200, height: 50 }}
+            style={Platform.OS == "android" ? global.androidHeader : global.iosHeader}
             source={require("../../assets/logo.png")}
             resizeMode="contain"
           />
         ), 
+        headerTitleAlign: "center",
       }}
     >
       <Stack.Screen name="Index" component={Dashboard} />
-      <Stack.Screen name="Create Listing" component={CreateProduct} />
+      <Stack.Screen name="Create Product" component={CreateProduct} />
       <Stack.Screen name="Create Post" component={CreatePost} />
       <Stack.Screen name="Create Subscription" component={CreateSubscription} />
       <Stack.Screen name="Edit Listing" component={EditProduct} />

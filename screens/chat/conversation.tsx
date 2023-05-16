@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useState } from "react"
 import { Alert, Platform, StyleSheet } from "react-native";
 import { Bubble, GiftedChat, IMessage, Send } from "react-native-gifted-chat";
 import { QuickReplies, QuickRepliesProps } from "react-native-gifted-chat/lib/QuickReplies";
-import { Colors, LoaderScreen, View } from "react-native-ui-lib";
+import { Colors, LoaderScreen, Text, View } from "react-native-ui-lib";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import { auth, db } from "../../firebase";
@@ -85,6 +85,42 @@ const Conversation = ({ route }) => {
     navigation.navigate("Index");
   }
 
+  const quickReplies = [
+    {
+      text: 'Send location',
+      value: {
+        location: {
+          latitude: 37.78825,
+          longitude: -122.4324,
+        }
+      }
+    },
+    {
+      text: 'Send message',
+      value: 'Hello!',
+    },
+  ];
+
+  const renderQuickReplies = (props) => {
+    return <QuickReplies quickReplies={quickReplies} color={Colors.blue20} {...props} />;
+  };
+
+  const handleQuickReply = (value) => {
+    if (value.location) {
+      // Send location to messaging system
+    } else {
+      // Send message to messaging system
+    }
+  }
+
+  const renderQuickReplySend = () => {
+    return (
+      <Send>
+        <Text>Send</Text>
+      </Send>
+    );
+  }  
+
   const onSend = useCallback(async (m = []) => {
     try {
       await setDoc(chatsRef, {
@@ -160,7 +196,7 @@ const Conversation = ({ route }) => {
             <Ionicon 
               name={"ellipsis-vertical"} 
               size={24} 
-              color={"green"} 
+              color={"black"} 
               style={{ marginHorizontal: -8 }} 
               onPress={() => Alert.alert("Delete Chat", "Would you like to delete this chat?", [
                 {text: 'Cancel', style: 'cancel'},
@@ -181,6 +217,31 @@ const Conversation = ({ route }) => {
     )
   }
 
+  const onQuickReply = replies => {
+    const createdAt = new Date()
+    if (replies.length === 1) {
+      onSend([
+        {
+          createdAt,
+          _id: Math.round(Math.random() * 1000000),
+          text: replies[0].title,
+          user: auth.currentUser.uid,
+        },
+      ])
+    } else if (replies.length > 1) {
+      onSend([
+        {
+          createdAt,
+          _id: Math.round(Math.random() * 1000000),
+          text: replies.map(reply => reply.title).join(', '),
+          user: auth.currentUser.uid,
+        },
+      ])
+    } else {
+      console.warn('replies param is not set correctly')
+    }
+  }
+
   return (
     <View useSafeArea flex>
       <GiftedChat
@@ -191,14 +252,16 @@ const Conversation = ({ route }) => {
           name: chat?.consumer == auth.currentUser.uid ? consumer.name : farmer.name,
         }}
         // multiline={false}
+        alwaysShowSend={true}
+        onQuickReply={onQuickReply}
         renderBubble={renderBubble}
-        renderQuickReplies={renderQuickReplies}
         renderSend={renderSend}
         scrollToBottom
         scrollToBottomComponent={scrollToBottomComponent}
+        // isTyping={true}
         // renderInputToolbar={renderInputToolbar}
         showUserAvatar={false}
-        bottomOffset={80}
+        bottomOffset={Platform.OS == "android" ? 0 : 80}
       />
     </View>
   );

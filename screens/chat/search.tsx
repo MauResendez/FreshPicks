@@ -1,6 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { LoaderScreen, TextField, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
@@ -11,6 +11,12 @@ const Orders = () => {
   const [farmers, setFarmers] = useState<any>(null);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const renderItem = useCallback(({item}) => {
+    return (
+      <SearchRow item={item} />
+    );
+  }, []);
   
   useEffect(() => { 
     if (search.length == 0 || farmers.length == 0) {
@@ -53,10 +59,8 @@ const Orders = () => {
       <FlashList 
         data={farmers}
         keyExtractor={(item: any) => item.id}
-        estimatedItemSize={farmers.length}
-        renderItem={({item}) => (
-          <SearchRow farmer={item.id} cover={item.cover} business={item.business} name={item.name} address={item.address} />
-        )}
+        estimatedItemSize={farmers.length != 0 ? farmers.length : 150}
+        renderItem={renderItem}
       />
     </View>
   )

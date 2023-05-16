@@ -4,7 +4,8 @@ import React, { memo, useEffect, useState } from "react";
 import { ListItem, Text } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 
-const ChatRow = ({ id }) => {
+const ChatRow = (props) => {
+  const {item} = props;
   const navigation = useNavigation<any>();
   const [chat, setChat] = useState(null);
   const [consumer, setConsumer] = useState(null);
@@ -12,11 +13,11 @@ const ChatRow = ({ id }) => {
   const [loading, setLoading] = useState(true);
 
   const conversation = () => {
-    navigation.navigate("Conversation", { id: id })
+    navigation.navigate("Conversation", { id: item.id })
   }
 
   useEffect(() => {
-    onSnapshot(doc(db, "Chats", id), (doc) => {
+    onSnapshot(doc(db, "Chats", item.id), (doc) => {
       setChat(doc.data());
     });
   }, []);

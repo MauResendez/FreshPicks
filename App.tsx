@@ -4,13 +4,12 @@ import { StatusBar } from "expo-status-bar";
 import { onAuthStateChanged, User } from "firebase/auth";
 import React, { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
-import { ConnectionStatusBar, ThemeManager, Typography } from "react-native-ui-lib";
+import { ConnectionStatusBar, LoaderScreen, ThemeManager, Typography } from "react-native-ui-lib";
 import { Provider } from "react-redux";
 import { auth } from "./firebase";
 import AuthStack from "./navigation/stack/auth-stack";
 import MainStack from "./navigation/stack/main-stack";
 import { store } from "./redux/store";
-import Splash from "./screens/splash";
 
 // ThemeManager.setComponentTheme('Wizard', (props, context) => {
 //   // const containerStyle = {width, marginLeft, paddingVertical, paddingHorizontal};
@@ -19,9 +18,31 @@ import Splash from "./screens/splash";
 // });
 
 ThemeManager.setComponentTheme('Stepper', (props, context) => {
-  // const containerStyle = {width, marginLeft, paddingVertical, paddingHorizontal};
   const config = {color: "black", backgroundColor: "#32CD32", circleColor: "black"};
   return {config};
+});
+
+ThemeManager.setComponentTheme('Card', (props, context) => {
+  const style = {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 16,
+  };
+  return {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 16,
+  };;
 });
 
 Typography.loadTypographies({ 
@@ -149,7 +170,7 @@ const App = () => {
 
   if (loading) {
     return (
-      <Splash />
+      <LoaderScreen />
     );
   }
 

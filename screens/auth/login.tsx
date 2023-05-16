@@ -153,7 +153,7 @@ const Login = () => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAvoidingView style={[global.container]} behavior={Platform.OS == "ios" ? "padding" : "height"}>
+        <KeyboardAvoidingView style={global.container} behavior={Platform.OS == "ios" ? "padding" : "height"}>
           <Formik 
             initialValues={{ phone: "", sms: "" }} 
             onSubmit={onSubmit}
@@ -192,7 +192,7 @@ const Login = () => {
                   <Button 
                     backgroundColor={"#ff4500"}
                     color={Colors.white}
-                    label={"Login"} 
+                    label={"Send Verification Code"} 
                     labelStyle={{ fontWeight: '600', padding: 8 }} 
                     style={global.btnTest} 
                     onPress={() => verifyPhone(values.phone)}                

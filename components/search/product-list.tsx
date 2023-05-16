@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
-import React from "react";
+import React, { useCallback } from "react";
 import { StyleSheet } from "react-native";
 import { Text, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
@@ -13,6 +13,12 @@ const ProductList = ({ title, description, products }) => {
       id: user
     });
   };
+
+  const renderItem = useCallback(({item}) => {
+    return (
+      <ProductCard item={item} />
+    );
+  }, []);
 
   return (
     <View>
@@ -29,19 +35,8 @@ const ProductList = ({ title, description, products }) => {
         horizontal
         contentContainerStyle={{ padding: 15 }}
         showsHorizontalScrollIndicator={false}
-        estimatedItemSize={products.length}
-        renderItem={({item}) => (
-          <ProductCard
-            key={item?.id}
-            id={item?.id}
-            image={item?.image}
-            title={item?.title}
-            subtitle={item?.description}
-            price={item?.price}
-            quantity={item?.quantity}
-            farmer={item?.user}
-          />
-        )}
+        estimatedItemSize={products.length != 0 ? products.length : 150}
+        renderItem={renderItem}
       />
     </View>
   );

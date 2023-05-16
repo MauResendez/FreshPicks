@@ -1,5 +1,5 @@
-import React from 'react'
-import { Colors, ListItem, Text } from 'react-native-ui-lib'
+import React, { memo } from 'react';
+import { Colors, ListItem, Text } from 'react-native-ui-lib';
 
 const AddressRow = ({ address }) => {
 	return (
@@ -15,4 +15,4 @@ const AddressRow = ({ address }) => {
 	)
 }
 
-export default AddressRow
+export default memo(AddressRow);

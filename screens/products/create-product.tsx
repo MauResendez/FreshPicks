@@ -2,12 +2,14 @@ import { useNavigation } from "@react-navigation/native"
 import * as ImageManipulator from 'expo-image-manipulator'
 import * as ImagePicker from "expo-image-picker"
 import { addDoc, collection } from "firebase/firestore"
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { Formik } from 'formik'
-import React, { useState } from "react"
+import React from "react"
 import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native"
-import { Button, Colors, KeyboardAwareScrollView, NumberInput, Picker, Text, TextField, View } from "react-native-ui-lib"
+import { AnimatedImage, Button, Colors, KeyboardAwareScrollView, NumberInput, Picker, Text, TextField, TouchableOpacity, View } from "react-native-ui-lib"
+import Ionicon from 'react-native-vector-icons/Ionicons'
 import * as Yup from 'yup'
-import { auth, db } from "../../firebase"
+import { auth, db, storage } from "../../firebase"
 import { global } from "../../style"
 
 const CreateProduct = () => {
@@ -27,14 +29,13 @@ const CreateProduct = () => {
     {label: 'LB', value: 'LB'},
     {label: 'Bunch', value: 'Bunch'},
   ]
-  const [image, setImage] = useState<any>(null);
 
-  const compress = async (uri: string) => {
-    const manipulatedImage = await ImageManipulator.manipulateAsync(uri, [{ resize: { width: 300, height: 150 }}], { compress: 0.5 });
-    setImage(manipulatedImage.uri);
+  const compress = async (uri: string, setFieldValue) => {
+    const manipulatedImage = await ImageManipulator.manipulateAsync(uri, [{ resize: { height: 512 }}], { compress: 1 });
+    setFieldValue('image', manipulatedImage.uri)
   };
 
-  const gallery = async () => {
+  const gallery = async (setFieldValue) => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
@@ -47,56 +48,38 @@ const CreateProduct = () => {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         aspect: [4, 3],
-        quality: 0,
+        quality: 1,
       });
 
       if (!result.canceled) {
-        compress(result.assets[0].uri);
+        compress(result.assets[0].uri, setFieldValue);
       }
     } catch (error) {
       console.log(error);
     }
   }
 
-  // const hideToast = () => {
-  //   setToast("");
-  //   setVisible(false);
-  // }
+  const handleSubmit = async (values) => {
+    console.log(values.image);
+    const imgs = await uploadImages(values.image);
+    await createProduct(values, auth.currentUser, imgs);
+  };
 
-  const onSubmit = async (values) => {
-    console.log(values);
-    
-  //   // How the image will be addressed inside the storage
-  //   const storage_ref = ref(storage, `images/${auth.currentUser.uid}/products/${Date.now()}`);
+  const uploadImage = async (image) => {
+    const storageRef = ref(storage, `${auth.currentUser.uid}/images/${Date.now()}`);
+    const img = await fetch(image);
+    const blob = await img.blob();
 
-  //   // Convert image to bytes
-  //   const img = await fetch(image);
-  //   const bytes = await img.blob();
-
-  //   // Uploads the image bytes to the Firebase Storage
-  //   await uploadBytes(storage_ref, bytes).then(async () => {
-  //     // We retrieve the URL of where the image is located at
-  //     await getDownloadURL(storage_ref).then(async (image) => {
-  //       // Then we create the Market with it's image on it
-  //       await addDoc(collection(db, "Products"), values).then(() => {
-  //         console.log("Data saved!");
-  //         navigation.navigate("Index");
-  //       }).catch((error) => {
-  //         console.log(error);
-  //       });
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
-  // };
-
-    await addDoc(collection(db, "Products"), values).then(() => {
-      console.log("Data saved!");
-      navigation.navigate("Index");
-    }).catch((error) => {
-      console.log(error);
-    });
+    const response = await uploadBytesResumable(storageRef, blob);
+    const url = await getDownloadURL(response.ref);
+    return url;
+  }
+  
+  const uploadImages = async (images) => {
+    const imagePromises = Array.from(images, (image) => uploadImage(image));
+  
+    const imageRes = await Promise.all(imagePromises);
+    return imageRes; // list of url like ["https://..", ...]
   }
 
   const validate = Yup.object().shape({
@@ -108,17 +91,26 @@ const CreateProduct = () => {
     quantity: Yup.string().required('Quantity is required')
   });
 
+  const createProduct = async (values, user, u) => {
+    await addDoc(collection(db, "Products"), values).then(() => {
+      console.log("Data saved!");
+      navigation.navigate("Index");
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAwareScrollView style={global.container}>
+        <KeyboardAwareScrollView>
           <Formik
-            initialValues={{ user: auth.currentUser.uid, title: '', description: '', type: '', amount: '', price: 1.00, quantity: 1 }}
+            initialValues={{ user: auth.currentUser.uid, title: '', description: '', type: '', amount: '', price: 1.00, quantity: 1, image: [] }}
             validationSchema={validate}
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit}
           >
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-              <View flex>
+              <View flex style={global.container}>
                 <View style={global.field}>
                   <Text subtitle>Title</Text>
                   <TextField
@@ -161,7 +153,7 @@ const CreateProduct = () => {
                     ))}
                   </Picker>
                 </View>
-                {errors.type && touched.type && <Text style={{ color: Colors.red30}}>{errors.type}</Text>}
+                {errors.type && touched.type && <Text style={{ color: Colors.red30 }}>{errors.type}</Text>}
 
                 <View style={global.field}>
                   <Text subtitle>Price</Text>
@@ -173,6 +165,7 @@ const CreateProduct = () => {
                     keyboardType={'numeric'}
                     fractionDigits={2}
                     migrate
+                    leadingAccessory={<Ionicon name="search" color={Colors.grey30} size={20} style={{ marginRight: 8 }} />}
                   />
                 </View>
                 {errors.price && touched.price && <Text style={{ color: Colors.red30}}>{errors.price}</Text>}
@@ -209,24 +202,26 @@ const CreateProduct = () => {
                 </View>
                 {errors.quantity && touched.quantity && <Text style={{ color: Colors.red30}}>{errors.quantity}</Text>}
 
-                {/* <View style={global.field}>
-                  <Text subtitle>Listing Image</Text>
-                  <TouchableOpacity onPress={gallery}>
-                    {!image
-                      ? <AnimatedImage style={{ width: "100%", height: 200 }} source={require("../../assets/image.png")} />
-                      : <AnimatedImage style={{ width: "100%", height: 200 }} source={{ uri: image }} />
+                <View style={global.field}>
+                  <Text subtitle>Image</Text>
+                  <TouchableOpacity onPress={() => gallery(setFieldValue)}>
+                    {values.image.length == 0
+                      ? <AnimatedImage style={{ width: "100%", height: 150 }} source={require("../../assets/image.png")} />
+                      : <AnimatedImage style={{ width: "100%", height: 150 }} source={{ uri: values.image }} />
                     }
                   </TouchableOpacity>
-                </View> */}
+                </View>
 
-                <Button 
-                  backgroundColor={"#ff4500"}
-                  color={Colors.white}
-                  label={"Create Product"} 
-                  labelStyle={{ fontWeight: '600', padding: 8 }} 
-                  style={global.btnTest} 
-                  onPress={() => handleSubmit()}                
-                />
+                <View style={global.field}>
+                  <Button 
+                    backgroundColor={"#ff4500"}
+                    color={Colors.white}
+                    label={"Create Product"} 
+                    labelStyle={{ fontWeight: '600', padding: 8 }} 
+                    style={global.btn}
+                    onPress={handleSubmit}                
+                  />
+                </View>
               </View>
             )}
           </Formik>

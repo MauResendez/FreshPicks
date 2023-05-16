@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useWindowDimensions } from "react-native";
-// import { PieChart } from "react-native-gifted-charts";
-import { Colors, Picker, TabController, Text, View } from "react-native-ui-lib";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Button, Picker, TabController, Text, View } from "react-native-ui-lib";
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { global } from "../../style";
 
 const Dashboard = () => {
@@ -13,18 +14,15 @@ const Dashboard = () => {
 
   const FirstRoute = () => (
     <View useSafeArea flex>
-      <View style={[global.center, global.container]}>
-        <Text subtitle>Generate reports here</Text>
+      <View style={[global.container]}>
         <View style={global.field}>
-          <Text h3>Showing statistics for</Text>
           <Picker  
             value={data[0]}
-            placeholder={'Listing Type'}
-            placeholderTextColor={Colors.black}
+            placeholder={'Month'}
             style={[global.input, { marginBottom: -16 }]}
             migrate 
             useSafeArea={true} 
-            topBarProps={{ title: 'Listing Types' }} 
+            topBarProps={{ title: 'Month' }} 
             migrateTextField           
           >  
             {data.map((type) => (   
@@ -46,18 +44,45 @@ const Dashboard = () => {
         <Text h3>Data 2</Text>
         <Text h3>Data 3</Text>
         <Text h3>Data 4</Text>
-        <Text h2>Report</Text>
-        <Text h2>CSV to Email</Text>
+        {/* <View flexG />
+        <View row spread style={{ paddingVertical: 8 }}>
+          <View style={{ width: "47.5%" }}>
+            <Button 
+              backgroundColor={"#ff4500"}
+              color={Colors.white}
+              label={"Report"} 
+              labelStyle={{ fontWeight: '600', padding: 8 }} 
+              style={global.btn} 
+            />
+          </View>
+          <View style={{ width: "47.5%" }}>
+            <Button 
+              backgroundColor={"#ff4500"}
+              color={Colors.white}
+              label={"CSV to Email"} 
+              labelStyle={{ fontWeight: '600', padding: 8 }} 
+              style={global.btn} 
+            />
+          </View>
+        </View> */}
+
+        <Button
+          style={global.fab} 
+          round 
+          animateLayout 
+          animateTo={'right'} 
+          onPress={() => navigation.navigate("Report")} 
+          backgroundColor="#32CD32" 
+          iconSource={() => <MCIcon name="file-document" color="white" size={24} />} 
+        /> 
       </View>
     </View>
   );
 
   const SecondRoute = () => (
     <View useSafeArea flex>
-      <View style={[global.center, global.container]}>
-        <Text subtitle>Generate reports here</Text>
+      <View style={[global.container]}>
         <View style={global.field}>
-          <Text h3>Showing statistics for</Text>
           <Picker  
             value={data[0]}
             placeholder={'Month'}
@@ -86,27 +111,57 @@ const Dashboard = () => {
         <Text h3>Data 2</Text>
         <Text h3>Data 3</Text>
         <Text h3>Data 4</Text>
-        <Text h2>Report</Text>
-        <Text h2>CSV to Email</Text>
+        {/* <View flexG />
+        <View row spread style={{ paddingVertical: 8 }}>
+          <View style={{ width: "47.5%" }}>
+            <Button 
+              backgroundColor={"#ff4500"}
+              color={Colors.white}
+              label={"Report"} 
+              labelStyle={{ fontWeight: '600', padding: 8 }} 
+              style={global.btn} 
+            />
+          </View>
+          <View style={{ width: "47.5%" }}>
+            <Button 
+              backgroundColor={"#ff4500"}
+              color={Colors.white}
+              label={"CSV to Email"} 
+              labelStyle={{ fontWeight: '600', padding: 8 }} 
+              style={global.btn} 
+            />
+          </View>
+        </View> */}
+        <Button
+          style={global.fab} 
+          round 
+          animateLayout 
+          animateTo={'right'} 
+          onPress={() => navigation.navigate("Report")} 
+          backgroundColor="#32CD32" 
+          iconSource={() => <MCIcon name="file-document" color="white" size={24} />} 
+        /> 
       </View>
     </View>
   );
 
   return (
-    <View useSafeArea flex style={global.bgWhite}>
-      <TabController items={[{label: 'Categories'}, {label: 'Products'}]}>  
-        <TabController.TabBar 
-          indicatorInsets={0}
-          indicatorStyle={{ backgroundColor: "#32CD32" }} 
-          selectedLabelColor={global.activeTabTextColor.color}
-          labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
-        />  
-        <View flex>    
-          <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
-          <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
-        </View>
-      </TabController>
-    </View>
+    <GestureHandlerRootView style={global.flex}>
+      <View useSafeArea flex style={global.bgWhite}>
+        <TabController items={[{label: 'Categories'}, {label: 'Products'}]}>  
+          <TabController.TabBar 
+            indicatorInsets={0}
+            indicatorStyle={{ backgroundColor: "#32CD32" }} 
+            selectedLabelColor={global.activeTabTextColor.color}
+            labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
+          />  
+          <View flex>    
+            <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
+            <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
+          </View>
+        </TabController>
+      </View>
+    </GestureHandlerRootView>
   );
 }
 

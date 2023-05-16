@@ -151,7 +151,7 @@ const Basket = () => {
   if (items.length == 0) {
     return (
       <View useSafeArea flex style={[global.container, global.center, global.bgGray]}>
-        <Text subtitle>Checkout is empty</Text>
+        <Text subtitle>Basket is empty</Text>
       </View>
     )
   }

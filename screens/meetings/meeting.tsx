@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { addDoc, collection, doc, getDoc, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableWithoutFeedback } from "react-native";
-import { Button, Colors, ListItem, LoaderScreen, Text, View } from 'react-native-ui-lib';
+import { Button, Colors, DateTimePicker, ListItem, LoaderScreen, Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import AddressRow from '../../components/basket/address-row';
 import BasketRow from '../../components/basket/basket-row';
@@ -145,13 +145,13 @@ const Meeting = () => {
     )
   }
 
-  if (items.length == 0) {
-    return (
-      <View useSafeArea flex style={[global.container, global.center, global.bgGray]}>
-        <Text subtitle>Checkout is empty</Text>
-      </View>
-    )
-  }
+  // if (items.length == 0) {
+  //   return (
+  //     <View useSafeArea flex style={[global.container, global.center, global.bgGray]}>
+  //       <Text subtitle>Checkout is empty</Text>
+  //     </View>
+  //   )
+  // }
 
   return (
     <View useSafeArea flex>
@@ -201,15 +201,17 @@ const Meeting = () => {
             ))}
 
             <View flexG />
+
+            <DateTimePicker mode="datetime" />
             <View style={styles.cart}>
 
             <Button 
               backgroundColor={"#ff4500"}
               color={Colors.white}
-              label={"Send Meeting Request"} 
+              label={"Set Meeting Time"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
               style={global.btnTest} 
-              onPress={createOrder}          
+              // onPress={createOrder}          
             />
             </View>
             

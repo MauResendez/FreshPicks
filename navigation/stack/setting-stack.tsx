@@ -2,6 +2,7 @@ import React from "react";
 
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Platform } from "react-native";
 import { Image } from "react-native-ui-lib";
 import ChangePhone from "../../screens/auth/change-phone";
 import Conversation from "../../screens/chat/conversation";
@@ -10,6 +11,7 @@ import AddBusiness from "../../screens/settings/add-business";
 import UpdateFarmer from "../../screens/settings/update-farmer";
 import UpdatePersonal from "../../screens/settings/update-personal";
 import UpdateSchedule from "../../screens/settings/update-schedule";
+import { global } from "../../style";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,11 +35,12 @@ const SettingStack = () => {
         headerShown: true,
         headerTitle: () => (
           <Image
-            style={{ width: 200, height: 50 }}
+            style={Platform.OS == "android" ? global.androidHeader : global.iosHeader}
             source={require("../../assets/logo.png")}
             resizeMode="contain"
           />
         ), 
+        headerTitleAlign: "center",
       }}
     >
       <Stack.Screen name="Index" component={Settings} />

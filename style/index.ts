@@ -139,7 +139,7 @@ export const global = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     height: 100,
-    padding: 8,
+    paddingHorizontal: 8,
   },
   otpInput: {
     backgroundColor: "white",
@@ -295,5 +295,14 @@ export const global = StyleSheet.create({
   },
   tabTextColor: {
     color: "black"
+  },
+  androidHeader: {
+    width: 200, 
+    height: 50, 
+    marginTop: 8
+  },
+  iosHeader: {
+    width: 200, 
+    height: 50, 
   }
 });

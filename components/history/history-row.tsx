@@ -5,20 +5,21 @@ import { Colors, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib"
 import { db } from "../../firebase";
 import { global } from "../../style";
 
-const HistoryRow = (meeting) => {
+const HistoryRow = (props) => {
+  const {item} = props;
   const navigation = useNavigation<any>();
   const [farmer, setFarmer] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (meeting) {
-      getDoc(doc(db, "Users", meeting.farmer)).then((docSnapshot) => {
+    if (item) {
+      getDoc(doc(db, "Users", item.farmer)).then((docSnapshot) => {
         const data = docSnapshot.data();
     
-        setFarmer({...data, id: meeting.farmer});
+        setFarmer({...data, id: item.farmer});
       });
     }
-  }, [meeting]);
+  }, [item]);
 
   useEffect(() => {
     if (farmer) {
@@ -47,7 +48,7 @@ const HistoryRow = (meeting) => {
         </View>
         <View row style={global.spaceBetween}>
           <Text h3>{farmer?.address}</Text>
-          <Text h3>Total Cost: ${meeting.total}</Text>
+          <Text h3>Total Cost: ${item.total}</Text>
         </View>
       </ListItem.Part>
     </ListItem>

@@ -110,66 +110,6 @@ const Register = () => {
     setLocation(geopoint);
   };
 
-  // const handleSubmit = async (values) => {
-  //   const nameTest = /^[A-Za-z]+([\s.][A-Za-z]+)*$/;
-  //   const emailTest = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-  //   const websiteTest = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
-    
-  //   try {
-  //     const credential = PhoneAuthProvider.credential(vid, sms);
-
-  //     await signInWithCredential(auth, credential).then(async (credential) => {
-  //       const user = credential.user;
-  //       const promise1 = await uploadImages();
-        
-  //       const promise2 = await setDoc(doc(db, "Users", user.uid), {
-  //         name: values.name,
-  //         phone: values.phone,
-  //         role: values.farmer,
-  //         admin: false,
-  //         farmer: values.farmer,
-  //         email: values.email,
-  //         address: values.address,
-  //         location: values.location,
-  //         images: urls,
-  //         business: values.business,
-  //         description: values.description,
-  //         website: values.website,
-  //         // schedule: {
-  //         //   monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday, sunday: sunday
-  //         // },
-  //         token: [values.token],
-  //       });
-  //       // await uploadImages().then(async () => {
-  //       //   console.log(urls);
-  //       //   await setDoc(doc(db, "Users", user.uid), {
-  //       //     name: values.name,
-  //       //     phone: values.phone,
-  //       //     role: values.farmer,
-  //       //     admin: false,
-  //       //     farmer: values.farmer,
-  //       //     email: values.email,
-  //       //     address: values.address,
-  //       //     location: values.location,
-  //       //     images: urls,
-  //       //     business: values.business,
-  //       //     description: values.description,
-  //       //     website: values.website,
-  //       //     // schedule: {
-  //       //     //   monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday, sunday: sunday
-  //       //     // },
-  //       //     token: [values.token],
-  //       //   });
-  //       // });
-
-  //       await Promise.all([promise1, promise2]);
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //     showToast("error", "Error", `${error.message}`);
-  //   }
-  // };
-
   const handleSubmit = async (values) => {
     const nameTest = /^[A-Za-z]+([\s.][A-Za-z]+)*$/;
     const emailTest = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
@@ -299,13 +239,7 @@ const Register = () => {
 
   const Prev = () => {
     return (
-      // <View style={global.field}>
-      //   <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={goToPrevStep}>
-      //     <Text style={[global.btnText, global.white]}>Back</Text>
-      //   </TouchableOpacity>
-      // </View>
       <Button style={active !== 0 && {backgroundColor:  "#ff4500"}} iconSource={() => <MCIcon name={"chevron-left"} size={48} color={Colors.white} />} onPress={goToPrevStep} disabled={active === 0} />
-
     );
   };
 
@@ -326,14 +260,26 @@ const Register = () => {
 
   const Next = () => {
     return (
-      // <View style={global.field}>
-      //   <TouchableOpacity style={[global.btn, global.bgOrange]} onPress={goToNextStep}>
-      //     <Text style={[global.btnText, global.white]}>Next</Text>
-      //   </TouchableOpacity>
-      // </View>
-      <Button style={active !== 3 && {backgroundColor: "#ff4500"}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 4 - 1} />
+      <View>
+        {farmer 
+          ? <Button style={active !== 3 && {backgroundColor: "#ff4500"}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 3} />
+          : <Button style={active !== 1 && {backgroundColor: "#ff4500"}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 1} />
+        }
+      </View>
     );
   };
+
+  const Buttons = () => {
+    return (
+      <View style={global.field}>
+        <View row spread centerV>
+          {Prev()}
+          <Text>{active}</Text>
+          {Next()}
+        </View>
+      </View>
+    )
+  }
 
   const PersonalInformation = (props) => {
     const { handleChange, handleBlur, handleSubmit, values } = props;
@@ -400,15 +346,7 @@ const Register = () => {
           : <View flexG />
         }
           
-        
-        <View style={global.field}>
-          {/* {Next()} */}
-          <View row spread centerV>
-            {Prev()}
-            <Text>{active}</Text>
-            {Next()}
-          </View>
-        </View>
+        {Buttons()}
       </View>
     )
   }
@@ -420,17 +358,36 @@ const Register = () => {
       <View style={global.container}>
         <View style={global.field}>
           <Text subtitle>Business Name *</Text>
-          <TextField value={business} onChangeText={(value) => setBusiness(value)} style={global.input} placeholder="Enter your business" migrate validate={'required'} />
+          <TextField 
+            value={values.business} 
+            onChangeText={handleChange('business')} 
+            onBlur={handleBlur('business')} 
+            style={global.input} 
+            placeholder="Enter your business" 
+          />
         </View>
 
         <View style={global.field}>
           <Text subtitle>Describe Your Business *</Text>
-          <TextField value={description} onChangeText={(value) => setDescription(value)} style={global.textArea}  placeholder="Describe what products and services you sell" multiline maxLength={250} migrate validate={'required'} />
+          <TextField 
+            value={values.description} 
+            onChangeText={handleChange('description')} 
+            onBlur={handleBlur('description')} 
+            style={global.textArea} 
+            placeholder="Describe what products and services you sell" 
+            maxLength={250} 
+          />
         </View>
 
         <View style={global.field}>
           <Text subtitle>Website</Text>
-          <TextField value={website} onChangeText={(value) => setWebsite(value)} style={global.input} placeholder="Enter your website" migrate />
+          <TextField 
+            value={values.website} 
+            onChangeText={handleChange('website')} 
+            onBlur={handleBlur('website')} 
+            style={global.input} 
+            placeholder="Enter your website"
+          />
         </View>
 
         <View style={global.field}>
@@ -457,14 +414,7 @@ const Register = () => {
 
         <View flexG />
 
-        <View style={global.field}>
-          {/* {Next()} */}
-          <View row spread centerV>
-            {Prev()}
-            <Text>{active}</Text>
-            {Next()}
-          </View>
-        </View>
+        {Buttons()}
       </View>
     );
   };
@@ -564,14 +514,7 @@ const Register = () => {
 
         <View flexG />
 
-        <View style={global.field}>
-          {/* {Next()} */}
-          <View row spread centerV>
-            {Prev()}
-            <Text>{active}</Text>
-            {Next()}
-          </View>
-        </View>
+        {Buttons()}
       </ScrollView>
     );
   };
@@ -581,73 +524,65 @@ const Register = () => {
 
     return (
       <View style={global.container}>
-        <View flex style={global.spaceEvenly}>
-          <View style={global.field}>
-            <Image
-              style={{ width: "auto", height: 100 }}
-              source={require("../../assets/logo.png")}
-              resizeMode="contain"
-            />
-            <FirebaseRecaptchaVerifierModal
-              ref={recaptchaVerifier}
-              firebaseConfig={app.options}
-              attemptInvisibleVerification={attemptInvisibleVerification}
-            />
-          </View>
-          
-          <View style={global.field}>
-            <Text subtitle>Phone Number</Text>
-            <PhoneInput
-              ref={phoneRef}
-              initialCountry={'us'}
-              style={global.input}
-              onChangePhoneNumber={(phone) => {
-                setPhone(phone);
-              }}
-              textProps={{
-                placeholder: 'Enter a phone number...'
-              }}
-            />
-          </View>
-
-          <View style={global.field}>
-            <Button 
-              label={"Send Verification Code"} 
-              labelStyle={{ fontWeight: '600', padding: 4 }} 
-              style={global.fwbtn} 
-              onPress={verifyPhone}  
-            />
-          </View>
-
-          <View style={global.field}>
-            <Text subtitle>Verify SMS Code</Text>
-            <OTPInputView
-              style={{width: '100%', height: 50}}
-              pinCount={6}
-              code={sms}
-              onCodeChanged={code => setSMS(code)}
-              autoFocusOnLoad={false}
-              codeInputFieldStyle={global.otpInput}
-              codeInputHighlightStyle={styles.underlineStyleHighLighted}
-              onCodeFilled={code => handleSubmit(code)}
-            />
-          </View>
-
-          <View style={global.field}>
-            {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
-          </View>     
-          
-          
-        </View>
         <View style={global.field}>
-          <View row spread centerV>
-            {Prev()}
-            <Text>{active}</Text>
-            {Next()}
-          </View>
+          <Image
+            style={{ width: "auto", height: 100 }}
+            source={require("../../assets/logo.png")}
+            resizeMode="contain"
+          />
+          <FirebaseRecaptchaVerifierModal
+            ref={recaptchaVerifier}
+            firebaseConfig={app.options}
+            attemptInvisibleVerification={attemptInvisibleVerification}
+          />
         </View>
+        
+        <View style={global.field}>
+          <Text subtitle>Phone Number</Text>
+          <PhoneInput
+            ref={phoneRef}
+            initialCountry={'us'}
+            style={global.input}
+            onChangePhoneNumber={(phone) => {
+              setPhone(phone);
+            }}
+            textProps={{
+              placeholder: 'Enter a phone number...'
+            }}
+          />
+        </View>
+
+        <View style={global.field}>
+          <Button 
+            label={"Send Verification Code"} 
+            labelStyle={{ fontWeight: '600', padding: 4 }} 
+            style={global.fwbtn} 
+            onPress={verifyPhone}  
+          />
+        </View>
+
+        <View style={global.field}>
+          <Text subtitle>Verify SMS Code</Text>
+          <OTPInputView
+            style={{width: '100%', height: 50}}
+            pinCount={6}
+            code={sms}
+            onCodeChanged={code => setSMS(code)}
+            autoFocusOnLoad={false}
+            codeInputFieldStyle={global.otpInput}
+            codeInputHighlightStyle={styles.underlineStyleHighLighted}
+            onCodeFilled={code => handleSubmit(code)}
+          />
+        </View>
+
+        <View style={global.field}>
+          {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
+        </View>  
+
+        <View flexG />
+
+        {Buttons()}   
       </View>
-      
     );
   };
 

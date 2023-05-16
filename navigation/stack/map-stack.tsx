@@ -4,7 +4,9 @@ import Map from "../../screens/map";
 import Profile from "../../screens/profile";
 
 import { createStackNavigator } from "@react-navigation/stack";
+import { Platform } from "react-native";
 import { Image } from "react-native-ui-lib";
+import { global } from "../../style";
 
 const Stack = createStackNavigator();
 
@@ -28,11 +30,12 @@ const MapStack = () => {
         headerShown: true,
         headerTitle: () => (
           <Image
-            style={{ width: 200, height: 50 }}
+            style={Platform.OS == "android" ? global.androidHeader : global.iosHeader}
             source={require("../../assets/logo.png")}
             resizeMode="contain"
           />
         ), 
+        headerTitleAlign: "center",
       }}
     >      
       <Stack.Screen name="Index" component={Map} />

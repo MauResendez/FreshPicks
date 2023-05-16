@@ -5,9 +5,10 @@ import { Colors, ExpandableSection, Image, ListItem, Stepper, Text } from 'react
 import { useDispatch, useSelector } from 'react-redux';
 import { addToOrder, clearOrder, getOrderFarmer, removeFromOrder, selectOrderItemsWithId } from '../../features/order-slice';
 
-const ProfileRow = (product) => {
+const ProfileRow = (props) => {
+  const {item} = props;
   const [isPressed, setIsPressed] = useState(false);
-  let items = useSelector((state) => selectOrderItemsWithId(state, product.id));
+  let items = useSelector((state) => selectOrderItemsWithId(state, item.id));
   const orderFarmer = useSelector(getOrderFarmer);
   const dispatch = useDispatch();
 
@@ -16,7 +17,7 @@ const ProfileRow = (product) => {
   });
 
 	const updateItemCount = ((value) => {
-    if (orderFarmer && product.farmer.id !== orderFarmer.id) {
+    if (orderFarmer && item.farmer.id !== orderFarmer.id) {
       Alert.alert("Clear Basket", "Your cart currently has items from another farmer, would you like us to clear it to fill items from this farmer?", [
         {text: 'Cancel', style: 'cancel'},
         {text: 'OK', onPress: clearOrderItems},
@@ -28,10 +29,10 @@ const ProfileRow = (product) => {
     if (value < items.length && items.length == 0) return;
 
 		if (value > items.length) {
-			dispatch(addToOrder({ product: product, farmer: product.farmer, user: product.user }));
+			dispatch(addToOrder({ product: item, farmer: item.farmer, user: item.user }));
 		}
 		else if (value < items.length) {
-			dispatch(removeFromOrder(product));
+			dispatch(removeFromOrder(item));
 		}
 
 		console.log(value)
@@ -51,19 +52,19 @@ const ProfileRow = (product) => {
     <ExpandableSection 
       expanded={isPressed} 
       sectionHeader={<ListItem
-        activeBackgroundColor={Colors.grey60}
         activeOpacity={0.3}
         backgroundColor={Colors.white}
         onPress={() => setIsPressed(!isPressed)}
-        style={{ borderRadius: 8, marginBottom: 8, padding: 8, height: "auto" }}
+        // style={{ borderRadius: 8, marginBottom: 8, padding: 8, height: "auto" }}
+        style={{ borderRadius: 8, marginBottom: 4, paddingHorizontal: 8, paddingVertical: 4, height: "auto" }}
       >
-        {product.image && <ListItem.Part left>
-          <Image source={{ uri: product.image }} style={{ width: 50, height: 50, marginRight: 12 }}/>
+        {item.image && <ListItem.Part left>
+          <Image source={{ uri: item.image }} style={{ width: 50, height: 50, marginRight: 12 }}/>
         </ListItem.Part>}
         <ListItem.Part middle column>
-          <Text h2>{product.title}</Text>
-          <Text h3>${product.price.toFixed(2)}</Text>
-          <Text h3>{product.quantity} Remaining</Text>
+          <Text h2>{item.title}</Text>
+          <Text h3>${item.price.toFixed(2)}</Text>
+          <Text h3>{item.quantity} Remaining</Text>
         </ListItem.Part>
       </ListItem>} 
     >

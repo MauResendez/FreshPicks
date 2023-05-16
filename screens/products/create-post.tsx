@@ -2,13 +2,14 @@ import { useNavigation } from "@react-navigation/native"
 import * as ImageManipulator from 'expo-image-manipulator'
 import * as ImagePicker from "expo-image-picker"
 import { addDoc, collection, doc, getDoc } from "firebase/firestore"
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { Formik } from "formik"
 import React, { useEffect, useState } from "react"
 import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import Toast from "react-native-toast-message"
 import { AnimatedImage, Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
 import * as Yup from 'yup'
-import { auth, db } from "../../firebase"
+import { auth, db, storage } from "../../firebase"
 import { global } from "../../style"
 
 const CreatePost = () => {
@@ -17,12 +18,14 @@ const CreatePost = () => {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const compress = async (uri: string) => {
+  const compress = async (uri: string, setFieldValue) => {
     const manipulatedImage = await ImageManipulator.manipulateAsync(uri, [{ resize: { width: 300, height: 150 }}], { compress: 0.5 });
-    setImage(manipulatedImage.uri);
+    // setImage(manipulatedImage.uri);
+
+    setFieldValue('image', manipulatedImage.uri)
   };
 
-  const gallery = async () => {
+  const gallery = async (setFieldValue) => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
@@ -39,99 +42,16 @@ const CreatePost = () => {
       });
 
       if (!result.canceled) {
-        compress(result.assets[0].uri);
+        compress(result.assets[0].uri, setFieldValue);
       }
     } catch (error) {
       console.log(error);
     }
   }
   
-  // const onSubmit = async () => {
-  //   let error = false;
-
-  //   if (title.length == 0) {
-  //     error = true;
-  //     showToast("error", "Error", "Title is required");
-  //   }
-
-  //   if (description.length == 0) {
-  //     error = true;
-  //     showToast("error", "Error", "Description is required");
-  //   }
-
-  //   if (error) {
-  //     error = false;
-  //     return
-  //   }
-
-  //   if (image) {
-  //     // How the image will be addressed inside the storage
-  //     const storage_ref = ref(storage, `images/${auth.currentUser.uid}/posts/${Date.now()}`);
-
-  //     // Convert image to bytes
-  //     const img = await fetch(image);
-  //     const bytes = await img.blob();
-
-  //     // Uploads the image bytes to the Firebase Storage
-  //     await uploadBytes(storage_ref, bytes).then(async () => {
-  //       // We retrieve the URL of where the image is located at
-  //       await getDownloadURL(storage_ref).then(async (image) => {
-  //         // Then we create the Market with it's image on it
-  //         await addDoc(collection(db, "Posts"), {
-  //           user: auth.currentUser.uid,
-  //           business: user.business,
-  //           address: user.address,
-  //           title: title,
-  //           description: description,
-  //           image: image
-  //         })
-  //         .then(() => {
-  //           console.log("Data saved!");
-  //           navigation.navigate("Index");
-  //         })
-  //         .catch((error) => {
-  //           console.log(error);
-  //         });
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  //   } else {
-  //     await addDoc(collection(db, "Posts"), {
-  //       user: auth.currentUser.uid,
-  //       business: user.business,
-  //       address: user.address,
-  //       title: title,
-  //       description: description,
-  //       image: image
-  //     })
-  //     .then(() => {
-  //       console.log("Data saved!");
-  //       navigation.navigate("Index");
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  //   }
-  // };
-
-  const onSubmit = async (values) => {
-    await addDoc(collection(db, "Posts"), {
-      user: auth.currentUser.uid,
-      business: user.business,
-      address: user.address,
-      title: values.title,
-      description: values.description,
-      image: image
-    })
-    .then(() => {
-      console.log("Data saved!");
-      navigation.navigate("Index");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  const handleSubmit = async (values) => {
+    const imgs = await uploadImages(values.image);
+    await createPost(values, auth.currentUser, imgs);
   };
 
   const showToast = (type, title, message) => {
@@ -141,6 +61,41 @@ const CreatePost = () => {
       text2: message
     });
   }
+
+  const uploadImage = async (image) => {
+    const storageRef = ref(storage, `${auth.currentUser.uid}/images/${Date.now()}`);
+    const img = await fetch(image);
+    const blob = await img.blob();
+
+    const response = await uploadBytesResumable(storageRef, blob);
+    const url = await getDownloadURL(response.ref);
+    return url;
+  }
+  
+  const uploadImages = async (images) => {
+    const imagePromises = Array.from(images, (image) => uploadImage(image));
+  
+    const imageRes = await Promise.all(imagePromises);
+    return imageRes; // list of url like ["https://..", ...]
+  }
+
+  const createPost = async (values, user, u) => {
+    await addDoc(collection(db, "Posts"), {
+      user: user.uid,
+      business: user.business,
+      address: user.address,
+      title: values.title,
+      description: values.description,
+      image: u
+    })
+    .then(() => {
+      console.log("Data saved!");
+      navigation.navigate("Index");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  };
 
   useEffect(() => {
     getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnapshot) => {
@@ -169,14 +124,14 @@ const CreatePost = () => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
+        <KeyboardAwareScrollView contentContainerStyle={global.flex}>
           <Formik
-            initialValues={{ user: auth.currentUser.uid, title: '', description: '' }}
+            initialValues={{ user: auth.currentUser.uid, title: '', description: '', image: [] }}
             validationSchema={validate}
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit}
           >
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-              <View flex>                
+              <View flex style={global.container}>                
                 <View style={global.field}>
                   <Text subtitle>Title</Text>
                   <TextField
@@ -205,10 +160,10 @@ const CreatePost = () => {
 
                 <View style={global.field}>
                   <Text subtitle>Image</Text>
-                  <TouchableOpacity onPress={gallery}>
-                    {!image
-                      ? <AnimatedImage style={{ width: "100%", height: 200 }} source={require("../../assets/image.png")} />
-                      : <AnimatedImage style={{ width: "100%", height: 200 }} source={{ uri: image }} />
+                  <TouchableOpacity onPress={() => gallery(setFieldValue)}>
+                    {values.image.length == 0
+                      ? <AnimatedImage style={{ width: "100%", height: 150 }} source={require("../../assets/image.png")} />
+                      : <AnimatedImage style={{ width: "100%", height: 150 }} source={{ uri: values.image }} />
                     }
                   </TouchableOpacity>
                 </View>

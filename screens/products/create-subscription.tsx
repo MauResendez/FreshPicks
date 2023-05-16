@@ -154,14 +154,14 @@ const CreateSubscription = () => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
+        <KeyboardAwareScrollView contentContainerStyle={global.flex}>
           <Formik
             initialValues={{ user: auth.currentUser.uid, title: '', description: '', type: '', amount: '', price: 5.00, quantity: 1 }}
             validationSchema={validate}
             onSubmit={onSubmit}
           >
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-              <View flex>
+              <View flex style={global.container}>
                 <View style={global.field}>
                   <Text subtitle>Title</Text>
                   <TextField
@@ -241,14 +241,16 @@ const CreateSubscription = () => {
 
                 <View flexG />
 
-                <Button 
-                  backgroundColor={"#ff4500"}
-                  color={Colors.white}
-                  label={"Create Subscription"} 
-                  labelStyle={{ fontWeight: '600', padding: 8 }} 
-                  style={global.btnTest} 
-                  onPress={() => handleSubmit()}                
-                />
+                <View style={global.field}>
+                  <Button 
+                    backgroundColor={"#ff4500"}
+                    color={Colors.white}
+                    label={"Create Subscription"} 
+                    labelStyle={{ fontWeight: '600', padding: 8 }} 
+                    style={global.btn}
+                    onPress={() => handleSubmit()}                
+                  />
+                </View>
               </View>
             )}
           </Formik>

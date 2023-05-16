@@ -2,12 +2,17 @@ import React from "react";
 
 import Dashboard from "../../screens/dashboard";
 
+import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Platform } from "react-native";
 import { Image } from "react-native-ui-lib";
+import Report from "../../screens/dashboard/report";
+import { global } from "../../style";
 
 const Stack = createNativeStackNavigator();
 
 const DashboardStack = () => {
+  const navigation = useNavigation<any>();
   // const navigation = useNavigation<any>();
   // const parent = navigation.getParent("MainDrawer");
   // const route = useRoute();
@@ -23,18 +28,20 @@ const DashboardStack = () => {
   return (
     <Stack.Navigator 
       initialRouteName="Index" 
-      screenOptions={{ 
+      screenOptions={{
         headerShown: true,
         headerTitle: () => (
           <Image
-            style={{ width: 200, height: 50 }}
+            style={Platform.OS == "android" ? global.androidHeader : global.iosHeader}
             source={require("../../assets/logo.png")}
             resizeMode="contain"
           />
         ), 
+        headerTitleAlign: "center",
       }}
     >
       <Stack.Screen name="Index" component={Dashboard} />
+      <Stack.Screen name="Report" component={Report} />
     </Stack.Navigator>
   )
 }

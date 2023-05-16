@@ -1,22 +1,25 @@
-import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import * as Linking from 'expo-linking';
 import * as Location from "expo-location";
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Image, Platform, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { View } from "react-native-ui-lib";
+import { LoaderScreen, View } from "react-native-ui-lib";
 import MapRow from "../../components/map/map-row";
 import { auth, db } from "../../firebase";
-import Splash from "../splash";
 
 const Map = () => {
-  const navigation = useNavigation<any>();
   const [farmers, setFarmers] = useState([]);
   const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [mapRegion, setMapRegion] = useState(null);  
+  const [mapRegion, setMapRegion] = useState(null);
+  
+  const renderItem = useCallback(({item}) => {
+    return (
+      <MapRow item={item} />
+    );
+  }, []);
 
   const getLocation = async () => {
     let {status} = await Location.requestForegroundPermissionsAsync();
@@ -28,10 +31,6 @@ const Map = () => {
     let location = await Location.getCurrentPositionAsync();
 
     setLocation(location);
-  }
-
-  const navigateToFarmer = (farmer) => {
-    navigation.navigate("Profile", { id: farmer.id })
   }
 
   const navigateToApp = (farmer) => {
@@ -65,7 +64,7 @@ const Map = () => {
   
   if (loading) {
     return (
-      <Splash />
+      <LoaderScreen />
     )
   }
 
@@ -107,10 +106,8 @@ const Map = () => {
         <FlashList 
           data={farmers}
           keyExtractor={(item: any) => item.id}
-          estimatedItemSize={farmers.length}
-          renderItem={({item}) => (
-            <MapRow farmer={item.id} cover={item.cover} business={item.business} name={item.name} address={item.address} onPress={navigateToFarmer} />
-          )}
+          estimatedItemSize={farmers.length != 0 ? farmers.length : 150}
+          renderItem={renderItem}
         />
       </View>
     </View>

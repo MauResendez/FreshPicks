@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { LoaderScreen, TextField, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
-import ListingSearchRow from "../../components/search/product-search-row";
+import ProductResultRow from "../../components/search/product-result-row";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
@@ -46,9 +46,9 @@ const Products = () => {
       <FlashList 
         data={products}
         keyExtractor={(item: any) => item.id}
-        estimatedItemSize={products.length}
+        estimatedItemSize={products.length != 0 ? products.length : 150}
         renderItem={({item}) => (
-          <ListingSearchRow farmer={item.farmer} title={item.title} description={item.description} price={item.price.toFixed(2)} quantity={item.quantity} cover={item.cover} />
+          <ProductResultRow item={item} />
         )}
       />
     </View>

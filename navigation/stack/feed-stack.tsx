@@ -28,11 +28,12 @@ const FeedStack = () => {
         headerShown: true,
         headerTitle: () => (
           <Image
-            style={{ width: 200, height: 50 }}
+            style={{ width: 200, height: 50, justifyContent: "center", alignItems: "center", alignSelf: "center", marginTop: 8 }}
             source={require("../../assets/logo.png")}
             resizeMode="contain"
           />
         ), 
+        headerTitleAlign: "center",
       }}
     >      
       <Stack.Screen name="Index" component={Feed} />

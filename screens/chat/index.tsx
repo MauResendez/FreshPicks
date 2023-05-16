@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { Button, LoaderScreen, Text, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import ChatRow from "../../components/chat/chat-row";
@@ -13,6 +13,12 @@ const Chat = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [chats, setChats] = useState([]);
+
+  const renderItem = useCallback(({item}) => {
+    return (
+      <ChatRow item={item} />
+    );
+  }, []);
 
   useEffect(() => {
     onSnapshot(doc(db, "Users", auth.currentUser.uid), (doc) => {
@@ -68,12 +74,9 @@ const Chat = () => {
       <FlashList 
         data={chats}
         keyExtractor={(item: any) => item.id}
-        estimatedItemSize={chats.length}
-        renderItem={({item}) => (
-          <ChatRow id={item.id} />
-        )}
+        estimatedItemSize={chats.length != 0 ? chats.length : 150}
+        renderItem={renderItem}
       />
-      {!user?.role && <Button style={{ width: 64, height: 64, margin: 16 }} round animateLayout animateTo={'right'} onPress={() => navigation.navigate("Search")} backgroundColor="green" size={Button.sizes.small} iconSource={() => <Ionicon name="search" color="white" size={24} />} />}
     </View>
   );
 }

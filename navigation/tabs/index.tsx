@@ -5,12 +5,12 @@ import React, { useEffect, useState } from "react";
 import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { doc, onSnapshot } from "firebase/firestore";
-import { Image } from "react-native";
 import { auth, db } from "../../firebase";
 
+import { Platform } from "react-native";
 import { Colors, LoaderScreen } from "react-native-ui-lib";
+import BasketStack from "../stack/basket-stack";
 import DashboardStack from "../stack/dashboard-stack";
-import FeedStack from "../stack/feed-stack";
 import HistoryStack from "../stack/history-stack";
 import InstructionStack from "../stack/instruction-stack";
 import MapStack from "../stack/map-stack";
@@ -46,14 +46,6 @@ const MainTabs = () => {
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
-        headerTintColor: Colors.black,
-        headerTitle: () => (
-          <Image
-            style={{ width: 200, height: 50 }}
-            source={require("../../assets/logo.png")}
-            resizeMode="contain"
-          />
-        ),
         tabBarActiveBackgroundColor: Colors.white,
         tabBarActiveTintColor: "#32CD32",
         tabBarInactiveTintColor: Colors.grey40,
@@ -70,11 +62,12 @@ const MainTabs = () => {
           return {
             tabBarIcon: ({ color }) => (
               <MCIcon 
-                name={user?.role ? "view-dashboard" : "home"}
+                name={user?.role ? "google-analytics" : "home"}
                 size={24} 
                 color={color} 
               />
             ),
+            tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
             tabBarLabel: routeName,
             // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : false,
@@ -83,22 +76,23 @@ const MainTabs = () => {
         }}
       />
       <Tab.Screen
-        name={user?.role ? "Products" : "Feed"}
-        component={user?.role ? ProductStack : FeedStack}
+        name={user?.role ? "Products" : "Basket"}
+        component={user?.role ? ProductStack : BasketStack}
         options={({ route }) => {
-          let routeName = user?.role ? "Products" : "Feed";
+          let routeName = user?.role ? "Products" : "Basket";
           const current = getFocusedRouteNameFromRoute(route) ?? "Index";
           
           return {
             tabBarIcon: ({ color }) => (
               <MCIcon
-                name={user?.role ? "food-apple" : "timeline"}
+                name={user?.role ? "food-apple" : "basket"}
                 size={24}
                 color={color}
               />
             ),
+            tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
             tabBarLabel: routeName,
-            // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
+            tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
             swipeEnabled: current != "Index" ? false : true,
           };
@@ -119,8 +113,9 @@ const MainTabs = () => {
                 color={color}
               />
             ),
+            tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
             tabBarLabel: routeName,
-            // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
+            tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
             swipeEnabled: current != "Index" ? false : true,
           };
@@ -141,6 +136,7 @@ const MainTabs = () => {
                 color={color}
               />
             ),
+            tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
             tabBarLabel: routeName,
             // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
@@ -158,6 +154,7 @@ const MainTabs = () => {
             tabBarIcon: ({ color }) => (
               <MCIcon name="cog" size={24} color={color} />
             ),
+            tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
             tabBarLabel: "Settings",
             // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
