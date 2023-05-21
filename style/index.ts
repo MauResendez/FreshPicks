@@ -138,7 +138,7 @@ export const global = StyleSheet.create({
     borderColor: "rgba(0, 0, 0, 0.2)",
     borderRadius: 8,
     borderWidth: 1,
-    height: 100,
+    minHeight: 50,
     paddingHorizontal: 8,
   },
   otpInput: {

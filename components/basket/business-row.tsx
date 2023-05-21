@@ -1,7 +1,9 @@
 import React, { memo } from 'react';
 import { Colors, ListItem, Text } from 'react-native-ui-lib';
 
-const BusinessRow = ({business}) => {
+const BusinessRow = (props) => {
+	const {item} = props;
+
 	return (
 		<ListItem
 			activeOpacity={0.3}
@@ -9,7 +11,7 @@ const BusinessRow = ({business}) => {
 		>
 			<ListItem.Part column>
 				<Text h2 numberOfLines={3}>Farmer</Text>
-				<Text h3>{business}</Text>
+				<Text h3>{item.business}</Text>
 			</ListItem.Part>
 		</ListItem>
 	)

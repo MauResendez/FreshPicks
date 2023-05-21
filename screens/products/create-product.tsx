@@ -128,7 +128,7 @@ const CreateProduct = () => {
                   <TextField
                     style={global.textArea}
                     multiline
-                    maxLength={100}
+                    maxLength={200}
                     onChangeText={handleChange('description')}
                     onBlur={handleBlur('description')}
                     value={values.description}

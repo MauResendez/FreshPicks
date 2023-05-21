@@ -9,10 +9,10 @@ import { auth, db } from "../../firebase";
 
 import { Platform } from "react-native";
 import { Colors, LoaderScreen } from "react-native-ui-lib";
+import Instructions from "../../screens/instructions";
 import BasketStack from "../stack/basket-stack";
 import DashboardStack from "../stack/dashboard-stack";
 import HistoryStack from "../stack/history-stack";
-import InstructionStack from "../stack/instruction-stack";
 import MapStack from "../stack/map-stack";
 import MeetingStack from "../stack/meeting-stack";
 import ProductStack from "../stack/product-stack";
@@ -43,12 +43,13 @@ const MainTabs = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName={user?.role ? "Dashboard" : "Home"}
       screenOptions={{
         headerShown: false,
         tabBarActiveBackgroundColor: Colors.white,
         tabBarActiveTintColor: "#32CD32",
         tabBarInactiveTintColor: Colors.grey40,
+        tabBarShowLabel: false,
         unmountOnBlur: true
       }}
     >
@@ -92,7 +93,7 @@ const MainTabs = () => {
             ),
             tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
             tabBarLabel: routeName,
-            tabBarStyle: { display: current != "Index" ? "none" : "flex" },
+            // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
             swipeEnabled: current != "Index" ? false : true,
           };
@@ -115,7 +116,7 @@ const MainTabs = () => {
             ),
             tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
             tabBarLabel: routeName,
-            tabBarStyle: { display: current != "Index" ? "none" : "flex" },
+            // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
             swipeEnabled: current != "Index" ? false : true,
           };
@@ -163,8 +164,8 @@ const MainTabs = () => {
         }}
       />
       {/* <Tab.Screen
-        name="Basket"
-        component={BasketStack}
+        name="Instructions"
+        component={Instructions}
         options={({ route }) => {
           const current = getFocusedRouteNameFromRoute(route) ?? "Index";
           
@@ -178,13 +179,14 @@ const MainTabs = () => {
       /> */}
       <Tab.Screen
         name="Instructions"
-        component={InstructionStack}
+        component={Instructions}
         options={({ route }) => {
           const current = getFocusedRouteNameFromRoute(route) ?? "Index";
           
           return {
             tabBarLabel: "Instructions",
             tabBarItemStyle: { display: "none" },
+            tabBarStyle: { display: "none" },
             // headerShown: current != "Instructions" ? false : true,
             swipeEnabled: current != "Index" ? false : true,
           };

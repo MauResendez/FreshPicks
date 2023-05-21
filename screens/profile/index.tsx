@@ -174,7 +174,7 @@ const Profile = () => {
         </View>
 
         {products.map((item) => (
-          <ProfileRow item={item} />
+          <ProfileRow item={item} farmer={farmer} user={consumer} />
         ))}
 
         <View flexG />

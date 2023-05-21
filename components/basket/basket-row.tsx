@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectOrderItemsWithId } from "../../features/order-slice";
 import { global } from "../../style";
 
-const BasketRow = (product) => {
+const BasketRow = (props) => {
+  const {item, count} = props;
   const [isPressed, setIsPressed] = useState(true);
-  const items = useSelector((state) => selectOrderItemsWithId(state, product.id));
+  const items = useSelector((state) => selectOrderItemsWithId(state, item.id));
   const dispatch = useDispatch();
 
   // const addItemToOrder = (() => {
@@ -31,12 +32,12 @@ const BasketRow = (product) => {
       >
         <ListItem.Part middle column>
           <View row style={global.spaceBetween}>
-            <Text h2 numberOfLines={3}>{product.title}</Text>
-            <Text h2>${product.price.toFixed(2)}</Text>
+            <Text h2 numberOfLines={3}>{item.title}</Text>
+            <Text h2>${item.price.toFixed(2)}</Text>
           </View>
           <View row style={global.spaceBetween}>
-            <Text h3>{product.description}</Text>
-            <Text h3>x {product.count}</Text>
+            <Text h3>{item.description}</Text>
+            <Text h3>x {count}</Text>
           </View>
         </ListItem.Part>
       </ListItem>} 

@@ -17,6 +17,7 @@ const Basket = () => {
   const [chats, setChats] = useState<any>(null);
   const [order, setOrder] = useState<any>(null);
   const [data, setData] = useState<any>(null);
+  const [farmer, setFarmer] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const items = useSelector(selectOrderItems);
   const orderFarmer = useSelector(getOrderFarmer);
@@ -46,7 +47,7 @@ const Basket = () => {
       obj.id = curr.id;
       obj.count = 1;
       obj.description = curr.description;
-      obj.farmer = curr.farmer;
+      obj.farmer = curr.user;
       // obj.image = curr.image;
       obj.price = curr.price;
       obj.title = curr.title;
@@ -59,6 +60,7 @@ const Basket = () => {
     return acc;
   }, []);
 
+
   const createOrder = async () => {
     await addDoc(collection(db, "Meetings"), {
       consumer: orderUser.id,
@@ -67,6 +69,7 @@ const Basket = () => {
       total: Number(orderTotal.toFixed(2)),
       status: "PENDING",
       createdAt: new Date(),
+      meetAt: null
     })
       .then(async (doc) => {
         // Toast.show("Order has been confirmed!", {
@@ -74,8 +77,6 @@ const Basket = () => {
         //   backgroundColor: "green",
         //   position: Platform.OS == "web" ? 650 : 700,
         // });
-
-        // console.log("Setting order...");
 
         setOrder(doc.id);
       })
@@ -124,8 +125,6 @@ const Basket = () => {
   // Once order has been set, use the id to get the order"s data
   useEffect(() => {
     if (order) {
-      console.log("Getting data...");
-
       getDoc(doc(db, "Meetings", order)).then((docSnapshot) => {
         const data = docSnapshot.data();
         setData(data);
@@ -135,12 +134,9 @@ const Basket = () => {
 
   useEffect(() => {
     if (data) {
-      console.log("Handling chat...");
       handleChat();
     }
   }, [data]);
-
-
 
   if (loading) {
     return (
@@ -160,22 +156,22 @@ const Basket = () => {
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAvoidingView style={global.flex} behavior={Platform.OS == "ios" ? "padding" : "height"}>
-          <ScrollView style={global.flex} contentContainerStyle={[global.flex]} showsVerticalScrollIndicator={Platform.OS == "web"}>
+          <ScrollView contentContainerStyle={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
             <ListItem
               backgroundColor={"#ff4500"}
               activeOpacity={0.3}
               height={60}
             >
               <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
-                <Text h2 numberOfLines={1} style={{ color: "white"}}>
+                <Text h2 numberOfLines={1} style={{ color: "white" }}>
                   Basket
                 </Text>
               </ListItem.Part>
             </ListItem>
 
-            <BusinessRow business={(items[0]?.farmer.business)} />
+            <BusinessRow item={orderFarmer} />
 
-            <AddressRow address={(items[0]?.farmer.address)} />
+            <AddressRow item={orderFarmer} />
             
             <ListItem
               backgroundColor={"#ff4500"}
@@ -190,32 +186,21 @@ const Basket = () => {
             </ListItem>
 
             {Object.entries(groupedItems).map(([key, items]: any) => (
-              <BasketRow
-                key={key}
-                id={items[0]?.id}
-                title={items[0]?.title}
-                description={items[0]?.description}
-                price={items[0]?.price}
-                image={items[0]?.image}
-                quantity={items[0]?.quantity}
-                count={items.length}
-                farmer={items[0]?.farmer}
-              />
+              <BasketRow key={key} item={items[0]} count={items.length} />
             ))}
 
             <View flexG />
-            <View style={styles.cart}>
 
-            <Button 
-              backgroundColor={"#ff4500"}
-              color={Colors.white}
-              label={"Send Meeting Request"} 
-              labelStyle={{ fontWeight: '600', padding: 8 }} 
-              style={global.btnTest} 
-              onPress={createOrder}          
-            />
+            <View style={styles.cart}>
+              <Button 
+                backgroundColor={"#ff4500"}
+                color={Colors.white}
+                label={"Send Meeting Request"} 
+                labelStyle={{ fontWeight: '600', padding: 8 }} 
+                style={global.btnTest} 
+                onPress={createOrder}          
+              />
             </View>
-            
           </ScrollView>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>

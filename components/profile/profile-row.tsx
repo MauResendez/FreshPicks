@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToOrder, clearOrder, getOrderFarmer, removeFromOrder, selectOrderItemsWithId } from '../../features/order-slice';
 
 const ProfileRow = (props) => {
-  const {item} = props;
+  const {item, farmer, user} = props;
   const [isPressed, setIsPressed] = useState(false);
   let items = useSelector((state) => selectOrderItemsWithId(state, item.id));
   const orderFarmer = useSelector(getOrderFarmer);
@@ -17,7 +17,7 @@ const ProfileRow = (props) => {
   });
 
 	const updateItemCount = ((value) => {
-    if (orderFarmer && item.farmer.id !== orderFarmer.id) {
+    if (orderFarmer && farmer.id !== orderFarmer.id) {
       Alert.alert("Clear Basket", "Your cart currently has items from another farmer, would you like us to clear it to fill items from this farmer?", [
         {text: 'Cancel', style: 'cancel'},
         {text: 'OK', onPress: clearOrderItems},
@@ -29,13 +29,13 @@ const ProfileRow = (props) => {
     if (value < items.length && items.length == 0) return;
 
 		if (value > items.length) {
-			dispatch(addToOrder({ product: item, farmer: item.farmer, user: item.user }));
-		}
-		else if (value < items.length) {
+      console.log(item);
+			dispatch(addToOrder({ product: item, farmer: farmer, user: user }));
+      console.log(farmer);
+      console.log(user);
+		} else if (value < items.length) {
 			dispatch(removeFromOrder(item));
 		}
-
-		console.log(value)
 
 		return;
   });
@@ -55,7 +55,6 @@ const ProfileRow = (props) => {
         activeOpacity={0.3}
         backgroundColor={Colors.white}
         onPress={() => setIsPressed(!isPressed)}
-        // style={{ borderRadius: 8, marginBottom: 8, padding: 8, height: "auto" }}
         style={{ borderRadius: 8, marginBottom: 4, paddingHorizontal: 8, paddingVertical: 4, height: "auto" }}
       >
         {item.image && <ListItem.Part left>

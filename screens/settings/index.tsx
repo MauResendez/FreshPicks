@@ -171,18 +171,7 @@ const Settings = () => {
             </Text>
           </ListItem.Part>
         </ListItem>
-        <ListItem
-          backgroundColor={Colors.white}
-          activeOpacity={0.3}
-          height={60}
-          onPress={() => navigation.navigate("Update Personal Information")}
-        >
-          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
-            <Text h3 numberOfLines={1}>
-              Update Personal Information
-            </Text>
-          </ListItem.Part>
-        </ListItem>
+
         <ListItem
           activeBackgroundColor={Colors.grey60}
           activeOpacity={0.3}
@@ -198,6 +187,18 @@ const Settings = () => {
           backgroundColor={Colors.white}
           activeOpacity={0.3}
           height={60}
+          onPress={() => navigation.navigate("Update Personal Information")}
+        >
+          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+            <Text h3 numberOfLines={1}>
+              Update Personal Information
+            </Text>
+          </ListItem.Part>
+        </ListItem>
+        {/* <ListItem
+          backgroundColor={Colors.white}
+          activeOpacity={0.3}
+          height={60}
           onPress={() => navigation.navigate("Order History")}
         >
           <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
@@ -205,7 +206,7 @@ const Settings = () => {
               My Order History
             </Text>
           </ListItem.Part>
-        </ListItem>
+        </ListItem> */}
         <ListItem
           activeBackgroundColor={Colors.grey60}
           activeOpacity={0.3}
