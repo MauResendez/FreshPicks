@@ -2,8 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import { GeoPoint, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Platform, ScrollView, TouchableWithoutFeedback } from "react-native";
-import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
+import { GooglePlaceData, GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from 'react-native-ui-lib';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
@@ -12,8 +12,8 @@ const UpdatePersonal = () => {
   const navigation = useNavigation<any>();
   const [name, setName] = useState<any>(null);
   const [email, setEmail] = useState<any>(null);
-  const [address, setAddress] = useState<any>(null);
   const [location, setLocation] = useState<GeoPoint>(null);
+  const [address, setAddress] = useState(null);
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState<any>(true);
 
@@ -58,7 +58,7 @@ const UpdatePersonal = () => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView contentContainerStyle={global.flex}>
           <Formik 
             initialValues={{ name: user.name, email: user.email, address: user.address, location: user.location } || { name: "", email: "", address: "", location: "" }} 
             onSubmit={onSubmit}
@@ -92,58 +92,7 @@ const UpdatePersonal = () => {
                   />
                 </View>
 
-                <ScrollView style={global.field} contentContainerStyle={global.flex}>
-                  <Text subtitle>Address</Text>
-                  <GooglePlacesAutocomplete
-                    textInputProps={{
-                      onSelectionChange(text) {
-                        setAddress(text);
-                        console.log(text);
-                      },
-                      autoCapitalize: "none",
-                      autoCorrect: false,
-                      value: values.address
-                    }}
-                    styles={{
-                      textInput: {
-                        height: 50,
-                        width: "100%",
-                        borderWidth: 1,
-                        borderColor: "rgba(0, 0, 0, 0.2)",
-                        borderRadius: 8,
-                        paddingHorizontal: 8,
-                        backgroundColor: "white",
-                        marginBottom: 16
-                      }
-                    }}
-                    // onPress={(data, details) => handleKeyPress(data, details)}
-                    onPress={(data, details) => {
-                      if (!data || !details) return;
-
-                      const geopoint = new GeoPoint(details.geometry.location.lat, details.geometry.location.lng);
-                  
-                      handleChange('address')(data.description);
-                      handleChange('location')(geopoint as unknown as string)
-                      // setAddress(data.description);
-                      // setLocation(geopoint);
-                    }}
-                    fetchDetails
-                    minLength={4}
-                    enablePoweredByContainer={false}
-                    placeholder="Enter your address here"
-                    debounce={1000}
-                    nearbyPlacesAPI="GooglePlacesSearch"
-                    keepResultsAfterBlur={true}
-                    query={{
-                      key: "AIzaSyDdDiIwvLlEcpjOK3DVEmbO-ydkrMOS1cM",
-                      language: "en",
-                    }}
-                    requestUrl={{
-                      url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
-                      useOnPlatform: "web"
-                    }}
-                  /> 
-                </ScrollView>
+                <View flexG />
 
                 <Button 
                   backgroundColor={"#ff4500"}

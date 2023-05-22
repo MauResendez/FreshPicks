@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native"
-import { doc, getDoc, updateDoc } from "firebase/firestore"
+import { GeoPoint, doc, getDoc, updateDoc } from "firebase/firestore"
 import { Formik } from "formik"
 import React, { useEffect, useState } from "react"
 import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native"
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
 import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
 import { auth, db } from "../../firebase"
 import { global } from "../../style"
@@ -46,15 +47,15 @@ const UpdateFarmer = () => {
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
           <Formik 
-            initialValues={{ business: user.business, description: user.description, website: user.website } || { business: "", description: "", website: "" }} 
+            initialValues={{ business: user.business, description: user.description, website: user.website, address: user.address } || { business: "", description: "", website: "" }} 
             onSubmit={onSubmit}
             enableReinitialize={true}
             style={global.flex}
           >
-            {({ handleChange, handleBlur, handleSubmit, values }) => (
+            {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
               <View flex>
                 <View style={global.field}>
-                  <Text subtitle>Business Name</Text>
+                  <Text subtitle>Business Name *</Text>
                   <TextField
                     value={values.business}
                     onChangeText={handleChange('business')}
@@ -65,7 +66,7 @@ const UpdateFarmer = () => {
                 </View>
                 
                 <View style={global.field}>
-                  <Text subtitle>Describe your business</Text>
+                  <Text subtitle>Describe your business *</Text>
                   <TextField
                     value={values.description}
                     onChangeText={handleChange('description')}
@@ -88,7 +89,60 @@ const UpdateFarmer = () => {
                   />
                 </View>
 
-                <View flexG />
+                <KeyboardAwareScrollView style={global.field} contentContainerStyle={global.flex}>
+                  <Text subtitle>Business Address *</Text>
+                  <GooglePlacesAutocomplete
+                    textInputProps={{
+                      onChange(text) {
+                        // setAddress(text);
+                        setFieldValue('address', text);
+                        setFieldValue('location', null);
+                        // console.log(text);
+                        console.log(values.address);
+                        console.log(values.location);
+                      },
+                      autoCapitalize: "none",
+                      autoCorrect: false,
+                      value: values.address
+                    }}
+                    styles={{
+                      textInput: {
+                        height: 50,
+                        width: "100%",
+                        borderWidth: 1,
+                        borderColor: "rgba(0, 0, 0, 0.2)",
+                        borderRadius: 8,
+                        paddingHorizontal: 8,
+                        backgroundColor: "white",
+                        marginBottom: 16
+                      }
+                    }}
+                    onPress={(data, details) => {
+                      if (!data || !details) return;
+
+                      const geopoint = new GeoPoint(details.geometry.location.lat, details.geometry.location.lng);
+                  
+                      setFieldValue('address', data.description);
+                      setFieldValue('location', geopoint);
+                      console.log("Address:", values.address);
+                      console.log("Location:", values.location);
+                    }}
+                    minLength={4}
+                    enablePoweredByContainer={false}
+                    placeholder="Enter your address here"
+                    debounce={1000}
+                    nearbyPlacesAPI="GooglePlacesSearch"
+                    keepResultsAfterBlur={true}
+                    query={{
+                      key: "AIzaSyDdDiIwvLlEcpjOK3DVEmbO-ydkrMOS1cM",
+                      language: "en",
+                    }}
+                    requestUrl={{
+                      url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
+                      useOnPlatform: "web"
+                    }}
+                  /> 
+                </KeyboardAwareScrollView>
 
                 <Button 
                   backgroundColor={"#ff4500"}

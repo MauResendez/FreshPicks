@@ -49,7 +49,7 @@ const Meetings = () => {
         keyExtractor={(item: any) => item.id}
         estimatedItemSize={chats.length != 0 ? chats.length : 150}
         renderItem={({item}) => (
-          <ChatRow id={item.id} />
+          <ChatRow item={item} />
         )}
       />
     </View>

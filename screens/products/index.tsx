@@ -57,7 +57,7 @@ const Products = () => {
   );
 
   const SecondRoute = () => (
-    <View style={subscriptions.length == 0 && [global.center, global.container]}>
+    <View useSafeArea flex style={subscriptions.length == 0 && [global.center, global.container]}>
       {subscriptions.length != 0 
         ? <FlashList 
             data={subscriptions}
