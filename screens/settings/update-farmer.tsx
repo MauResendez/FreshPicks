@@ -1,17 +1,23 @@
 import { useNavigation } from "@react-navigation/native"
-import { GeoPoint, doc, getDoc, updateDoc } from "firebase/firestore"
+import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { Formik } from "formik"
 import React, { useEffect, useState } from "react"
 import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native"
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
-import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
+import { Button, Carousel, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
+import * as Yup from 'yup'
 import { auth, db } from "../../firebase"
 import { global } from "../../style"
 
 const UpdateFarmer = () => {
   const navigation = useNavigation<any>();
   const [user, setUser] = useState<any>(null);
+  const [visible, setVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<any>(true);
+  const IMAGES = [
+    'https://images.pexels.com/photos/2529159/pexels-photo-2529159.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+    'https://images.pexels.com/photos/2529146/pexels-photo-2529146.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+    'https://images.pexels.com/photos/2529158/pexels-photo-2529158.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+  ];
 
   const onSubmit = async (values) => {
     await updateDoc(doc(db, "Users", auth.currentUser.uid), values)
@@ -41,117 +47,84 @@ const UpdateFarmer = () => {
       <LoaderScreen color={"#32CD32"} />
     )
   }
+
+  const validate = Yup.object().shape({ 
+    business: Yup.string().required('Business is required'), 
+    description: Yup.string().required('Description is required'), 
+    website: Yup.string().url("Website must be a valid URL\nE.g. (https://www.google.com)").required('Website is required'), 
+    // images: Yup.array().required('Images is required')
+  });
   
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
+        <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex}>
           <Formik 
-            initialValues={{ business: user.business, description: user.description, website: user.website, address: user.address } || { business: "", description: "", website: "" }} 
+            initialValues={{ business: user.business, description: user.description, website: user.website, address: user.address, images: [] } || { business: "", description: "", website: "", images: [] }} 
             onSubmit={onSubmit}
+            validationSchema={validate}
             enableReinitialize={true}
-            style={global.flex}
           >
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
               <View flex>
-                <View style={global.field}>
-                  <Text subtitle>Business Name *</Text>
-                  <TextField
-                    value={values.business}
-                    onChangeText={handleChange('business')}
-                    onBlur={handleBlur('business')}
-                    style={global.input}
-                    migrate
-                  />
-                </View>
-                
-                <View style={global.field}>
-                  <Text subtitle>Describe your business *</Text>
-                  <TextField
-                    value={values.description}
-                    onChangeText={handleChange('description')}
-                    onBlur={handleBlur('description')}
-                    style={global.textArea}
-                    multiline
-                    maxLength={100}
-                    migrate
-                  />
-                </View>
-
-                <View style={global.field}>
-                  <Text subtitle>Website</Text>
-                  <TextField
-                    value={values.website}
-                    onChangeText={handleChange('website')}
-                    onBlur={handleBlur('website')}
-                    style={global.input}
-                    migrate
-                  />
-                </View>
-
-                <KeyboardAwareScrollView style={global.field} contentContainerStyle={global.flex}>
-                  <Text subtitle>Business Address *</Text>
-                  <GooglePlacesAutocomplete
-                    textInputProps={{
-                      onChange(text) {
-                        // setAddress(text);
-                        setFieldValue('address', text);
-                        setFieldValue('location', null);
-                        // console.log(text);
-                        console.log(values.address);
-                        console.log(values.location);
-                      },
-                      autoCapitalize: "none",
-                      autoCorrect: false,
-                      value: values.address
-                    }}
-                    styles={{
-                      textInput: {
-                        height: 50,
-                        width: "100%",
-                        borderWidth: 1,
-                        borderColor: "rgba(0, 0, 0, 0.2)",
-                        borderRadius: 8,
-                        paddingHorizontal: 8,
-                        backgroundColor: "white",
-                        marginBottom: 16
-                      }
-                    }}
-                    onPress={(data, details) => {
-                      if (!data || !details) return;
-
-                      const geopoint = new GeoPoint(details.geometry.location.lat, details.geometry.location.lng);
+                <Carousel containerStyle={{ height: 200 }}>
+                  <View flex centerV>
+                    {values.images.length == 0
+                      ? <Image style={global.flex} source={require("../../assets/default.png")} overlayType={Image.overlayTypes.BOTTOM} />
+                      : <Image style={global.flex} source={{ uri: values.image[0] }} cover overlayType={Image.overlayTypes.BOTTOM} />
+                    }
+                  </View>
+                </Carousel>
+                <View flex style={global.container}>
+                  <View style={global.field}>
+                    <Text subtitle>Business Name *</Text>
+                    <TextField
+                      value={values.business}
+                      onChangeText={handleChange('business')}
+                      onBlur={handleBlur('business')}
+                      style={global.input}
+                      migrate
+                    />
+                  </View>
+                  {errors.business && touched.business && <Text style={{ color: Colors.red30 }}>{errors.business}</Text>}
                   
-                      setFieldValue('address', data.description);
-                      setFieldValue('location', geopoint);
-                      console.log("Address:", values.address);
-                      console.log("Location:", values.location);
-                    }}
-                    minLength={4}
-                    enablePoweredByContainer={false}
-                    placeholder="Enter your address here"
-                    debounce={1000}
-                    nearbyPlacesAPI="GooglePlacesSearch"
-                    keepResultsAfterBlur={true}
-                    query={{
-                      key: "AIzaSyDdDiIwvLlEcpjOK3DVEmbO-ydkrMOS1cM",
-                      language: "en",
-                    }}
-                    requestUrl={{
-                      url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
-                      useOnPlatform: "web"
-                    }}
-                  /> 
-                </KeyboardAwareScrollView>
+                  <View style={global.field}>
+                    <Text subtitle>Describe your business *</Text>
+                    <TextField
+                      value={values.description}
+                      onChangeText={handleChange('description')}
+                      onBlur={handleBlur('description')}
+                      style={global.textArea}
+                      multiline
+                      maxLength={100}
+                      migrate
+                    />
+                  </View>
+                  {errors.description && touched.description && <Text style={{ color: Colors.red30 }}>{errors.description}</Text>}
 
-                <Button 
-                  backgroundColor={"#ff4500"}
-                  color={Colors.white}
-                  label={"Update Farmer"} 
-                  labelStyle={{ fontWeight: '600', padding: 8 }} 
-                  style={global.btnTest} 
-                  onPress={() => handleSubmit()}                
-                />
+                  <View style={global.field}>
+                    <Text subtitle>Website</Text>
+                    <TextField
+                      value={values.website}
+                      onChangeText={handleChange('website')}
+                      onBlur={handleBlur('website')}
+                      style={global.input}
+                      migrate
+                    />
+                  </View>
+                  {errors.website && touched.website && <Text style={{ color: Colors.red30 }}>{errors.website}</Text>}
+
+                  <View flexG />
+
+                  <Button 
+                    backgroundColor={"#ff4500"}
+                    color={Colors.white}
+                    label={"Update Farmer Information"} 
+                    labelStyle={{ fontWeight: '600', padding: 8 }} 
+                    style={global.btnTest} 
+                    onPress={() => handleSubmit()}                
+                  />
+                </View>
               </View>
             )}
           </Formik>

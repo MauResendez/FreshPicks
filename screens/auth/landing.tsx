@@ -17,7 +17,7 @@ const Landing = () => {
   return (
     <ImageBackground style={global.flex} source={require("../../assets/landing.png")} >
       <View useSafeArea flex>
-        <View style={[global.container, global.spaceBetween]}>
+        <View flex style={[global.container, global.spaceBetween]}>
           <Image style={{ width: "auto", height: 100, marginTop: 32 }} source={require("../../assets/logo.png")} resizeMode="contain" />
 
           <View style={global.field}>

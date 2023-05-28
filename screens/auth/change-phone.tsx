@@ -101,7 +101,7 @@ const ChangePhone = () => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <View style={[global.container, global.spaceBetween]}>
+        <View flex style={[global.container, global.spaceBetween]}>
           <View>
             <FirebaseRecaptchaVerifierModal
               ref={recaptchaVerifier}

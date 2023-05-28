@@ -16,7 +16,8 @@ const FarmerCard = (props) => {
     <Card 
       style={{ 
         width: 250, 
-        height: "auto", 
+        height: "auto",
+        minHeight: 250, 
         marginRight: 16, 
         shadowColor: "#000",
         shadowOffset: {

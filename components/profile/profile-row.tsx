@@ -58,7 +58,7 @@ const ProfileRow = (props) => {
         style={{ borderRadius: 8, marginBottom: 4, paddingHorizontal: 8, paddingVertical: 4, height: "auto" }}
       >
         {item.image && <ListItem.Part left>
-          <Image source={{ uri: item.image }} style={{ width: 50, height: 50, marginRight: 12 }}/>
+          <Image source={{ uri: item.image[0] }} style={{ width: 50, height: 50, marginRight: 12, borderWidth: 1, borderColor: "black" }}/>
         </ListItem.Part>}
         <ListItem.Part middle column>
           <Text h2>{item.title}</Text>

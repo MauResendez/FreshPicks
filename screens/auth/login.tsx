@@ -19,7 +19,7 @@ const Login = () => {
   const recaptchaVerifier = useRef<any>(null);
   const attemptInvisibleVerification = true;
 
-  const [vid, setVID] = useState<any>();
+  const [vid, setVID] = useState<any>("");
   const [token, setToken] = useState<any>(null)
   const [loading, setLoading] = useState(true);
 
@@ -87,38 +87,9 @@ const Login = () => {
     }
   }
 
-  // const onSubmit = async (sms: string) => {
-  //   let error = false;
-
-  //   if (phone.length == 0) {
-  //     error = true;
-  //     showToast("error", "Error", "Phone is required");
-  //     return
-  //   }
-
-  //   if (error) {
-  //     error = false;
-  //     return
-  //   }
-
-  //   try {
-  //     const credential = PhoneAuthProvider.credential(vid, sms);
-
-  //     await signInWithCredential(auth, credential).then(async (credential) => {
-  //       const user = credential.user;
-
-  //       await updateDoc(doc(db, "Users", user.uid), {
-  //         token: arrayUnion(token),
-  //         createdAt: new Date(),
-  //       });
-  //     });
-  //   } catch (err: any) {
-  //     showToast("error", "Error", `${err.message}`);
-  //   }
-  // };
-
   const onSubmit = async (values) => {
     try {
+      console.log(values);
       const credential = PhoneAuthProvider.credential(vid, values.sms);
 
       await signInWithCredential(auth, credential).then(async (credential) => {
@@ -153,7 +124,7 @@ const Login = () => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAvoidingView style={global.container} behavior={Platform.OS == "ios" ? "padding" : "height"}>
+        <KeyboardAvoidingView style={[global.container, global.flex]} behavior={Platform.OS == "ios" ? "padding" : "height"}>
           <Formik 
             initialValues={{ phone: "", sms: "" }} 
             onSubmit={onSubmit}

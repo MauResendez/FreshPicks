@@ -165,7 +165,7 @@ const EditPost = ({ route }) => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
+        <KeyboardAwareScrollView style={[global.container, global.flex]} contentContainerStyle={global.flex}>
           <Formik 
             initialValues={post || { title: "", description: "" }} 
             onSubmit={onSubmit}

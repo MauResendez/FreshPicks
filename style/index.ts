@@ -12,7 +12,6 @@ export const colors = {
 
 export const global = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 24
   },
   center: {
@@ -304,5 +303,9 @@ export const global = StyleSheet.create({
   iosHeader: {
     width: 200, 
     height: 50, 
+  },
+  image: {
+    width: "100%",
+    height: 150
   }
 });

@@ -83,7 +83,7 @@ const CreateTransaction = () => {
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
           <Formik
-            initialValues={{ user: auth.currentUser.uid, party: '', type: '', price: 0.00, product: '', category: '', notes: '', createdAt: new Date(), date: new Date() }}
+            initialValues={{ user: auth.currentUser.uid, party: '', type: '', price: 0.00, product: '', label: '', category: '', notes: '', createdAt: new Date(), date: new Date() }}
             onSubmit={onSubmit}
           >
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
@@ -196,20 +196,7 @@ const CreateTransaction = () => {
                     value={values.notes}
                     migrate
                   />
-{/* <TextArea style={global.input} placeholder="Write description..." value={values.notes}                     onChangeText={handleChange('notes')} migrate /> */}
                 </View>
-
-
-
-                {/* <View style={global.field}>
-                  <Text subtitle>Listing Image</Text>
-                  <TouchableOpacity onPress={gallery}>
-                    {!image
-                      ? <AnimatedImage style={{ width: "100%", height: 200 }} source={require("../../assets/image.png")} />
-                      : <AnimatedImage style={{ width: "100%", height: 200 }} source={{ uri: image }} />
-                    }
-                  </TouchableOpacity>
-                </View> */}
 
                 <View flexG />
 

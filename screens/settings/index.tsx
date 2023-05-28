@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { Platform } from "expo-modules-core";
 import * as Notifications from 'expo-notifications';
-import { deleteUser, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { arrayRemove, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -14,11 +14,6 @@ const Settings = () => {
   const [user, setUser] = useState<any>(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState<any>(true);
-
-  const deleteAccount = async () => {
-    // Delete everything from database that has current user
-    deleteUser(auth.currentUser);
-  }
 
   const getToken = async () => {
     let token = await Notifications.getExpoPushTokenAsync();
@@ -33,6 +28,33 @@ const Settings = () => {
 
     signOut(auth);
   }
+
+  const deleteAccount = async () => {
+    try {
+      const response = await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/deleteAccount", {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          'data': {
+            'uid': auth.currentUser.uid,
+          }
+        }),
+      });
+
+      console.log(response);
+
+      const json = await response.json();
+
+      console.log(json);
+
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const share = async () => {
     const options = {
@@ -171,7 +193,18 @@ const Settings = () => {
             </Text>
           </ListItem.Part>
         </ListItem>
-
+        <ListItem
+          backgroundColor={Colors.white}
+          activeOpacity={0.3}
+          height={60}
+          onPress={() => navigation.navigate("Link Account")}
+        >
+          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+            <Text h3 numberOfLines={1}>
+              Link Account
+            </Text>
+          </ListItem.Part>
+        </ListItem>
         <ListItem
           activeBackgroundColor={Colors.grey60}
           activeOpacity={0.3}
@@ -251,6 +284,20 @@ const Settings = () => {
             backgroundColor={Colors.white}
             activeOpacity={0.3}
             height={60}
+            onPress={() => navigation.navigate("Update Farmer Location")}
+          >
+            <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+              <Text h3 numberOfLines={1}>
+                Update Farmer Location
+              </Text>
+            </ListItem.Part>
+          </ListItem>
+        )}
+        {user?.farmer && (
+          <ListItem
+            backgroundColor={Colors.white}
+            activeOpacity={0.3}
+            height={60}
             onPress={() => navigation.navigate("Update Farmer Schedule")}
           >
             <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
@@ -267,7 +314,7 @@ const Settings = () => {
         >
           <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
             <Text h2 numberOfLines={1}>
-              UTRGV CFSI
+              UTRGV
             </Text>
           </ListItem.Part>
         </ListItem>
@@ -315,10 +362,13 @@ const Settings = () => {
           backgroundColor={Colors.white}
           activeOpacity={0.3}
           height={60}
-          onPress={() => {
+          onPress={async () => {
             Alert.alert("Delete Account", "Would you like to delete your account?", [
               {text: 'Cancel', style: 'cancel'},
-              {text: 'OK', onPress: logOut},
+              {text: 'OK', onPress: async () => {
+                await deleteAccount();
+                await logOut();
+              }},
             ]);
           }}
         >

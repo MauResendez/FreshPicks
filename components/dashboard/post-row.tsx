@@ -69,7 +69,7 @@ const DisplayRow = (product) => {
             icon={<Ionicon name="trash" color={"white"} size={20} />} 
             onPress={() => Alert.alert("Delete Chat", "Would you like to delete this post?", [
               {text: 'Cancel', style: 'cancel'},
-              {text: 'OK', onPress: async () => deleteListing(product)},
+              {text: 'OK', onPress: async () => await deleteListing(product)},
             ])} 
           />
         </View>

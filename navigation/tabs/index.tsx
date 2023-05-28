@@ -163,20 +163,6 @@ const MainTabs = () => {
           };
         }}
       />
-      {/* <Tab.Screen
-        name="Instructions"
-        component={Instructions}
-        options={({ route }) => {
-          const current = getFocusedRouteNameFromRoute(route) ?? "Index";
-          
-          return {
-            tabBarLabel: "Instructions",
-            tabBarItemStyle: { display: "none" },
-            // headerShown: current != "Instructions" ? false : true,
-            swipeEnabled: current != "Index" ? false : true,
-          };
-        }}
-      /> */}
       <Tab.Screen
         name="Instructions"
         component={Instructions}

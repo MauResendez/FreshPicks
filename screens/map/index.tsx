@@ -72,7 +72,7 @@ const Map = () => {
     <View useSafeArea flex>
       <View style={styles.map}>
         <MapView
-          ref={map => (this.map = map)} 
+          // ref={map => (this.map = map)} 
           style={styles.mapview}
           region={mapRegion}
           showsUserLocation={true}

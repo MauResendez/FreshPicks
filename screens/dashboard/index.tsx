@@ -14,7 +14,7 @@ const Dashboard = () => {
 
   const FirstRoute = () => (
     <View useSafeArea flex>
-      <View style={[global.container]}>
+      <View flex style={global.container}>
         <View style={global.field}>
           <Picker  
             value={data[0]}
@@ -40,6 +40,7 @@ const Dashboard = () => {
           textBackgroundColor="white"
           textBackgroundRadius={15} 
         /> */}
+        {/* <LineChart data = {data} areaChart /> */}
         <Text h3>Data 1</Text>
         <Text h3>Data 2</Text>
         <Text h3>Data 3</Text>
@@ -81,7 +82,7 @@ const Dashboard = () => {
 
   const SecondRoute = () => (
     <View useSafeArea flex>
-      <View style={[global.container]}>
+      <View flex style={global.container}>
         <View style={global.field}>
           <Picker  
             value={data[0]}

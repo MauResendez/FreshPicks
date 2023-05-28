@@ -19,6 +19,25 @@ const Search = () => {
   const [farmers, setFarmers] = useState(null);
   const [products, setProducts] = useState(null);
 
+  const shuffle = (array) => {
+    let currentIndex = array.length;
+    let randomIndex;
+  
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+  }
+
   useEffect(() => {
     try {
       if (search.length == 0) {
@@ -40,9 +59,12 @@ const Search = () => {
       const filtered_listings = products.filter(result => {
         return result.title.toLowerCase().indexOf(search.toLowerCase()) !== -1;
       });
+
+      const sf = shuffle(filtered_farmers);
+      const pf = shuffle(filtered_listings);
   
-      setFarmers(filtered_farmers);
-      setProducts(filtered_listings);
+      setFarmers(sf);
+      setProducts(pf);
     } catch (error) {
       console.log(error);
     }

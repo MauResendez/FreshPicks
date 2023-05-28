@@ -146,7 +146,7 @@ const Basket = () => {
 
   if (items.length == 0) {
     return (
-      <View useSafeArea flex style={[global.container, global.center, global.bgGray]}>
+      <View useSafeArea flex style={[global.bgGray, global.center, global.container]}>
         <Text subtitle>Basket is empty</Text>
       </View>
     )

@@ -5,7 +5,7 @@ import { global } from '../../style'
 const Recipes = () => {
 	return (
 		<WebView
-      style={global.container}
+      style={[global.container, global.flex]}
       source={{ uri: 'https://www.utrgv.edu/pewd/cfsi/recipes' }}
     />
 	)

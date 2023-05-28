@@ -1,6 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
+import * as FileSystem from 'expo-file-system';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import * as Papa from 'papaparse';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -99,6 +101,29 @@ const Transactions = () => {
       setRevenue(r);
       setExpenses(e);
     }
+  }, [transactions]);
+
+  useEffect(() => {
+    if (transactions) {
+      const fetchData = async () => {
+        try {
+          const csvData = Papa.unparse(transactions);
+  
+          // Save the CSV file
+          const fileUri = FileSystem.documentDirectory + 'data.csv';
+          await FileSystem.writeAsStringAsync(fileUri, csvData);
+  
+          console.log('CSV file saved successfully.');
+
+          FileSystem.getInfoAsync(fileUri);
+        } catch (error) {
+          console.error('Error exporting Firestore collection:', error);
+        }
+      };
+  
+      fetchData();
+    }
+    
   }, [transactions]);
 
   useEffect(() => {
