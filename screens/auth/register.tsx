@@ -9,9 +9,8 @@ import { GeoPoint, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Keyboard, Platform, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import MapView, { Marker } from 'react-native-maps';
 import PhoneInput from 'react-native-phone-input';
 import { Button, Carousel, Checkbox, Colors, DateTimePicker, Image, KeyboardAwareScrollView, LoaderScreen, PageControl, Text, TextField, View, Wizard } from 'react-native-ui-lib';
 import { Dialog } from 'react-native-ui-lib/src/incubator';
@@ -133,6 +132,7 @@ const Register = () => {
   }
 
   const uploadImages = async (images) => {
+    console.log("HERE UPLOADING");
     const imagePromises = Array.from(images, (image) => uploadImage(image));
   
     const imageRes = await Promise.all(imagePromises);
@@ -140,6 +140,7 @@ const Register = () => {
   }
 
   const uploadImage = async (image) => {
+    console.log("HERE UPLOADING 2");
     const storageRef = ref(storage, `${auth.currentUser.uid}/images/${Date.now()}`);
     const img = await fetch(image);
     const blob = await img.blob();
@@ -158,6 +159,7 @@ const Register = () => {
         const phoneProvider = new PhoneAuthProvider(auth);
         const vid = await phoneProvider.verifyPhoneNumber(phone, recaptchaVerifier.current);
         setVID(vid);
+        console.log(vid);
 
         // showToast("info", "Info", "Verification code has been sent to your phone");
       } else {
@@ -226,19 +228,20 @@ const Register = () => {
     }
   };
 
-  const createUser = async (values, user, u) => {
+  const createUser = async (values, user, images) => {
     console.log(values);
+    console.log(token);
     try {
       await setDoc(doc(db, "Users", user.uid), {
         name: values.name,
         phone: values.phone,
-        role: values.farmer,
+        role: farmer,
         admin: false,
         farmer: farmer,
         email: values.email,
         address: values.address,
         location: values.location,
-        images: u,
+        // images: images,
         business: values.business,
         description: values.description,
         website: values.website,
@@ -247,6 +250,7 @@ const Register = () => {
         // },
         token: [token],
       }).then(() => {
+        navigation.navigate("Instructions");
         console.log("HI");
       });
     } catch (error) {
@@ -264,8 +268,11 @@ const Register = () => {
 
       const auth_credential = await signInWithCredential(auth, credential);
       const user = auth_credential.user;
-      const imgs = await uploadImages(values.images);
+      console.log(farmer);
+      const imgs = farmer ? await uploadImages(values.images) : [];
+      console.log(imgs);
       await createUser(values, user, imgs);
+
       console.log("HERE");
     } catch (error) {
       console.log(error);
@@ -382,40 +389,20 @@ const Register = () => {
 
     return (
       <View useSafeArea flex>
-        <TouchableOpacity onPress={() => setVisible(true)}>
-          <Carousel
-            containerStyle={{
-              height: 200
-            }}
-            autoplay
-            loop
-            pageControlProps={{
-              size: 10,
-              containerStyle: {
-                position: 'absolute',
-                bottom: 15,
-                left: 10
+        <Carousel containerStyle={{ height: 200 }}>
+          <TouchableOpacity style={global.flex} onPress={() => Alert.alert("Delete Chat", "Would you like to delete this post?", [
+            {text: 'Cancel', style: 'cancel'},
+            {text: 'Camera', onPress: async () => await camera(setFieldValue)},
+            {text: 'Gallery', onPress: async () => await gallery(setFieldValue)},
+          ])}>
+            <View flex centerV>
+              {values.images.length == 0
+                ? <Image style={global.flex} source={require("../../assets/default.png")} overlayType={Image.overlayTypes.BOTTOM} />
+                : <Image style={global.flex} source={{ uri: values.images[0] }} cover overlayType={Image.overlayTypes.BOTTOM} />
               }
-            }}
-            pageControlPosition={Carousel.pageControlPositions.OVER}
-            showCounter
-          >
-            {IMAGES.map((image, i) => {
-              return (
-                <View flex centerV key={i}>
-                  <Image
-                    overlayType={Image.overlayTypes.BOTTOM}
-                    style={{flex: 1}}
-                    source={{
-                      uri: image
-                    }}
-                    cover
-                  />
-                </View>
-              );
-            })}
-          </Carousel>
-        </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        </Carousel>
         
         <View flexG style={{ padding: 24 }}>
           <View style={global.field}>
@@ -467,125 +454,125 @@ const Register = () => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
-      // <KeyboardAwareScrollView contentContainerStyle={global.container} keyboardShouldPersistTaps="always">
-      //   <Text subtitle>Business Address *</Text>
-      //   <GooglePlacesAutocomplete
-      //     textInputProps={{
-      //       onChange(text) {
-      //         setFieldValue('address', text);
-      //         setFieldValue('location', null);
-      //       },
-      //       autoCapitalize: "none",
-      //       autoCorrect: false,
-      //       value: values.address
-      //     }}
-      //     styles={{
-      //       textInput: {
-      //         height: 50,
-      //         width: "100%",
-      //         borderWidth: 1,
-      //         borderColor: "rgba(0, 0, 0, 0.2)",
-      //         borderRadius: 8,
-      //         paddingHorizontal: 8,
-      //         backgroundColor: "white",
-      //         marginBottom: 16,
-      //       },
-      //       listView: {
-      //         marginBottom: 16,
-      //       }
-      //     }}
-      //     onPress={(data, details) => {
-      //       if (!data || !details) return;
+      <KeyboardAvoidingView style={[global.container, global.flex]} behavior={'position'}>
+        <Text subtitle>Business Address *</Text>
+        <GooglePlacesAutocomplete
+          textInputProps={{
+            onChange(text) {
+              setFieldValue('address', text);
+              setFieldValue('location', "");
+            },
+            autoCapitalize: "none",
+            autoCorrect: false,
+            value: values.address
+          }}
+          styles={{
+            textInput: {
+              height: 50,
+              width: "100%",
+              borderWidth: 1,
+              borderColor: "rgba(0, 0, 0, 0.2)",
+              borderRadius: 8,
+              paddingHorizontal: 8,
+              backgroundColor: "white",
+              marginBottom: 16,
+            },
+            listView: {
+              marginBottom: 16,
+            }
+          }}
+          onPress={(data, details) => {
+            if (!data || !details) return;
 
-      //       const geopoint = new GeoPoint(details.geometry.location.lat, details.geometry.location.lng);
+            const geopoint = new GeoPoint(details.geometry.location.lat, details.geometry.location.lng);
         
-      //       setFieldValue('address', data.description);
-      //       setFieldValue('location', geopoint);
-      //     }}
-      //     fetchDetails={true}
-      //     minLength={4}
-      //     enablePoweredByContainer={false}
-      //     placeholder="Enter your address here"
-      //     debounce={1000}
-      //     nearbyPlacesAPI="GooglePlacesSearch"
-      //     keepResultsAfterBlur={true}
-      //     query={{
-      //       key: "AIzaSyDdDiIwvLlEcpjOK3DVEmbO-ydkrMOS1cM",
-      //       language: "en",
-      //     }}
-      //     requestUrl={{
-      //       url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
-      //       useOnPlatform: "web"
-      //     }}
-      //   />
+            setFieldValue('address', data.description);
+            setFieldValue('location', geopoint);
+          }}
+          fetchDetails={true}
+          minLength={4}
+          enablePoweredByContainer={false}
+          placeholder="Enter your address here"
+          debounce={1000}
+          nearbyPlacesAPI="GooglePlacesSearch"
+          keepResultsAfterBlur={true}
+          query={{
+            key: "AIzaSyDdDiIwvLlEcpjOK3DVEmbO-ydkrMOS1cM",
+            language: "en",
+          }}
+          requestUrl={{
+            url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
+            useOnPlatform: "web"
+          }}
+        />
         
-      //   {Buttons()}  
-      // </KeyboardAwareScrollView> 
-      <MapView
-        style={{ flex: 1 }}
-        region={region}
-        moveOnMarkerPress={true}
-        mapType={"standard"}
-        showsTraffic
-      >
-          <GooglePlacesAutocomplete
-            textInputProps={{
-              onChange(text) {
-                setFieldValue('address', text);
-                setFieldValue('location', null);
-              },
-              autoCapitalize: "none",
-              autoCorrect: false,
-              value: values.address
-            }}
-            styles={{
-              textInput: {
-                height: 50,
-                width: "100%",
-                borderWidth: 1,
-                borderColor: "rgba(0, 0, 0, 0.2)",
-                borderRadius: 8,
-                paddingHorizontal: 8,
-                backgroundColor: "white",
-              },
-              textInputContainer: {
-                paddingHorizontal: 16,
-                paddingTop: 16
-              },
-              listView: {
-                paddingHorizontal: 16
-              }
-            }}
-            onPress={(data, details) => {
-              if (!data || !details) return;
+        {Buttons()}  
+      </KeyboardAvoidingView> 
+      // <MapView
+      //   style={{ flex: 1 }}
+      //   region={region}
+      //   moveOnMarkerPress={true}
+      //   mapType={"standard"}
+      //   showsTraffic
+      // >
+      //     <GooglePlacesAutocomplete
+      //       textInputProps={{
+      //         onChange(text) {
+      //           setFieldValue('address', text);
+      //           setFieldValue('location', null);
+      //         },
+      //         autoCapitalize: "none",
+      //         autoCorrect: false,
+      //         value: values.address
+      //       }}
+      //       styles={{
+      //         textInput: {
+      //           height: 50,
+      //           width: "100%",
+      //           borderWidth: 1,
+      //           borderColor: "rgba(0, 0, 0, 0.2)",
+      //           borderRadius: 8,
+      //           paddingHorizontal: 8,
+      //           backgroundColor: "white",
+      //         },
+      //         textInputContainer: {
+      //           paddingHorizontal: 16,
+      //           paddingTop: 16
+      //         },
+      //         listView: {
+      //           paddingHorizontal: 16
+      //         }
+      //       }}
+      //       onPress={(data, details) => {
+      //         if (!data || !details) return;
 
-              const geopoint = new GeoPoint(details.geometry.location.lat, details.geometry.location.lng);
+      //         const geopoint = new GeoPoint(details.geometry.location.lat, details.geometry.location.lng);
           
-              setFieldValue('address', data.description);
-              setFieldValue('location', geopoint);
+      //         setFieldValue('address', data.description);
+      //         setFieldValue('location', geopoint);
 
-              const { lat, lng } = details.geometry.location;
-              setCoordinates({ latitude: lat, longitude: lng });
+      //         const { lat, lng } = details.geometry.location;
+      //         setCoordinates({ latitude: lat, longitude: lng });
               
-            }}
-            fetchDetails={true}
-            minLength={4}
-            enablePoweredByContainer={false}
-            placeholder="Enter your address here"
-            debounce={1000}
-            nearbyPlacesAPI="GooglePlacesSearch"
-            keepResultsAfterBlur={true}
-            query={{
-              key: "AIzaSyDyXlBNmFl5OTBrrc8YyGRyPoEnoi3fMTc",
-              language: "en",
-            }}
-            requestUrl={{
-              url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
-              useOnPlatform: "web"
-            }}
-          />
-          <Marker coordinate={coordinates} />
-      </MapView>
+      //       }}
+      //       fetchDetails={true}
+      //       minLength={4}
+      //       enablePoweredByContainer={false}
+      //       placeholder="Enter your address here"
+      //       debounce={1000}
+      //       nearbyPlacesAPI="GooglePlacesSearch"
+      //       keepResultsAfterBlur={true}
+      //       query={{
+      //         key: "AIzaSyDyXlBNmFl5OTBrrc8YyGRyPoEnoi3fMTc",
+      //         language: "en",
+      //       }}
+      //       requestUrl={{
+      //         url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
+      //         useOnPlatform: "web"
+      //       }}
+      //     />
+      //     <Marker coordinate={coordinates} />
+      // </MapView>
     );
   };
 
@@ -866,8 +853,8 @@ const Register = () => {
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}> 
         <Formik 
-          initialValues={{ farmer: false, name: null, email: null, address: null, location: null, business: null, description: null, website: null, phone: null, sms: null, images: [] }} 
-          validationSchema={farmer ? fv : cv}
+          initialValues={{ name: "", email: "", address: "", location: "", business: "", description: "", website: "", phone: "", sms: "", images: [] }} 
+          // validationSchema={farmer ? fv : cv}
           onSubmit={handleSubmit}
         >
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
@@ -886,7 +873,8 @@ const Register = () => {
                     <Wizard.Step state={getStepState(1)} label={'Account Information'} />
                   </Wizard>
               }
-              <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex}> 
+              <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex} enableOnAndroid={true}
+  enableAutomaticScroll={(Platform.OS === 'ios')}> 
                 {Current({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values })}
               </KeyboardAwareScrollView>
             </View>

@@ -187,7 +187,7 @@ const AddBusiness = () => {
         },
         images: values.images
       }).then(() => {
-        navigation.navigate("Index");
+        navigation.navigate("Settings");
       });
     } catch (err: any) {
       Toast.show(`Error: ${err.message}`, {

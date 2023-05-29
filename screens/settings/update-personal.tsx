@@ -1,39 +1,25 @@
 import { useNavigation } from '@react-navigation/native';
-import { GeoPoint, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
-import { GooglePlaceData, GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from 'react-native-ui-lib';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
 
 const UpdatePersonal = () => {
   const navigation = useNavigation<any>();
-  const [name, setName] = useState<any>(null);
-  const [email, setEmail] = useState<any>(null);
-  const [location, setLocation] = useState<GeoPoint>(null);
-  const [address, setAddress] = useState(null);
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState<any>(true);
 
   const onSubmit = async (values) => {
     await updateDoc(doc(db, "Users", auth.currentUser.uid), values)
       .then(() => {
-        navigation.navigate("Index");
+        navigation.navigate("Settings");
       })
       .catch((error) => {
         console.log(error);
       });
-  };
-  
-  const handleKeyPress = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
-    if (!data || !details) return;
-
-    const geopoint = new GeoPoint(details.geometry.location.lat, details.geometry.location.lng);
-
-    setAddress(data.description);
-    setLocation(geopoint);
   };
 
   useEffect(() => {

@@ -15,22 +15,10 @@ import { global } from "../../style";
 
 const Stack = createNativeStackNavigator();
 
-const ProductStack = () => {
-  // const navigation = useNavigation<any>();
-  // const parent = navigation.getParent("MainDrawer");
-  // const route = useRoute();
-
-  // useLayoutEffect(() => {
-  //   const current = getFocusedRouteNameFromRoute(route) ?? "Index";
-
-  //   parent.setOptions({
-  //     headerShown: current == "Index" ? true : false
-  //   });
-  // }, [route]);
-  
+const ProductStack = () => { 
   return (
     <Stack.Navigator 
-      initialRouteName="Index" 
+      initialRouteName="Products" 
       screenOptions={{ 
         headerShown: true,
         headerTitle: () => (
@@ -43,7 +31,7 @@ const ProductStack = () => {
         headerTitleAlign: "center",
       }}
     >
-      <Stack.Screen name="Index" component={Dashboard} />
+      <Stack.Screen name="Products" component={Dashboard} />
       <Stack.Screen name="Create Product" component={CreateProduct} />
       <Stack.Screen name="Create Post" component={CreatePost} />
       <Stack.Screen name="Create Subscription" component={CreateSubscription} />

@@ -32,7 +32,7 @@ const CreateTransaction = () => {
     {label: "Uncategorized", value: "Uncategorized"},
     {label: "Agricultural Sales", value: "Agricultural Sales"},
     {label: "Custom Work Income", value: "Custom Work Income"},
-    {label: "Government Ag Program Payments", value: "Government Ag Program Payments"},
+    {label: "Gov Ag Program Payments", value: "Gov Ag Program Payments"},
     {label: "Insurance", value: "Insurance"},
     {label: "Rent Received", value: "Rent Received"},
     {label: "Other", value: "Other"}
@@ -68,6 +68,8 @@ const CreateTransaction = () => {
 
   useEffect(() => {
     if (products) {
+      products.unshift({id: "", title: "Not Specified"})
+      console.log(products);
       setLoading(false);
     }
   }, [products]);
@@ -153,13 +155,21 @@ const CreateTransaction = () => {
                   <Picker  
                     value={values.product}
                     style={[global.input, { marginBottom: -16 }]}
-                    onChange={handleChange('product')}
-                    onBlur={handleBlur('product')}
+                    onChange={handleChange("product")}
+                    onBlur={handleBlur("product")}
                     useSafeArea={true} 
                     topBarProps={{ title: 'Products' }} 
                   >  
                     {products.map((product) => (   
-                      <Picker.Item key={product.id} value={product.id} label={product.title} />
+                      <Picker.Item 
+                        key={product.id} 
+                        value={product.id} 
+                        label={product.title} 
+                        onPress={() => {
+                          setFieldValue("product", product.id);
+                          setFieldValue("label", product.title);
+                        }}
+                      />
                     ))}
                   </Picker>
                 </View>

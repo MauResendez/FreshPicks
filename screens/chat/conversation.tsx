@@ -197,7 +197,7 @@ const Conversation = ({ route }) => {
               name={"ellipsis-vertical"} 
               size={24} 
               color={"black"} 
-              style={{ marginHorizontal: -8 }} 
+              style={{ marginHorizontal: 8 }} 
               onPress={() => Alert.alert("Delete Chat", "Would you like to delete this chat?", [
                 {text: 'Cancel', style: 'cancel'},
                 {text: 'OK', onPress: () => deleteChat(id)},

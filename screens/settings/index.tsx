@@ -50,6 +50,8 @@ const Settings = () => {
 
       console.log(json);
 
+      auth.currentUser.reload();
+
       return response;
     } catch (error) {
       console.error(error);
@@ -367,7 +369,9 @@ const Settings = () => {
               {text: 'Cancel', style: 'cancel'},
               {text: 'OK', onPress: async () => {
                 await deleteAccount();
-                await logOut();
+                // await auth.updateCurrentUser(null);
+                // await auth.currentUser.reload();
+                // auth.currentUser.refreshToken;
               }},
             ]);
           }}

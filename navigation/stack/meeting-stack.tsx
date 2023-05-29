@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 const MeetingStack = () => {
   return (
     <Stack.Navigator 
-      initialRouteName="Index" 
+      initialRouteName="Meetings" 
       screenOptions={{ 
         headerShown: true,
         headerTitle: () => (
@@ -26,7 +26,7 @@ const MeetingStack = () => {
         headerTitleAlign: "center",
       }}
     >
-      <Stack.Screen name="Index" component={Meetings} />
+      <Stack.Screen name="Meetings" component={Meetings} />
       <Stack.Screen name="Meeting" component={Meeting} />
       <Stack.Screen name="Conversation" component={Conversation} />
     </Stack.Navigator>

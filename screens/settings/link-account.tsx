@@ -26,8 +26,8 @@ const LinkAccount = () => {
 			linkWithCredential(auth.currentUser, credential).then((credential) => {
 				const user = credential.user;
 				console.log("Linked email to phone number:", user);
-				navigation.navigate("Index");
-			})
+				navigation.navigate("Settings");
+			});
 		} catch (error) {
 			console.log(error);
 		}

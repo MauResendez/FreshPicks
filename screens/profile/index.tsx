@@ -126,16 +126,6 @@ const Profile = () => {
           containerStyle={{
             height: 200
           }}
-          autoplay
-          loop
-          pageControlProps={{
-            size: 10,
-            containerStyle: {position: 'absolute',
-            bottom: 15,
-            left: 10}
-          }}
-          pageControlPosition={Carousel.pageControlPositions.OVER}
-          showCounter
         >
           {farmer.images?.map((image, i) => {
             return (
@@ -189,8 +179,6 @@ const Profile = () => {
             onPress={() => items.length != 0 && navigation.navigate("Basket")}               
           />
         </View>
-
-        
       </ScrollView>
     </View>
   );

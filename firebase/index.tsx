@@ -32,6 +32,7 @@ const firebaseConfig = {
   measurementId: "G-NMBTMP1EGT"
 };
 
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
@@ -44,7 +45,6 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 const RecaptchaVerifier = auth.RecaptchaVerifier;
-// const messaging = Messaging(app)
 
 export { RecaptchaVerifier, analytics, app, auth, db, firebaseConfig, storage };
 

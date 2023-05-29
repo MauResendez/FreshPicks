@@ -10,21 +10,9 @@ import { global } from "../../style";
 const Stack = createNativeStackNavigator();
 
 const TransactionStack = () => {
-  // const navigation = useNavigation<any>();
-  // const parent = navigation.getParent("MainDrawer");
-  // const route = useRoute();
-
-  // useLayoutEffect(() => {
-  //   const current = getFocusedRouteNameFromRoute(route) ?? "Index";
-
-  //   parent.setOptions({
-  //     headerShown: current == "Index" ? true : false
-  //   });
-  // }, [route]);
-
   return (
     <Stack.Navigator 
-      initialRouteName="Index" 
+      initialRouteName="Transactions" 
       screenOptions={{ 
         headerShown: true,
         headerTitle: () => (
@@ -37,7 +25,7 @@ const TransactionStack = () => {
         headerTitleAlign: "center",
       }}
     >
-      <Stack.Screen name="Index" component={Transactions} />
+      <Stack.Screen name="Transactions" component={Transactions} />
       <Stack.Screen name="Create Transaction" component={CreateTransaction} />
     </Stack.Navigator>
   )

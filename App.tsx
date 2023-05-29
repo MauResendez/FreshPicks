@@ -155,6 +155,7 @@ const App = () => {
   useEffect(() => {
     try {
       onAuthStateChanged(auth, async (user: any) => {
+        // auth.currentUser.reload();
         if (user) {
           setUser(user);
           setLoading(false);
@@ -179,6 +180,7 @@ const App = () => {
       <StatusBar style={"auto"} animated />
       <ConnectionStatusBar label={"LSFKDJlj"} onConnectionChange={() => console.log('connection changed')}/>
       {auth.currentUser ? <MainStack /> : <AuthStack />}
+      
     </Provider>
   );
 }

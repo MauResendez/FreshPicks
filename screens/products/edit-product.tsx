@@ -167,7 +167,10 @@ const EditProduct = ({ route }) => {
 
   const handleSubmit = async (values) => {
     try {
+      // console.log(values.images[0]);
       const imgs = await uploadImages(values.images);
+      // const oldImg = ref(storage, values.images[0]);
+      // await deleteObject(oldImg);
       await editProduct(values, imgs);
     } catch (error) {
       console.log(error);

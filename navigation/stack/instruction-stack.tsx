@@ -8,8 +8,8 @@ const Stack = createStackNavigator();
 
 const InstructionStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Index" screenOptions={{ headerShown: true }}>
-      <Stack.Screen name="Index" component={Instructions} />
+    <Stack.Navigator initialRouteName="Instructions" screenOptions={{ headerShown: true }}>
+      <Stack.Screen name="Instructions" component={Instructions} />
     </Stack.Navigator>
   )
 }

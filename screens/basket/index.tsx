@@ -158,12 +158,11 @@ const Basket = () => {
         <KeyboardAvoidingView style={global.flex} behavior={Platform.OS == "ios" ? "padding" : "height"}>
           <ScrollView contentContainerStyle={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
             <ListItem
-              backgroundColor={"#ff4500"}
               activeOpacity={0.3}
               height={60}
             >
               <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
-                <Text h2 numberOfLines={1} style={{ color: "white" }}>
+                <Text h2 numberOfLines={1} style={{ color: "black" }}>
                   Basket
                 </Text>
               </ListItem.Part>
@@ -174,12 +173,11 @@ const Basket = () => {
             <AddressRow item={orderFarmer} />
             
             <ListItem
-              backgroundColor={"#ff4500"}
               activeOpacity={0.3}
               height={60}
             >
               <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
-                <Text h2 numberOfLines={1} style={{ color: "white"}}>
+                <Text h2 numberOfLines={1} style={{ color: "black" }}>
                   Your items
                 </Text>
               </ListItem.Part>
@@ -301,7 +299,6 @@ const styles = StyleSheet.create({
   },
   cart: {
     padding: 16,
-    backgroundColor: "white",
   },
   checkout: {
     padding: 16,

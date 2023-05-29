@@ -139,7 +139,7 @@ const UpdateFarmer = () => {
       images: imgs
     })
     .then(() => {
-      navigation.navigate("Index");
+      navigation.navigate("Settings");
     })
     .catch((error) => {
       console.log(error);
@@ -176,11 +176,11 @@ const UpdateFarmer = () => {
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex}>
-          <Formik 
+          <Formik
+            enableReinitialize={true} 
             initialValues={{ business: user.business, description: user.description, website: user.website, address: user.address, images: user.images } || { business: "", description: "", website: "", images: [] }} 
             onSubmit={onSubmit}
             validationSchema={validate}
-            enableReinitialize={true}
           >
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
               <View flex>

@@ -54,11 +54,11 @@ const MainTabs = () => {
       }}
     >
       <Tab.Screen
-        name={user?.role ? "Dashboard" : "Home"}
+        name={user?.role ? "Dashboard" : "Search"}
         component={user?.role ? DashboardStack : SearchStack}
         options={({ route }) => {
-          let routeName = user?.role ? "Dashboard" : "Home";
-          const current = getFocusedRouteNameFromRoute(route) ?? "Index";
+          let routeName = user?.role ? "Dashboard" : "Search";
+          const current = getFocusedRouteNameFromRoute(route) ?? routeName;
           
           return {
             tabBarIcon: ({ color }) => (
@@ -72,7 +72,7 @@ const MainTabs = () => {
             tabBarLabel: routeName,
             // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : false,
-            swipeEnabled: current != "Index" ? false : true,
+            swipeEnabled: current != routeName ? false : true,
           };
         }}
       />
@@ -81,7 +81,7 @@ const MainTabs = () => {
         component={user?.role ? ProductStack : BasketStack}
         options={({ route }) => {
           let routeName = user?.role ? "Products" : "Basket";
-          const current = getFocusedRouteNameFromRoute(route) ?? "Index";
+          const current = getFocusedRouteNameFromRoute(route) ?? routeName;
           
           return {
             tabBarIcon: ({ color }) => (
@@ -95,7 +95,7 @@ const MainTabs = () => {
             tabBarLabel: routeName,
             // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
-            swipeEnabled: current != "Index" ? false : true,
+            swipeEnabled: current != routeName ? false : true,
           };
         }}
       />
@@ -104,7 +104,7 @@ const MainTabs = () => {
         component={user?.role ? TransactionStack : MapStack}
         options={({ route }) => {
           let routeName = user?.role ? "Transactions" : "Map";
-          const current = getFocusedRouteNameFromRoute(route) ?? "Index";
+          const current = getFocusedRouteNameFromRoute(route) ?? routeName;
 
           return {
             tabBarIcon: ({ color }) => (
@@ -118,7 +118,7 @@ const MainTabs = () => {
             tabBarLabel: routeName,
             // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
-            swipeEnabled: current != "Index" ? false : true,
+            swipeEnabled: current != routeName ? false : true,
           };
         }}
       />
@@ -127,7 +127,7 @@ const MainTabs = () => {
         component={user?.role ? MeetingStack : HistoryStack}
         options={({ route }) => {
           let routeName = user?.role ? "Meetings" : "History";
-          const current = getFocusedRouteNameFromRoute(route) ?? "Index";
+          const current = getFocusedRouteNameFromRoute(route) ?? routeName;
           
           return {
             tabBarIcon: ({ color }) => (
@@ -141,7 +141,7 @@ const MainTabs = () => {
             tabBarLabel: routeName,
             // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
-            swipeEnabled: current != "Index" ? false : true,
+            swipeEnabled: current != routeName ? false : true,
           };
         }}
       />
@@ -149,7 +149,7 @@ const MainTabs = () => {
         name="Settings"
         component={SettingStack}
         options={({ route }) => {
-          const current = getFocusedRouteNameFromRoute(route) ?? "Index";
+          const current = getFocusedRouteNameFromRoute(route) ?? "Settings";
           
           return {
             tabBarIcon: ({ color }) => (
@@ -159,7 +159,7 @@ const MainTabs = () => {
             tabBarLabel: "Settings",
             // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
             // headerShown: current != "Index" ? false : true,
-            swipeEnabled: current != "Index" ? false : true,
+            swipeEnabled: current != "Settings" ? false : true,
           };
         }}
       />
@@ -167,14 +167,14 @@ const MainTabs = () => {
         name="Instructions"
         component={Instructions}
         options={({ route }) => {
-          const current = getFocusedRouteNameFromRoute(route) ?? "Index";
+          const current = getFocusedRouteNameFromRoute(route) ?? "Instructions";
           
           return {
             tabBarLabel: "Instructions",
             tabBarItemStyle: { display: "none" },
             tabBarStyle: { display: "none" },
             // headerShown: current != "Instructions" ? false : true,
-            swipeEnabled: current != "Index" ? false : true,
+            swipeEnabled: current != "Instructions" ? false : true,
           };
         }}
       />

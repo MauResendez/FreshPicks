@@ -49,9 +49,11 @@ const ProfileRow = (props) => {
   }
 
   return (
-    <ExpandableSection 
+    <ExpandableSection
+      key={item.id}
       expanded={isPressed} 
       sectionHeader={<ListItem
+        key={item.id}
         activeOpacity={0.3}
         backgroundColor={Colors.white}
         onPress={() => setIsPressed(!isPressed)}
@@ -68,6 +70,7 @@ const ProfileRow = (props) => {
       </ListItem>} 
     >
       <ListItem
+        key={item.id}
         activeBackgroundColor={Colors.grey60}
         activeOpacity={0.3}
         backgroundColor={Colors.white}
