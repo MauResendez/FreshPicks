@@ -1,32 +1,149 @@
-import { useNavigation } from "@react-navigation/native"
-import { doc, getDoc, updateDoc } from "firebase/firestore"
-import { Formik } from "formik"
-import React, { useEffect, useState } from "react"
-import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native"
-import { Button, Carousel, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
-import * as Yup from 'yup'
-import { auth, db } from "../../firebase"
-import { global } from "../../style"
+import { useNavigation } from "@react-navigation/native";
+import * as ImageManipulator from "expo-image-manipulator";
+import * as ImagePicker from "expo-image-picker";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { Formik } from "formik";
+import React, { useEffect, useState } from "react";
+import { Alert, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Button, Carousel, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib";
+import * as Yup from 'yup';
+import { auth, db, storage } from "../../firebase";
+import { global } from "../../style";
 
 const UpdateFarmer = () => {
   const navigation = useNavigation<any>();
   const [user, setUser] = useState<any>(null);
-  const [visible, setVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<any>(true);
-  const IMAGES = [
-    'https://images.pexels.com/photos/2529159/pexels-photo-2529159.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    'https://images.pexels.com/photos/2529146/pexels-photo-2529146.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    'https://images.pexels.com/photos/2529158/pexels-photo-2529158.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
-  ];
+
+  const checkIfImageIsAppropriate = async (images) => {
+    try {
+      const response = await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/checkIfImageIsAppropriate", {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          'data': {
+            'image': images[0],
+          }
+        }),
+      });
+
+      // console.log(response);
+
+      const json = await response.json();
+
+      console.log(json);
+
+      return json;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const camera = async (setFieldValue) => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this app to access your photos!");
+      return;
+    }
+
+    try {
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchCameraAsync({
+        base64: true,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        aspect: [4, 3],
+        quality: 0,
+      });
+
+      if (!result.canceled) {
+        compress(result, setFieldValue);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const gallery = async (setFieldValue) => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this app to access your photos!");
+      return;
+    }
+
+    try {
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchImageLibraryAsync({
+        base64: true,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        aspect: [4, 3],
+        quality: 0,
+      });
+
+      if (!result.canceled) {
+        compress(result, setFieldValue);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const compress = async (result: ImagePicker.ImagePickerResult, setFieldValue) => {
+    const compressed = [];
+    
+    result.assets.forEach(async (asset) => {
+      const manipulatedImage = await ImageManipulator.manipulateAsync(asset.uri, [{ resize: { height: 400 }}], { compress: 0 });
+
+      compressed.push(manipulatedImage.uri);
+    });
+
+    const i = await checkIfImageIsAppropriate(result.assets);
+
+    if (!i.result) {
+      Alert.alert("Image has inappropriate content", "The image has been scanned to have some inappropriate content. Please select another image to upload.", [
+        {text: 'OK', style: 'cancel'},
+      ]);
+    } else {
+      setFieldValue('images', compressed)
+    }
+  };
+
+  const uploadImages = async (images) => {
+    const imagePromises = Array.from(images, (image) => uploadImage(image));
+  
+    const imageRes = await Promise.all(imagePromises);
+    return imageRes; // list of url like ["https://..", ...]
+  }
+
+  const uploadImage = async (image) => {
+    const storageRef = ref(storage, `${auth.currentUser.uid}/images/${Date.now()}`);
+    const img = await fetch(image);
+    const blob = await img.blob();
+
+    const response = await uploadBytesResumable(storageRef, blob);
+    const url = await getDownloadURL(response.ref);
+    return url;
+  }
 
   const onSubmit = async (values) => {
-    await updateDoc(doc(db, "Users", auth.currentUser.uid), values)
-      .then(() => {
-        navigation.navigate("Index");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const imgs = await uploadImages(values.images);
+    await updateDoc(doc(db, "Users", auth.currentUser.uid), {
+      business: values.business,
+      description: values.description,
+      website: values.website,
+      images: imgs
+    })
+    .then(() => {
+      navigation.navigate("Index");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   };
 
   useEffect(() => {
@@ -60,7 +177,7 @@ const UpdateFarmer = () => {
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex}>
           <Formik 
-            initialValues={{ business: user.business, description: user.description, website: user.website, address: user.address, images: [] } || { business: "", description: "", website: "", images: [] }} 
+            initialValues={{ business: user.business, description: user.description, website: user.website, address: user.address, images: user.images } || { business: "", description: "", website: "", images: [] }} 
             onSubmit={onSubmit}
             validationSchema={validate}
             enableReinitialize={true}
@@ -68,12 +185,18 @@ const UpdateFarmer = () => {
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
               <View flex>
                 <Carousel containerStyle={{ height: 200 }}>
-                  <View flex centerV>
-                    {values.images.length == 0
-                      ? <Image style={global.flex} source={require("../../assets/default.png")} overlayType={Image.overlayTypes.BOTTOM} />
-                      : <Image style={global.flex} source={{ uri: values.image[0] }} cover overlayType={Image.overlayTypes.BOTTOM} />
-                    }
-                  </View>
+                  <TouchableOpacity style={global.flex} onPress={() => Alert.alert("Delete Chat", "Would you like to delete this post?", [
+                    {text: 'Cancel', style: 'cancel'},
+                    {text: 'Camera', onPress: async () => await camera(setFieldValue)},
+                    {text: 'Gallery', onPress: async () => await gallery(setFieldValue)},
+                  ])}>
+                    <View flex centerV>
+                      {values.images.length == 0
+                        ? <Image style={global.flex} source={require("../../assets/default.png")} overlayType={Image.overlayTypes.BOTTOM} />
+                        : <Image style={global.flex} source={{ uri: values.images[0] }} cover overlayType={Image.overlayTypes.BOTTOM} />
+                      }
+                    </View>
+                  </TouchableOpacity>
                 </Carousel>
                 <View flex style={global.container}>
                   <View style={global.field}>

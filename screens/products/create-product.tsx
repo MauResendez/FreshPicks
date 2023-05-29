@@ -4,11 +4,10 @@ import * as ImagePicker from "expo-image-picker"
 import { addDoc, collection } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { Formik } from 'formik'
-import React, { useState } from "react"
-import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native"
+import React from "react"
+import { Alert, Keyboard, Platform, TouchableWithoutFeedback } from "react-native"
 import CurrencyInput from "react-native-currency-input"
-import { ActionSheet, Button, Colors, Image, KeyboardAwareScrollView, NumberInput, Picker, Text, TextField, TouchableOpacity, View } from "react-native-ui-lib"
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { Button, Colors, Image, KeyboardAwareScrollView, NumberInput, Picker, Text, TextField, TouchableOpacity, View } from "react-native-ui-lib"
 import * as Yup from 'yup'
 import { auth, db, storage } from "../../firebase"
 import { global } from "../../style"
@@ -30,17 +29,55 @@ const CreateProduct = () => {
     {label: 'LB', value: 'LB'},
     {label: 'Bunch', value: 'Bunch'},
   ]
-  const [visible, setVisible] = useState(false);
 
-  const compress = async (uri: string, setFieldValue) => {
-    const manipulatedImage = await ImageManipulator.manipulateAsync(uri, [{ resize: { height: 512 }}], { compress: 1 });
-    setFieldValue('image', [manipulatedImage.uri]);
-    setVisible(false);
+  const checkIfImageIsAppropriate = async (images) => {
+    try {
+      const response = await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/checkIfImageIsAppropriate", {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          'data': {
+            'image': images[0],
+          }
+        }),
+      });
+
+      // console.log(response);
+
+      const json = await response.json();
+
+      console.log(json);
+
+      return json;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const compress = async (result: ImagePicker.ImagePickerResult, setFieldValue) => {
+    const compressed = [];
+    
+    result.assets.forEach(async (asset) => {
+      const manipulatedImage = await ImageManipulator.manipulateAsync(asset.uri, [{ resize: { height: 400 }}], { compress: 0 });
+
+      compressed.push(manipulatedImage.uri);
+    });
+
+    const i = await checkIfImageIsAppropriate(result.assets);
+
+    if (!i.result) {
+      Alert.alert("Image has inappropriate content", "The image has been scanned to have some inappropriate content. Please select another image to upload.", [
+        {text: 'OK', style: 'cancel'},
+      ]);
+    } else {
+      setFieldValue('images', compressed)
+    }
   };
 
   const camera = async (setFieldValue) => {
-    console.log("HERE 2");
-    setVisible(true);
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (permissionResult.granted === false) {
@@ -51,13 +88,14 @@ const CreateProduct = () => {
     try {
       // No permissions request is necessary for launching the image library
       let result = await ImagePicker.launchCameraAsync({
+        base64: true,
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         aspect: [4, 3],
         quality: 0,
       });
 
       if (!result.canceled) {
-        compress(result.assets[0].uri, setFieldValue);
+        compress(result, setFieldValue);
       }
     } catch (error) {
       console.log(error);
@@ -65,7 +103,6 @@ const CreateProduct = () => {
   }
 
   const gallery = async (setFieldValue) => {
-    setVisible(true);
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
@@ -76,13 +113,14 @@ const CreateProduct = () => {
     try {
       // No permissions request is necessary for launching the image library
       let result = await ImagePicker.launchImageLibraryAsync({
+        base64: true,
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         aspect: [4, 3],
         quality: 0,
       });
 
       if (!result.canceled) {
-        compress(result.assets[0].uri, setFieldValue);
+        compress(result, setFieldValue);
       }
     } catch (error) {
       console.log(error);
@@ -106,11 +144,11 @@ const CreateProduct = () => {
     return url;
   }
 
-  const createProduct = async (values, user, u) => {
+  const createProduct = async (values, images) => {
     await addDoc(collection(db, "Products"), {
       amount: values.amount,
       description: values.description,
-      image: u,
+      image: images,
       price: values.price,
       quantity: values.quantity,
       title: values.title,
@@ -125,9 +163,12 @@ const CreateProduct = () => {
   };
 
   const handleSubmit = async (values) => {
-    console.log(values.image);
-    const imgs = await uploadImages(values.image);
-    await createProduct(values, auth.currentUser, imgs);
+    try {
+      const imgs = await uploadImages(values.images);
+      await createProduct(values, imgs);
+    } catch (error) {
+      console.log(error);
+    }
   };
   
   const validate = Yup.object().shape({
@@ -144,7 +185,7 @@ const CreateProduct = () => {
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView>
           <Formik
-            initialValues={{ user: auth.currentUser.uid, title: '', description: '', type: '', amount: '', price: 1.00, quantity: 1, image: [] }}
+            initialValues={{ user: auth.currentUser.uid, title: '', description: '', type: '', amount: '', price: 1.00, quantity: 1, images: [] }}
             validationSchema={validate}
             onSubmit={handleSubmit}
           >
@@ -246,10 +287,14 @@ const CreateProduct = () => {
 
                 <View style={global.field}>
                   <Text subtitle>Image</Text>
-                  <TouchableOpacity onPress={() => setVisible(true)}>
-                    {values.image.length == 0
+                  <TouchableOpacity onPress={() => Alert.alert("Options", "Select photo from which option", [
+                    {text: 'Cancel', style: 'cancel'},
+                    {text: 'Camera', onPress: async () => await camera(setFieldValue)},
+                    {text: 'Gallery', onPress: async () => await gallery(setFieldValue)},
+                  ])}>
+                    {values.images.length == 0
                       ? <Image style={{ width: "100%", height: 150 }} source={require("../../assets/image.png")} />
-                      : <Image style={{ width: "100%", height: 150 }} source={{ uri: values.image[0] }} />
+                      : <Image style={{ width: "100%", height: 150 }} source={{ uri: values.images[0] }} />
                     }
                   </TouchableOpacity>
                 </View>
@@ -264,15 +309,6 @@ const CreateProduct = () => {
                     onPress={handleSubmit}                
                   />
                 </View>
-                
-                <ActionSheet
-                  containerStyle={{ height: 192 }}
-                  dialogStyle={{ borderRadius: 8 }}
-                  title={'Select Photo Option'} 
-                  options={[{label: 'Camera', onPress: async () => camera(setFieldValue), icon: () => <MCIcon name={"camera"} size={24} color={Colors.black} style={{ marginRight: 8 }} />}, {label: 'Gallery', onPress: async () => gallery(setFieldValue), icon: () => <MCIcon name={"image"} size={24} color={Colors.black} style={{ marginRight: 8 }} />}]}
-                  visible={visible}
-                  onDismiss={() => {console.log("HERE"); setVisible(false)}}
-                />
               </View>
             )}
           </Formik>

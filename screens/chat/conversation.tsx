@@ -37,7 +37,7 @@ const renderBubble = props => {
 
 const renderLoading = () => {
   return (
-    <LoaderScreen />
+    <LoaderScreen color={"#32CD32"} />
   )
 }
 

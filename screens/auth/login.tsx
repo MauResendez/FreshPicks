@@ -67,7 +67,7 @@ const Login = () => {
   const verifyPhone = async (phone) => {
     console.log(phone);
     try {
-      let i = await checkIfUserExists(phone);
+      const i = await checkIfUserExists(phone);
 
       if (i.result.exists) {
         const phoneProvider = new PhoneAuthProvider(auth);

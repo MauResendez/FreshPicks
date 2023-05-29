@@ -64,7 +64,7 @@ const Map = () => {
   
   if (loading) {
     return (
-      <LoaderScreen />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 

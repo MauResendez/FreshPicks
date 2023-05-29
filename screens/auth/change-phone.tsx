@@ -22,7 +22,7 @@ const ChangePhone = () => {
 
   const checkIfUserExists = async () => {
     try {
-      const response = await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/checkIfUserExists ", {
+      const response = await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/checkIfUserExists", {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -76,7 +76,7 @@ const ChangePhone = () => {
       return
     }
 
-    let i = await checkIfUserExists();
+    const i = await checkIfUserExists();
 
     console.log(i);
 

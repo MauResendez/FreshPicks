@@ -170,7 +170,7 @@ const App = () => {
 
   if (loading) {
     return (
-      <LoaderScreen />
+      <LoaderScreen color={"#32CD32"} />
     );
   }
 

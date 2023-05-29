@@ -1,12 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import * as FileSystem from 'expo-file-system';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import * as Papa from 'papaparse';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Button, LoaderScreen, TabController, View } from 'react-native-ui-lib';
+import { Button, LoaderScreen, View } from 'react-native-ui-lib';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import TransactionRow from '../../components/transactions/transaction-row';
 import { auth, db } from '../../firebase';
@@ -103,28 +100,28 @@ const Transactions = () => {
     }
   }, [transactions]);
 
-  useEffect(() => {
-    if (transactions) {
-      const fetchData = async () => {
-        try {
-          const csvData = Papa.unparse(transactions);
+  // useEffect(() => {
+  //   if (transactions) {
+  //     const fetchData = async () => {
+  //       try {
+  //         const csvData = Papa.unparse(transactions);
   
-          // Save the CSV file
-          const fileUri = FileSystem.documentDirectory + 'data.csv';
-          await FileSystem.writeAsStringAsync(fileUri, csvData);
+  //         // Save the CSV file
+  //         const fileUri = FileSystem.documentDirectory + 'data.csv';
+  //         await FileSystem.writeAsStringAsync(fileUri, csvData);
   
-          console.log('CSV file saved successfully.');
+  //         console.log('CSV file saved successfully.');
 
-          FileSystem.getInfoAsync(fileUri);
-        } catch (error) {
-          console.error('Error exporting Firestore collection:', error);
-        }
-      };
+  //         FileSystem.getInfoAsync(fileUri);
+  //       } catch (error) {
+  //         console.error('Error exporting Firestore collection:', error);
+  //       }
+  //     };
   
-      fetchData();
-    }
+  //     fetchData();
+  //   }
     
-  }, [transactions]);
+  // }, [transactions]);
 
   useEffect(() => {
     if (transactions && revenue && expenses) {
@@ -134,28 +131,28 @@ const Transactions = () => {
 
   if (loading) {
     return (
-      <LoaderScreen />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 	
 	return (
-    <GestureHandlerRootView style={global.flex}>
-      <View useSafeArea flex style={global.bgWhite}>
-        <TabController items={[{ label: 'All' }, { label: 'Revenue' }, { label: 'Expenses' }]}>  
-          <TabController.TabBar
-            indicatorInsets={0}
-            indicatorStyle={{ backgroundColor: "#32CD32" }} 
-            selectedLabelColor={global.activeTabTextColor.color}
-            labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
-          />
-          <View flex>
-            <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
-            <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
-            <TabController.TabPage index={2} lazy>{ThirdRoute()}</TabController.TabPage> 
-          </View>      
-        </TabController>
-      </View>
-    </GestureHandlerRootView>
+    <View useSafeArea flex>
+      <FlashList 
+        data={transactions}
+        keyExtractor={(item: any) => item.id}
+        estimatedItemSize={transactions.length != 0 ? transactions.length : 150}
+        renderItem={renderItem}
+      />
+      <Button
+        style={global.fab} 
+        round 
+        animateLayout 
+        animateTo={'right'} 
+        onPress={() => navigation.navigate("Create Transaction")} 
+        backgroundColor="#32CD32" 
+        iconSource={() => <MCIcon name="plus" color="white" size={24} />} 
+      />
+    </View>
 	)
 }
 

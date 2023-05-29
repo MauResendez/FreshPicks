@@ -162,7 +162,9 @@ const Meetings = () => {
   }, [chats, meetings, today]);
   
   if (loading) {
-    return <LoaderScreen />
+    return (
+      <LoaderScreen color={"#32CD32"} />
+    )
   }
 
   return (

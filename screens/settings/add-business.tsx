@@ -6,7 +6,7 @@ import { GeoPoint, doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
-import { Keyboard, Platform, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Alert, Keyboard, Platform, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Button, Carousel, Checkbox, Colors, DateTimePicker, Image, KeyboardAwareScrollView, LoaderScreen, PageControl, Text, TextField, Toast, View, Wizard } from 'react-native-ui-lib';
 import { Dialog } from 'react-native-ui-lib/src/incubator';
@@ -55,20 +55,51 @@ const AddBusiness = () => {
     setVisible(false);
   }
 
+  const checkIfImageIsAppropriate = async (images) => {
+    try {
+      const response = await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/checkIfImageIsAppropriate", {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          'data': {
+            'image': images[0],
+          }
+        }),
+      });
+
+      // console.log(response);
+
+      const json = await response.json();
+
+      console.log(json);
+
+      return json;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const compress = async (result: ImagePicker.ImagePickerResult, setFieldValue) => {
     const compressed = [];
     
     result.assets.forEach(async (asset) => {
-      const manipulatedImage = await ImageManipulator.manipulateAsync(asset.uri, [{ resize: { height: 200 }}], { compress: 0.5 });
+      const manipulatedImage = await ImageManipulator.manipulateAsync(asset.uri, [{ resize: { height: 400 }}], { compress: 0 });
 
       compressed.push(manipulatedImage.uri);
-      console.log("Pushed!");
-
-      console.log("Assets:", asset);
-      console.log("Asset URI:", asset.uri);
     });
 
-    setFieldValue('images', compressed)
+    const i = await checkIfImageIsAppropriate(result.assets);
+
+    if (!i.result) {
+      Alert.alert("Image has inappropriate content", "The image has been scanned to have some inappropriate content. Please select another image to upload.", [
+        {text: 'OK', style: 'cancel'},
+      ]);
+    } else {
+      setFieldValue('images', compressed)
+    }
   };
 
   const camera = async (setFieldValue) => {
@@ -221,51 +252,22 @@ const AddBusiness = () => {
   const FarmerInformation = (props) => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
-    // <ActionSheet
-    //               containerStyle={{ height: 192 }}
-    //               dialogStyle={{ borderRadius: 8 }}
-    //               title={'Select Photo Option'} 
-    //               options={[{label: 'Camera', onPress: async () => camera(setFieldValue), icon: () => <MCIcon name={"camera"} size={24} color={Colors.black} style={{ marginRight: 8 }} />}, {label: 'Gallery', onPress: async () => gallery(setFieldValue), icon: () => <MCIcon name={"image"} size={24} color={Colors.black} style={{ marginRight: 8 }} />}]}
-    //               visible={visible}
-    //               onDismiss={() => {console.log("HERE"); setVisible(false)}}
-    //             />
-
     return (
       <View useSafeArea flex>
-        <TouchableOpacity onPress={() => setVisible(true)}>
-          <Carousel
-            containerStyle={{
-              height: 200
-            }}
-            autoplay
-            loop
-            pageControlProps={{
-              size: 10,
-              containerStyle: {
-                position: 'absolute',
-                bottom: 15,
-                left: 10
+        <Carousel containerStyle={{ height: 200 }}>
+          <TouchableOpacity style={global.flex} onPress={() => Alert.alert("Options", "Select photo from which option", [
+            {text: 'Cancel', style: 'cancel'},
+            {text: 'Camera', onPress: async () => await camera(setFieldValue)},
+            {text: 'Gallery', onPress: async () => await gallery(setFieldValue)},
+          ])}>
+            <View flex centerV>
+              {values.images.length == 0
+                ? <Image style={global.flex} source={require("../../assets/default.png")} overlayType={Image.overlayTypes.BOTTOM} />
+                : <Image style={global.flex} source={{ uri: values.images[0] }} cover overlayType={Image.overlayTypes.BOTTOM} />
               }
-            }}
-            pageControlPosition={Carousel.pageControlPositions.OVER}
-            showCounter
-          >
-            {IMAGES.map((image, i) => {
-              return (
-                <View flex centerV key={i}>
-                  <Image
-                    overlayType={Image.overlayTypes.BOTTOM}
-                    style={{flex: 1}}
-                    source={{
-                      uri: image
-                    }}
-                    cover
-                  />
-                </View>
-              );
-            })}
-          </Carousel>
-        </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        </Carousel>
         
         <View flexG style={{ padding: 24 }}>
           <View style={global.field}>
@@ -568,7 +570,7 @@ const AddBusiness = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#ff4500"} />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 

@@ -66,21 +66,23 @@ const Register = () => {
     const compressed = [];
     
     result.assets.forEach(async (asset) => {
-      const manipulatedImage = await ImageManipulator.manipulateAsync(asset.uri, [{ resize: { height: 200 }}], { compress: 0.5 });
+      const manipulatedImage = await ImageManipulator.manipulateAsync(asset.uri, [{ resize: { height: 400 }}], { compress: 0 });
 
       compressed.push(manipulatedImage.uri);
-      console.log("Pushed!");
-
-      console.log("Assets:", asset);
-      console.log("Asset URI:", asset.uri);
     });
 
-    setFieldValue('images', compressed)
+    const i = await checkIfImageIsAppropriate(result.assets);
+
+    if (!i.result) {
+      Alert.alert("Image has inappropriate content", "The image has been scanned to have some inappropriate content. Please select another image to upload.", [
+        {text: 'OK', style: 'cancel'},
+      ]);
+    } else {
+      setFieldValue('images', compressed)
+    }
   };
 
   const camera = async (setFieldValue) => {
-    console.log("HERE 2");
-    setVisible(true);
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (permissionResult.granted === false) {
@@ -91,11 +93,10 @@ const Register = () => {
     try {
       // No permissions request is necessary for launching the image library
       let result = await ImagePicker.launchCameraAsync({
+        base64: true,
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsMultipleSelection: true,
         aspect: [4, 3],
         quality: 0,
-        selectionLimit: 4
       });
 
       if (!result.canceled) {
@@ -107,7 +108,6 @@ const Register = () => {
   }
 
   const gallery = async (setFieldValue) => {
-    setVisible(true);
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
@@ -118,11 +118,10 @@ const Register = () => {
     try {
       // No permissions request is necessary for launching the image library
       let result = await ImagePicker.launchImageLibraryAsync({
+        base64: true,
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsMultipleSelection: true,
         aspect: [4, 3],
         quality: 0,
-        selectionLimit: 4
       });
 
       if (!result.canceled) {
@@ -153,7 +152,7 @@ const Register = () => {
   const verifyPhone = async (phone) => {
     console.log("Phone:", phone);
     try {
-      let i = await checkIfUserExists(phone);
+      const i = await checkIfUserExists(phone);
 
       if (!i.result.exists) {
         const phoneProvider = new PhoneAuthProvider(auth);
@@ -172,6 +171,33 @@ const Register = () => {
       // showToast("error", "Error", `${err.message}`);
     }
   }
+
+  const checkIfImageIsAppropriate = async (images) => {
+    try {
+      const response = await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/checkIfImageIsAppropriate", {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          'data': {
+            'image': images[0],
+          }
+        }),
+      });
+
+      // console.log(response);
+
+      const json = await response.json();
+
+      console.log(json);
+
+      return json;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const checkIfUserExists = async (phone) => {
     try {
@@ -353,15 +379,6 @@ const Register = () => {
 
   const FarmerInformation = (props) => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
-
-    // <ActionSheet
-    //               containerStyle={{ height: 192 }}
-    //               dialogStyle={{ borderRadius: 8 }}
-    //               title={'Select Photo Option'} 
-    //               options={[{label: 'Camera', onPress: async () => camera(setFieldValue), icon: () => <MCIcon name={"camera"} size={24} color={Colors.black} style={{ marginRight: 8 }} />}, {label: 'Gallery', onPress: async () => gallery(setFieldValue), icon: () => <MCIcon name={"image"} size={24} color={Colors.black} style={{ marginRight: 8 }} />}]}
-    //               visible={visible}
-    //               onDismiss={() => {console.log("HERE"); setVisible(false)}}
-    //             />
 
     return (
       <View useSafeArea flex>
@@ -821,7 +838,7 @@ const Register = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#ff4500"} />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 

@@ -30,7 +30,7 @@ const FarmerCard = (props) => {
       }} 
       onPress={() => handlePress()}
     >
-      <Card.Image source={{ uri: item.cover }} height={125} />
+      <Card.Image source={{ uri: item.images[0] }} height={125} />
       <View padding-12>
         <Text h2>
           {item.business}
