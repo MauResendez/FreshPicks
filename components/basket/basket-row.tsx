@@ -42,18 +42,8 @@ const BasketRow = (props) => {
         </ListItem.Part>
       </ListItem>} 
     >
-      {/* <Text>jdslfkjfkl</Text> */}
     </ExpandableSection>
   );
 };
-
-    {/* {isPressed && product.quantity > 0 && (
-      <View style={global.buttons}>
-        <FAB style={styles.left} color="darkred" size="small" icon={<Icon name="remove" color={"white"} size={20} />} onPress={removeItemFromOrder} />
-        <Text>{items.length}</Text>
-        <FAB style={styles.right} color="green" size="small" icon={<Icon name="add" color={"white"} size={20} />} onPress={addItemToOrder} />
-      </View>
-    )} */}
-
 
 export default memo(BasketRow);

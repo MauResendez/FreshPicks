@@ -90,7 +90,7 @@ const CreatePost = () => {
     })
     .then(() => {
       console.log("Data saved!");
-      navigation.navigate("Index");
+      navigation.goBack();
     })
     .catch((error) => {
       console.log(error);
@@ -171,7 +171,7 @@ const CreatePost = () => {
                 <View flexG />
 
                 <Button 
-                  backgroundColor={"#ff4500"}
+                  backgroundColor={Colors.secondary}
                   color={Colors.white}
                   label={"Create Post"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 

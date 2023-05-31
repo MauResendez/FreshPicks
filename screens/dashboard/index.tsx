@@ -49,7 +49,7 @@ const Dashboard = () => {
         <View row spread style={{ paddingVertical: 8 }}>
           <View style={{ width: "47.5%" }}>
             <Button 
-              backgroundColor={"#ff4500"}
+              backgroundColor={Colors.secondary}
               color={Colors.white}
               label={"Report"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
@@ -58,7 +58,7 @@ const Dashboard = () => {
           </View>
           <View style={{ width: "47.5%" }}>
             <Button 
-              backgroundColor={"#ff4500"}
+              backgroundColor={Colors.secondary}
               color={Colors.white}
               label={"CSV to Email"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
@@ -116,7 +116,7 @@ const Dashboard = () => {
         <View row spread style={{ paddingVertical: 8 }}>
           <View style={{ width: "47.5%" }}>
             <Button 
-              backgroundColor={"#ff4500"}
+              backgroundColor={Colors.secondary}
               color={Colors.white}
               label={"Report"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
@@ -125,7 +125,7 @@ const Dashboard = () => {
           </View>
           <View style={{ width: "47.5%" }}>
             <Button 
-              backgroundColor={"#ff4500"}
+              backgroundColor={Colors.secondary}
               color={Colors.white}
               label={"CSV to Email"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 

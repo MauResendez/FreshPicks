@@ -1,11 +1,12 @@
 import { FlashList } from "@shopify/flash-list";
 import * as Linking from 'expo-linking';
 import * as Location from "expo-location";
+import * as SplashScreen from 'expo-splash-screen';
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useCallback, useEffect, useState } from "react";
-import { Image, Platform, StyleSheet } from "react-native";
-import MapView, { Marker } from "react-native-maps";
-import { LoaderScreen, View } from "react-native-ui-lib";
+import { Platform, StyleSheet } from "react-native";
+import MapView from "react-native-maps";
+import { View } from "react-native-ui-lib";
 import MapRow from "../../components/map/map-row";
 import { auth, db } from "../../firebase";
 
@@ -59,20 +60,22 @@ const Map = () => {
       });
 
       setLoading(false);
+      SplashScreen.hideAsync();
     }
   }, [location]);
   
   if (loading) {
-    return (
-      <LoaderScreen color={"#32CD32"} />
-    )
+    SplashScreen.preventAutoHideAsync();
+    // return (
+    //   <LoaderScreen color={"#32CD32"} />
+    // )
   }
 
   return (
     <View useSafeArea flex>
       <View style={styles.map}>
         <MapView
-          // ref={map => (this.map = map)} 
+          ref={map => (this.map = map)} 
           style={styles.mapview}
           region={mapRegion}
           showsUserLocation={true}
@@ -84,7 +87,7 @@ const Map = () => {
           showsTraffic
           // cacheEnabled
         >
-          {farmers.map((farmer, index) => {
+          {/* {farmers.map((farmer, index) => {
             return (
               <Marker 
                 key={index} 
@@ -95,11 +98,9 @@ const Map = () => {
                 onPress={() => {
                   navigateToApp(farmer.location);
                 }}
-              >
-                <Image source={require("../../assets/marker.png")} />
-              </Marker>
+              />
             );
-          })}
+          })} */}
         </MapView>
       </View>
       <View style={styles.farmers}>
@@ -121,11 +122,11 @@ const styles = StyleSheet.create({
   },
   map: {
     width: "100%",
-    height: "70%",
+    height: "50%",
   },
   farmers: {
     width: "100%",
-    height: "30%"
+    height: "50%"
   }
 });
 

@@ -4,7 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { onAuthStateChanged, User } from "firebase/auth";
 import React, { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
-import { ConnectionStatusBar, LoaderScreen, ThemeManager, Typography } from "react-native-ui-lib";
+import { Colors, ConnectionStatusBar, LoaderScreen, ThemeManager, Typography } from "react-native-ui-lib";
 import { Provider } from "react-redux";
 import { auth } from "./firebase";
 import AuthStack from "./navigation/stack/auth-stack";
@@ -16,6 +16,11 @@ import { store } from "./redux/store";
 //   const activeConfig = {color: "black", circleBackgroundColor: "#32CD32", circleColor: "black"};
 //   return {activeConfig};
 // });
+
+Colors.loadColors({  
+  primary: "#FF4500",  
+  secondary: '#32CD32'
+});
 
 ThemeManager.setComponentTheme('Stepper', (props, context) => {
   const config = {color: "black", backgroundColor: "#32CD32", circleColor: "black"};
@@ -47,7 +52,7 @@ ThemeManager.setComponentTheme('Card', (props, context) => {
 
 Typography.loadTypographies({ 
   title: {
-    color: "#ff4500",
+    color: Colors.secondary,
     fontSize: 24,
     fontWeight: "bold",
     paddingBottom: 16

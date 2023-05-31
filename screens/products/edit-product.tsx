@@ -159,7 +159,7 @@ const EditProduct = ({ route }) => {
       user: values.user,
     }).then(() => {
       console.log("Data saved!");
-      navigation.navigate("Index");
+      navigation.goBack();
     }).catch((error) => {
       console.log(error);
     });
@@ -329,7 +329,7 @@ const EditProduct = ({ route }) => {
                 </View>
 
                 <Button 
-                  backgroundColor={"#ff4500"}
+                  backgroundColor={Colors.secondary}
                   color={Colors.white}
                   label={"Edit Product"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 

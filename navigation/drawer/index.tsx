@@ -11,7 +11,6 @@ import { Colors, LoaderScreen } from "react-native-ui-lib";
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Basket from "../../screens/basket";
 import DashboardStack from "../stack/dashboard-stack";
-import FeedStack from "../stack/feed-stack";
 import HistoryStack from "../stack/history-stack";
 import MapStack from "../stack/map-stack";
 import MeetingStack from "../stack/meeting-stack";
@@ -89,7 +88,7 @@ const MainDrawer = () => {
       />
       <Drawer.Screen
         name={user?.role ? "Products" : "Feed"}
-        component={user?.role ? ProductStack : FeedStack}
+        component={user?.role ? ProductStack : ProductStack}
         options={({ route }) => {
           let routeName = user?.role ? "Products" : "Feed";
           // const current = getFocusedRouteNameFromRoute(route) ?? "Index";

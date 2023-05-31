@@ -106,7 +106,7 @@ const CreateSubscription = () => {
       user: values.user,
     }).then(() => {
       console.log("Data saved!");
-      navigation.navigate("Index");
+      navigation.goBack();
     }).catch((error) => {
       console.log(error);
     });
@@ -216,7 +216,7 @@ const CreateSubscription = () => {
 
                 <View style={global.field}>
                   <Button 
-                    backgroundColor={"#ff4500"}
+                    backgroundColor={Colors.secondary}
                     color={Colors.white}
                     label={"Create Subscription"} 
                     labelStyle={{ fontWeight: '600', padding: 8 }} 

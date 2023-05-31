@@ -156,7 +156,7 @@ const CreateProduct = () => {
       user: values.user,
     }).then(() => {
       console.log("Data saved!");
-      navigation.navigate("Index");
+      navigation.goBack();
     }).catch((error) => {
       console.log(error);
     });
@@ -301,7 +301,7 @@ const CreateProduct = () => {
 
                 <View style={global.field}>
                   <Button 
-                    backgroundColor={"#ff4500"}
+                    backgroundColor={Colors.secondary}
                     color={Colors.white}
                     label={"Create Product"} 
                     labelStyle={{ fontWeight: '600', padding: 8 }} 

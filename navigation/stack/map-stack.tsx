@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 const MapStack = () => {
   return (
     <Stack.Navigator 
-      initialRouteName="Map" 
+      initialRouteName="Index" 
       screenOptions={{ 
         headerShown: true,
         // headerTitle: () => (
@@ -26,7 +26,7 @@ const MapStack = () => {
         headerTitleAlign: "center",
       }}
     >      
-      <Stack.Screen name="Map" component={Map} />
+      <Stack.Screen name="Index" component={Map} />
       <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   )

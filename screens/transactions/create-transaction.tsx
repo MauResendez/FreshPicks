@@ -45,7 +45,7 @@ const CreateTransaction = () => {
 
     await addDoc(collection(db, "Transactions"), values).then(() => {
       console.log("Data saved!");
-      navigation.navigate("Index");
+      navigation.goBack();
     }).catch((error) => {
       console.log(error);
     });

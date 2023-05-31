@@ -97,7 +97,7 @@ const UpdateSchedule = () => {
           <View flexG />
 
           <Button 
-            backgroundColor={"#ff4500"}
+            backgroundColor={Colors.secondary}
             color={Colors.white}
             label={"Update Farmer Schedule"} 
             labelStyle={{ fontWeight: '600', padding: 8 }} 

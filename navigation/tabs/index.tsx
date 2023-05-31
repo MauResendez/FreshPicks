@@ -54,7 +54,8 @@ const MainTabs = () => {
       }}
     >
       <Tab.Screen
-        name={user?.role ? "Dashboard" : "Search"}
+        // name={user?.role ? "Dashboard" : "Search"}
+        name={"First"}
         component={user?.role ? DashboardStack : SearchStack}
         options={({ route }) => {
           let routeName = user?.role ? "Dashboard" : "Search";
@@ -70,14 +71,12 @@ const MainTabs = () => {
             ),
             tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
             tabBarLabel: routeName,
-            // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
-            // headerShown: current != "Index" ? false : false,
-            swipeEnabled: current != routeName ? false : true,
           };
         }}
       />
       <Tab.Screen
-        name={user?.role ? "Products" : "Basket"}
+        // name={user?.role ? "Products" : "Basket"}
+        name={"Second"}
         component={user?.role ? ProductStack : BasketStack}
         options={({ route }) => {
           let routeName = user?.role ? "Products" : "Basket";
@@ -93,20 +92,19 @@ const MainTabs = () => {
             ),
             tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
             tabBarLabel: routeName,
-            // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
-            // headerShown: current != "Index" ? false : true,
-            swipeEnabled: current != routeName ? false : true,
           };
         }}
       />
       <Tab.Screen
-        name={user?.role ? "Transactions" : "Map"}
+        // name={user?.role ? "Transactions" : "Map"}
+        name={"Third"}
         component={user?.role ? TransactionStack : MapStack}
         options={({ route }) => {
           let routeName = user?.role ? "Transactions" : "Map";
           const current = getFocusedRouteNameFromRoute(route) ?? routeName;
 
           return {
+            headerTitle: routeName,
             tabBarIcon: ({ color }) => (
               <MCIcon
                 name={user?.role ? "swap-horizontal-circle-outline" : "map-marker"}
@@ -116,14 +114,12 @@ const MainTabs = () => {
             ),
             tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
             tabBarLabel: routeName,
-            // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
-            // headerShown: current != "Index" ? false : true,
-            swipeEnabled: current != routeName ? false : true,
           };
         }}
       />
       <Tab.Screen
-        name={user?.role ? "Meetings" : "History"}
+        // name={user?.role ? "Meetings" : "History"}
+        name={"Fourth"}
         component={user?.role ? MeetingStack : HistoryStack}
         options={({ route }) => {
           let routeName = user?.role ? "Meetings" : "History";
@@ -132,21 +128,19 @@ const MainTabs = () => {
           return {
             tabBarIcon: ({ color }) => (
               <MCIcon
-                name={user?.role ? "clock-time-four-outline" : "history"}
+                name={user?.role ? "calendar-month" : "history"}
                 size={24}
                 color={color}
               />
             ),
             tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
             tabBarLabel: routeName,
-            // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
-            // headerShown: current != "Index" ? false : true,
-            swipeEnabled: current != routeName ? false : true,
           };
         }}
       />
       <Tab.Screen
-        name="Settings"
+        // name="Settings"
+        name={"Fifth"}
         component={SettingStack}
         options={({ route }) => {
           const current = getFocusedRouteNameFromRoute(route) ?? "Settings";
@@ -157,14 +151,12 @@ const MainTabs = () => {
             ),
             tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
             tabBarLabel: "Settings",
-            // tabBarStyle: { display: current != "Index" ? "none" : "flex" },
-            // headerShown: current != "Index" ? false : true,
-            swipeEnabled: current != "Settings" ? false : true,
           };
         }}
       />
       <Tab.Screen
-        name="Instructions"
+        // name="Instructions"
+        name={"Sixth"}
         component={Instructions}
         options={({ route }) => {
           const current = getFocusedRouteNameFromRoute(route) ?? "Instructions";
@@ -173,8 +165,6 @@ const MainTabs = () => {
             tabBarLabel: "Instructions",
             tabBarItemStyle: { display: "none" },
             tabBarStyle: { display: "none" },
-            // headerShown: current != "Instructions" ? false : true,
-            swipeEnabled: current != "Instructions" ? false : true,
           };
         }}
       />

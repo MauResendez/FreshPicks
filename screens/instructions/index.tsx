@@ -19,7 +19,7 @@ const Instructions = () => {
 
   const Prev = () => {
     return (
-      <Button style={active !== 0 && {backgroundColor:  "#ff4500"}} iconSource={() => <MCIcon name={"chevron-left"} size={48} color={Colors.white} />} onPress={goToPrevStep} disabled={active === 0} />
+      <Button style={active !== 0 && {backgroundColor: Colors.secondary}} iconSource={() => <MCIcon name={"chevron-left"} size={48} color={Colors.white} />} onPress={goToPrevStep} disabled={active === 0} />
     );
   };
 
@@ -42,8 +42,8 @@ const Instructions = () => {
     return (
       <View>
         {active !== 4
-          ? <Button style={active !== 4 && {backgroundColor: "#ff4500"}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active == 4} />
-          : <Button style={{backgroundColor: "#ff4500"}} iconSource={() => <MCIcon name={"check"} size={48} color={Colors.white} />} onPress={() => navigation.navigate("Dashboard")} />
+          ? <Button style={active !== 4 && {backgroundColor: Colors.secondary}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active == 4} />
+          : <Button style={{backgroundColor: Colors.secondary}} iconSource={() => <MCIcon name={"check"} size={48} color={Colors.white} />} onPress={() => navigation.navigate("Dashboard")} />
         }
       </View>
     );

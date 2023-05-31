@@ -22,7 +22,7 @@ const Landing = () => {
 
           <View style={global.field}>
             <Button 
-              backgroundColor={"#ff4500"}
+              backgroundColor={Colors.primary}
               color={Colors.white}
               label={"Register"} 
               labelStyle={{ fontWeight: '600', padding: 4 }} 

@@ -53,72 +53,6 @@ const EditPost = ({ route }) => {
     }
   }
 
-  // const onSubmit = async () => {
-  //   let error = false;
-
-  //   if (title.length == 0) {
-  //     error = true;
-  //     // Toast.show("Title is required", {
-  //     //   duration: Toast.durations.LONG,
-  //     //   backgroundColor: "yellow",
-  //     //   position: Platform.OS == "web" ? 650 : 700
-  //     // });
-  //   }
-
-  //   if (description.length == 0) {
-  //     error = true;
-  //     // Toast.show("Description is required", {
-  //     //   duration: Toast.durations.LONG,
-  //     //   backgroundColor: "yellow",
-  //     //   position: Platform.OS == "web" ? 650 : 700
-  //     // });
-  //   }
-
-  //   if (error) {
-  //     error = false;
-  //     return
-  //   }
-
-  //   console.log("Past here 1");
-
-  //   // How the image will be addressed inside the storage
-  //   const storage_ref = ref(storage, `images/${auth.currentUser.uid}/posts/${Date.now()}`);
-
-  //   console.log("Past here 2");
-
-  //   // Convert image to bytes
-  //   const img = await fetch(image);
-  //   const bytes = await img.blob();
-
-  //   console.log("Past here 3");
-
-  //   // Uploads the image bytes to the Firebase Storage
-  //   await uploadBytes(storage_ref, bytes).then(async () => {
-  //     console.log("Past here 4");
-  //     // We retrieve the URL of where the image is located at
-  //     await getDownloadURL(storage_ref).then(async (image) => {
-  //       // Then we create the Market with it's image on it
-  //       console.log("Past here 5");
-  //       await updateDoc(doc(db, "Posts", route.params.id), {
-  //         user: auth.currentUser.uid,
-  //         title: title,
-  //         description: description,
-  //         image: image
-  //       })
-  //         .then(() => {
-  //           console.log("Data saved!");
-  //           navigation.navigate("Index");
-  //         })
-  //         .catch((error) => {
-  //           console.log(error);
-  //         });
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
-  // };
-
   const onSubmit = async (values) => {
     await updateDoc(doc(db, "Posts", route.params.id), {
       user: auth.currentUser.uid,
@@ -128,7 +62,7 @@ const EditPost = ({ route }) => {
     })
     .then(() => {
       console.log("Data saved!");
-      navigation.navigate("Index");
+      navigation.goBack();
     })
     .catch((error) => {
       console.log(error);
@@ -214,7 +148,7 @@ const EditPost = ({ route }) => {
                 <View flexG />
 
                 <Button 
-                  backgroundColor={"#ff4500"}
+                  backgroundColor={Colors.secondary}
                   color={Colors.white}
                   label={"Edit Post"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 

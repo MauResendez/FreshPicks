@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 const HistoryStack = () => {
   return (
     <Stack.Navigator 
-      initialRouteName="History" 
+      initialRouteName="Index" 
       screenOptions={{ 
         headerShown: true,
         // headerTitle: () => (
@@ -26,7 +26,7 @@ const HistoryStack = () => {
         headerTitleAlign: "center",
       }}
     >      
-      <Stack.Screen name="History" component={History} />
+      <Stack.Screen name="Index" component={History} />
       <Stack.Screen name="Conversation" component={Conversation} />
     </Stack.Navigator>
   )

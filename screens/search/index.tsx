@@ -1,3 +1,4 @@
+import * as SplashScreen from 'expo-splash-screen';
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
@@ -7,7 +8,7 @@ import {
 } from "react-native";
 import Ionicon from "react-native-vector-icons/Ionicons";
 
-import { Colors, LoaderScreen, TextField, View } from "react-native-ui-lib";
+import { Colors, TextField, View } from "react-native-ui-lib";
 import FarmerList from "../../components/search/farmer-list";
 import ProductList from "../../components/search/product-list";
 import { auth, db } from "../../firebase";
@@ -73,13 +74,16 @@ const Search = () => {
   useEffect(() => {
     if (farmers && products) {
       setLoading(false);
+      SplashScreen.hideAsync();
     }
   }, [farmers, products]);
 
   if (loading) {
-    return (
-      <LoaderScreen color={"#32CD32"} />
-    )
+    SplashScreen.preventAutoHideAsync();
+    return null;
+    // return (
+    //   <LoaderScreen color={"#32CD32"} />
+    // )
   }
 
   return (

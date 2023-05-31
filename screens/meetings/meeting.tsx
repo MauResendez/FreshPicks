@@ -159,7 +159,7 @@ const Meeting = () => {
         <KeyboardAvoidingView style={global.flex} behavior={Platform.OS == "ios" ? "padding" : "height"}>
           <ScrollView style={global.flex} contentContainerStyle={[global.flex]} showsVerticalScrollIndicator={Platform.OS == "web"}>
             <ListItem
-              backgroundColor={"#ff4500"}
+              backgroundColor={Colors.secondary}
               activeOpacity={0.3}
               height={60}
             >
@@ -175,7 +175,7 @@ const Meeting = () => {
             <AddressRow address={(items[0]?.farmer.address)} />
             
             <ListItem
-              backgroundColor={"#ff4500"}
+              backgroundColor={Colors.secondary}
               activeOpacity={0.3}
               height={60}
             >
@@ -206,7 +206,7 @@ const Meeting = () => {
             <View style={styles.cart}>
 
             <Button 
-              backgroundColor={"#ff4500"}
+              backgroundColor={Colors.secondary}
               color={Colors.white}
               label={"Set Meeting Time"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 

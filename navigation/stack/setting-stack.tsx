@@ -17,7 +17,7 @@ const Stack = createNativeStackNavigator();
 const SettingStack = () => {
   return (
     <Stack.Navigator 
-      initialRouteName="Settings" 
+      initialRouteName="Index" 
       screenOptions={{ 
         headerShown: true,
         // headerTitle: () => (

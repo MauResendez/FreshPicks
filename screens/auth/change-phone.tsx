@@ -127,7 +127,7 @@ const ChangePhone = () => {
           </View>
 
           <Button 
-            backgroundColor={"#ff4500"}
+            backgroundColor={Colors.primary}
             color={Colors.white}
             label={"Send Verification Code"} 
             labelStyle={{ fontWeight: '600', padding: 8 }} 

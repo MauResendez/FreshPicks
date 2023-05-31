@@ -9,7 +9,7 @@ const Stack = createStackNavigator();
 const BasketStack = () => {
   return (
     <Stack.Navigator 
-      initialRouteName="Basket" 
+      initialRouteName="Index" 
       screenOptions={{ 
         headerShown: true,
         // headerTitle: () => (
@@ -25,7 +25,7 @@ const BasketStack = () => {
         headerTitleAlign: "center",
       }}
     >
-      <Stack.Screen name="Basket" component={Basket} />
+      <Stack.Screen name="Index" component={Basket} />
     </Stack.Navigator>
   )
 }

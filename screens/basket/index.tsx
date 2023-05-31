@@ -191,7 +191,7 @@ const Basket = () => {
 
             <View style={styles.cart}>
               <Button 
-                backgroundColor={"#ff4500"}
+                backgroundColor={Colors.secondary}
                 color={Colors.white}
                 label={"Send Meeting Request"} 
                 labelStyle={{ fontWeight: '600', padding: 8 }} 

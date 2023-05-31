@@ -82,7 +82,7 @@ const Conversation = ({ route }) => {
 
   const deleteChat = async (id) => {
     await deleteDoc(doc(db, "Chats", id));
-    navigation.navigate("Index");
+    navigation.goBack();
   }
 
   const quickReplies = [

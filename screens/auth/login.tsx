@@ -158,10 +158,11 @@ const Login = () => {
                     }}
                   />
                 </View>
+                
 
                 <View style={global.field}>
                   <Button 
-                    backgroundColor={"#ff4500"}
+                    backgroundColor={Colors.secondary}
                     color={Colors.white}
                     label={"Send Verification Code"} 
                     labelStyle={{ fontWeight: '600', padding: 8 }} 

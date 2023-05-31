@@ -1,15 +1,6 @@
 import { Platform, StyleSheet } from "react-native";
 import { Colors } from "react-native-ui-lib";
 
-export const colors = {
-  primary: "white",
-  secondary: "#adadad",
-  tertiary: "#057afd",
-  alternative: "#666",
-  fb: "#39559f",
-  disabled: "rgba(5, 122, 253, 0.5)"
-};
-
 export const global = StyleSheet.create({
   container: {
     padding: 24
@@ -53,7 +44,7 @@ export const global = StyleSheet.create({
     backgroundColor: "#F3F4F6"
   },
   bgOrange: {
-    backgroundColor: "#FF4500",
+    backgroundColor: Colors.secondary,
     borderRadius: 8
   },
   bgGreen: {
@@ -88,7 +79,7 @@ export const global = StyleSheet.create({
     padding: 24
   },
   title: {
-    color: "#ff4500",
+    color: Colors.secondary,
     fontSize: 24,
     fontWeight: "bold",
     paddingBottom: 16
@@ -174,7 +165,7 @@ export const global = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    backgroundColor: "#ff4500",
+    backgroundColor: Colors.secondary,
     borderRadius: 4,
     elevation: 2,
     justifyContent: "center",
@@ -200,14 +191,14 @@ export const global = StyleSheet.create({
     letterSpacing: 1,
   },
   fwbtn: {
-    backgroundColor: "#ff4500",
+    backgroundColor: Colors.secondary,
     borderRadius: 8,
     marginVertical: 8,
     padding: 16,
     width: "100%"
   },
   btn2: {
-    backgroundColor: "#ff4500",
+    backgroundColor: Colors.secondary,
     borderRadius: 8,
     marginVertical: 8,
     padding: 16,

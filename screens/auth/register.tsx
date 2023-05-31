@@ -9,7 +9,7 @@ import { GeoPoint, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Alert, Keyboard, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import PhoneInput from 'react-native-phone-input';
 import { Button, Carousel, Checkbox, Colors, DateTimePicker, Image, KeyboardAwareScrollView, LoaderScreen, PageControl, Text, TextField, View, Wizard } from 'react-native-ui-lib';
@@ -291,7 +291,7 @@ const Register = () => {
 
   const Prev = () => {
     return (
-      <Button style={active !== 0 && {backgroundColor:  "#ff4500"}} iconSource={() => <MCIcon name={"chevron-left"} size={48} color={Colors.white} />} onPress={goToPrevStep} disabled={active === 0} />
+      <Button style={active !== 0 && {backgroundColor: Colors.secondary}} iconSource={() => <MCIcon name={"chevron-left"} size={48} color={Colors.white} />} onPress={goToPrevStep} disabled={active === 0} />
     );
   };
 
@@ -314,8 +314,8 @@ const Register = () => {
     return (
       <View>
         {farmer 
-          ? <Button style={active !== 4 && {backgroundColor: "#ff4500"}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 4} />
-          : <Button style={active !== 1 && {backgroundColor: "#ff4500"}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 1} />
+          ? <Button style={active !== 4 && {backgroundColor: Colors.secondary}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 4} />
+          : <Button style={active !== 1 && {backgroundColor: Colors.secondary}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 1} />
         }
       </View>
     );
@@ -327,7 +327,7 @@ const Register = () => {
         <View row spread centerV>
           {Prev()}
           {/* <Text>{active}</Text> */}
-          <PageControl numOfPages={farmer ? 5 : 2} currentPage={active} color={"#ff4500"} />
+          <PageControl numOfPages={farmer ? 5 : 2} currentPage={active} color={Colors.secondary} />
           {Next()}
         </View>
       </View>
@@ -345,7 +345,7 @@ const Register = () => {
             value={farmer} 
             onValueChange={() => setFarmer(!farmer)} 
             style={global.checkbox}
-            color={"#ff4500"}
+            color={Colors.secondary}
           />
         </View>
 
@@ -454,7 +454,7 @@ const Register = () => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
-      <KeyboardAvoidingView style={[global.container, global.flex]} behavior={'position'}>
+      <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]}>
         <Text subtitle>Business Address *</Text>
         <GooglePlacesAutocomplete
           textInputProps={{
@@ -507,7 +507,7 @@ const Register = () => {
         />
         
         {Buttons()}  
-      </KeyboardAvoidingView> 
+      </KeyboardAwareScrollView> 
       // <MapView
       //   style={{ flex: 1 }}
       //   region={region}
@@ -583,7 +583,7 @@ const Register = () => {
       <ScrollView contentContainerStyle={[global.container, global.flex]}>
         <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
           <Button 
-            backgroundColor={"#ff4500"}
+            backgroundColor={Colors.secondary}
             color={Colors.white}
             label={"Monday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
@@ -595,7 +595,7 @@ const Register = () => {
         </View>
         <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
           <Button 
-            backgroundColor={"#ff4500"}
+            backgroundColor={Colors.secondary}
             color={Colors.white}
             label={"Tuesday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
@@ -607,7 +607,7 @@ const Register = () => {
         </View>
         <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
           <Button 
-            backgroundColor={"#ff4500"}
+            backgroundColor={Colors.secondary}
             color={Colors.white}
             label={"Wednesday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
@@ -619,7 +619,7 @@ const Register = () => {
         </View>
         <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
           <Button 
-            backgroundColor={"#ff4500"}
+            backgroundColor={Colors.secondary}
             color={Colors.white}
             label={"Thursday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
@@ -631,7 +631,7 @@ const Register = () => {
         </View>
         <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
           <Button 
-            backgroundColor={"#ff4500"}
+            backgroundColor={Colors.secondary}
             color={Colors.white}
             label={"Friday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
@@ -643,7 +643,7 @@ const Register = () => {
         </View>
         <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
           <Button 
-            backgroundColor={"#ff4500"}
+            backgroundColor={Colors.secondary}
             color={Colors.white}
             label={"Saturday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
@@ -655,7 +655,7 @@ const Register = () => {
         </View>
         <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
           <Button 
-            backgroundColor={"#ff4500"}
+            backgroundColor={Colors.secondary}
             color={Colors.white}
             label={"Sunday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
@@ -666,28 +666,260 @@ const Register = () => {
           <Checkbox value={sunday.enable} onValueChange={() => setSunday({ ...sunday, enable: !sunday.enable })} style={global.checkbox} />
 
           <Dialog
-            visible={true}
+            visible={monday.enable}
             centerH
             centerV
           >
-            <View margin-16 row spread>
-              <DateTimePicker 
-                mode="time" 
-                label="Start Time" 
-                timeFormat={'HH:mm A'} 
-                display="clock" 
-              />
-              <DateTimePicker mode="time" label="End Time" timeFormat={'HH:mm A'} />
+            <View padding-24>
+              <View>
+                <Text subtitle>Monday</Text>
+              </View>
+              <View row spread>
+                <View>
+                  <Text h2>Start Time</Text>
+                  <DateTimePicker
+                    value={new Date()} 
+                    mode="time" 
+                    is24Hour={true} 
+                    timeFormat={'HH:mm A'} 
+                    display="clock"
+                  />
+                </View>
+
+                <View>
+                  <Text h2>End Time</Text>
+                  <DateTimePicker
+                    value={new Date()} 
+                    mode="time" 
+                    is24Hour={false} 
+                    timeFormat={'HH:mm A'}
+                    display="clock" 
+                  />
+                </View>
+              </View>
+              <View paddingT-24 row spread>
+                {/* <Button text60 label="Save" /> */}
+                <Button 
+                  backgroundColor={Colors.secondary}
+                  color={Colors.white}
+                  label={"Cancel"} 
+                  labelStyle={{ fontWeight: '600', padding: 4 }} 
+                  style={global.btn} 
+                  onPress={() => navigation.navigate("Register")}  
+                  disabled={!monday.enable}
+                />
+                <Button 
+                  backgroundColor={Colors.secondary}
+                  color={Colors.white}
+                  label={"Save"} 
+                  labelStyle={{ fontWeight: '600', padding: 4 }} 
+                  style={global.btn} 
+                  onPress={() => navigation.navigate("Register")}  
+                  disabled={!monday.enable}
+                />
+              </View>
+            </View>
+            
+          </Dialog>
+
+          <Dialog
+            visible={tuesday.enable}
+            centerH
+            centerV
+          >
+            <View padding-24 row spread>
+              <View>
+                <Text h2>Start Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={true} 
+                  timeFormat={'HH:mm A'} 
+                  display="clock"
+                />
+              </View>
+
+              <View>
+                <Text h2>End Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={false} 
+                  timeFormat={'HH:mm A'}
+                  display="clock" 
+                />
+              </View>
+            </View>
+            <View margin-16 right>
+              <Button text60 label="Save" />
+            </View>
+          </Dialog>
+
+          <Dialog
+            visible={wednesday.enable}
+            centerH
+            centerV
+          >
+            <View padding-24 row spread>
+              <View>
+                <Text h2>Start Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={true} 
+                  timeFormat={'HH:mm A'} 
+                  display="clock"
+                />
+              </View>
+
+              <View>
+                <Text h2>End Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={false} 
+                  timeFormat={'HH:mm A'}
+                  display="clock" 
+                />
+              </View>
+            </View>
+            <View margin-16 right>
+              <Button text60 label="Save" />
+            </View>
+          </Dialog>
+
+          <Dialog
+            visible={thursday.enable}
+            centerH
+            centerV
+          >
+            <View padding-24 row spread>
+              <View>
+                <Text h2>Start Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={true} 
+                  timeFormat={'HH:mm A'} 
+                  display="clock"
+                />
+              </View>
+
+              <View>
+                <Text h2>End Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={false} 
+                  timeFormat={'HH:mm A'}
+                  display="clock" 
+                />
+              </View>
+            </View>
+            <View margin-16 right>
+              <Button text60 label="Save" />
+            </View>
+          </Dialog>
+
+          <Dialog
+            visible={friday.enable}
+            centerH
+            centerV
+          >
+            <View padding-24 row spread>
+              <View>
+                <Text h2>Start Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={true} 
+                  timeFormat={'HH:mm A'} 
+                  display="clock"
+                />
+              </View>
+
+              <View>
+                <Text h2>End Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={false} 
+                  timeFormat={'HH:mm A'}
+                  display="clock" 
+                />
+              </View>
+            </View>
+            <View margin-16 right>
+              <Button text60 label="Save" />
+            </View>
+          </Dialog>
+
+          <Dialog
+            visible={saturday.enable}
+            centerH
+            centerV
+          >
+            <View padding-24 row spread>
+              <View>
+                <Text h2>Start Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={true} 
+                  timeFormat={'HH:mm A'} 
+                  display="clock"
+                />
+              </View>
+
+              <View>
+                <Text h2>End Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={false} 
+                  timeFormat={'HH:mm A'}
+                  display="clock" 
+                />
+              </View>
+            </View>
+            <View margin-16 right>
+              <Button text60 label="Save" />
+            </View>
+          </Dialog>
+
+          <Dialog
+            visible={sunday.visible}
+            centerH
+            centerV
+          >
+            <View padding-24 row spread>
+              <View>
+                <Text h2>Start Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={true} 
+                  timeFormat={'HH:mm A'} 
+                  display="clock"
+                />
+              </View>
+
+              <View>
+                <Text h2>End Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={false} 
+                  timeFormat={'HH:mm A'}
+                  display="clock" 
+                />
+              </View>
             </View>
             <View margin-16 right>
               <Button text60 label="Save" />
             </View>
           </Dialog>
         </View>
-
-        
-
-        {/* <Dialog visible={true} onDismiss={() => console.log('dismissed')} position={"center"}><Text text60>Content</Text></Dialog> */}
 
         <View flexG />
 
@@ -730,7 +962,7 @@ const Register = () => {
 
         <View style={global.field}>
           <Button 
-            backgroundColor={"#ff4500"}
+            backgroundColor={Colors.secondary}
             color={Colors.white}
             label={"Send Verification Code"} 
             labelStyle={{ fontWeight: '600', padding: 8 }}
@@ -748,7 +980,7 @@ const Register = () => {
             onCodeChanged={handleChange("sms")}
             autoFocusOnLoad={false}
             codeInputFieldStyle={global.otpInput}
-            codeInputHighlightStyle={styles.underlineStyleHighLighted}
+            codeInputHighlightStyle={{ borderColor: "#03DAC6" }}
             onCodeFilled={() => handleSubmit()}
           />
         </View>
@@ -873,8 +1105,7 @@ const Register = () => {
                     <Wizard.Step state={getStepState(1)} label={'Account Information'} />
                   </Wizard>
               }
-              <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex} enableOnAndroid={true}
-  enableAutomaticScroll={(Platform.OS === 'ios')}> 
+              <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex} enableOnAndroid={true} enableAutomaticScroll={(Platform.OS === 'ios')}> 
                 {Current({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values })}
               </KeyboardAwareScrollView>
             </View>
@@ -886,25 +1117,5 @@ const Register = () => {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1
-  },
-  container: {
-    flex: 1
-  },
-  allTypes: {
-    justifyContent: 'space-between'
-  },
-  stepContainer: {
-    flex: 1,
-    // justifyContent: 'space-between',
-    margin: 24
-  },
-  underlineStyleHighLighted: {
-    borderColor: "#03DAC6",
-  },
-});
 
 export default Register

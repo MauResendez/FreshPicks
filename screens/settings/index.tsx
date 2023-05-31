@@ -502,7 +502,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 4,
     elevation: 2,
-    backgroundColor: "#ff4500",
+    backgroundColor: Colors.secondary,
     marginHorizontal: 0,
     paddingVertical: 12,
   },
