@@ -17,9 +17,12 @@ const ChatRow = (props) => {
   }
 
   useEffect(() => {
-    onSnapshot(doc(db, "Chats", item.id), (doc) => {
+    const subscriber = onSnapshot(doc(db, "Chats", item.id), (doc) => {
       setChat(doc.data());
     });
+
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
   }, []);
 
   useEffect(() => {

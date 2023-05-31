@@ -29,7 +29,7 @@ const SearchStack = () => {
         headerTitleAlign: "center",
       }}
     >
-      <Stack.Screen name="Index" component={Search} />
+      <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="Farmers" component={Farmers} />
       <Stack.Screen name="Products" component={Products} />
       <Stack.Screen name="Profile" component={Profile} />

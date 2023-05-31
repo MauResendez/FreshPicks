@@ -49,7 +49,6 @@ const Meeting = () => {
       // obj.image = curr.image;
       obj.price = curr.price;
       obj.title = curr.title;
-      obj.quantity = curr.quantity;
       acc.push(obj)
     } else {
       acc[isElemExist].count += 1
@@ -189,14 +188,8 @@ const Meeting = () => {
             {Object.entries(groupedItems).map(([key, items]: any) => (
               <BasketRow
                 key={key}
-                id={items[0]?.id}
-                title={items[0]?.title}
-                description={items[0]?.description}
-                price={items[0]?.price}
-                image={items[0]?.image}
-                quantity={items[0]?.quantity}
+                item={items[0]}
                 count={items.length}
-                farmer={items[0]?.farmer}
               />
             ))}
 

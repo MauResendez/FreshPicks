@@ -25,7 +25,7 @@ const BasketStack = () => {
         headerTitleAlign: "center",
       }}
     >
-      <Stack.Screen name="Index" component={Basket} />
+      <Stack.Screen name="Basket" component={Basket} />
     </Stack.Navigator>
   )
 }

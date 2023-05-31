@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { addDoc, collection, doc, increment, onSnapshot, query, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, doc, onSnapshot, query, updateDoc, where } from "firebase/firestore";
 import React, { memo, useEffect, useState } from "react";
 import { ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
@@ -18,12 +18,6 @@ const MeetingRow = ({ id, products, consumer, farmer, total, status, createdAt }
         status: status
       });
 
-      products.map(async (listing) => {
-        await updateDoc(doc(db, "Products", listing.id), {
-          quantity: increment(-listing.count)
-        });
-      });
-
       toggleDialog();
       return
     }
@@ -39,14 +33,6 @@ const MeetingRow = ({ id, products, consumer, farmer, total, status, createdAt }
     });
 
     toggleDialog();
-
-    // // products?.map(async (product) => (
-    // //   await updateDoc(doc(db, "Products", product.id), {
-    // //     quantity: product.quantity - product.count
-    // //   })
-    // // ));
-
-    // toggleDialog();
   }
 
   const handleChat = async () => {
@@ -80,9 +66,12 @@ const MeetingRow = ({ id, products, consumer, farmer, total, status, createdAt }
   }
 
   useEffect(() => {
-    onSnapshot(query(collection(db, "Chats"), where("uid", "array-contains", auth.currentUser.uid)), async (snapshot) => {
+    const subscriber = onSnapshot(query(collection(db, "Chats"), where("uid", "array-contains", auth.currentUser.uid)), async (snapshot) => {
       setChats(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
+
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
   }, []);
 
   useEffect(() => {

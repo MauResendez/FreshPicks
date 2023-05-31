@@ -26,7 +26,7 @@ const HistoryStack = () => {
         headerTitleAlign: "center",
       }}
     >      
-      <Stack.Screen name="Index" component={History} />
+      <Stack.Screen name="History" component={History} />
       <Stack.Screen name="Conversation" component={Conversation} />
     </Stack.Navigator>
   )

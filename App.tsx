@@ -19,7 +19,7 @@ import { store } from "./redux/store";
 
 Colors.loadColors({  
   primary: "#FF4500",  
-  secondary: '#32CD32'
+  secondary: '#008000'
 });
 
 ThemeManager.setComponentTheme('Stepper', (props, context) => {

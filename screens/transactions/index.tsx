@@ -136,7 +136,7 @@ const Transactions = () => {
   }
 	
 	return (
-    <View useSafeArea flex>
+    <View useSafeArea flex style={global.bgWhite}>
       <FlashList 
         data={transactions}
         keyExtractor={(item: any) => item.id}

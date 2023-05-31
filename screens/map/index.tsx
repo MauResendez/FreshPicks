@@ -6,7 +6,7 @@ import { collection, documentId, onSnapshot, query, where } from "firebase/fires
 import React, { useCallback, useEffect, useState } from "react";
 import { Platform, StyleSheet } from "react-native";
 import MapView from "react-native-maps";
-import { View } from "react-native-ui-lib";
+import { LoaderScreen, View } from "react-native-ui-lib";
 import MapRow from "../../components/map/map-row";
 import { auth, db } from "../../firebase";
 
@@ -66,9 +66,9 @@ const Map = () => {
   
   if (loading) {
     SplashScreen.preventAutoHideAsync();
-    // return (
-    //   <LoaderScreen color={"#32CD32"} />
-    // )
+    return (
+      <LoaderScreen color={"#32CD32"} />
+    )
   }
 
   return (

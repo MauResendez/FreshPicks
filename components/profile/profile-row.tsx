@@ -65,7 +65,6 @@ const ProfileRow = (props) => {
         <ListItem.Part middle column>
           <Text h2>{item.title}</Text>
           <Text h3>${item.price.toFixed(2)}</Text>
-          <Text h3>{item.quantity} Remaining</Text>
         </ListItem.Part>
       </ListItem>} 
     >

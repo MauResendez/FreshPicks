@@ -51,7 +51,6 @@ const Basket = () => {
       // obj.image = curr.image;
       obj.price = curr.price;
       obj.title = curr.title;
-      obj.quantity = curr.quantity;
       acc.push(obj)
     } else {
       acc[isElemExist].count += 1
@@ -104,7 +103,7 @@ const Basket = () => {
     .catch(e => alert(e.message));
   });
 
-  // Get the user"s chats first
+  // Get the user's chats first
   useEffect(() => {
     if (orderUser && orderFarmer) {
       onSnapshot(query(collection(db, "Chats"), where("consumer", "==", orderUser.id), where("farmer", "==", orderFarmer.id)), async (snapshot) => {

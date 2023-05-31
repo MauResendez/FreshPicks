@@ -57,7 +57,6 @@ const CreateTransaction = () => {
   //   type: yup.string().email('Invalid email address').required('Email is required'),
   //   amount: yup.string().email('Invalid email address').required('Email is required'),
   //   price: yup.string().email('Invalid email address').required('Email is required'),
-  //   quantity: yup.number().,
   // });
 
   useEffect(() => {

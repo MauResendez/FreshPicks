@@ -7,7 +7,7 @@ import { Formik } from 'formik'
 import React from "react"
 import { Alert, Keyboard, Platform, TouchableWithoutFeedback } from "react-native"
 import CurrencyInput from "react-native-currency-input"
-import { Button, Colors, Image, KeyboardAwareScrollView, NumberInput, Picker, Text, TextField, TouchableOpacity, View } from "react-native-ui-lib"
+import { Button, Colors, Image, KeyboardAwareScrollView, Picker, Text, TextField, TouchableOpacity, View } from "react-native-ui-lib"
 import * as Yup from 'yup'
 import { auth, db, storage } from "../../firebase"
 import { global } from "../../style"
@@ -150,7 +150,6 @@ const CreateProduct = () => {
       description: values.description,
       image: images,
       price: values.price,
-      quantity: values.quantity,
       title: values.title,
       type: values.type,
       user: values.user,
@@ -177,7 +176,6 @@ const CreateProduct = () => {
     type: Yup.string().required('Type is required'),
     amount: Yup.string().required('Amount is required'),
     price: Yup.number().required('Price is required'),
-    quantity: Yup.string().required('Quantity is required')
   });
 
   return (
@@ -185,7 +183,7 @@ const CreateProduct = () => {
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView>
           <Formik
-            initialValues={{ user: auth.currentUser.uid, title: '', description: '', type: '', amount: '', price: 1.00, quantity: 1, images: [] }}
+            initialValues={{ user: auth.currentUser.uid, title: '', description: '', type: '', amount: '', price: 1.00, images: [] }}
             validationSchema={validate}
             onSubmit={handleSubmit}
           >
@@ -270,20 +268,6 @@ const CreateProduct = () => {
                   </Picker>
                 </View>
                 {errors.amount && touched.amount && <Text style={{ color: Colors.red30}}>{errors.amount}</Text>}
-
-                <View style={global.field}>
-                  <Text subtitle>Quantity</Text>
-                  <NumberInput
-                    initialNumber={values.quantity}
-                    style={global.input}
-                    onChangeNumber={(data) => setFieldValue("quantity", data.number)}
-                    onBlur={handleBlur('quantity')}
-                    keyboardType={'numeric'}
-                    fractionDigits={2}
-                    migrate
-                  />
-                </View>
-                {errors.quantity && touched.quantity && <Text style={{ color: Colors.red30}}>{errors.quantity}</Text>}
 
                 <View style={global.field}>
                   <Text subtitle>Image</Text>

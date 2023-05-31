@@ -83,21 +83,6 @@ const History = () => {
     return date.toISOString().split('T')[0];
   };
 
-  // const renderMeeting = useCallback(({item}) => {
-  //   return (
-  //     <ProductCard
-  //       key={item?.id}
-  //       id={item?.id}
-  //       image={item?.image}
-  //       title={item?.title}
-  //       subtitle={item?.description}
-  //       price={item?.price}
-  //       quantity={item?.quantity}
-  //       farmer={item?.user}
-  //     />
-  //   );
-  // }, []);
-
   const renderHistory = useCallback(({item}) => {
     return (
       <HistoryRow item={item} />

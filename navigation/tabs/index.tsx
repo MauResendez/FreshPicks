@@ -27,12 +27,13 @@ const MainTabs = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "Users", auth.currentUser.uid), (doc) => {
+    const subscriber = onSnapshot(doc(db, "Users", auth.currentUser.uid), (doc) => {
       setUser(doc.data());
       setLoading(false);
     });
 
-    return unsubscribe
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
   }, [auth.currentUser.uid]);
 
   if (loading) {
@@ -47,7 +48,7 @@ const MainTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarActiveBackgroundColor: Colors.white,
-        tabBarActiveTintColor: "#32CD32",
+        tabBarActiveTintColor: Colors.secondary,
         tabBarInactiveTintColor: Colors.grey40,
         tabBarShowLabel: false,
         unmountOnBlur: true

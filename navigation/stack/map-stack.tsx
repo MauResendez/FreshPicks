@@ -26,7 +26,7 @@ const MapStack = () => {
         headerTitleAlign: "center",
       }}
     >      
-      <Stack.Screen name="Index" component={Map} />
+      <Stack.Screen name="Map" component={Map} />
       <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   )

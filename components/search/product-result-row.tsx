@@ -16,7 +16,7 @@ const ProductResultRow = (props) => {
       <ListItem.Part column>
         <Text h2 numberOfLines={1}>{item.title}</Text>
         <Text h3>{item.description}</Text>
-        <Text h3>${item.price} · {item.quantity} remaining</Text>
+        <Text h3>${item.price}</Text>
       </ListItem.Part>
     </ListItem>
 	)
