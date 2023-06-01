@@ -8,7 +8,7 @@ const Report = () => {
 			<Text>Report</Text>
 			<View flexG />
 			<Button 
-				backgroundColor={Colors.secondary}
+				backgroundColor={Colors.primary}
 				color={Colors.white}
 				label={"Send CSV to Email"} 
 				labelStyle={{ fontWeight: '600', padding: 8 }} 

@@ -32,7 +32,7 @@ const ProductStack = () => {
       <Stack.Screen name="Create Product" component={CreateProduct} />
       <Stack.Screen name="Create Post" component={CreatePost} />
       <Stack.Screen name="Create Subscription" component={CreateSubscription} />
-      <Stack.Screen name="Edit Listing" component={EditProduct} />
+      <Stack.Screen name="Edit Product" component={EditProduct} />
       <Stack.Screen name="Edit Post" component={EditPost} />
       <Stack.Screen name="Edit Subscription" component={EditSubscription} />
     </Stack.Navigator>

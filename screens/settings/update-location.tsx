@@ -137,7 +137,7 @@ const UploadLocation = () => {
 
 						// 	<View style={global.container}>
 						// 		<Button 
-						// 			backgroundColor={Colors.secondary}
+						// 			backgroundColor={Colors.primary}
 						// 			color={Colors.white}
 						// 			label={"Update Farmer Location"} 
 						// 			labelStyle={{ fontWeight: '600', padding: 8 }} 
@@ -201,7 +201,7 @@ const UploadLocation = () => {
 							<View flexG />
 
 							<Button 
-								backgroundColor={Colors.secondary}
+								backgroundColor={Colors.primary}
 								color={Colors.white}
 								label={"Update Farmer Location"} 
 								labelStyle={{ fontWeight: '600', padding: 8 }} 

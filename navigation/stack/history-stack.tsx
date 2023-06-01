@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 const HistoryStack = () => {
   return (
     <Stack.Navigator 
-      initialRouteName="Index" 
+      initialRouteName="History" 
       screenOptions={{ 
         headerShown: true,
         // headerTitle: () => (

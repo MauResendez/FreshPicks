@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import { addDoc, collection, onSnapshot, query, where } from "firebase/firestore"
+import { collection, doc, getDoc, onSnapshot, query, updateDoc, where } from "firebase/firestore"
 import { Formik } from 'formik'
 import React, { useEffect, useState } from "react"
 import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native"
@@ -8,7 +8,7 @@ import { Button, Colors, DateTimePicker, KeyboardAwareScrollView, LoaderScreen, 
 import { auth, db } from "../../firebase"
 import { global } from "../../style"
 
-const CreateTransaction = () => {
+const EditTransaction = ({ route }) => {
   const navigation = useNavigation<any>();
   const types = [
     {label: "Expense", value: "Expense"},
@@ -37,18 +37,23 @@ const CreateTransaction = () => {
     {label: "Rent Received", value: "Rent Received"},
     {label: "Other", value: "Other"}
   ]
+	const [transaction, setTransaction] = useState<any>(null);
   const [products, setProducts] = useState<any>(null);
   const [loading, setLoading] = useState<any>(true);
 
-  const onSubmit = async (values) => {
-    console.log(values);
-
-    await addDoc(collection(db, "Transactions"), values).then(() => {
+  const editTransaction = async (values) => {
+    await updateDoc(doc(db, "Products", route.params.id), values).then(() => {
       console.log("Data saved!");
       navigation.goBack();
     }).catch((error) => {
       console.log(error);
     });
+  };
+
+  const onSubmit = async (values) => {
+    console.log(values);
+
+    await editTransaction(values);
   }
 
   // const validationSchema = yup.object({
@@ -59,6 +64,15 @@ const CreateTransaction = () => {
   //   price: yup.string().email('Invalid email address').required('Email is required'),
   // });
 
+	useEffect(() => {
+    if (route.params.id) {
+      getDoc(doc(db, "Transactions", route.params.id)).then((docSnapshot) => {
+        const data = docSnapshot.data();
+        setTransaction(data);
+      });
+    }
+  }, [route.params.id]);
+
   useEffect(() => {
     onSnapshot(query(collection(db, "Products"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
       setProducts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
@@ -66,12 +80,12 @@ const CreateTransaction = () => {
   }, []);
 
   useEffect(() => {
-    if (products) {
+    if (transaction && products) {
       products.unshift({id: "", title: "Not Specified"})
       console.log(products);
       setLoading(false);
     }
-  }, [products]);
+  }, [products, transaction]);
 
   if (loading) {
     return (
@@ -84,8 +98,9 @@ const CreateTransaction = () => {
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
           <Formik
-            initialValues={{ user: auth.currentUser.uid, party: '', type: '', price: 0.00, product: '', label: '', category: '', notes: '', createdAt: new Date(), date: new Date() }}
+            initialValues={transaction || { user: auth.currentUser.uid, party: '', type: '', price: 0.00, product: '', label: '', category: '', notes: '', createdAt: new Date(), date: new Date() }}
             onSubmit={onSubmit}
+            enableReinitialize={true}
           >
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
               <View flex>
@@ -235,4 +250,4 @@ const CreateTransaction = () => {
   );
 }
 
-export default CreateTransaction
+export default EditTransaction

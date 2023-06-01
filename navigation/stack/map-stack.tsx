@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 const MapStack = () => {
   return (
     <Stack.Navigator 
-      initialRouteName="Index" 
+      initialRouteName="Map" 
       screenOptions={{ 
         headerShown: true,
         // headerTitle: () => (

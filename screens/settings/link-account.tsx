@@ -115,7 +115,7 @@ const LinkAccount = () => {
                   <View flexG />
 
                   <Button 
-                    backgroundColor={Colors.secondary}
+                    backgroundColor={Colors.primary}
                     color={Colors.white}
                     label={"Link Account"} 
                     labelStyle={{ fontWeight: '600', padding: 8 }} 

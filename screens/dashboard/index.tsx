@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useWindowDimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Button, Picker, TabController, Text, View } from "react-native-ui-lib";
+import { Button, Picker, TabController, View } from "react-native-ui-lib";
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { global } from "../../style";
 
@@ -41,15 +41,11 @@ const Dashboard = () => {
           textBackgroundRadius={15} 
         /> */}
         {/* <LineChart data = {data} areaChart /> */}
-        <Text h3>Data 1</Text>
-        <Text h3>Data 2</Text>
-        <Text h3>Data 3</Text>
-        <Text h3>Data 4</Text>
         {/* <View flexG />
         <View row spread style={{ paddingVertical: 8 }}>
           <View style={{ width: "47.5%" }}>
             <Button 
-              backgroundColor={Colors.secondary}
+              backgroundColor={Colors.primary}
               color={Colors.white}
               label={"Report"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
@@ -58,7 +54,7 @@ const Dashboard = () => {
           </View>
           <View style={{ width: "47.5%" }}>
             <Button 
-              backgroundColor={Colors.secondary}
+              backgroundColor={Colors.primary}
               color={Colors.white}
               label={"CSV to Email"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
@@ -108,15 +104,11 @@ const Dashboard = () => {
           textBackgroundColor="white"
           textBackgroundRadius={15} 
         /> */}
-        <Text h3>Data 1</Text>
-        <Text h3>Data 2</Text>
-        <Text h3>Data 3</Text>
-        <Text h3>Data 4</Text>
         {/* <View flexG />
         <View row spread style={{ paddingVertical: 8 }}>
           <View style={{ width: "47.5%" }}>
             <Button 
-              backgroundColor={Colors.secondary}
+              backgroundColor={Colors.primary}
               color={Colors.white}
               label={"Report"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
@@ -125,7 +117,7 @@ const Dashboard = () => {
           </View>
           <View style={{ width: "47.5%" }}>
             <Button 
-              backgroundColor={Colors.secondary}
+              backgroundColor={Colors.primary}
               color={Colors.white}
               label={"CSV to Email"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 

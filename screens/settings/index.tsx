@@ -73,13 +73,30 @@ const Settings = () => {
   }
 
   const switchRoles = async () => {
-    await updateDoc(doc(db, "Users", auth.currentUser.uid), { role: !user.role }).then(() => {
-      // Toast.show("Switched roles", {
-      //   duration: Toast.durations.SHORT,
-      //   backgroundColor: "orange",
-      //   position: Platform.OS == "web" ? 650 : 700
-      // });
-    });
+    if (user.role === "Farmer") {
+      await updateDoc(doc(db, "Users", auth.currentUser.uid), { role: "Consumer" }).then(() => {
+        // Toast.show("Switched roles", {
+        //   duration: Toast.durations.SHORT,
+        //   backgroundColor: "orange",
+        //   position: Platform.OS == "web" ? 650 : 700
+        // });
+      });
+    } else {
+      await updateDoc(doc(db, "Users", auth.currentUser.uid), { role: "Farmer" }).then(() => {
+        // Toast.show("Switched roles", {
+        //   duration: Toast.durations.SHORT,
+        //   backgroundColor: "orange",
+        //   position: Platform.OS == "web" ? 650 : 700
+        // });
+      });
+    }
+    // await updateDoc(doc(db, "Users", auth.currentUser.uid), { role: !user.role }).then(() => {
+    //   // Toast.show("Switched roles", {
+    //   //   duration: Toast.durations.SHORT,
+    //   //   backgroundColor: "orange",
+    //   //   position: Platform.OS == "web" ? 650 : 700
+    //   // });
+    // });
   }
 
   useEffect(() => {
@@ -133,7 +150,7 @@ const Settings = () => {
         >
           <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
             <Text h3 numberOfLines={1}>
-              Switch to {user.role ? "Consumer Role" : "Farmer Role"}
+              Switch to {user.role === "Farmer" ? "Consumer Role" : "Farmer Role"}
             </Text>
           </ListItem.Part>
         </ListItem>
@@ -502,7 +519,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 4,
     elevation: 2,
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.primary,
     marginHorizontal: 0,
     paddingVertical: 12,
   },

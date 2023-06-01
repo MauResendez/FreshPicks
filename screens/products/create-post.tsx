@@ -171,7 +171,7 @@ const CreatePost = () => {
                 <View flexG />
 
                 <Button 
-                  backgroundColor={Colors.secondary}
+                  backgroundColor={Colors.primary}
                   color={Colors.white}
                   label={"Create Post"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 

@@ -209,7 +209,7 @@ const AddBusiness = () => {
 
   const Prev = () => {
     return (
-      <Button style={active !== 0 && {backgroundColor: Colors.secondary}} iconSource={() => <MCIcon name={"chevron-left"} size={48} color={Colors.white} />} onPress={goToPrevStep} disabled={active === 0} />
+      <Button style={active !== 0 && {backgroundColor: Colors.primary}} iconSource={() => <MCIcon name={"chevron-left"} size={48} color={Colors.white} />} onPress={goToPrevStep} disabled={active === 0} />
     );
   };
 
@@ -231,7 +231,7 @@ const AddBusiness = () => {
   const Next = () => {
     return (
       <View>
-        <Button style={active !== 3 && {backgroundColor: Colors.secondary}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 3} />
+        <Button style={active !== 3 && {backgroundColor: Colors.primary}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 3} />
       </View>
     );
   };
@@ -242,7 +242,7 @@ const AddBusiness = () => {
         <View row spread centerV>
           {Prev()}
           {/* <Text>{active}</Text> */}
-          <PageControl numOfPages={4} currentPage={active} color={Colors.secondary} />
+          <PageControl numOfPages={4} currentPage={active} color={Colors.primary} />
           {Next()}
         </View>
       </View>
@@ -383,7 +383,7 @@ const AddBusiness = () => {
       <ScrollView contentContainerStyle={[global.container, global.flex]}>
         <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
           <Button 
-            backgroundColor={Colors.secondary}
+            backgroundColor={Colors.primary}
             color={Colors.white}
             label={"Monday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
@@ -395,7 +395,7 @@ const AddBusiness = () => {
         </View>
         <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
           <Button 
-            backgroundColor={Colors.secondary}
+            backgroundColor={Colors.primary}
             color={Colors.white}
             label={"Tuesday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
@@ -407,7 +407,7 @@ const AddBusiness = () => {
         </View>
         <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
           <Button 
-            backgroundColor={Colors.secondary}
+            backgroundColor={Colors.primary}
             color={Colors.white}
             label={"Wednesday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
@@ -419,7 +419,7 @@ const AddBusiness = () => {
         </View>
         <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
           <Button 
-            backgroundColor={Colors.secondary}
+            backgroundColor={Colors.primary}
             color={Colors.white}
             label={"Thursday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
@@ -431,7 +431,7 @@ const AddBusiness = () => {
         </View>
         <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
           <Button 
-            backgroundColor={Colors.secondary}
+            backgroundColor={Colors.primary}
             color={Colors.white}
             label={"Friday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
@@ -443,7 +443,7 @@ const AddBusiness = () => {
         </View>
         <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
           <Button 
-            backgroundColor={Colors.secondary}
+            backgroundColor={Colors.primary}
             color={Colors.white}
             label={"Saturday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
@@ -455,7 +455,7 @@ const AddBusiness = () => {
         </View>
         <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
           <Button 
-            backgroundColor={Colors.secondary}
+            backgroundColor={Colors.primary}
             color={Colors.white}
             label={"Sunday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
@@ -513,7 +513,7 @@ const AddBusiness = () => {
         <View flexG />
 
         <Button 
-          backgroundColor={Colors.secondary}
+          backgroundColor={Colors.primary}
           color={Colors.white}
           label={"Add Your Business"} 
           labelStyle={{ fontWeight: '600', padding: 8 }}

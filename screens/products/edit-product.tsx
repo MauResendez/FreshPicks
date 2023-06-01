@@ -313,7 +313,7 @@ const EditProduct = ({ route }) => {
                 </View>
 
                 <Button 
-                  backgroundColor={Colors.secondary}
+                  backgroundColor={Colors.primary}
                   color={Colors.white}
                   label={"Edit Product"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 

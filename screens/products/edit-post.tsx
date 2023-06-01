@@ -148,7 +148,7 @@ const EditPost = ({ route }) => {
                 <View flexG />
 
                 <Button 
-                  backgroundColor={Colors.secondary}
+                  backgroundColor={Colors.primary}
                   color={Colors.white}
                   label={"Edit Post"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 

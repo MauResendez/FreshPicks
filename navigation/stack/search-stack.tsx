@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 const SearchStack = () => {
   return (
     <Stack.Navigator 
-      initialRouteName="Index"
+      initialRouteName="Search"
       screenOptions={{
         // headerTitle: () => (
         //   <Image

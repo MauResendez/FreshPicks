@@ -240,7 +240,7 @@ const UpdateFarmer = () => {
                   <View flexG />
 
                   <Button 
-                    backgroundColor={Colors.secondary}
+                    backgroundColor={Colors.primary}
                     color={Colors.white}
                     label={"Update Farmer Information"} 
                     labelStyle={{ fontWeight: '600', padding: 8 }} 

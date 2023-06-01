@@ -11,20 +11,10 @@ import AuthStack from "./navigation/stack/auth-stack";
 import MainStack from "./navigation/stack/main-stack";
 import { store } from "./redux/store";
 
-// ThemeManager.setComponentTheme('Wizard', (props, context) => {
-//   // const containerStyle = {width, marginLeft, paddingVertical, paddingHorizontal};
-//   const activeConfig = {color: "black", circleBackgroundColor: "#32CD32", circleColor: "black"};
-//   return {activeConfig};
-// });
-
 Colors.loadColors({  
-  primary: "#FF4500",  
-  secondary: '#008000'
-});
-
-ThemeManager.setComponentTheme('Stepper', (props, context) => {
-  const config = {color: "black", backgroundColor: "#32CD32", circleColor: "black"};
-  return {config};
+  primary: "#008000",  
+  secondary: '#FF4500',
+  tertiary: "#32CD32"
 });
 
 ThemeManager.setComponentTheme('Card', (props, context) => {
@@ -48,6 +38,16 @@ ThemeManager.setComponentTheme('Card', (props, context) => {
     shadowRadius: 4,
     elevation: 16,
   };;
+});
+
+ThemeManager.setComponentTheme('Stepper', (props, context) => {
+  const config = {color: "black", backgroundColor: "#32CD32", circleColor: "black"};
+  return {config};
+});
+
+ThemeManager.setComponentTheme('Wizard', (props, context) => {
+  const activeConfig = {color: Colors.white, circleBackgroundColor: Colors.primary, circleColor: "transparent", indexLabelStyle: { fontWeight: "600" }, labelStyle: { fontWeight: "600" }};
+  return {activeConfig};
 });
 
 Typography.loadTypographies({ 

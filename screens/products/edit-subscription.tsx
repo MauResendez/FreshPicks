@@ -246,7 +246,7 @@ const EditSubscription = ({ route }) => {
                 <View flexG />
                 
                 <Button 
-                  backgroundColor={Colors.secondary}
+                  backgroundColor={Colors.primary}
                   color={Colors.white}
                   label={"Edit Subscription"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 

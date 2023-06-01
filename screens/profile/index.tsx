@@ -171,7 +171,7 @@ const Profile = () => {
 
         <View style={styles.cart}>
           <Button 
-            backgroundColor={Colors.secondary}
+            backgroundColor={Colors.primary}
             color={Colors.white}
             label={items.length != 0 ? "Go to Basket" : "Add items to Basket"} 
             labelStyle={{ fontWeight: '600', padding: 8 }} 

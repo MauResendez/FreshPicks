@@ -1,15 +1,33 @@
+import { useNavigation } from '@react-navigation/native';
+import { deleteDoc, doc } from 'firebase/firestore';
 import React, { memo } from 'react';
+import { Alert } from 'react-native';
 import { Colors, ListItem, Text, View } from 'react-native-ui-lib';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { db } from '../../firebase';
 import { global } from '../../style';
 
 const TransactionRow = (props) => {
 	const {item} = props;
+	const navigation = useNavigation<any>();
+
+	const deleteItem = async (item, collection) => {
+    await deleteDoc(doc(db, collection, item.id));
+  }
+
+	const onPress = () => {
+		Alert.alert(item.party, item.category, [
+			{text: 'Edit', onPress: () => navigation.navigate("Edit Transaction", { id: item.id })},
+			{text: 'Cancel', style: 'cancel'},
+			{text: 'Delete', onPress: async () => deleteItem(item, "Transactions")},
+		])
+	}
 
 	return (
 		<ListItem
 			activeOpacity={0.3}
 			style={{ backgroundColor: Colors.white, padding: 8, height: "auto" }}
+			onPress={onPress}
 		>
 			<ListItem.Part left>
 				{item.type == "Expense" 
@@ -27,11 +45,6 @@ const TransactionRow = (props) => {
 					<Text h3>{item.category}</Text>
 					<Text h3>{item.date.toDate().toLocaleDateString()}</Text>
 				</View>
-				{/* <View row style={global.spaceBetween}>
-					<Text h2>{item.type}</Text>
-
-					<Text h3>{item.notes}</Text>
-				</View> */}
 			</ListItem.Part>
 		</ListItem>
 	)

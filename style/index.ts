@@ -44,7 +44,7 @@ export const global = StyleSheet.create({
     backgroundColor: "#F3F4F6"
   },
   bgOrange: {
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.primary,
     borderRadius: 8
   },
   bgGreen: {
@@ -79,7 +79,7 @@ export const global = StyleSheet.create({
     padding: 24
   },
   title: {
-    color: Colors.secondary,
+    color: Colors.primary,
     fontSize: 24,
     fontWeight: "bold",
     paddingBottom: 16
@@ -165,7 +165,7 @@ export const global = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.primary,
     borderRadius: 4,
     elevation: 2,
     justifyContent: "center",
@@ -191,14 +191,14 @@ export const global = StyleSheet.create({
     letterSpacing: 1,
   },
   fwbtn: {
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.primary,
     borderRadius: 8,
     marginVertical: 8,
     padding: 16,
     width: "100%"
   },
   btn2: {
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.primary,
     borderRadius: 8,
     marginVertical: 8,
     padding: 16,

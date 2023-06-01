@@ -9,7 +9,7 @@ const Stack = createStackNavigator();
 const BasketStack = () => {
   return (
     <Stack.Navigator 
-      initialRouteName="Index" 
+      initialRouteName="Basket" 
       screenOptions={{ 
         headerShown: true,
         // headerTitle: () => (

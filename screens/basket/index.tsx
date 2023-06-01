@@ -190,7 +190,7 @@ const Basket = () => {
 
             <View style={styles.cart}>
               <Button 
-                backgroundColor={Colors.secondary}
+                backgroundColor={Colors.primary}
                 color={Colors.white}
                 label={"Send Meeting Request"} 
                 labelStyle={{ fontWeight: '600', padding: 8 }} 

@@ -44,97 +44,97 @@ const MainTabs = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={user?.role ? "Dashboard" : "Home"}
+      initialRouteName={user?.role === "Farmer" ? "Dashboard" : "Home"}
       screenOptions={{
         headerShown: false,
         tabBarActiveBackgroundColor: Colors.white,
-        tabBarActiveTintColor: Colors.secondary,
+        tabBarActiveTintColor: Colors.primary,
         tabBarInactiveTintColor: Colors.grey40,
         tabBarShowLabel: false,
         unmountOnBlur: true
       }}
     >
       <Tab.Screen
-        // name={user?.role ? "Dashboard" : "Search"}
+        // name={user?.role === "Farmer" ? "Dashboard" : "Search"}
         name={"First"}
-        component={user?.role ? DashboardStack : SearchStack}
+        component={user?.role === "Farmer" ? DashboardStack : SearchStack}
         options={({ route }) => {
-          let routeName = user?.role ? "Dashboard" : "Search";
+          let routeName = user?.role === "Farmer" ? "Dashboard" : "Search";
           const current = getFocusedRouteNameFromRoute(route) ?? routeName;
           
           return {
             tabBarIcon: ({ color }) => (
               <MCIcon 
-                name={user?.role ? "google-analytics" : "home"}
+                name={user?.role === "Farmer" ? "google-analytics" : "home"}
                 size={24} 
                 color={color} 
               />
             ),
-            tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
+            tabBarItemStyle: { paddingVertical: Platform.OS === "android" ? 4 : 0},
             tabBarLabel: routeName,
           };
         }}
       />
       <Tab.Screen
-        // name={user?.role ? "Products" : "Basket"}
+        // name={user?.role === "Farmer" ? "Products" : "Basket"}
         name={"Second"}
-        component={user?.role ? ProductStack : BasketStack}
+        component={user?.role === "Farmer" ? ProductStack : BasketStack}
         options={({ route }) => {
-          let routeName = user?.role ? "Products" : "Basket";
+          let routeName = user?.role === "Farmer" ? "Products" : "Basket";
           const current = getFocusedRouteNameFromRoute(route) ?? routeName;
           
           return {
             tabBarIcon: ({ color }) => (
               <MCIcon
-                name={user?.role ? "food-apple" : "basket"}
+                name={user?.role === "Farmer" ? "food-apple" : "basket"}
                 size={24}
                 color={color}
               />
             ),
-            tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
+            tabBarItemStyle: { paddingVertical: Platform.OS === "android" ? 4 : 0},
             tabBarLabel: routeName,
           };
         }}
       />
       <Tab.Screen
-        // name={user?.role ? "Transactions" : "Map"}
+        // name={user?.role === "Farmer" ? "Transactions" : "Map"}
         name={"Third"}
-        component={user?.role ? TransactionStack : MapStack}
+        component={user?.role === "Farmer" ? TransactionStack : MapStack}
         options={({ route }) => {
-          let routeName = user?.role ? "Transactions" : "Map";
+          let routeName = user?.role === "Farmer" ? "Transactions" : "Map";
           const current = getFocusedRouteNameFromRoute(route) ?? routeName;
 
           return {
             headerTitle: routeName,
             tabBarIcon: ({ color }) => (
               <MCIcon
-                name={user?.role ? "swap-horizontal-circle-outline" : "map-marker"}
+                name={user?.role === "Farmer" ? "swap-horizontal-circle-outline" : "map-marker"}
                 size={24}
                 color={color}
               />
             ),
-            tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
+            tabBarItemStyle: { paddingVertical: Platform.OS === "android" ? 4 : 0},
             tabBarLabel: routeName,
           };
         }}
       />
       <Tab.Screen
-        // name={user?.role ? "Meetings" : "History"}
+        // name={user?.role === "Farmer" ? "Meetings" : "History"}
         name={"Fourth"}
-        component={user?.role ? MeetingStack : HistoryStack}
+        component={user?.role === "Farmer" ? MeetingStack : HistoryStack}
         options={({ route }) => {
-          let routeName = user?.role ? "Meetings" : "History";
+          let routeName = user?.role === "Farmer" ? "Meetings" : "History";
           const current = getFocusedRouteNameFromRoute(route) ?? routeName;
           
           return {
             tabBarIcon: ({ color }) => (
               <MCIcon
-                name={user?.role ? "calendar-month" : "history"}
+                name={user?.role === "Farmer" ? "calendar-month" : "history"}
                 size={24}
                 color={color}
               />
             ),
-            tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
+            tabBarItemStyle: { paddingVertical: Platform.OS === "android" ? 4 : 0},
             tabBarLabel: routeName,
           };
         }}
@@ -150,7 +150,7 @@ const MainTabs = () => {
             tabBarIcon: ({ color }) => (
               <MCIcon name="cog" size={24} color={color} />
             ),
-            tabBarItemStyle: { paddingVertical: Platform.OS == "android" ? 4 : 0},
+            tabBarItemStyle: { paddingVertical: Platform.OS === "android" ? 4 : 0},
             tabBarLabel: "Settings",
           };
         }}
