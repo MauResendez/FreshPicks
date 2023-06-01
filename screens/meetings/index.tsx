@@ -1,11 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, useWindowDimensions } from 'react-native';
-import { AgendaEntry, AgendaList, AgendaSchedule, DateData } from 'react-native-calendars';
+import { useWindowDimensions } from 'react-native';
+import { AgendaList, AgendaSchedule } from 'react-native-calendars';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { LoaderScreen, TabController, Text, View } from 'react-native-ui-lib';
+import { LoaderScreen, TabController, View } from 'react-native-ui-lib';
 import ChatRow from '../../components/chat/chat-row';
 import AgendaItem from '../../components/meetings/agenda-item';
 import { agendaItems, getMarkedDates } from '../../components/meetings/mocked-items';
@@ -18,9 +18,9 @@ interface State {
 const Meetings = () => {
   const layout = useWindowDimensions();
   const width = layout.width/4;
-  const [items, setItems] = useState({});
+  const [items, setItems] = useState<any>(null);
   const [chats, setChats] = useState([]);
-  const [meetings, setMeetings] = useState<any>([]);
+  const [meetings, setMeetings] = useState<any>(null);
   const [today, setToday] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<any>();
@@ -29,15 +29,9 @@ const Meetings = () => {
 
   const FirstRoute = () => (
     <View useSafeArea flex>
-      {/* <WeekCalendar firstDay={1} markedDates={marked.current}/> */}
       <AgendaList
-        sections={ITEMS}
-        // loadItemsForMonth={loadItems}
+        sections={items}
         renderItem={renderItem}
-        // renderEmptyDate={renderEmptyDate}
-        // rowHasChanged={rowHasChanged}
-        // selected={today}
-        // showClosingKnob={true}
       />
     </View>
   );
@@ -62,62 +56,9 @@ const Meetings = () => {
     return (y + '-' + m + '-' + d);
   }
 
-  const loadItems = (day: DateData) => {
-    setTimeout(() => {
-      for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = timeToString(time);
-        if (!items[strTime]) {
-          items[strTime] = [];
-        }
-      }
-
-      const newItems: AgendaSchedule = {};
-
-      Object.keys(items).forEach((key) => {
-        newItems[key] = items[key];
-      });
-
-      setItems(newItems);
-    }, 1000);
-  };
-
-  // const renderItem = () => {
-  //   // const fontSize = isFirst ? 16 : 14;
-  //   // const color = isFirst ? 'black' : '#43515c';
-
-  //   return (
-  //     <TouchableOpacity
-  //       style={[styles.item, {height: 16}]}
-  //       onPress={() => navigation.navigate("Meeting", {
-  //         id: "Test"
-  //       })}
-  //     >
-  //       <Text>Test</Text>
-  //     </TouchableOpacity>
-  //   );
-  // }
-
   const renderItem = useCallback(({item}: any) => {
     return <AgendaItem item={item} />;
   }, []);
-
-  const renderEmptyDate = () => {
-    return (
-      <View style={styles.emptyDate}>
-        <Text>No meeting at this time</Text>
-      </View>
-    );
-  }
-
-  const rowHasChanged = (r1: AgendaEntry, r2: AgendaEntry) => {
-    return r1.name !== r2.name;
-  }
-
-  const timeToString = (time: number) => {
-    const date = new Date(time);
-    return date.toISOString().split('T')[0];
-  };
 
   useEffect(() => {
     setToday(formatDate(new Date()));
@@ -125,41 +66,43 @@ const Meetings = () => {
     onSnapshot(query(collection(db, "Chats"), where("farmer", "==", auth.currentUser.uid)), async (snapshot) => {
       setChats(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
-
-    const items: AgendaSchedule = {};
-
-    const q = query(collection(db, "Meetings"), where("farmer", "==", auth.currentUser.uid), orderBy('createdAt'));
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      snapshot.docs.map((doc) => {
-        console.log(doc.data());
-
-        const date = formatDate(doc.data().createdAt.toDate());
-
-        console.log(date);
-        
-        if (!items[date]) {
-          items[date] = [];
-        }
-
-        items[date].push({
-          name: doc.id,
-          height: 100,
-          day: "外食",
-        });
-      });
-
-      setItems(items);
-    });
-
-    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
-    if (chats && meetings && today) {
+    const subscriber = onSnapshot(query(collection(db, "Meetings"), where("users", "array-contains", auth.currentUser.uid)), async (snapshot) => {
+      setMeetings(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+    });
+
+    console.log(new Date().toISOString().split('T')[0])
+
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
+
+  useEffect(() => {
+    if (meetings) {
+      const newArray = [];
+      meetings.forEach(doc => {
+        // Create a new object and save it to a new variable
+        const newObj = {
+          // Add desired properties from Firestore document data
+          title: doc.meetAt.toDate().toISOString().split('T')[0],
+          data: [doc]
+        };
+
+        newArray.push(newObj);
+      });
+
+
+      setItems(newArray);
+    }
+  }, [meetings]);
+
+  useEffect(() => {
+    if (chats && items && today) {
       setLoading(false);
     }
-  }, [chats, meetings, today]);
+  }, [chats, items, today]);
   
   if (loading) {
     return (
@@ -188,26 +131,5 @@ const Meetings = () => {
     
   );
 }
-
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: 'white',
-    flex: 1,
-    borderRadius: 8,
-    padding: 8,
-    marginVertical: 8,
-    marginRight: 8,
-    height: 100
-  },
-  emptyDate: {
-    backgroundColor: 'white',
-    flex: 1,
-    borderRadius: 8,
-    padding: 8,
-    marginVertical: 8,
-    marginRight: 8,
-    height: 100
-  }
-});
 
 export default Meetings

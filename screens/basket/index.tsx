@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { addDoc, collection, doc, getDoc, onSnapshot, query, where } from 'firebase/firestore';
+import { addDoc, collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { Button, Colors, ListItem, LoaderScreen, Text, View } from 'react-native-ui-lib';
@@ -14,10 +14,6 @@ import { global } from '../../style';
 const Basket = () => {
   const navigation = useNavigation<any>();
   const [chat, setChat] = useState<any>(null);
-  const [chats, setChats] = useState<any>(null);
-  const [order, setOrder] = useState<any>(null);
-  const [data, setData] = useState<any>(null);
-  const [farmer, setFarmer] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const items = useSelector(selectOrderItems);
   const orderFarmer = useSelector(getOrderFarmer);
@@ -61,7 +57,7 @@ const Basket = () => {
 
 
   const createOrder = async () => {
-    await addDoc(collection(db, "Meetings"), {
+    await addDoc(collection(db, "Orders"), {
       consumer: orderUser.id,
       farmer: orderFarmer.id,
       products: result,
@@ -69,25 +65,17 @@ const Basket = () => {
       status: "PENDING",
       createdAt: new Date(),
       meetAt: null
-    })
-      .then(async (doc) => {
-        // Toast.show("Order has been confirmed!", {
-        //   duration: Toast.durations.SHORT,
-        //   backgroundColor: "green",
-        //   position: Platform.OS == "web" ? 650 : 700,
-        // });
-
-        setOrder(doc.id);
-      })
-      .catch((e) => alert(e.message));
+    }).then(async () => {
+      handleChat();
+    }).catch((e) => alert(e.message));
   }
 
   const handleChat = (async () => {
-    let message = `${orderUser.name} has recently created an order (ID: ${order}) of (List of items here) for $${data.total.toFixed(2)}.`;
+    // let message = `${orderUser.name} has recently created an order (ID: ${order}) of (List of items here) for $${data.total.toFixed(2)}.`;
 
     if (chat.length != 0) {
       clearOrderItems();
-      navigation.navigate("Conversation", { id: chat[0]?.id, message: message });
+      navigation.navigate("Conversation", { id: chat[0]?.id, message: "" });
       return
     }
 
@@ -95,12 +83,10 @@ const Basket = () => {
       consumer: orderUser.id,
       farmer: orderFarmer.id,
       messages: []
-    })
-    .then((doc) => {
+    }).then((doc) => {
       clearOrderItems();
-      navigation.navigate("Conversation", { id: doc.id, message: message });
-    })
-    .catch(e => alert(e.message));
+      navigation.navigate("Conversation", { id: doc.id, message: "" });
+    }).catch(e => alert(e.message));
   });
 
   // Get the user's chats first
@@ -120,22 +106,6 @@ const Basket = () => {
       return
     }
   }, [chat]);
-
-  // Once order has been set, use the id to get the order"s data
-  useEffect(() => {
-    if (order) {
-      getDoc(doc(db, "Meetings", order)).then((docSnapshot) => {
-        const data = docSnapshot.data();
-        setData(data);
-      });
-    }
-  }, [order]);
-
-  useEffect(() => {
-    if (data) {
-      handleChat();
-    }
-  }, [data]);
 
   if (loading) {
     return (

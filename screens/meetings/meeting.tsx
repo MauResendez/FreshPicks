@@ -58,7 +58,7 @@ const Meeting = () => {
   }, []);
 
   const createOrder = async () => {
-    await addDoc(collection(db, "Meetings"), {
+    await addDoc(collection(db, "Orders"), {
       consumer: orderUser.id,
       farmer: orderFarmer.id,
       products: result,

@@ -169,7 +169,7 @@ const UpdateFarmer = () => {
     business: Yup.string().required('Business is required'), 
     description: Yup.string().required('Description is required'), 
     website: Yup.string().url("Website must be a valid URL\nE.g. (https://www.google.com)").required('Website is required'), 
-    // images: Yup.array().required('Images is required')
+    images: Yup.array().min(1, "Images is required")
   });
   
   return (

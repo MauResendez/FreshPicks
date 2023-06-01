@@ -2,14 +2,13 @@ import isEmpty from 'lodash/isEmpty';
 import React, { useCallback } from 'react';
 import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-
 interface ItemProps {
   item: any;
 }
 
 const AgendaItem = (props: ItemProps) => {
   const {item} = props;
-
+  
   const buttonPressed = useCallback(() => {
     Alert.alert('Show me more');
   }, []);
@@ -29,7 +28,7 @@ const AgendaItem = (props: ItemProps) => {
   return (
     <TouchableOpacity onPress={itemPressed} style={styles.item}>
       <View>
-        <Text style={styles.itemHourText}>{item.hour}</Text>
+        <Text style={styles.itemHourText}>{item.meetAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
         <Text style={styles.itemDurationText}>{item.duration}</Text>
       </View>
       <Text style={styles.itemTitleText}>{item.title}</Text>

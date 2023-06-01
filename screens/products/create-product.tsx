@@ -175,7 +175,7 @@ const CreateProduct = () => {
     description: Yup.string().required('Description is required'),
     type: Yup.string().required('Type is required'),
     amount: Yup.string().required('Amount is required'),
-    price: Yup.number().required('Price is required'),
+    price: Yup.number().min(1, 'Price is required')
   });
 
   return (
@@ -199,7 +199,7 @@ const CreateProduct = () => {
                     migrate
                   />
                 </View>
-                {errors.title && touched.title && <Text style={{ color: Colors.red30}}>{errors.title}</Text>}
+                {errors.title && touched.title && <Text style={{ color: Colors.red30 }}>{errors.title}</Text>}
 
                 <View style={global.field}>
                   <Text subtitle>Description</Text>
@@ -214,6 +214,7 @@ const CreateProduct = () => {
                   />
                 </View>
                 {errors.description && touched.description && <Text style={{ color: Colors.red30}}>{errors.description}</Text>}
+                {errors.type && touched.type && <Text style={{ color: Colors.red30 }}>{errors.type}</Text>}
 
                 <View style={global.field}>
                   <Text subtitle>Type</Text>
@@ -249,7 +250,7 @@ const CreateProduct = () => {
                     }}
                   />
                 </View>
-                {errors.price && touched.price && <Text style={{ color: Colors.red30}}>{errors.price}</Text>}
+                {errors.price && touched.price && <Text style={{ color: Colors.red30 }}>{errors.price}</Text>}
 
                 <View style={global.field}>
                   <Text subtitle>Amount</Text>
@@ -267,7 +268,7 @@ const CreateProduct = () => {
                     ))}
                   </Picker>
                 </View>
-                {errors.amount && touched.amount && <Text style={{ color: Colors.red30}}>{errors.amount}</Text>}
+                {errors.amount && touched.amount && <Text style={{ color: Colors.red30 }}>{errors.amount}</Text>}
 
                 <View style={global.field}>
                   <Text subtitle>Image</Text>

@@ -241,7 +241,7 @@ const Register = () => {
         email: values.email,
         address: values.address,
         location: values.location,
-        // images: images,
+        images: images,
         business: values.business,
         description: values.description,
         website: values.website,

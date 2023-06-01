@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react"
 import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native"
 import CurrencyInput from 'react-native-currency-input'
 import { Button, Colors, DateTimePicker, KeyboardAwareScrollView, LoaderScreen, Picker, Text, TextField, View } from "react-native-ui-lib"
+import * as Yup from 'yup'
 import { auth, db } from "../../firebase"
 import { global } from "../../style"
 
@@ -79,6 +80,17 @@ const CreateTransaction = () => {
     )
   }
 
+  const validate = Yup.object().shape({
+    party: Yup.string().required('Party is required'), 
+    type: Yup.string().required('Type is required'), 
+    price: Yup.number().required('Type is required'), 
+    product: Yup.string().required('Product is required'), 
+    label: Yup.string().required('Label is required'), 
+    category: Yup.string().required('Category is required'), 
+    notes: Yup.string().required('Notes is required'), 
+    date: Yup.date().required('Date is required')
+  });
+
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
@@ -86,6 +98,7 @@ const CreateTransaction = () => {
           <Formik
             initialValues={{ user: auth.currentUser.uid, party: '', type: '', price: 0.00, product: '', label: '', category: '', notes: '', createdAt: new Date(), date: new Date() }}
             onSubmit={onSubmit}
+            validationSchema={validate}
           >
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
               <View flex>
@@ -132,6 +145,7 @@ const CreateTransaction = () => {
                       placeholder="Transaction Date" 
                       pm 
                     />
+                    {errors.type && touched.type && <Text style={{ color: Colors.red30 }}>{errors.type}</Text>}
                   </View>
                 </View>
 
@@ -148,6 +162,7 @@ const CreateTransaction = () => {
                     migrate
                   />
                 </View>
+                {errors.party && touched.party && <Text style={{ color: Colors.red30 }}>{errors.party}</Text>}
 
                 <View style={global.field}>
                   <Text subtitle>Product</Text>
@@ -215,6 +230,7 @@ const CreateTransaction = () => {
                     migrate
                   />
                 </View>
+                {errors.notes && touched.notes && <Text style={{ color: Colors.red30 }}>{errors.notes}</Text>}
 
                 <View flexG />
 

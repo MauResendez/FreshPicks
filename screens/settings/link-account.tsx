@@ -83,8 +83,10 @@ const LinkAccount = () => {
 											textProps={{
 												placeholder: 'Enter a phone number...'
 											}}
+                      disabled={true}
 										/>
 									</View>
+                  {errors.phone && touched.phone && <Text style={{ color: Colors.red30 }}>{errors.phone}</Text>}
 
                   <View style={global.field}>
                     <Text subtitle>Email *</Text>

@@ -4,6 +4,7 @@ import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
 import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from 'react-native-ui-lib';
+import * as Yup from 'yup';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
 
@@ -41,16 +42,23 @@ const UpdatePersonal = () => {
     )
   }
 
+  const validate = Yup.object().shape({ 
+    name: Yup.string().required("Name is required"), 
+    email: Yup.string().required("Email is required"), 
+    // location: Yup.array().required("Address is required"),
+  });
+
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView contentContainerStyle={global.flex}>
           <Formik 
-            initialValues={{ name: user.name, email: user.email, address: user.address, location: user.location } || { name: "", email: "", address: "", location: "" }} 
-            onSubmit={onSubmit}
             enableReinitialize={true}
+            initialValues={{ name: user.name, email: user.email } || { name: "", email: "" }} 
+            onSubmit={onSubmit}
+            validationSchema={validate}
           >
-            {({ handleChange, handleBlur, handleSubmit, values }) => (
+					  {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
               <View flex style={global.container}>
                 <View style={global.field}>
                   <Text subtitle>Full Name *</Text>
@@ -64,6 +72,7 @@ const UpdatePersonal = () => {
                     validate={'required'} 
                   />
                 </View>
+                {errors.name && touched.name && <Text style={{ color: Colors.red30 }}>{errors.name}</Text>}
 
                 <View style={global.field}>
                   <Text subtitle>Email *</Text>
@@ -77,6 +86,7 @@ const UpdatePersonal = () => {
                     validate={'required'} 
                   />
                 </View>
+                {errors.email && touched.email && <Text style={{ color: Colors.red30 }}>{errors.email}</Text>}
 
                 <View flexG />
 

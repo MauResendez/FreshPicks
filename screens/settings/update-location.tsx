@@ -61,7 +61,7 @@ const UploadLocation = () => {
 
   const validate = Yup.object().shape({ 
     address: Yup.string().required("Address is required"), 
-    // location: Yup.array().required("Address is required"),
+    location: Yup.array().required("Location is required"),
   });
 
   return (
@@ -146,7 +146,7 @@ const UploadLocation = () => {
 						// 		/>
 						// 	</View>
 						// </MapView>
-						<KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]} keyboardShouldPersistTaps="always">
+						<KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]}>
 							<Text subtitle>Business Address *</Text>
 							<GooglePlacesAutocomplete
 								textInputProps={{
@@ -196,9 +196,6 @@ const UploadLocation = () => {
 									useOnPlatform: "web"
 								}}
 							/>
-							{errors.address && touched.address && <Text style={{ color: Colors.red30 }}>{errors.address}</Text>}
-
-							<View flexG />
 
 							<Button 
 								backgroundColor={Colors.primary}
