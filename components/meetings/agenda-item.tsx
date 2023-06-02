@@ -27,10 +27,7 @@ const AgendaItem = (props: ItemProps) => {
 
   return (
     <TouchableOpacity onPress={itemPressed} style={styles.item}>
-      <View>
-        <Text style={styles.itemHourText}>{item.meetAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-        <Text style={styles.itemDurationText}>{item.duration}</Text>
-      </View>
+      <Text style={styles.itemHourText}>{item.meetAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
       <Text style={styles.itemTitleText}>{item.title}</Text>
       <View style={styles.itemButtonContainer}>
         <Button color={'grey'} title={'Info'} onPress={buttonPressed}/>
@@ -44,11 +41,13 @@ export default React.memo(AgendaItem);
 
 const styles = StyleSheet.create({
   item: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
     backgroundColor: 'white',
     borderBottomWidth: 1,
     borderBottomColor: 'lightgrey',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: "center",
   },
   itemHourText: {
     color: 'black'

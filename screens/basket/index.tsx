@@ -62,9 +62,11 @@ const Basket = () => {
       farmer: orderFarmer.id,
       products: result,
       total: Number(orderTotal.toFixed(2)),
-      status: "PENDING",
+      status: "Pending",
       createdAt: new Date(),
-      meetAt: null
+      meetAt: null,
+      title: `Order for ${orderUser.name}`,
+      duration: "30m"
     }).then(async () => {
       handleChat();
     }).catch((e) => alert(e.message));

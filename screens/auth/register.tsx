@@ -581,7 +581,7 @@ const Register = () => {
 
     return (
       <ScrollView contentContainerStyle={[global.container, global.flex]}>
-        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+        <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
@@ -593,7 +593,7 @@ const Register = () => {
           />
           <Checkbox value={monday.enable} onValueChange={() => setMonday({ ...monday, enable: !monday.enable })} style={global.checkbox} />
         </View>
-        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+        <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
@@ -605,7 +605,7 @@ const Register = () => {
           />
           <Checkbox value={tuesday.enable} onValueChange={() => setTuesday({ ...tuesday, enable: !tuesday.enable })} style={global.checkbox} />
         </View>
-        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+        <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
@@ -617,7 +617,7 @@ const Register = () => {
           />
           <Checkbox value={wednesday.enable} onValueChange={() => setWednesday({ ...wednesday, enable: !wednesday.enable })} style={global.checkbox} />
         </View>
-        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+        <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
@@ -629,7 +629,7 @@ const Register = () => {
           />
           <Checkbox value={thursday.enable} onValueChange={() => setThursday({ ...thursday, enable: !thursday.enable })} style={global.checkbox} />
         </View>
-        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+        <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
@@ -641,7 +641,7 @@ const Register = () => {
           />
           <Checkbox value={friday.enable} onValueChange={() => setFriday({ ...friday, enable: !friday.enable })} style={global.checkbox} />
         </View>
-        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+        <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
@@ -653,7 +653,7 @@ const Register = () => {
           />
           <Checkbox value={saturday.enable} onValueChange={() => setSaturday({ ...saturday, enable: !saturday.enable })} style={global.checkbox} />
         </View>
-        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+        <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}

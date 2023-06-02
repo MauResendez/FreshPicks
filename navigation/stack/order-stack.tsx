@@ -1,18 +1,17 @@
 import React from "react";
 
-import Dashboard from "../../screens/dashboard";
-
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Report from "../../screens/dashboard/report";
-import Instructions from "../../screens/instructions";
+import Conversation from "../../screens/chat/conversation";
+import Meeting from "../../screens/meetings/meeting";
+import Orders from "../../screens/orders";
 
 const Stack = createNativeStackNavigator();
 
-const DashboardStack = () => {
+const OrderStack = () => {
   return (
     <Stack.Navigator 
-      initialRouteName="Dashboard" 
-      screenOptions={{
+      initialRouteName="Orders" 
+      screenOptions={{ 
         headerShown: true,
         // headerTitle: () => (
         //   <Image
@@ -24,11 +23,11 @@ const DashboardStack = () => {
         headerTitleAlign: "center",
       }}
     >
-      <Stack.Screen name="Dashboard" component={Dashboard} />
-      <Stack.Screen name="Report" component={Report} />
-      <Stack.Screen name="Instructions" component={Instructions} />
+      <Stack.Screen name="Orders" component={Orders} />
+      <Stack.Screen name="Meeting" component={Meeting} />
+      <Stack.Screen name="Conversation" component={Conversation} />
     </Stack.Navigator>
   )
 }
 
-export default DashboardStack
+export default OrderStack

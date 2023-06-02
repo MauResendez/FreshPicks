@@ -63,7 +63,7 @@ const Meeting = () => {
       farmer: orderFarmer.id,
       products: result,
       total: Number(orderTotal.toFixed(2)),
-      status: "PENDING",
+      status: "Pending",
       createdAt: new Date(),
     })
       .then(async (doc) => {

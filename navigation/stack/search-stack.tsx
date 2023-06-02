@@ -8,6 +8,7 @@ import Products from "../../screens/search/products";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Basket from "../../screens/basket";
+import Instructions from "../../screens/instructions";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,7 @@ const SearchStack = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Conversation" component={Conversation} />
       <Stack.Screen name="Basket" component={Basket} />
+      <Stack.Screen name="Instructions" component={Instructions} />
     </Stack.Navigator>
   )
 }

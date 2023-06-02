@@ -319,7 +319,7 @@ const AddBusiness = () => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
-      <KeyboardAwareScrollView contentContainerStyle={global.container} keyboardShouldPersistTaps="always">
+      <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]} keyboardShouldPersistTaps="always">
         <Text subtitle>Business Address *</Text>
         <GooglePlacesAutocomplete
           textInputProps={{
@@ -381,7 +381,7 @@ const AddBusiness = () => {
 
     return (
       <ScrollView contentContainerStyle={[global.container, global.flex]}>
-        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+        <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
@@ -393,7 +393,7 @@ const AddBusiness = () => {
           />
           <Checkbox value={monday.enable} onValueChange={() => setMonday({ ...monday, enable: !monday.enable })} style={global.checkbox} />
         </View>
-        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+        <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
@@ -405,7 +405,7 @@ const AddBusiness = () => {
           />
           <Checkbox value={tuesday.enable} onValueChange={() => setTuesday({ ...tuesday, enable: !tuesday.enable })} style={global.checkbox} />
         </View>
-        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+        <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
@@ -417,7 +417,7 @@ const AddBusiness = () => {
           />
           <Checkbox value={wednesday.enable} onValueChange={() => setWednesday({ ...wednesday, enable: !wednesday.enable })} style={global.checkbox} />
         </View>
-        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+        <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
@@ -429,7 +429,7 @@ const AddBusiness = () => {
           />
           <Checkbox value={thursday.enable} onValueChange={() => setThursday({ ...thursday, enable: !thursday.enable })} style={global.checkbox} />
         </View>
-        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+        <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
@@ -441,7 +441,7 @@ const AddBusiness = () => {
           />
           <Checkbox value={friday.enable} onValueChange={() => setFriday({ ...friday, enable: !friday.enable })} style={global.checkbox} />
         </View>
-        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+        <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
@@ -453,7 +453,7 @@ const AddBusiness = () => {
           />
           <Checkbox value={saturday.enable} onValueChange={() => setSaturday({ ...saturday, enable: !saturday.enable })} style={global.checkbox} />
         </View>
-        <View row spread style={{ paddingVertical: 4, alignItems: "center" }}>
+        <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
@@ -466,28 +466,260 @@ const AddBusiness = () => {
           <Checkbox value={sunday.enable} onValueChange={() => setSunday({ ...sunday, enable: !sunday.enable })} style={global.checkbox} />
 
           <Dialog
-            visible={true}
+            visible={monday.enable}
             centerH
             centerV
           >
-            <View margin-16 row spread>
-              <DateTimePicker 
-                mode="time" 
-                label="Start Time" 
-                timeFormat={'HH:mm A'} 
-                display="clock" 
-              />
-              <DateTimePicker mode="time" label="End Time" timeFormat={'HH:mm A'} />
+            <View padding-24>
+              <View>
+                <Text subtitle>Monday</Text>
+              </View>
+              <View row spread>
+                <View>
+                  <Text h2>Start Time</Text>
+                  <DateTimePicker
+                    value={new Date()} 
+                    mode="time" 
+                    is24Hour={true} 
+                    timeFormat={'HH:mm A'} 
+                    display="clock"
+                  />
+                </View>
+
+                <View>
+                  <Text h2>End Time</Text>
+                  <DateTimePicker
+                    value={new Date()} 
+                    mode="time" 
+                    is24Hour={false} 
+                    timeFormat={'HH:mm A'}
+                    display="clock" 
+                  />
+                </View>
+              </View>
+              <View paddingT-24 row spread>
+                {/* <Button text60 label="Save" /> */}
+                <Button 
+                  backgroundColor={Colors.primary}
+                  color={Colors.white}
+                  label={"Cancel"} 
+                  labelStyle={{ fontWeight: '600', padding: 4 }} 
+                  style={global.btn} 
+                  onPress={() => navigation.navigate("Register")}  
+                  disabled={!monday.enable}
+                />
+                <Button 
+                  backgroundColor={Colors.primary}
+                  color={Colors.white}
+                  label={"Save"} 
+                  labelStyle={{ fontWeight: '600', padding: 4 }} 
+                  style={global.btn} 
+                  onPress={() => navigation.navigate("Register")}  
+                  disabled={!monday.enable}
+                />
+              </View>
+            </View>
+            
+          </Dialog>
+
+          <Dialog
+            visible={tuesday.enable}
+            centerH
+            centerV
+          >
+            <View padding-24 row spread>
+              <View>
+                <Text h2>Start Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={true} 
+                  timeFormat={'HH:mm A'} 
+                  display="clock"
+                />
+              </View>
+
+              <View>
+                <Text h2>End Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={false} 
+                  timeFormat={'HH:mm A'}
+                  display="clock" 
+                />
+              </View>
+            </View>
+            <View margin-16 right>
+              <Button text60 label="Save" />
+            </View>
+          </Dialog>
+
+          <Dialog
+            visible={wednesday.enable}
+            centerH
+            centerV
+          >
+            <View padding-24 row spread>
+              <View>
+                <Text h2>Start Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={true} 
+                  timeFormat={'HH:mm A'} 
+                  display="clock"
+                />
+              </View>
+
+              <View>
+                <Text h2>End Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={false} 
+                  timeFormat={'HH:mm A'}
+                  display="clock" 
+                />
+              </View>
+            </View>
+            <View margin-16 right>
+              <Button text60 label="Save" />
+            </View>
+          </Dialog>
+
+          <Dialog
+            visible={thursday.enable}
+            centerH
+            centerV
+          >
+            <View padding-24 row spread>
+              <View>
+                <Text h2>Start Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={true} 
+                  timeFormat={'HH:mm A'} 
+                  display="clock"
+                />
+              </View>
+
+              <View>
+                <Text h2>End Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={false} 
+                  timeFormat={'HH:mm A'}
+                  display="clock" 
+                />
+              </View>
+            </View>
+            <View margin-16 right>
+              <Button text60 label="Save" />
+            </View>
+          </Dialog>
+
+          <Dialog
+            visible={friday.enable}
+            centerH
+            centerV
+          >
+            <View padding-24 row spread>
+              <View>
+                <Text h2>Start Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={true} 
+                  timeFormat={'HH:mm A'} 
+                  display="clock"
+                />
+              </View>
+
+              <View>
+                <Text h2>End Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={false} 
+                  timeFormat={'HH:mm A'}
+                  display="clock" 
+                />
+              </View>
+            </View>
+            <View margin-16 right>
+              <Button text60 label="Save" />
+            </View>
+          </Dialog>
+
+          <Dialog
+            visible={saturday.enable}
+            centerH
+            centerV
+          >
+            <View padding-24 row spread>
+              <View>
+                <Text h2>Start Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={true} 
+                  timeFormat={'HH:mm A'} 
+                  display="clock"
+                />
+              </View>
+
+              <View>
+                <Text h2>End Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={false} 
+                  timeFormat={'HH:mm A'}
+                  display="clock" 
+                />
+              </View>
+            </View>
+            <View margin-16 right>
+              <Button text60 label="Save" />
+            </View>
+          </Dialog>
+
+          <Dialog
+            visible={sunday.visible}
+            centerH
+            centerV
+          >
+            <View padding-24 row spread>
+              <View>
+                <Text h2>Start Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={true} 
+                  timeFormat={'HH:mm A'} 
+                  display="clock"
+                />
+              </View>
+
+              <View>
+                <Text h2>End Time</Text>
+                <DateTimePicker
+                  value={new Date()} 
+                  mode="time" 
+                  is24Hour={false} 
+                  timeFormat={'HH:mm A'}
+                  display="clock" 
+                />
+              </View>
             </View>
             <View margin-16 right>
               <Button text60 label="Save" />
             </View>
           </Dialog>
         </View>
-
-        
-
-        {/* <Dialog visible={true} onDismiss={() => console.log('dismissed')} position={"center"}><Text text60>Content</Text></Dialog> */}
 
         <View flexG />
 
@@ -500,7 +732,7 @@ const AddBusiness = () => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
-      <View style={global.container}>
+      <View style={[global.container, global.flex]}>
         <View style={global.field}>
           <Text subtitle>Add Your Business</Text>
         </View>
