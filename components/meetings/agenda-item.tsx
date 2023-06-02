@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import isEmpty from 'lodash/isEmpty';
 import React, { useCallback } from 'react';
 import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -8,9 +9,11 @@ interface ItemProps {
 
 const AgendaItem = (props: ItemProps) => {
   const {item} = props;
+  const navigation = useNavigation<any>();
   
   const buttonPressed = useCallback(() => {
-    Alert.alert('Show me more');
+    console.log(item.id)
+    navigation.navigate("Order", {id: item.id});
   }, []);
 
   const itemPressed = useCallback(() => {

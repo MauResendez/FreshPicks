@@ -19,7 +19,6 @@ const MapRow = (props) => {
 			<ListItem.Part column>
 				<Text h2 numberOfLines={3}>{item.business}</Text>
 				<Text h3>{item.address}</Text>
-				<Text h3>{item.name}</Text>
 			</ListItem.Part>
 		</ListItem> 
 	)

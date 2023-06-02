@@ -6,7 +6,7 @@ import { GeoPoint, doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Keyboard, Platform, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Alert, Keyboard, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Button, Carousel, Checkbox, Colors, DateTimePicker, Image, KeyboardAwareScrollView, LoaderScreen, PageControl, Text, TextField, Toast, View, Wizard } from 'react-native-ui-lib';
 import { Dialog } from 'react-native-ui-lib/src/incubator';
@@ -842,25 +842,5 @@ const AddBusiness = () => {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1
-  },
-  container: {
-    flex: 1
-  },
-  allTypes: {
-    justifyContent: 'space-between'
-  },
-  stepContainer: {
-    flex: 1,
-    // justifyContent: 'space-between',
-    margin: 24
-  },
-  underlineStyleHighLighted: {
-    borderColor: "#03DAC6",
-  },
-});
 
 export default AddBusiness

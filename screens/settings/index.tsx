@@ -5,7 +5,7 @@ import { signOut } from "firebase/auth";
 import { arrayRemove, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Alert, ScrollView, Share, StyleSheet } from "react-native";
+import { Alert, ScrollView, Share } from "react-native";
 import { Colors, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 
@@ -419,123 +419,5 @@ const Settings = () => {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  padding: {
-    paddingVertical: 0
-  },
-  header: {
-    backgroundColor: "white",
-    padding: 16 
-  },
-  cover: {
-    flex: 1,
-    height: "auto",
-    width: "100%",
-  },
-  logo: {
-    flex: 1,
-    height: "auto",
-    width: "100%",
-  },
-  image: {
-    ...Platform.select({
-      web: {
-        padding: 16, 
-        width: "100%", 
-        height: 250 
-      },
-      ios: {
-        padding: 16, 
-        width: "100%", 
-        height: 200 
-      },
-      android: {
-        padding: 16, 
-        width: "100%", 
-        height: 200
-      }
-    })
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  address: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#666",
-    textAlign: "center"
-  },
-  update: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    width: 300,
-    padding: 16
-  },
-  payments: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    flexWrap: "wrap",
-    width: "100%",
-    paddingHorizontal: 16
-  },
-  info: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
-    marginVertical: 20,
-  },
-  infoItem: {
-    justifyContent: "center",
-  },
-  infoTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 5,
-    textAlign: "center",
-  },
-  infoSubtitle: {
-    fontSize: 12,
-    color: "#666",
-    textAlign: "center",
-  },
-  tab: {
-    height: "100%",
-    flexDirection: "row"
-  },
-  text: {
-    fontSize: 20,
-    lineHeight: 20,
-    letterSpacing: 1,
-    color: "white",
-  },
-  buttons: {
-    alignItems: "center",
-    alignContent: "center",
-    justifyContent: "center",
-    borderRadius: 4,
-    elevation: 2,
-    backgroundColor: Colors.primary,
-    marginHorizontal: 0,
-    paddingVertical: 12,
-  },
-  activeTabTextColor: {
-    color: "#eeaf3b"
-  },
-  tabTextColor: {
-    color: "black"
-  },
-  button: {
-    width: "100%"
-  },
-  subtitle: {
-    padding: 12,
-    marginTop: 4
-  }
-});
 
 export default Settings;

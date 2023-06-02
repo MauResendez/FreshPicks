@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Conversation from "../../screens/chat/conversation";
 import History from "../../screens/history";
+import Order from "../../screens/orders/order";
 
 const Stack = createStackNavigator();
 
@@ -13,20 +14,14 @@ const HistoryStack = () => {
       initialRouteName="History" 
       screenOptions={{ 
         headerShown: true,
-        // headerTitle: () => (
-        //   <Image
-        //     style={Platform.OS == "android" ? global.androidHeader : global.iosHeader}
-        //     source={require("../../assets/logo.png")}
-        //     resizeMode="contain"
-        //   />
-        // ),
+        headerTitleAlign: "center",
         headerTitleStyle: {
           fontSize: 17,
         }, 
-        headerTitleAlign: "center",
       }}
     >      
       <Stack.Screen name="History" component={History} />
+      <Stack.Screen name="Order" component={Order} />
       <Stack.Screen name="Conversation" component={Conversation} />
     </Stack.Navigator>
   )

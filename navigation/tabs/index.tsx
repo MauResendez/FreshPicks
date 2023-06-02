@@ -12,6 +12,7 @@ import { Colors, LoaderScreen } from "react-native-ui-lib";
 import Instructions from "../../screens/instructions";
 import BasketStack from "../stack/basket-stack";
 import DashboardStack from "../stack/dashboard-stack";
+import HistoryStack from "../stack/history-stack";
 import MapStack from "../stack/map-stack";
 import OrderStack from "../stack/order-stack";
 import ProductStack from "../stack/product-stack";
@@ -120,7 +121,7 @@ const MainTabs = () => {
       <Tab.Screen
         // name={user?.role === "Farmer" ? "Meetings" : "History"}
         name={"Fourth"}
-        component={user?.role === "Farmer" ? OrderStack : OrderStack}
+        component={user?.role === "Farmer" ? OrderStack : HistoryStack}
         options={({ route }) => {
           let routeName = user?.role === "Farmer" ? "Meetings" : "History";
           const current = getFocusedRouteNameFromRoute(route) ?? routeName;

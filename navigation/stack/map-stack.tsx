@@ -13,17 +13,10 @@ const MapStack = () => {
       initialRouteName="Map" 
       screenOptions={{ 
         headerShown: true,
-        // headerTitle: () => (
-        //   <Image
-        //     style={Platform.OS == "android" ? global.androidHeader : global.iosHeader}
-        //     source={require("../../assets/logo.png")}
-        //     resizeMode="contain"
-        //   />
-        // ),
+        headerTitleAlign: "center",
         headerTitleStyle: {
           fontSize: 17,
-        },
-        headerTitleAlign: "center",
+        }, 
       }}
     >      
       <Stack.Screen name="Map" component={Map} />

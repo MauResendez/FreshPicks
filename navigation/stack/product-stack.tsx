@@ -18,14 +18,10 @@ const ProductStack = () => {
       initialRouteName="Products" 
       screenOptions={{ 
         headerShown: true,
-        // headerTitle: () => (
-        //   <Image
-        //     style={Platform.OS == "android" ? global.androidHeader : global.iosHeader}
-        //     source={require("../../assets/logo.png")}
-        //     resizeMode="contain"
-        //   />
-        // ), 
         headerTitleAlign: "center",
+        headerTitleStyle: {
+          fontSize: 17,
+        }, 
       }}
     >
       <Stack.Screen name="Products" component={Dashboard} />

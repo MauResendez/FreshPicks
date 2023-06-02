@@ -17,17 +17,11 @@ const SearchStack = () => {
     <Stack.Navigator 
       initialRouteName="Search"
       screenOptions={{
-        // headerTitle: () => (
-        //   <Image
-        //     style={Platform.OS == "android" ? global.androidHeader : global.iosHeader}
-        //     source={require("../../assets/logo.png")}
-        //     resizeMode="contain"
-        //   />
-        // ),
+        headerShown: true,
+        headerTitleAlign: "center",
         headerTitleStyle: {
           fontSize: 17,
-        },
-        headerTitleAlign: "center",
+        }, 
       }}
     >
       <Stack.Screen name="Search" component={Search} />

@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import { addDoc, collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableWithoutFeedback } from "react-native";
-import { Button, Colors, ListItem, LoaderScreen, Text, View } from 'react-native-ui-lib';
+import { Keyboard, Platform, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { Button, Colors, KeyboardAwareScrollView, ListItem, LoaderScreen, Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import AddressRow from '../../components/basket/address-row';
 import BasketRow from '../../components/basket/basket-row';
@@ -126,52 +126,50 @@ const Basket = () => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAvoidingView style={global.flex} behavior={Platform.OS == "ios" ? "padding" : "height"}>
-          <ScrollView contentContainerStyle={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
-            <ListItem
-              activeOpacity={0.3}
-              height={60}
-            >
-              <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
-                <Text h2 numberOfLines={1} style={{ color: "black" }}>
-                  Basket
-                </Text>
-              </ListItem.Part>
-            </ListItem>
+        <KeyboardAwareScrollView contentContainerStyle={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
+          <ListItem
+            activeOpacity={0.3}
+            height={60}
+          >
+            <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
+              <Text h2 numberOfLines={1} style={{ color: "black" }}>
+                Basket
+              </Text>
+            </ListItem.Part>
+          </ListItem>
 
-            <BusinessRow item={orderFarmer} />
+          <BusinessRow item={orderFarmer} />
 
-            <AddressRow item={orderFarmer} />
-            
-            <ListItem
-              activeOpacity={0.3}
-              height={60}
-            >
-              <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
-                <Text h2 numberOfLines={1} style={{ color: "black" }}>
-                  Your items
-                </Text>
-              </ListItem.Part>
-            </ListItem>
+          <AddressRow item={orderFarmer} />
+          
+          <ListItem
+            activeOpacity={0.3}
+            height={60}
+          >
+            <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
+              <Text h2 numberOfLines={1} style={{ color: "black" }}>
+                Your items
+              </Text>
+            </ListItem.Part>
+          </ListItem>
 
-            {Object.entries(groupedItems).map(([key, items]: any) => (
-              <BasketRow key={key} item={items[0]} count={items.length} />
-            ))}
+          {Object.entries(groupedItems).map(([key, items]: any) => (
+            <BasketRow key={key} item={items[0]} count={items.length} />
+          ))}
 
-            <View flexG />
+          <View flexG />
 
-            <View style={styles.cart}>
-              <Button 
-                backgroundColor={Colors.primary}
-                color={Colors.white}
-                label={"Send Meeting Request"} 
-                labelStyle={{ fontWeight: '600', padding: 8 }} 
-                style={global.btnTest} 
-                onPress={createOrder}          
-              />
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
+          <View style={styles.cart}>
+            <Button 
+              backgroundColor={Colors.primary}
+              color={Colors.white}
+              label={"Send Order Request"} 
+              labelStyle={{ fontWeight: '600', padding: 8 }} 
+              style={global.btnTest} 
+              onPress={createOrder}          
+            />
+          </View>
+        </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
     </View>
   );

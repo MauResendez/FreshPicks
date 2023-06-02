@@ -1,4 +1,4 @@
-import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import * as Linking from 'expo-linking';
 import { addDoc, collection, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
 import React, { createRef, useEffect, useState } from "react";
@@ -10,13 +10,7 @@ import { selectOrderItems } from "../../features/order-slice";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
-const Profile = () => {
-  const {
-    params: {
-      id
-    },
-  } = useRoute<any>();
-
+const Profile = ({ route }) => {
   const navigation = useNavigation<any>();
   const isFocused = useIsFocused();
   const carousel = createRef<typeof Carousel>();
@@ -83,19 +77,19 @@ const Profile = () => {
       setConsumer({...data, id: auth.currentUser.uid});
     });
 
-    getDoc(doc(db, "Users", id)).then((docSnapshot) => {
+    getDoc(doc(db, "Users", route.params.id)).then((docSnapshot) => {
       const data = docSnapshot.data();
-      setFarmer({...data, id: id});
+      setFarmer({...data, id: route.params.id});
     });
 
-    onSnapshot(query(collection(db, "Products"), where("user", "==", id)), async (snapshot) => {
+    onSnapshot(query(collection(db, "Products"), where("user", "==", route.params.id)), async (snapshot) => {
       setProducts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
   }, []);
 
   useEffect(() => {
     if (consumer && farmer) {
-      onSnapshot(query(collection(db, "Chats"), where("consumer", "==", auth.currentUser.uid), where("farmer", "==", id)), async (snapshot) => {
+      onSnapshot(query(collection(db, "Chats"), where("consumer", "==", auth.currentUser.uid), where("farmer", "==", route.params.id)), async (snapshot) => {
         setChat(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
       });
     }

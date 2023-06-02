@@ -185,7 +185,6 @@ const App = () => {
       <StatusBar style={"auto"} animated />
       <ConnectionStatusBar label={"LSFKDJlj"} onConnectionChange={() => console.log('connection changed')}/>
       {auth.currentUser ? <MainStack /> : <AuthStack />}
-      
     </Provider>
   );
 }
