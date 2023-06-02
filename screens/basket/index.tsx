@@ -66,7 +66,6 @@ const Basket = () => {
       createdAt: new Date(),
       meetAt: null,
       title: `Order for ${orderUser.name}`,
-      duration: "30m"
     }).then(async () => {
       handleChat();
     }).catch((e) => alert(e.message));

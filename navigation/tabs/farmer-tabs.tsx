@@ -5,7 +5,7 @@ import { Colors } from 'react-native-ui-lib';
 import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import Instructions from '../../screens/instructions';
 import DashboardStack from '../stack/dashboard-stack';
-import MeetingStack from '../stack/meeting-stack';
+import OrderStack from '../stack/order-stack';
 import ProductStack from '../stack/product-stack';
 import SettingStack from '../stack/setting-stack';
 import TransactionStack from '../stack/transaction-stack';
@@ -79,7 +79,7 @@ const FarmerTabs = () => {
       />
       <Tab.Screen
         name={"Fourth"}
-        component={MeetingStack}
+        component={OrderStack}
         options={({ route }) => {
           return {
             tabBarIcon: ({ color }) => (

@@ -6,8 +6,8 @@ import { AgendaList, AgendaSchedule } from 'react-native-calendars';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { LoaderScreen, TabController, View } from 'react-native-ui-lib';
 import ChatRow from '../../components/chat/chat-row';
-import AgendaItem from '../../components/meetings/agenda-item';
-import RequestRow from '../../components/meetings/request-row';
+import AgendaItem from '../../components/orders/agenda-item';
+import RequestRow from '../../components/orders/request-row';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
 interface State {
@@ -73,23 +73,10 @@ const Orders = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   const subscriber = onSnapshot(query(collection(db, "Orders"), where("consumer", "==", auth.currentUser.uid), where("status", "==", "Confirmed")), async (snapshot) => {
-  //     setMeetings(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
-  //   });
-
-  //   console.log(new Date().toISOString().split('T')[0])
-
-  //   // Unsubscribe from events when no longer in use
-  //   return () => subscriber();
-  // }, []);
-
 	useEffect(() => {
-    const subscriber = onSnapshot(query(collection(db, "Orders"), where("consumer", "==", auth.currentUser.uid)), async (snapshot) => {
+    const subscriber = onSnapshot(query(collection(db, "Orders"), where("farmer", "==", auth.currentUser.uid)), async (snapshot) => {
       setOrders(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
-
-    console.log(new Date().toISOString().split('T')[0])
 
     // Unsubscribe from events when no longer in use
     return () => subscriber();

@@ -1,14 +1,12 @@
-import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
 import { AgendaList, AgendaSchedule } from 'react-native-calendars';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { LoaderScreen, TabController, View } from 'react-native-ui-lib';
 import ChatRow from '../../components/chat/chat-row';
-import AgendaItem from '../../components/meetings/agenda-item';
-import { agendaItems, getMarkedDates } from '../../components/meetings/mocked-items';
+import AgendaItem from '../../components/orders/agenda-item';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
 interface State {
@@ -23,9 +21,6 @@ const Meetings = () => {
   const [meetings, setMeetings] = useState<any>(null);
   const [today, setToday] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigation = useNavigation<any>();
-  const ITEMS: any[] = agendaItems;
-  const marked = useRef(getMarkedDates());
 
   const FirstRoute = () => (
     <View useSafeArea flex>

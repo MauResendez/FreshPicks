@@ -101,14 +101,15 @@ const Settings = () => {
 
   useEffect(() => {
     getToken();
-  }, [])
+  }, []);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "Users", auth.currentUser.uid), (doc) => {
+    const subscriber = onSnapshot(doc(db, "Users", auth.currentUser.uid), (doc) => {
       setUser(doc.data());
     });
 
-    return unsubscribe
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
   }, [auth.currentUser.uid]);
 
   useEffect(() => {

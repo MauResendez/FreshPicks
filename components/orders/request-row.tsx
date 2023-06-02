@@ -15,10 +15,10 @@ const RequestRow = (props) => {
 
 	const onPress = () => {
 		Alert.alert(item.title, item.description, [
-			{text: 'Edit', onPress: () => navigation.navigate("Edit Product", { id: item.id })},
+			{text: 'Edit', onPress: () => navigation.navigate("Order", { id: item.id })},
 			{text: 'Cancel', style: 'cancel'},
-			{text: 'Delete', onPress: async () => deleteItem(item, "Products")},
-		])
+			{text: 'Delete', onPress: async () => deleteItem(item, "Orders")},
+		]);
 	}
 
 	return (

@@ -13,7 +13,7 @@ import Basket from "../../screens/basket";
 import DashboardStack from "../stack/dashboard-stack";
 import HistoryStack from "../stack/history-stack";
 import MapStack from "../stack/map-stack";
-import MeetingStack from "../stack/meeting-stack";
+import OrderStack from "../stack/order-stack";
 import ProductStack from "../stack/product-stack";
 import SearchStack from "../stack/search-stack";
 import SettingStack from "../stack/setting-stack";
@@ -125,8 +125,8 @@ const MainDrawer = () => {
         }}
       />
       <Drawer.Screen
-        name={user?.role === "Farmer" ? "Meetings" : "History"}
-        component={user?.role === "Farmer" ? MeetingStack : HistoryStack}
+        name={user?.role === "Farmer" ? "Orders" : "History"}
+        component={user?.role === "Farmer" ? OrderStack : HistoryStack}
         options={({ route }) => {
           let routeName = user?.role === "Farmer" ? "Meetings" : "History";
           // const current = getFocusedRouteNameFromRoute(route) ?? "Index";

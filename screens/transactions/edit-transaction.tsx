@@ -72,11 +72,14 @@ const EditTransaction = ({ route }) => {
       });
     }
   }, [route.params.id]);
-
+  
   useEffect(() => {
-    onSnapshot(query(collection(db, "Products"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
+    const subscriber = onSnapshot(query(collection(db, "Products"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
       setProducts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
     });
+
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
   }, []);
 
   useEffect(() => {
