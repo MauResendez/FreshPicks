@@ -19,6 +19,8 @@ const Search = () => {
   const [loading, setLoading] = useState(true);
   const [farmers, setFarmers] = useState(null);
   const [products, setProducts] = useState(null);
+  const [fp, setFP] = useState(null);
+  const [ff, setFF] = useState(null);
 
   const shuffle = (array) => {
     let currentIndex = array.length;
@@ -26,7 +28,6 @@ const Search = () => {
   
     // While there remain elements to shuffle.
     while (currentIndex != 0) {
-  
       // Pick a remaining element.
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
@@ -40,43 +41,59 @@ const Search = () => {
   }
 
   useEffect(() => {
+    const subscriber = onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
+      setFarmers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+    })
+
+    const subscriber2 = onSnapshot(query(collection(db, "Products"), where("user", "!=", auth.currentUser.uid)), async (snapshot) => {
+      setProducts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+    });
+
+    // Unsubscribe from events when no longer in use
+    return () => {
+      subscriber();
+      subscriber2();
+    } 
+  }, []);
+
+  useEffect(() => {
     try {
+      if (!farmers || !products) {
+        return;
+      }
+
       if (search.length == 0) {
-        onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
-          setFarmers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
-        })
-  
-        onSnapshot(query(collection(db, "Products"), where("user", "!=", auth.currentUser.uid)), async (snapshot) => {
-          setProducts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+        const ff = shuffle(farmers);
+        const fp = shuffle(products);
+
+        setFF(ff);
+        setFP(fp);
+      } else {
+        const fr = farmers.filter(result => {
+          return (result.business.toLowerCase().indexOf(search.toLowerCase()) !== -1 || result.address.toLowerCase().indexOf(search.toLowerCase()) !== -1);
+        });
+    
+        const pr = products.filter(result => {
+          return result.title.toLowerCase().indexOf(search.toLowerCase()) !== -1;
         });
   
-        return
-      }
-  
-      const filtered_farmers = farmers.filter(result => {
-        return result.business.toLowerCase().indexOf(search.toLowerCase()) !== -1;
-      });
-  
-      const filtered_listings = products.filter(result => {
-        return result.title.toLowerCase().indexOf(search.toLowerCase()) !== -1;
-      });
-
-      const sf = shuffle(filtered_farmers);
-      const pf = shuffle(filtered_listings);
-  
-      setFarmers(sf);
-      setProducts(pf);
+        const ff = shuffle(fr);
+        const fp = shuffle(pr);
+    
+        setFF(ff);
+        setFP(fp);
+      }  
     } catch (error) {
       console.log(error);
     }
-  }, [search]);
+  }, [farmers, products, search]);
 
   useEffect(() => {
-    if (farmers && products) {
+    if (ff && fp) {
       setLoading(false);
       SplashScreen.hideAsync();
     }
-  }, [farmers, products]);
+  }, [ff, fp]);
 
   if (loading) {
     SplashScreen.preventAutoHideAsync();
@@ -96,8 +113,8 @@ const Search = () => {
         contentContainerStyle={{ paddingBottom: 16 }}
         showsVerticalScrollIndicator={Platform.OS == "web"}
       >
-        <FarmerList title={"Farmers"} description={"Available Farmers"} farmers={farmers} />
-        <ProductList title={"Products"} description={"Available Products"} products={products} />
+        <FarmerList title={"Farmers"} description={"Available Farmers"} farmers={ff} />
+        <ProductList title={"Products"} description={"Available Products"} products={fp} />
       </ScrollView>
     </View>
   )

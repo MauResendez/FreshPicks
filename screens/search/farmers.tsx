@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
@@ -10,28 +9,69 @@ import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
 const Farmers = () => {
-  const navigation = useNavigation<any>();
   const [search, setSearch] = useState("");
   const [farmers, setFarmers] = useState(null);
+  const [ff, setFF] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (search.length == 0 || farmers.length == 0) {
-      onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
-        setFarmers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
-      });
-    } else {
-      onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
-        setFarmers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
-      });
+  const shuffle = (array) => {
+    let currentIndex = array.length;
+    let randomIndex;
+  
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
     }
-  }, [search]);
+  
+    return array;
+  }
 
   useEffect(() => {
-    if (farmers) {
+    const subscriber = onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
+      setFarmers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+    })
+
+    // Unsubscribe from events when no longer in use
+    return () => {
+      subscriber();
+    } 
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (!farmers) {
+        return;
+      }
+
+      if (search.length == 0) {
+        const ff = shuffle(farmers);
+
+        setFF(ff);
+      } else {
+        const fr = farmers.filter(result => {
+          return (result.business.toLowerCase().indexOf(search.toLowerCase()) !== -1 || result.address.toLowerCase().indexOf(search.toLowerCase()) !== -1);
+        });
+  
+        const ff = shuffle(fr);
+    
+        setFF(ff);
+      }  
+    } catch (error) {
+      console.log(error);
+    }
+  }, [farmers, search]);
+
+  useEffect(() => {
+    if (ff) {
       setLoading(false);
     }
-  }, [farmers]);
+  }, [ff]);
 
   if (loading) {
     return (
@@ -46,7 +86,7 @@ const Farmers = () => {
       </View>
 
       <FlashList 
-        data={farmers}
+        data={ff}
         keyExtractor={(item: any) => item.id}
         estimatedItemSize={farmers.length != 0 ? farmers.length : 150}
         renderItem={({item}) => (

@@ -11,19 +11,67 @@ import { global } from "../../style";
 const Products = () => {
   const [search, setSearch] = useState("");
   const [products, setProducts] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [fp, setFP] = useState(null);
+
+  const shuffle = (array) => {
+    let currentIndex = array.length;
+    let randomIndex;
+  
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+  }
 
   useEffect(() => {
-    if (search.length == 0) {
-      onSnapshot(query(collection(db, "Products"), where("user", "!=", auth.currentUser.uid)), async (snapshot) => {
-        setProducts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
-      });
-    } else {
-      onSnapshot(query(collection(db, "Products"), where("user", "!=", auth.currentUser.uid), where("title", ">=", search), where("title", "<=", search + "\uf8ff")), async (snapshot) => {
-        setProducts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})).filter(doc => doc.id != auth.currentUser.uid));
-      });
+    const subscriber = onSnapshot(query(collection(db, "Products"), where("user", "!=", auth.currentUser.uid)), async (snapshot) => {
+      setProducts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+    });
+
+    // Unsubscribe from events when no longer in use
+    return () => {
+      subscriber();
+    } 
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (!products) {
+        return;
+      }
+
+      if (search.length == 0) {
+        const fp = shuffle(products);
+
+        setFP(fp);
+      } else {
+        const pr = products.filter(result => {
+          return result.title.toLowerCase().indexOf(search.toLowerCase()) !== -1;
+        });
+  
+        const fp = shuffle(pr);
+    
+        setFP(fp);
+      }  
+    } catch (error) {
+      console.log(error);
     }
-  }, [search]);
+  }, [products, search]);
+
+  useEffect(() => {
+    if (fp) {
+      setLoading(false);
+    }
+  }, [fp]);
 
   useEffect(() => {
     if (products) {
@@ -44,7 +92,7 @@ const Products = () => {
       </View>
 
       <FlashList 
-        data={products}
+        data={fp}
         keyExtractor={(item: any) => item.id}
         estimatedItemSize={products.length != 0 ? products.length : 150}
         renderItem={({item}) => (

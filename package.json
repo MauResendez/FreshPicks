@@ -43,6 +43,7 @@
     "expo-store-review": "^6.2.1",
     "firebase": "^9.6.11",
     "formik": "^2.2.9",
+    "geofirestore": "^5.2.0",
     "lottie-react-native": "^5.1.5",
     "moment": "^2.29.4",
     "papaparse": "^5.4.1",
