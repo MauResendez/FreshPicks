@@ -5,7 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useCallback, useEffect, useState } from "react";
 import { Platform, StyleSheet } from "react-native";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { LoaderScreen, View } from "react-native-ui-lib";
 import MapRow from "../../components/map/map-row";
 import { auth, db } from "../../firebase";
@@ -43,11 +43,16 @@ const Map = () => {
   }
 
   useEffect(() => { 
-    onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
+    getLocation();
+
+    const subscriber = onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
       setFarmers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
 
-    getLocation();
+    // Unsubscribe from events when no longer in use
+    return () => {
+      subscriber();
+    }
   }, []);
 
   useEffect(() => {
@@ -85,9 +90,9 @@ const Map = () => {
           moveOnMarkerPress={true}
           mapType={"standard"}
           showsTraffic
-          // cacheEnabled
+          // cacheEnabled={NetInfo.fetch().}
         >
-          {/* {farmers.map((farmer, index) => {
+          {farmers.map((farmer, index) => {
             return (
               <Marker 
                 key={index} 
@@ -100,7 +105,7 @@ const Map = () => {
                 }}
               />
             );
-          })} */}
+          })}
         </MapView>
       </View>
       <View style={styles.farmers}>

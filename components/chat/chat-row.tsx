@@ -48,18 +48,7 @@ const ChatRow = (props) => {
   }, [consumer, farmer]);
 
   if (loading) {
-    return (
-      <ListItem
-        activeBackgroundColor={"white"}
-        activeOpacity={0.3}
-        style={{ backgroundColor: "white", padding: 8, height: "auto" }}
-        onPress={conversation}
-      >
-        <ListItem.Part column>
-          <Text h2 numberOfLines={1}>Loading...</Text>
-        </ListItem.Part>
-      </ListItem>
-    )
+    return null
   }
 
   return (

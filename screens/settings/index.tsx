@@ -240,7 +240,7 @@ const Settings = () => {
           backgroundColor={Colors.white}
           activeOpacity={0.3}
           height={60}
-          onPress={() => navigation.navigate("Update Personal Information")}
+          onPress={() => navigation.navigate("Personal Information")}
         >
           <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
             <Text h3 numberOfLines={1}>
@@ -290,7 +290,7 @@ const Settings = () => {
             backgroundColor={Colors.white}
             activeOpacity={0.3}
             height={60}
-            onPress={() => navigation.navigate("Update Farmer Information")}
+            onPress={() => navigation.navigate("Farmer Information")}
           >
             <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
               <Text h3 numberOfLines={1}>
@@ -304,7 +304,7 @@ const Settings = () => {
             backgroundColor={Colors.white}
             activeOpacity={0.3}
             height={60}
-            onPress={() => navigation.navigate("Update Farmer Location")}
+            onPress={() => navigation.navigate("Farmer Location")}
           >
             <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
               <Text h3 numberOfLines={1}>
@@ -318,7 +318,7 @@ const Settings = () => {
             backgroundColor={Colors.white}
             activeOpacity={0.3}
             height={60}
-            onPress={() => navigation.navigate("Update Farmer Schedule")}
+            onPress={() => navigation.navigate("Farmer Schedule")}
           >
             <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
               <Text h3 numberOfLines={1}>

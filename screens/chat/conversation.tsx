@@ -157,18 +157,24 @@ const Conversation = ({ route }) => {
   }
 
   useEffect(() => {
-    onSnapshot(doc(db, "Chats", route.params.id), (doc) => {
+    const subscriber = onSnapshot(doc(db, "Chats", route.params.id), (doc) => {
       setChat(doc.data());
     });
+
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
   }, []);
 
   useEffect(() => {
-    onSnapshot(chatsRef, async (snapshot) => {
+    const subscriber = onSnapshot(chatsRef, async (snapshot) => {
       setMessages(snapshot.data().messages.map(message => ({
         ...message,
         createdAt: message.createdAt.toDate(),
       })));
     });
+
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
   }, [route.params.id]);
 
   useEffect(() => {

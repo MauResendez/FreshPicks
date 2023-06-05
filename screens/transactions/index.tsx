@@ -83,11 +83,14 @@ const Transactions = () => {
       />
     </View>
   );
-  
+
   useEffect(() => {
-    onSnapshot(query(collection(db, "Transactions"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
+    const subscriber = onSnapshot(query(collection(db, "Transactions"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
       setTransactions(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
     });
+
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
   }, []);
 
   useEffect(() => {

@@ -50,7 +50,7 @@ const HistoryRow = (props) => {
         </View>
         <View row style={global.spaceBetween}>
           <Text h3>{farmer?.address}</Text>
-          <Text h3>{item.createdAt.toDate().toLocaleDateString()}</Text>
+          <Text h3>{item.status}</Text>
         </View>
       </ListItem.Part>
     </ListItem>

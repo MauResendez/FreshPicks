@@ -80,13 +80,19 @@ const Products = () => {
   );
 
   useEffect(() => {
-    onSnapshot(query(collection(db, "Products"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
+    const subscriber = onSnapshot(query(collection(db, "Products"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
       setProducts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
     });
 
-    onSnapshot(query(collection(db, "Subscriptions"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
+    const subscriber2 = onSnapshot(query(collection(db, "Subscriptions"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
       setSubscriptions(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
     });
+
+    // Unsubscribe from events when no longer in use
+    return () => {
+      subscriber();
+      subscriber2();
+    } 
   }, []);
 
   useEffect(() => {

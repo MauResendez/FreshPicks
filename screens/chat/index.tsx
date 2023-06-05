@@ -21,10 +21,13 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    onSnapshot(doc(db, "Users", auth.currentUser.uid), (doc) => {
+    const subscriber = onSnapshot(doc(db, "Users", auth.currentUser.uid), (doc) => {
       setUser(doc.data());
     });
-  }, [])
+
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
 
   useEffect(() => {
     if (!user) {

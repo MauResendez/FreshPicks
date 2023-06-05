@@ -91,15 +91,18 @@ const AddBusiness = () => {
       compressed.push(manipulatedImage.uri);
     });
 
-    const i = await checkIfImageIsAppropriate(result.assets);
+    // const i = await checkIfImageIsAppropriate(result.assets);
 
-    if (!i.result) {
-      Alert.alert("Image has inappropriate content", "The image has been scanned to have some inappropriate content. Please select another image to upload.", [
-        {text: 'OK', style: 'cancel'},
-      ]);
-    } else {
-      setFieldValue('images', compressed)
-    }
+    // if (!i.result) {
+    //   Alert.alert("Image has inappropriate content", "The image has been scanned to have some inappropriate content. Please select another image to upload.", [
+    //     {text: 'OK', style: 'cancel'},
+    //   ]);
+    // } else {
+    //   setFieldValue('images', compressed)
+    // }
+
+    setFieldValue('images', compressed)
+
   };
 
   const camera = async (setFieldValue) => {
@@ -185,7 +188,8 @@ const AddBusiness = () => {
         schedule: {
           monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday, sunday: sunday
         },
-        images: values.images
+        images: values.images,
+        farmer: true
       }).then(() => {
         navigation.navigate("Settings");
       });
@@ -195,7 +199,6 @@ const AddBusiness = () => {
       });
     }
   };
-
 
   const onActiveIndexChanged = (activeIndex: number) => {
     setActive(activeIndex);
@@ -228,22 +231,27 @@ const AddBusiness = () => {
     }
   };
 
-  const Next = () => {
+  const Next = (props) => {
+    const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
+
     return (
       <View>
-        <Button style={active !== 3 && {backgroundColor: Colors.primary}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 3} />
-      </View>
+        {active !== 3 
+          ? <Button style={{ backgroundColor: Colors.primary }} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} />
+          : <Button style={{ backgroundColor: Colors.primary }} iconSource={() => <MCIcon name={"check"} size={48} color={Colors.white} />} onPress={handleSubmit} />
+        }
+        </View>
     );
   };
 
-  const Buttons = () => {
+  const Buttons = (props) => {
     return (
       <View style={global.field}>
         <View row spread centerV>
           {Prev()}
           {/* <Text>{active}</Text> */}
           <PageControl numOfPages={4} currentPage={active} color={Colors.primary} />
-          {Next()}
+          {Next(props)}
         </View>
       </View>
     )
@@ -309,7 +317,7 @@ const AddBusiness = () => {
 
           <View flexG />
 
-          {Buttons()}
+          {Buttons(props)}
         </View>
       </View>
     );
@@ -371,7 +379,7 @@ const AddBusiness = () => {
           }}
         />
         
-        {Buttons()}  
+        {Buttons(props)}  
       </KeyboardAwareScrollView> 
     );
   };
@@ -723,7 +731,7 @@ const AddBusiness = () => {
 
         <View flexG />
 
-        {Buttons()}
+        {Buttons(props)}
       </ScrollView>
     );
   };
@@ -744,16 +752,7 @@ const AddBusiness = () => {
 
         <View flexG />
 
-        <Button 
-          backgroundColor={Colors.primary}
-          color={Colors.white}
-          label={"Add Your Business"} 
-          labelStyle={{ fontWeight: '600', padding: 8 }}
-          style={global.btnTest} 
-          onPress={handleSubmit}                
-        />
-
-        {Buttons()}   
+        {Buttons(props)}   
       </View>
     );
   };

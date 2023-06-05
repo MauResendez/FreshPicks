@@ -31,10 +31,10 @@ const SettingStack = () => {
       <Stack.Screen name="Change Phone" component={ChangePhone} />
       <Stack.Screen name="Add Your Business" component={AddBusiness} />
       <Stack.Screen name="Link Account" component={LinkAccount} />
-      <Stack.Screen name="Update Personal Information" component={UpdatePersonal} />
-      <Stack.Screen name="Update Farmer Information" component={UpdateFarmer} />
-      <Stack.Screen name="Update Farmer Location" component={UpdateLocation} />
-      <Stack.Screen name="Update Farmer Schedule" component={UpdateSchedule} />
+      <Stack.Screen name="Personal Information" component={UpdatePersonal} />
+      <Stack.Screen name="Farmer Information" component={UpdateFarmer} />
+      <Stack.Screen name="Farmer Location" component={UpdateLocation} />
+      <Stack.Screen name="Farmer Schedule" component={UpdateSchedule} />
     </Stack.Navigator>
   )
 }

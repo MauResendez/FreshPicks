@@ -82,9 +82,12 @@ const Profile = ({ route }) => {
       setFarmer({...data, id: route.params.id});
     });
 
-    onSnapshot(query(collection(db, "Products"), where("user", "==", route.params.id)), async (snapshot) => {
+    const subscriber = onSnapshot(query(collection(db, "Products"), where("user", "==", route.params.id)), async (snapshot) => {
       setProducts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
+
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
   }, []);
 
   useEffect(() => {

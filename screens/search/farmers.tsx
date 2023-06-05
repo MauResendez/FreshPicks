@@ -3,7 +3,7 @@ import { FlashList } from "@shopify/flash-list";
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import { LoaderScreen, TextField, View } from "react-native-ui-lib";
+import { Colors, LoaderScreen, TextField, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import FarmerResultRow from "../../components/search/farmer-result-row";
 import { auth, db } from "../../firebase";
@@ -42,7 +42,7 @@ const Farmers = () => {
   return (
     <View useSafeArea flex style={global.bgWhite}>
       <View style={styles.search}>
-        <TextField fieldStyle={{ backgroundColor: "lightgray", borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Search for farmers and produce here" leadingAccessory={<Ionicon name="search" color={"gray"} size={20} style={{ marginRight: 8 }} />} migrate />
+        <TextField fieldStyle={{ backgroundColor: Colors.grey60, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Search for farmers here" placeholderTextColor={Colors.grey30} leadingAccessory={<Ionicon name="search" color={"gray"} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>
 
       <FlashList 

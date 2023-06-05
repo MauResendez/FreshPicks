@@ -17,6 +17,8 @@ Colors.loadColors({
   tertiary: "#32CD32"
 });
 
+Colors.loadDesignTokens({ primaryColor: Colors.primary });
+
 ThemeManager.setComponentTheme('Card', (props, context) => {
   const style = {
     shadowColor: "#000",
@@ -183,7 +185,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <StatusBar style={"auto"} animated />
-      <ConnectionStatusBar label={"LSFKDJlj"} onConnectionChange={() => console.log('connection changed')}/>
+      <ConnectionStatusBar onConnectionChange={() => console.log('connection changed')}/>
       {auth.currentUser ? <MainStack /> : <AuthStack />}
     </Provider>
   );
