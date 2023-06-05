@@ -3,13 +3,14 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Basket from "../../screens/basket";
+import Reserve from "../../screens/basket/reserve";
 
 const Stack = createStackNavigator();
 
 const BasketStack = () => {
   return (
     <Stack.Navigator 
-      initialRouteName="Basket" 
+      initialRouteName="Reserve" 
       screenOptions={{ 
         headerShown: true,
         headerTitleAlign: "center",
@@ -19,6 +20,7 @@ const BasketStack = () => {
       }}
     >
       <Stack.Screen name="Basket" component={Basket} />
+      <Stack.Screen name="Reserve" component={Reserve} />
     </Stack.Navigator>
   )
 }

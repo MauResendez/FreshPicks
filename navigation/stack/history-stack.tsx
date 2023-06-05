@@ -12,7 +12,8 @@ const HistoryStack = () => {
   return (
     <Stack.Navigator 
       initialRouteName="History" 
-      screenOptions={{ 
+      screenOptions={{
+        headerShadowVisible: false,
         headerShown: true,
         headerTitleAlign: "center",
         headerTitleStyle: {

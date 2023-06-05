@@ -17,6 +17,7 @@ const SearchStack = () => {
     <Stack.Navigator 
       initialRouteName="Search"
       screenOptions={{
+        headerShadowVisible: false,
         headerShown: true,
         headerTitleAlign: "center",
         headerTitleStyle: {

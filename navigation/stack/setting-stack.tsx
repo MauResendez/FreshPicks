@@ -18,7 +18,8 @@ const SettingStack = () => {
   return (
     <Stack.Navigator 
       initialRouteName="Settings" 
-      screenOptions={{ 
+      screenOptions={{
+        headerShadowVisible: false,
         headerShown: true,
         headerTitleAlign: "center",
         headerTitleStyle: {

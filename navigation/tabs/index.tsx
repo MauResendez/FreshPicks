@@ -55,12 +55,10 @@ const MainTabs = () => {
       }}
     >
       <Tab.Screen
-        // name={user?.role === "Farmer" ? "Dashboard" : "Search"}
         name={"First"}
         component={user?.role === "Farmer" ? DashboardStack : SearchStack}
         options={({ route }) => {
           let routeName = user?.role === "Farmer" ? "Dashboard" : "Search";
-          const current = getFocusedRouteNameFromRoute(route) ?? routeName;
           
           return {
             tabBarIcon: ({ color }) => (
@@ -76,12 +74,10 @@ const MainTabs = () => {
         }}
       />
       <Tab.Screen
-        // name={user?.role === "Farmer" ? "Products" : "Basket"}
         name={"Second"}
         component={user?.role === "Farmer" ? ProductStack : BasketStack}
         options={({ route }) => {
           let routeName = user?.role === "Farmer" ? "Products" : "Basket";
-          const current = getFocusedRouteNameFromRoute(route) ?? routeName;
           
           return {
             tabBarIcon: ({ color }) => (
@@ -93,16 +89,15 @@ const MainTabs = () => {
             ),
             tabBarItemStyle: { paddingVertical: Platform.OS === "android" ? 4 : 0},
             tabBarLabel: routeName,
+            unmountOnBlur: false
           };
         }}
       />
       <Tab.Screen
-        // name={user?.role === "Farmer" ? "Transactions" : "Map"}
         name={"Third"}
         component={user?.role === "Farmer" ? TransactionStack : MapStack}
         options={({ route }) => {
           let routeName = user?.role === "Farmer" ? "Transactions" : "Map";
-          const current = getFocusedRouteNameFromRoute(route) ?? routeName;
 
           return {
             headerTitle: routeName,
@@ -119,12 +114,10 @@ const MainTabs = () => {
         }}
       />
       <Tab.Screen
-        // name={user?.role === "Farmer" ? "Meetings" : "History"}
         name={"Fourth"}
         component={user?.role === "Farmer" ? OrderStack : HistoryStack}
         options={({ route }) => {
           let routeName = user?.role === "Farmer" ? "Meetings" : "History";
-          const current = getFocusedRouteNameFromRoute(route) ?? routeName;
           
           return {
             tabBarIcon: ({ color }) => (
@@ -140,12 +133,9 @@ const MainTabs = () => {
         }}
       />
       <Tab.Screen
-        // name="Settings"
         name={"Fifth"}
         component={SettingStack}
-        options={({ route }) => {
-          const current = getFocusedRouteNameFromRoute(route) ?? "Settings";
-          
+        options={({ route }) => {          
           return {
             tabBarIcon: ({ color }) => (
               <MCIcon name="cog" size={24} color={color} />
