@@ -14,6 +14,9 @@ import ProductList from "../../components/search/product-list";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
+
 const Search = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -96,7 +99,6 @@ const Search = () => {
   }, [ff, fp]);
 
   if (loading) {
-    SplashScreen.preventAutoHideAsync();
     return null;
     // return (
     //   <LoaderScreen color={"#32CD32"} />

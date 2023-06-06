@@ -173,7 +173,7 @@ const Profile = ({ route }) => {
             label={items.length != 0 ? "Go to Basket" : "Add items to Basket"} 
             labelStyle={{ fontWeight: '600', padding: 8 }} 
             style={[global.btnTest, items.length == 0 ? styles.disabled : styles.checkout]}
-            onPress={() => items.length != 0 && navigation.navigate("Second", { screen: "Reserve" })}               
+            onPress={() => items.length != 0 && navigation.navigate("Second", { screen: "Basket" })}               
           />
         </View>
       </ScrollView>

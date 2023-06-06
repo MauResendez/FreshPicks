@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import isEmpty from 'lodash/isEmpty';
 import React, { useCallback } from 'react';
-import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View } from 'react-native-ui-lib';
 
 interface ItemProps {
   item: any;

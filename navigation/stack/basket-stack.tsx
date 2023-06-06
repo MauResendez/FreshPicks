@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 const BasketStack = () => {
   return (
     <Stack.Navigator 
-      initialRouteName="Reserve" 
+      initialRouteName="Basket" 
       screenOptions={{ 
         headerShown: true,
         headerTitleAlign: "center",

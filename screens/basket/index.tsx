@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AddressRow from '../../components/basket/address-row';
 import BasketRow from '../../components/basket/basket-row';
 import BusinessRow from '../../components/basket/business-row';
+import DatetimeRow from '../../components/basket/datetime-row';
 import { clearOrder, getOrderFarmer, getOrderUser, selectOrderItems, selectOrderTotal } from '../../features/order-slice';
 import { db } from '../../firebase';
 import { global } from '../../style';
@@ -140,6 +141,8 @@ const Basket = () => {
           <BusinessRow item={orderFarmer} />
 
           <AddressRow item={orderFarmer} />
+
+          <DatetimeRow item={orderFarmer} />
           
           <ListItem
             activeOpacity={0.3}
@@ -175,116 +178,9 @@ const Basket = () => {
 }
 
 const styles = StyleSheet.create({
-  cover: {
-    height: 200,
-    width: "100%",
-  },
-  image: {
-    ...Platform.select({
-      web: {
-        padding: 16,
-        width: "100%",
-        height: 250,
-      },
-      ios: {
-        padding: 16,
-        width: "100%",
-        height: 200,
-      },
-      android: {
-        padding: 16,
-        width: "100%",
-        height: 200,
-      },
-    }),
-  },
-  back: {
-    position: "absolute",
-    left: 10,
-    top: 56,
-    padding: 8,
-    backgroundColor: "#F3F4F6",
-    borderRadius: 50,
-  },
-  header: {
-    backgroundColor: "white",
-    padding: 12,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginVertical: 8,
-  },
-  content: {
-    marginVertical: 4,
-    flexDirection: "row",
-  },
-  ratingContainer: {
-    marginLeft: 4,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  rating: {
-    color: "#059669",
-    flex: 1,
-    textAlign: "right",
-  },
-  address: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#666",
-    textAlign: "left",
-    marginTop: 4,
-    marginBottom: 4,
-  },
-  description: {
-    paddingBottom: 16,
-    marginTop: 8,
-    color: "black",
-  },
-  products: {
-  },
-  productsTitle: {
-    paddingHorizontal: 16,
-    paddingTop: 32,
-    marginBottom: 12,
-    fontSize: 20,
-    lineHeight: 32,
-    fontWeight: "700",
-  },
-  basket: {
-    fontSize: 18,
-    lineHeight: 28,
-    fontWeight: "700",
-    textAlign: "center",
-  },
-  text: {
-    fontSize: 20,
-    lineHeight: 20,
-    fontWeight: "bold",
-    letterSpacing: 1,
-    color: "white",
-  },
   cart: {
     padding: 16,
-  },
-  checkout: {
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: "green",
-  },
-  checkoutText: {
-    color: "white",
-    fontSize: 18,
-    lineHeight: 28,
-    fontWeight: "700",
-    textAlign: "center",
-  },
-  disabled: {
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: "lightgray",
-  },
+  }
 });
 
 export default Basket

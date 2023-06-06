@@ -6,16 +6,19 @@ import { collection, documentId, onSnapshot, query, where } from "firebase/fires
 import React, { useCallback, useEffect, useState } from "react";
 import { Platform, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { LoaderScreen, View } from "react-native-ui-lib";
+import { View } from "react-native-ui-lib";
 import MapRow from "../../components/map/map-row";
 import { auth, db } from "../../firebase";
+
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
 const Map = () => {
   const [farmers, setFarmers] = useState([]);
   const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mapRegion, setMapRegion] = useState(null);
-  
+
   const renderItem = useCallback(({item}) => {
     return (
       <MapRow item={item} />
@@ -68,12 +71,20 @@ const Map = () => {
       SplashScreen.hideAsync();
     }
   }, [location]);
-  
+
+  // const onLayoutRootView = useCallback(async () => {
+  //   if (!loading) {
+  //     // This tells the splash screen to hide immediately! If we call this after
+  //     // `setAppIsReady`, then we may see a blank screen while the app is
+  //     // loading its initial state and rendering its first pixels. So instead,
+  //     // we hide the splash screen once we know the root view has already
+  //     // performed layout.
+  //     await SplashScreen.hideAsync();
+  //   }
+  // }, [loading]);
+
   if (loading) {
-    SplashScreen.preventAutoHideAsync();
-    return (
-      <LoaderScreen color={"#32CD32"} />
-    )
+    return null;
   }
 
   return (
