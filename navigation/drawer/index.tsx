@@ -11,7 +11,6 @@ import { Colors, LoaderScreen } from "react-native-ui-lib";
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Basket from "../../screens/basket";
 import DashboardStack from "../stack/dashboard-stack";
-import HistoryStack from "../stack/history-stack";
 import MapStack from "../stack/map-stack";
 import OrderStack from "../stack/order-stack";
 import ProductStack from "../stack/product-stack";
@@ -36,7 +35,7 @@ const MainDrawer = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.tertiary} />
     );
   }
   
@@ -50,9 +49,8 @@ const MainDrawer = () => {
           color: Colors.white,
           fontSize: 16,
         },
-        
         drawerStyle: {
-          backgroundColor: "#32CD32",
+          backgroundColor: Colors.tertiary,
         },
         headerShown: true,
         headerTintColor: Colors.black,
@@ -126,7 +124,7 @@ const MainDrawer = () => {
       />
       <Drawer.Screen
         name={user?.role === "Farmer" ? "Orders" : "History"}
-        component={user?.role === "Farmer" ? OrderStack : HistoryStack}
+        component={user?.role === "Farmer" ? OrderStack : OrderStack}
         options={({ route }) => {
           let routeName = user?.role === "Farmer" ? "Meetings" : "History";
           // const current = getFocusedRouteNameFromRoute(route) ?? "Index";

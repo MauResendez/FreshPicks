@@ -40,9 +40,6 @@ const AgendaItem = (props: ItemProps) => {
   );
 };
 
-export default React.memo(AgendaItem);
-
-
 const styles = StyleSheet.create({
   item: {
     paddingHorizontal: 20,
@@ -84,3 +81,5 @@ const styles = StyleSheet.create({
     fontSize: 14
   }
 });
+
+export default React.memo(AgendaItem);

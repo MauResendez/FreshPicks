@@ -15,7 +15,7 @@ const renderBubble = props => {
     <Bubble {...props} 
       wrapperStyle={{
         right: {
-          backgroundColor: "#32CD32",
+          backgroundColor: Colors.tertiary,
         },
         left: {
           backgroundColor: Colors.white,
@@ -37,7 +37,7 @@ const renderBubble = props => {
 
 const renderLoading = () => {
   return (
-    <LoaderScreen color={"#32CD32"} />
+    <LoaderScreen color={Colors.tertiary} />
   )
 }
 
@@ -219,7 +219,7 @@ const Conversation = ({ route }) => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.tertiary} />
     )
   }
 

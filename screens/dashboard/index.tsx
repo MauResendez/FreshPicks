@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useWindowDimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Button, Picker, TabController, View } from "react-native-ui-lib";
+import { Button, Colors, Picker, TabController, View } from "react-native-ui-lib";
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { global } from "../../style";
 
@@ -69,7 +69,7 @@ const Dashboard = () => {
           animateLayout 
           animateTo={'right'} 
           onPress={() => navigation.navigate("Report")} 
-          backgroundColor="#32CD32" 
+          backgroundColor={Colors.tertiary}
           iconSource={() => <MCIcon name="file-document" color="white" size={24} />} 
         /> 
       </View>
@@ -83,6 +83,8 @@ const Dashboard = () => {
           <Picker  
             value={data[0]}
             placeholder={'Month'}
+            title={'Month'}
+            label={'Month'}
             style={[global.input, { marginBottom: -16 }]}
             migrate 
             useSafeArea={true} 
@@ -91,7 +93,7 @@ const Dashboard = () => {
           >  
             {data.map((type) => (   
               <Picker.Item key={type.value} value={type.value} label={type.value.toString()} />
-              ))}
+            ))}
           </Picker>
         </View>
         {/* <PieChart 
@@ -131,7 +133,7 @@ const Dashboard = () => {
           animateLayout 
           animateTo={'right'} 
           onPress={() => navigation.navigate("Report")} 
-          backgroundColor="#32CD32" 
+          backgroundColor={Colors.tertiary}
           iconSource={() => <MCIcon name="file-document" color="white" size={24} />} 
         /> 
       </View>

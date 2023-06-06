@@ -4,13 +4,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
 import { AgendaList, AgendaSchedule } from 'react-native-calendars';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Colors, LoaderScreen, TabController, View } from 'react-native-ui-lib';
+import { LoaderScreen, TabController, View } from 'react-native-ui-lib';
 import ChatRow from '../../components/chat/chat-row';
-import HistoryRow from '../../components/history/history-row';
 import AgendaItem from '../../components/orders/agenda-item';
+import RequestRow from '../../components/orders/request-row';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
-
 interface State {
   items?: AgendaSchedule;
 }
@@ -30,7 +29,7 @@ const Orders = () => {
   }, []);
 
 	const renderRequest = useCallback(({item}: any) => {
-    return <HistoryRow item={item} />;
+    return <RequestRow item={item} />;
   }, []);
 
 	const renderChat = useCallback(({item}: any) => {
@@ -49,9 +48,9 @@ const Orders = () => {
 	const SecondRoute = () => (
     <View useSafeArea flex>
       <FlashList 
-        data={orders}
+        data={pending}
         keyExtractor={(item: any) => item.id}
-        estimatedItemSize={orders.length != 0 ? orders.length : 150}
+        estimatedItemSize={pending.length != 0 ? pending.length : 150}
         renderItem={renderRequest}
       />
     </View>
@@ -68,20 +67,19 @@ const Orders = () => {
     </View>
   );
 
+  useEffect(() => {
+    onSnapshot(query(collection(db, "Chats"), where("farmer", "==", auth.currentUser.uid)), async (snapshot) => {
+      setChats(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+    });
+  }, []);
+
 	useEffect(() => {
-    const subscriber = onSnapshot(query(collection(db, "Orders"), where("consumer", "==", auth.currentUser.uid)), async (snapshot) => {
+    const subscriber = onSnapshot(query(collection(db, "Orders"), where("farmer", "==", auth.currentUser.uid)), async (snapshot) => {
       setOrders(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
 
-    const subscriber2 = onSnapshot(query(collection(db, "Chats"), where("consumer", "==", auth.currentUser.uid)), async (snapshot) => {
-      setChats(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
-    });
-
     // Unsubscribe from events when no longer in use
-    return () => {
-      subscriber();
-      subscriber2();
-    } 
+    return () => subscriber();
   }, []);
 
 	useEffect(() => {
@@ -120,14 +118,14 @@ const Orders = () => {
   
   if (loading) {
     return (
-      <LoaderScreen color={Colors.tertiary} />
+      <LoaderScreen color={"#32CD32"} />
     )
   }
 
   return (
     <GestureHandlerRootView style={global.flex}>
       <View useSafeArea flex style={global.bgWhite}>
-        <TabController items={[{label: 'Orders'}, {label: 'History'}, {label: 'Chats'}]}>  
+        <TabController items={[{label: 'Orders'}, {label: 'Requests'}, {label: 'Inbox'}]}>  
           <TabController.TabBar
             indicatorInsets={0}
             indicatorStyle={{ backgroundColor: "#32CD32" }} 

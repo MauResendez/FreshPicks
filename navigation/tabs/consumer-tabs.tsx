@@ -8,8 +8,8 @@ import { Platform } from "react-native";
 import { Colors } from "react-native-ui-lib";
 import Instructions from "../../screens/instructions";
 import BasketStack from "../stack/basket-stack";
-import HistoryStack from "../stack/history-stack";
 import MapStack from "../stack/map-stack";
+import OrderStack from "../stack/order-stack";
 import SearchStack from "../stack/search-stack";
 import SettingStack from "../stack/setting-stack";
 
@@ -81,7 +81,7 @@ const ConsumerTabs = () => {
       />
       <Tab.Screen
         name={"Fourth"}
-        component={HistoryStack}
+        component={OrderStack}
         options={({ route }) => {
           return {
             tabBarIcon: ({ color }) => (

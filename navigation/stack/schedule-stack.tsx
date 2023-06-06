@@ -1,31 +1,29 @@
 import React from "react";
 
-import { createStackNavigator } from "@react-navigation/stack";
-
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Conversation from "../../screens/chat/conversation";
-import History from "../../screens/history";
 import Order from "../../screens/orders/order";
+import Schedule from "../../screens/schedule";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
-const HistoryStack = () => {
+const ScheduleStack = () => {
   return (
     <Stack.Navigator 
-      initialRouteName="History" 
-      screenOptions={{
-        headerShadowVisible: false,
+      initialRouteName="Orders" 
+      screenOptions={{ 
         headerShown: true,
         headerTitleAlign: "center",
         headerTitleStyle: {
           fontSize: 17,
         }, 
       }}
-    >      
-      <Stack.Screen name="History" component={History} />
+    >
+      <Stack.Screen name="Schedule" component={Schedule} />
       <Stack.Screen name="Order" component={Order} />
       <Stack.Screen name="Conversation" component={Conversation} />
     </Stack.Navigator>
   )
 }
 
-export default HistoryStack
+export default ScheduleStack

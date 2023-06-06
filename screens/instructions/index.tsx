@@ -43,7 +43,7 @@ const Instructions = () => {
       <View>
         {active !== 4
           ? <Button style={active !== 4 && {backgroundColor: Colors.primary}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active == 4} />
-          : <Button style={{backgroundColor: Colors.primary}} iconSource={() => <MCIcon name={"check"} size={48} color={Colors.white} />} onPress={() => navigation.navigate("Dashboard")} />
+          : <Button style={{backgroundColor: Colors.primary}} iconSource={() => <MCIcon name={"check"} size={48} color={Colors.white} />} onPress={() => navigation.navigate("First")} />
         }
       </View>
     );

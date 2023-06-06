@@ -68,13 +68,13 @@ const Orders = () => {
   );
 
   useEffect(() => {
-    onSnapshot(query(collection(db, "Chats"), where("farmer", "==", auth.currentUser.uid)), async (snapshot) => {
+    onSnapshot(query(collection(db, "Chats"), where("consumer", "==", auth.currentUser.uid)), async (snapshot) => {
       setChats(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
   }, []);
 
 	useEffect(() => {
-    const subscriber = onSnapshot(query(collection(db, "Orders"), where("farmer", "==", auth.currentUser.uid)), async (snapshot) => {
+    const subscriber = onSnapshot(query(collection(db, "Orders"), where("consumer", "==", auth.currentUser.uid)), async (snapshot) => {
       setOrders(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
 

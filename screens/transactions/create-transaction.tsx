@@ -3,7 +3,7 @@ import { addDoc, collection, onSnapshot, query, where } from "firebase/firestore
 import { Formik } from 'formik'
 import React, { useEffect, useState } from "react"
 import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native"
-import CurrencyInput from 'react-native-currency-input'
+import CurrencyInput from "react-native-currency-input"
 import { Button, Colors, DateTimePicker, KeyboardAwareScrollView, LoaderScreen, Picker, Text, TextField, View } from "react-native-ui-lib"
 import * as Yup from 'yup'
 import { auth, db } from "../../firebase"
@@ -87,8 +87,8 @@ const CreateTransaction = () => {
     party: Yup.string().required('Party is required'), 
     type: Yup.string().required('Type is required'), 
     price: Yup.number().required('Type is required'), 
-    product: Yup.string().required('Product is required'), 
-    label: Yup.string().required('Label is required'), 
+    product: Yup.string().notRequired(), 
+    label: Yup.string().notRequired(), 
     category: Yup.string().required('Category is required'), 
     notes: Yup.string().required('Notes is required'), 
     date: Yup.date().required('Date is required')
@@ -106,7 +106,7 @@ const CreateTransaction = () => {
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
               <View flex>
                 <View row spread style={{ paddingVertical: 8 }}>
-                  <View style={{ width: "30%" }}>
+                  <View style={{ width: "47.5%" }}>
                     <Text subtitle>Type</Text>
                     <Picker  
                       value={values.type}
@@ -122,7 +122,7 @@ const CreateTransaction = () => {
                     </Picker>
                   </View>
 
-                  <View style={{ width: "30%" }}>
+                  <View style={{ width: "47.5%" }}>
                     <Text subtitle>Price</Text>
                     <CurrencyInput
                       value={values.price}
@@ -138,8 +138,25 @@ const CreateTransaction = () => {
                       }}
                     />
                   </View>
+                </View>
 
-                  <View style={{ width: "30%" }}>
+                <View row spread style={{ paddingVertical: 8 }}>
+                  <View style={{ width: "47.5%" }}>
+                    {values.type == 'Expense' 
+                      ? <Text subtitle>Vendor Name</Text>
+                      : <Text subtitle>Customer Name</Text>
+                    }
+                    <TextField
+                      style={global.input}
+                      onChangeText={handleChange('party')}
+                      onBlur={handleBlur('party')}
+                      value={values.party}
+                      migrate
+                    />
+                    {errors.party && touched.party && <Text style={{ color: Colors.red30 }}>{errors.party}</Text>}
+                  </View>
+
+                  <View style={{ width: "47.5%" }}>
                     <Text subtitle>Date</Text>
                     <DateTimePicker 
                       value={values.date} 
@@ -152,49 +169,37 @@ const CreateTransaction = () => {
                   </View>
                 </View>
 
-                <View style={global.field}>
-                  {values.type == 'Expense' 
-                    ? <Text subtitle>Vendor Name</Text>
-                    : <Text subtitle>Customer Name</Text>
-                  }
-                  <TextField
-                    style={global.input}
-                    onChangeText={handleChange('party')}
-                    onBlur={handleBlur('party')}
-                    value={values.party}
-                    migrate
-                  />
-                </View>
-                {errors.party && touched.party && <Text style={{ color: Colors.red30 }}>{errors.party}</Text>}
+                <View row spread style={{ paddingVertical: 8 }}>
+                  <View style={{ width: "47.5%" }}>
+                    <Text subtitle>Product</Text>
+                    <Picker  
+                      value={values.product}
+                      style={[global.input, { marginBottom: -16 }]}
+                      onChange={handleChange("product")}
+                      onBlur={handleBlur("product")}
+                      useSafeArea={true} 
+                      topBarProps={{ title: 'Products' }} 
+                    >  
+                      {products.map((product) => (   
+                        <Picker.Item 
+                          key={product.id} 
+                          value={product.id} 
+                          label={product.title} 
+                          onPress={() => {
+                            setFieldValue("product", product.id);
+                            setFieldValue("label", product.title);
+                          }}
+                        />
+                      ))}
+                    </Picker>
+                    {errors.product && touched.product && <Text style={{ color: Colors.red30 }}>{errors.product}</Text>}
+                  </View>
 
-                <View style={global.field}>
-                  <Text subtitle>Product</Text>
-                  <Picker  
-                    value={values.product}
-                    style={[global.input, { marginBottom: -16 }]}
-                    onChange={handleChange("product")}
-                    onBlur={handleBlur("product")}
-                    useSafeArea={true} 
-                    topBarProps={{ title: 'Products' }} 
-                  >  
-                    {products.map((product) => (   
-                      <Picker.Item 
-                        key={product.id} 
-                        value={product.id} 
-                        label={product.title} 
-                        onPress={() => {
-                          setFieldValue("product", product.id);
-                          setFieldValue("label", product.title);
-                        }}
-                      />
-                    ))}
-                  </Picker>
-                </View>
-
-                <View style={global.field}>
+                  <View style={{ width: "47.5%" }}>
                   <Text subtitle>Category</Text>
                   {values.type == 'Expense' 
                     ? <Picker  
+                        numberOfLines = { 1 } 
                         value={values.category}
                         style={[global.input, { marginBottom: -16 }]}
                         onChange={handleChange('category')}
@@ -203,10 +208,18 @@ const CreateTransaction = () => {
                         topBarProps={{ title: 'Categories' }} 
                       >  
                         {expense.map((category) => (   
-                          <Picker.Item key={category.value} value={category.value} label={category.label} />
+                          <Picker.Item 
+                            key={category.value} 
+                            value={category.value} 
+                            label={category.label}
+                            onPress={() => {
+                              setFieldValue("category", category.value);
+                            }}
+                          />
                         ))}
                       </Picker>
-                    : <Picker  
+                    : <Picker 
+                    numberOfLines = { 1 }  
                         value={values.category}
                         style={[global.input, { marginBottom: -16 }]}
                         onChange={handleChange('category')}
@@ -219,6 +232,7 @@ const CreateTransaction = () => {
                         ))}
                       </Picker>
                     }
+                  </View>
                 </View>
 
                 <View style={global.field}>
@@ -234,6 +248,13 @@ const CreateTransaction = () => {
                   />
                 </View>
                 {errors.notes && touched.notes && <Text style={{ color: Colors.red30 }}>{errors.notes}</Text>}
+                {errors.party && touched.party && <Text style={{ color: Colors.red30 }}>{errors.party}</Text>}
+                {errors.type && touched.type && <Text style={{ color: Colors.red30 }}>{errors.type}</Text>}
+                {errors.price && touched.price && <Text style={{ color: Colors.red30 }}>{errors.price}</Text>}
+                {errors.product && touched.product && <Text style={{ color: Colors.red30 }}>{errors.product}</Text>}
+                {errors.label && touched.label && <Text style={{ color: Colors.red30 }}>{errors.label}</Text>}
+                {errors.category && touched.category && <Text style={{ color: Colors.red30 }}>{errors.category}</Text>}
+                {errors.date && touched.date && <Text style={{ color: Colors.red30 }}>{errors.date}</Text>}
 
                 <View flexG />
 
@@ -243,7 +264,7 @@ const CreateTransaction = () => {
                   label={"Create Transaction"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 
                   style={global.btnTest} 
-                  onPress={() => handleSubmit()}                
+                  onPress={handleSubmit}                
                 />
               </View>
             )}

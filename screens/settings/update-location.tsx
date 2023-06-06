@@ -61,7 +61,7 @@ const UploadLocation = () => {
 
   const validate = Yup.object().shape({ 
     address: Yup.string().required("Address is required"), 
-    // location: Yup.array().required("Location is required"),
+    location: Yup.object().required("Location is required"),
   });
 
   return (

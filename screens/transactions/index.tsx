@@ -3,7 +3,7 @@ import { FlashList } from '@shopify/flash-list';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
-import { Button, LoaderScreen, View } from 'react-native-ui-lib';
+import { Button, Colors, LoaderScreen, View } from 'react-native-ui-lib';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import TransactionRow from '../../components/transactions/transaction-row';
 import { auth, db } from '../../firebase';
@@ -38,7 +38,7 @@ const Transactions = () => {
         animateLayout 
         animateTo={'right'} 
         onPress={() => navigation.navigate("Create Transaction")} 
-        backgroundColor="#32CD32" 
+        backgroundColor={Colors.tertiary}
         iconSource={() => <MCIcon name="plus" color="white" size={24} />} 
       />
     </View>

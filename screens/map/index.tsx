@@ -11,7 +11,7 @@ import MapRow from "../../components/map/map-row";
 import { auth, db } from "../../firebase";
 
 // Keep the splash screen visible while we fetch resources
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 const Map = () => {
   const [farmers, setFarmers] = useState([]);

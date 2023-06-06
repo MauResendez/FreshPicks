@@ -43,7 +43,7 @@ ThemeManager.setComponentTheme('Card', (props, context) => {
 });
 
 ThemeManager.setComponentTheme('Stepper', (props, context) => {
-  const config = {color: "black", backgroundColor: "#32CD32", circleColor: "black"};
+  const config = {color: "black", backgroundColor: Colors.tertiary, circleColor: "black"};
   return {config};
 });
 
@@ -178,7 +178,7 @@ const App = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.tertiary} />
     );
   }
 

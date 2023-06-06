@@ -32,7 +32,7 @@ const TransactionRow = (props) => {
 			<ListItem.Part left>
 				{item.type == "Expense" 
 					? <MCIcon name={"arrow-left-bold-circle-outline"} size={36} color={Colors.red30} style={{marginRight: 12}} />
-					: <MCIcon name={"arrow-right-bold-circle-outline"} size={36} color={"#32CD32"} style={{marginRight: 12}} />
+					: <MCIcon name={"arrow-right-bold-circle-outline"} size={36} color={Colors.tertiary} style={{marginRight: 12}} />
 				}
 			</ListItem.Part>
 			<ListItem.Part middle column>

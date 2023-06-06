@@ -9,10 +9,10 @@ import { GeoPoint, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Keyboard, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Alert, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import PhoneInput from 'react-native-phone-input';
-import { Button, Carousel, Checkbox, Colors, DateTimePicker, Image, KeyboardAwareScrollView, LoaderScreen, PageControl, Text, TextField, View, Wizard } from 'react-native-ui-lib';
+import { Button, Carousel, Checkbox, Colors, DateTimePicker, Image, KeyboardAwareScrollView, LoaderScreen, PageControl, Text, TextField, Toast, View, Wizard } from 'react-native-ui-lib';
 import { Dialog } from 'react-native-ui-lib/src/incubator';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Yup from 'yup';
@@ -24,21 +24,6 @@ const Register = () => {
   const phoneRef = useRef<any>(null);
   const recaptchaVerifier = useRef<any>(null);
   const attemptInvisibleVerification = true;
-  const days = [
-    {label: 'Monday', value: 'Monday'},
-    {label: 'Tuesday', value: 'Tuesday'},
-    {label: 'Wednesday', value: 'Wednesday'},
-    {label: 'Thursday', value: 'Thursday'},
-    {label: 'Friday', value: 'Friday'},
-    {label: 'Saturday', value: 'Saturday'},
-    {label: 'Sunday', value: 'Sunday'},
-  ];
-
-  const IMAGES = [
-    'https://images.pexels.com/photos/2529159/pexels-photo-2529159.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    'https://images.pexels.com/photos/2529146/pexels-photo-2529146.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    'https://images.pexels.com/photos/2529158/pexels-photo-2529158.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
-  ];
 
   const [active, setActive] = useState(0);
   const [completedStep, setCompletedStep] = useState(undefined);
@@ -249,9 +234,6 @@ const Register = () => {
         //   monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday, sunday: sunday
         // },
         token: [token],
-      }).then(() => {
-        navigation.navigate("Instructions");
-        console.log("HI");
       });
     } catch (error) {
       console.error('Error uploading images', error);
@@ -268,12 +250,8 @@ const Register = () => {
 
       const auth_credential = await signInWithCredential(auth, credential);
       const user = auth_credential.user;
-      console.log(farmer);
       const imgs = farmer ? await uploadImages(values.images) : [];
-      console.log(imgs);
       await createUser(values, user, imgs);
-
-      console.log("HERE");
     } catch (error) {
       console.log(error);
     }
@@ -456,6 +434,10 @@ const Register = () => {
     return (
       <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]}>
         <Text subtitle>Business Address *</Text>
+        {errors.address && touched.address && <Text style={{ color: Colors.red30 }}>{errors.address}</Text>}
+
+        {errors.location && touched.location && <Text style={{ color: Colors.red30 }}>{errors.location}</Text>}
+
         <GooglePlacesAutocomplete
           textInputProps={{
             onChange(text) {
@@ -580,7 +562,7 @@ const Register = () => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
-      <ScrollView contentContainerStyle={[global.container, global.flex]}>
+      <View flex padding-24>
         <View row spread style={{ alignItems: "center" }}>
           <Button 
             backgroundColor={Colors.primary}
@@ -924,7 +906,7 @@ const Register = () => {
         <View flexG />
 
         {Buttons()}
-      </ScrollView>
+      </View>
     );
   };
 
@@ -932,7 +914,7 @@ const Register = () => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
-      <View style={[global.container, global.flex]}>
+      <View flex padding-24>
         <View style={global.field}>
           <Image
             style={{ width: "auto", height: 100 }}
@@ -949,6 +931,7 @@ const Register = () => {
         <View style={global.field}>
           <Text subtitle>Phone Number</Text>
           <PhoneInput
+            initialValue={values.phone}
             ref={phoneRef}
             initialCountry={'us'}
             style={global.input}
@@ -1057,64 +1040,69 @@ const Register = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.tertiary} />
     )
   }
 
-  const fv = Yup.object().shape({
+  const validation = Yup.object().shape({
     name: Yup.string().required('Name is required'), 
     email: Yup.string().email("Email must be a valid email").required('Email is required'), 
-    // address: Yup.string().required('Address is required'), 
-    // location: Yup.array().required('Location is required'), 
-    business: Yup.string().required('Business is required'), 
-    description: Yup.string().required('Description is required'), 
-    website: Yup.string().url("Website must be a valid URL\nE.g. (https://www.google.com)").required('Website is required'), 
+    address: Yup.string().when([], {
+      is: () => farmer,
+      then: (schema) => schema.required('Address is required'),
+    }),
+    location: Yup.object().when([], {
+      is: () => farmer,
+      then: (schema) => schema.required('Location is required'),
+    }),
+    business: Yup.string().when([], {
+      is: () => farmer,
+      then: (schema) => schema.required('Business is required'),
+    }),
+    description: Yup.string().when([], {
+      is: () => farmer,
+      then: (schema) => schema.required('Description is required'),
+    }),
+    website: Yup.string().url("Website must be a valid URL\nE.g. (https://www.google.com)").when([], {
+      is: () => farmer,
+      then: (schema) => schema.notRequired(),
+    }),
     phone: Yup.string().required('Phone is required'), 
     sms: Yup.string().required('SMS is required'), 
     // images: Yup.array().required('Images is required')
   });
 
-  const cv = Yup.object().shape({
-    name: Yup.string().required('Name is required'), 
-    email: Yup.string().email("Email must be a valid email").required('Email is required'), 
-    phone: Yup.string().required('Phone is required'), 
-    sms: Yup.string().required('SMS is required'), 
-  });
-
   return (
-    <View useSafeArea flex>
-      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}> 
-        <Formik 
-          initialValues={{ name: "", email: "", address: "", location: "", business: "", description: "", website: "", phone: "", sms: "", images: [] }} 
-          // validationSchema={farmer ? fv : cv}
-          onSubmit={handleSubmit}
-        >
-            {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-            <View flex>
-              {/* <Toast visible={Object.keys(errors).length > 0} message={"One or more fields currently have errors. Please correct them to register your account"} position={'top'} backgroundColor={Colors.red30} autoDismiss={1000} onDismiss={hideToast} swipeable /> */}
-              {farmer 
-                ? <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
-                    <Wizard.Step state={getStepState(0)} label={'Personal Information'} />
-                    <Wizard.Step state={getStepState(1)} label={'Farmer Information'} />
-                    <Wizard.Step state={getStepState(1)} label={'Farmer Address'} />
-                    <Wizard.Step state={getStepState(2)} label={'Farmer Schedule'} />
-                    <Wizard.Step state={getStepState(3)} label={'Account Information'} />
-                  </Wizard>
-                : <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
-                    <Wizard.Step state={getStepState(0)} label={'Personal Information'} />
-                    <Wizard.Step state={getStepState(1)} label={'Account Information'} />
-                  </Wizard>
-              }
-              <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex} enableOnAndroid={true} enableAutomaticScroll={(Platform.OS === 'ios')}> 
-                {Current({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values })}
-              </KeyboardAwareScrollView>
+    <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}> 
+      <Formik 
+        initialValues={{ name: "", email: "", address: "", location: "", business: "", description: "", website: "", phone: "", sms: "", images: [] }} 
+        validationSchema={validation}
+        onSubmit={handleSubmit}
+      >
+          {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values, isSubmitting, submitCount }) => (
+          <View useSafeArea flex>
+            <Toast visible={submitCount > 0 && Object.keys(errors).length > 0} message={"One or more fields currently have errors. Please correct them to register your account"} position={'top'} backgroundColor={Colors.red30} autoDismiss={1000} onDismiss={hideToast} swipeable />
+            {farmer 
+              ? <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
+                  <Wizard.Step state={getStepState(0)} label={'Personal Information'} />
+                  <Wizard.Step state={getStepState(1)} label={'Farmer Information'} />
+                  <Wizard.Step state={getStepState(1)} label={'Farmer Address'} />
+                  <Wizard.Step state={getStepState(2)} label={'Farmer Schedule'} />
+                  <Wizard.Step state={getStepState(3)} label={'Account Information'} />
+                </Wizard>
+              : <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
+                  <Wizard.Step state={getStepState(0)} label={'Personal Information'} />
+                  <Wizard.Step state={getStepState(1)} label={'Account Information'} />
+                </Wizard>
+            }
+            {/* <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex} enableOnAndroid={true} enableAutomaticScroll={(Platform.OS === 'ios')}>  */}
+            <View useSafeArea flex>
+              {Current({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values })}
             </View>
-          )}
-        </Formik>
-        
-      </TouchableWithoutFeedback>
-      {/* <Toast topOffset={0} /> */}
-    </View>
+          </View>
+        )}
+      </Formik>
+    </TouchableWithoutFeedback>
   );
 }
 

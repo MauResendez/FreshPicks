@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
 import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { Button, LoaderScreen, Text, View } from "react-native-ui-lib";
+import { Button, Colors, LoaderScreen, Text, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import ChatRow from "../../components/chat/chat-row";
 import { auth, db } from "../../firebase";
@@ -59,7 +59,7 @@ const Chat = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.tertiary} />
     )
   }
 

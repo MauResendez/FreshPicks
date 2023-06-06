@@ -15,7 +15,7 @@ import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
 // Keep the splash screen visible while we fetch resources
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 const Search = () => {
   const [search, setSearch] = useState("");

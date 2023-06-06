@@ -29,7 +29,7 @@ const RequestRow = (props) => {
 		>
 			<ListItem.Part column>
 				<Text h2 numberOfLines={3}>{item.title}</Text>
-				<Text h3>Price: ${item.price.toFixed(2)}</Text>
+				<Text h3>Price: ${item.total.toFixed(2)}</Text>
 			</ListItem.Part>
 		</ListItem> 
 	)
