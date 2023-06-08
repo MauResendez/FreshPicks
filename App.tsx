@@ -162,7 +162,7 @@ const App = () => {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Provider store={store}>
         <StatusBar style={"auto"} animated />
-        <ConnectionStatusBar onConnectionChange={() => console.log('connection changed')}/>
+        <ConnectionStatusBar />
         {auth.currentUser ? <MainStack /> : <AuthStack />}
       </Provider>
     </GestureHandlerRootView>
