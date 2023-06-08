@@ -109,12 +109,12 @@ const Products = () => {
 
   return (
     <GestureHandlerRootView style={global.flex}>
-      <View useSafeArea flex style={global.bgWhite}>
+      <View useSafeArea flex style={global.white}>
         <TabController items={[{label: 'Products'}, {label: 'Subscriptions'}]}>  
           <TabController.TabBar 
             indicatorInsets={0}
             indicatorStyle={{ backgroundColor: Colors.primary }} 
-            selectedLabelColor={global.activeTabTextColor.color}
+            selectedLabelColor={Colors.tertiary}
             labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
           />  
           <View flex>    

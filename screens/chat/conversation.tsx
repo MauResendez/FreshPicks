@@ -38,7 +38,7 @@ const renderBubble = props => {
 const renderLoading = () => {
   return (
     <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
-    )
+  )
 }
 
 const renderQuickReplies = (props: QuickRepliesProps<IMessage>) => {

@@ -217,7 +217,7 @@ const UpdateFarmer = () => {
                       value={values.description}
                       onChangeText={handleChange('description')}
                       onBlur={handleBlur('description')}
-                      style={global.textArea}
+                      style={global.area}
                       multiline
                       maxLength={100}
                       migrate
@@ -244,7 +244,7 @@ const UpdateFarmer = () => {
                     color={Colors.white}
                     label={"Update Farmer Information"} 
                     labelStyle={{ fontWeight: '600', padding: 8 }} 
-                    style={global.btnTest} 
+                    style={global.button} 
                     onPress={() => handleSubmit()}                
                   />
                 </View>

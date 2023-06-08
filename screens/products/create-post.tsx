@@ -6,7 +6,6 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { Formik } from "formik"
 import React, { useEffect, useState } from "react"
 import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
-import Toast from "react-native-toast-message"
 import { AnimatedImage, Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
 import * as Yup from 'yup'
 import { auth, db, storage } from "../../firebase"
@@ -53,14 +52,6 @@ const CreatePost = () => {
     const imgs = await uploadImages(values.image);
     await createPost(values, auth.currentUser, imgs);
   };
-
-  const showToast = (type, title, message) => {
-    Toast.show({
-      type: type,
-      text1: title,
-      text2: message
-    });
-  }
 
   const uploadImage = async (image) => {
     const storageRef = ref(storage, `${auth.currentUser.uid}/images/${Date.now()}`);
@@ -147,7 +138,7 @@ const CreatePost = () => {
                 <View style={global.field}>
                   <Text text65 marginV-4>Description</Text>
                   <TextField
-                    style={global.textArea}
+                    style={global.area}
                     multiline
                     maxLength={100}
                     onChangeText={handleChange('description')}
@@ -175,7 +166,7 @@ const CreatePost = () => {
                   color={Colors.white}
                   label={"Create Post"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 
-                  style={global.btnTest} 
+                  style={global.button} 
                   onPress={() => handleSubmit()}                
                 />
               </View>

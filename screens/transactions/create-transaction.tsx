@@ -238,7 +238,7 @@ const CreateTransaction = () => {
                 <View style={global.field}>
                   <Text text65 marginV-4>Notes</Text>
                   <TextField
-                    style={global.textArea}
+                    style={global.area}
                     multiline
                     maxLength={100}
                     onChangeText={handleChange('notes')}
@@ -263,7 +263,7 @@ const CreateTransaction = () => {
                   color={Colors.white}
                   label={"Create Transaction"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 
-                  style={global.btnTest} 
+                  style={global.button} 
                   onPress={handleSubmit}                
                 />
               </View>

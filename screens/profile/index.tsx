@@ -100,7 +100,7 @@ const Profile = ({ route }) => {
   }
 
   return (
-    <View useSafeArea flex style={global.bgWhite}>
+    <View useSafeArea flex style={global.white}>
       <ScrollView style={global.flex} contentContainerStyle={global.flex}>
         <Carousel
           containerStyle={{
@@ -136,7 +136,7 @@ const Profile = ({ route }) => {
             <Text text80M grey30 marginV-4>{farmer.description}</Text>
           </View>
 
-          <View row style={[global.spaceBetween, global.flexWrap]}>
+          <View row spread style={global.flexWrap}>
             <Chip backgroundColor={Colors.primary} containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${farmer.name}`} labelStyle={{ color: Colors.white }} onPress={handleChat}/>
             <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`tel:${farmer.phone}`) }}/>
             <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`mailto:${farmer.email}`) }}/>
@@ -155,7 +155,7 @@ const Profile = ({ route }) => {
             color={Colors.white}
             label={items.length != 0 ? "Go to Basket" : "Add items to Basket"} 
             labelStyle={{ fontWeight: '600', padding: 8 }} 
-            style={[global.btnTest, items.length == 0 ? styles.disabled : styles.checkout]}
+            style={[global.button, items.length == 0 ? styles.disabled : styles.checkout]}
             onPress={() => items.length != 0 && navigation.navigate("Second", { screen: "Basket" })}               
           />
         </View>

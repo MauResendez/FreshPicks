@@ -12,7 +12,7 @@ const Report = () => {
 				color={Colors.white}
 				label={"Send CSV to Email"} 
 				labelStyle={{ fontWeight: '600', padding: 8 }} 
-				style={global.btn} 
+				style={global.button} 
 			/>
 		</View>
 	)

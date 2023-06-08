@@ -1,4 +1,4 @@
-import { Platform, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Colors } from "react-native-ui-lib";
 
 export const global = StyleSheet.create({
@@ -12,52 +12,8 @@ export const global = StyleSheet.create({
   flex: {
     flex: 1
   },
-  centerText: {
-    textAlign: "center"
-  },
-  // center: {
-  //   alignItems: "center",
-  //   flex: 1,
-  //   flexDirection: "column",
-  //   padding: 24
-  // },
-  column: {
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "center",
-    width: "100%"
-  },
-  row: {
-    flexDirection: "row",
-    width: "100%"
-  },
-  white: {
-    color: Colors.white
-  },
-  black: {
-    color: Colors.black
-  },
-  bgWhite: {
-    backgroundColor: Colors.white
-  },
-  bgGray: {
-    backgroundColor: "#F3F4F6"
-  },
-  bgOrange: {
-    backgroundColor: Colors.primary,
-    borderRadius: 8
-  },
-  bgGreen: {
-    backgroundColor: Colors.primary
-  },
-  bgDarkGreen: {
-    backgroundColor: Colors.green5
-  },
-  bgBlue: {
-    backgroundColor: "blue"
-  },
-  spaceAround: {
-    justifyContent: "space-around"
+  flexWrap: {
+    flexWrap: "wrap"
   },
   spaceBetween: {
     justifyContent: "space-between"
@@ -65,34 +21,13 @@ export const global = StyleSheet.create({
   spaceEvenly: {
     justifyContent: "space-evenly"
   },
-  justifyContent: {
-    justifyContent: "center"
+  white: {
+    backgroundColor: Colors.white
   },
-  alignItems: {
-    alignItems: "center"
-  },
-  flexWrap: {
-    flexWrap: "wrap"
-  },
-  form: {
-    flex: 1,
-    padding: 24
-  },
-  title: {
-    color: Colors.primary,
-    fontSize: 24,
-    fontWeight: "bold",
-    paddingBottom: 16
-  },
-  subtitle: {
-    color: Colors.black,
-    fontSize: 20,
-    fontWeight: "bold",
-    paddingBottom: 8
-  },
-  field: {
-    paddingVertical: 8,
-    width: "100%"
+  button: {
+    borderRadius: 8,
+    marginVertical: 8,
+    padding: 16,
   },
   checkbox: {
     backgroundColor: Colors.white,
@@ -100,129 +35,9 @@ export const global = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
   },
-  input: {
-    backgroundColor: Colors.white,
-    borderColor: "rgba(0, 0, 0, 0.2)",
-    borderRadius: 8,
-    borderWidth: 1,
-    height: 50,
-    paddingHorizontal: 8,
-  },
-  inputContainer: {
-    borderBottomWidth: 0,
-    paddingHorizontal: 0,
-    width: "100%"
-  },
-  password: {
-    backgroundColor: Colors.white,
-    borderColor: "rgba(0, 0, 0, 0.2)",
-    borderBottomLeftRadius: 8,
-    borderTopLeftRadius: 8,
-    borderWidth: 0,
-    height: 50,
-    paddingHorizontal: 8,
-    width: "100%"
-  },
-  textArea: {
-    backgroundColor: Colors.white,
-    borderColor: "rgba(0, 0, 0, 0.2)",
-    borderRadius: 8,
-    borderWidth: 1,
-    minHeight: 50,
-    paddingHorizontal: 8,
-  },
-  otpInput: {
-    backgroundColor: Colors.white,
-    borderColor: "rgba(0, 0, 0, 0.2)",
-    borderRadius: 8,
-    borderWidth: 1,
-    color: Colors.black,
-    height: 50,
-    paddingHorizontal: 8,
-    width: 50
-  },
-  dropdown: {
-    ...Platform.select({
-      web: {
-        padding: 16
-      }
-    })
-  },
-  autocomplete: {
-    backgroundColor: Colors.white,
-    borderColor: "rgba(0, 0, 0, 0.2)",
-    borderRadius: 8,
-    borderWidth: 1,
-    height: 50,
-    paddingHorizontal: 8,
-    width: "100%"
-  },
-  buttons: {
-    alignItems: "center", 
-    flexDirection: "row", 
-    justifyContent: "center",
-    paddingTop: 16
-  },
-  button: {
-    alignItems: "center",
-    backgroundColor: Colors.primary,
-    borderRadius: 4,
-    elevation: 2,
-    justifyContent: "center",
-    padding: 16,
-    ...Platform.select({
-      android: {
-        padding: "100%"
-      },
-      ios: {
-        width: "100%"
-      },
-      web: {
-        width: 300
-      }
-    }),
-    textAlign: "center"
-  },
-  buttonText: {
-    color: Colors.white,
-    fontSize: 18,
-    lineHeight: 20,
-    fontWeight: "bold",
-    letterSpacing: 1,
-  },
-  fwbtn: {
-    backgroundColor: Colors.primary,
-    borderRadius: 8,
-    marginVertical: 8,
-    padding: 16,
-    width: "100%"
-  },
-  btn2: {
-    backgroundColor: Colors.primary,
-    borderRadius: 8,
-    marginVertical: 8,
-    padding: 16,
-    width: "40%"
-  },
-  btnTest: {
-    borderRadius: 8,
-    marginVertical: 8,
-    padding: 16,
-    width: "100%"
-  },
-  btn: {
-    borderRadius: 8,
-    marginVertical: 8,
-    padding: 16,
-  },
-  btnContainer: {
-    marginBottom: 16,
-  },
-  btnText: {
-    fontSize: 18,
-    fontWeight: "700", 
-    lineHeight: 28,
-    textAlign: "center"
+  image: {
+    width: "100%",
+    height: 150
   },
   fab: {
     bottom: 16,
@@ -241,62 +56,34 @@ export const global = StyleSheet.create({
     shadowRadius: 4,
     elevation: 16,
   },
-  link: {
-    color: Colors.black,
-    fontSize: 16,
-    fontWeight: "700",
+  field: {
     paddingVertical: 8,
-    textAlign: "center",
-    textDecorationLine: 'underline'
-  },
-  liItem: {
-    marginVertical: 4,
     width: "100%"
   },
-  liTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  liSubtitle: {
-    color: "#666",
-    fontSize: 14,
-    fontWeight: "600"
-  },
-  liContent: {
-    color: "#6B7280",
-    fontSize: 12,
-    lineHeight: 24
-  },
-  card: {
+  input: {
     backgroundColor: Colors.white,
+    borderColor: "rgba(0, 0, 0, 0.2)",
     borderRadius: 8,
-    margin: 16,
+    borderWidth: 1,
+    height: 50,
+    paddingHorizontal: 8,
   },
-  cardContent: {
-    padding: 16
+  otp: {
+    backgroundColor: Colors.white,
+    borderColor: "rgba(0, 0, 0, 0.2)",
+    borderRadius: 8,
+    borderWidth: 1,
+    color: Colors.black,
+    height: 50,
+    paddingHorizontal: 8,
+    width: 50
   },
-  cardImg: {
-    height: 200,
-    marginVertical: 8,
-    width: "100%",
-  },
-  activeTabTextColor: {
-    color: "#32CD32"
-  },
-  tabTextColor: {
-    color: Colors.black
-  },
-  androidHeader: {
-    width: 200, 
-    height: 50, 
-    marginTop: 8
-  },
-  iosHeader: {
-    width: 200, 
-    height: 50, 
-  },
-  image: {
-    width: "100%",
-    height: 150
+  area: {
+    backgroundColor: Colors.white,
+    borderColor: "rgba(0, 0, 0, 0.2)",
+    borderRadius: 8,
+    borderWidth: 1,
+    minHeight: 50,
+    paddingHorizontal: 8,
   }
 });

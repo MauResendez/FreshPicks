@@ -101,7 +101,7 @@ const ChangePhone = () => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <View flex style={[global.container, global.spaceBetween]}>
+        <View flex style={global.container}>
           <View>
             <FirebaseRecaptchaVerifierModal
               ref={recaptchaVerifier}
@@ -131,7 +131,7 @@ const ChangePhone = () => {
             color={Colors.white}
             label={"Send Verification Code"} 
             labelStyle={{ fontWeight: '600', padding: 8 }} 
-            style={global.btnTest} 
+            style={global.button} 
             onPress={verifyPhone}          
           />
 
@@ -143,7 +143,7 @@ const ChangePhone = () => {
               code={sms}
               onCodeChanged={code => setSMS(code)}
               autoFocusOnLoad={false}
-              codeInputFieldStyle={global.otpInput}
+              codeInputFieldStyle={global.otp}
               codeInputHighlightStyle={styles.underlineStyleHighLighted}
               onCodeFilled={code => onSubmit(code)}
             />

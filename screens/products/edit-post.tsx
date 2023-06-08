@@ -123,7 +123,7 @@ const EditPost = ({ route }) => {
                 <View style={global.field}>
                   <Text text65 marginV-4>Description</Text>
                   <TextField
-                    style={global.textArea}
+                    style={global.area}
                     placeholder="Enter the post description here"
                     multiline
                     maxLength={100}
@@ -152,7 +152,7 @@ const EditPost = ({ route }) => {
                   color={Colors.white}
                   label={"Edit Post"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 
-                  style={global.btnTest} 
+                  style={global.button} 
                   onPress={() => handleSubmit()}                
                 />
               </View>

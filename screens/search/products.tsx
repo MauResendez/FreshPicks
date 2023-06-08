@@ -86,7 +86,7 @@ const Products = () => {
   }
   
   return (
-    <View useSafeArea flex style={global.bgWhite}>
+    <View useSafeArea flex style={global.white}>
       <View style={styles.search}>
         <TextField fieldStyle={{ backgroundColor: Colors.grey60, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Search for produce here" placeholderTextColor={Colors.grey30} leadingAccessory={<Ionicon name="search" color={"gray"} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>

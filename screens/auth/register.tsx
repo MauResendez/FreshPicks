@@ -401,7 +401,7 @@ const Register = () => {
               value={values.description} 
               onChangeText={handleChange('description')} 
               onBlur={handleBlur('description')} 
-              style={global.textArea} 
+              style={global.area} 
               placeholder="Describe what products and services you sell" 
               maxLength={250} 
             />
@@ -569,7 +569,7 @@ const Register = () => {
             color={Colors.white}
             label={"Monday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.btn} 
+            style={global.button} 
             onPress={() => navigation.navigate("Register")}  
             disabled={!monday.enable}
           />
@@ -581,7 +581,7 @@ const Register = () => {
             color={Colors.white}
             label={"Tuesday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.btn} 
+            style={global.button} 
             onPress={() => navigation.navigate("Register")}
             disabled={!tuesday.enable}
           />
@@ -593,7 +593,7 @@ const Register = () => {
             color={Colors.white}
             label={"Wednesday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.btn} 
+            style={global.button} 
             onPress={() => navigation.navigate("Register")}
             disabled={!wednesday.enable}
           />
@@ -605,7 +605,7 @@ const Register = () => {
             color={Colors.white}
             label={"Thursday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.btn} 
+            style={global.button} 
             onPress={() => navigation.navigate("Register")}
             disabled={!thursday.enable}
           />
@@ -617,7 +617,7 @@ const Register = () => {
             color={Colors.white}
             label={"Friday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.btn} 
+            style={global.button} 
             onPress={() => navigation.navigate("Register")}
             disabled={!friday.enable}  
           />
@@ -629,7 +629,7 @@ const Register = () => {
             color={Colors.white}
             label={"Saturday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.btn} 
+            style={global.button} 
             onPress={() => navigation.navigate("Register")}
             disabled={!saturday.enable}   
           />
@@ -641,7 +641,7 @@ const Register = () => {
             color={Colors.white}
             label={"Sunday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.btn} 
+            style={global.button} 
             onPress={() => navigation.navigate("Register")}
             disabled={!sunday.enable}    
           />
@@ -686,7 +686,7 @@ const Register = () => {
                   color={Colors.white}
                   label={"Cancel"} 
                   labelStyle={{ fontWeight: '600', padding: 4 }} 
-                  style={global.btn} 
+                  style={global.button} 
                   onPress={() => navigation.navigate("Register")}  
                   disabled={!monday.enable}
                 />
@@ -695,7 +695,7 @@ const Register = () => {
                   color={Colors.white}
                   label={"Save"} 
                   labelStyle={{ fontWeight: '600', padding: 4 }} 
-                  style={global.btn} 
+                  style={global.button} 
                   onPress={() => navigation.navigate("Register")}  
                   disabled={!monday.enable}
                 />
@@ -949,7 +949,7 @@ const Register = () => {
             color={Colors.white}
             label={"Send Verification Code"} 
             labelStyle={{ fontWeight: '600', padding: 8 }}
-            style={global.btnTest} 
+            style={global.button} 
             onPress={() => verifyPhone(values.phone)}                
           />
         </View>
@@ -962,7 +962,7 @@ const Register = () => {
             code={values.sms}
             onCodeChanged={handleChange("sms")}
             autoFocusOnLoad={false}
-            codeInputFieldStyle={global.otpInput}
+            codeInputFieldStyle={global.otp}
             codeInputHighlightStyle={{ borderColor: "#03DAC6" }}
             onCodeFilled={() => handleSubmit()}
           />

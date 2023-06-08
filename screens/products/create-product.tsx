@@ -204,7 +204,7 @@ const CreateProduct = () => {
                 <View style={global.field}>
                   <Text text65 marginV-4>Description</Text>
                   <TextField
-                    style={global.textArea}
+                    style={global.area}
                     multiline
                     maxLength={200}
                     onChangeText={handleChange('description')}
@@ -290,7 +290,7 @@ const CreateProduct = () => {
                     color={Colors.white}
                     label={"Create Product"} 
                     labelStyle={{ fontWeight: '600', padding: 8 }} 
-                    style={global.btn}
+                    style={global.button}
                     onPress={handleSubmit}                
                   />
                 </View>

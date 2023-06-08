@@ -296,7 +296,7 @@ const AddBusiness = () => {
               value={values.description} 
               onChangeText={handleChange('description')} 
               onBlur={handleBlur('description')} 
-              style={global.textArea} 
+              style={global.area} 
               placeholder="Describe what products and services you sell" 
               maxLength={250} 
             />
@@ -395,7 +395,7 @@ const AddBusiness = () => {
             color={Colors.white}
             label={"Monday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.btn} 
+            style={global.button} 
             onPress={() => navigation.navigate("Register")}  
             disabled={!monday.enable}
           />
@@ -407,7 +407,7 @@ const AddBusiness = () => {
             color={Colors.white}
             label={"Tuesday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.btn} 
+            style={global.button} 
             onPress={() => navigation.navigate("Register")}
             disabled={!tuesday.enable}
           />
@@ -419,7 +419,7 @@ const AddBusiness = () => {
             color={Colors.white}
             label={"Wednesday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.btn} 
+            style={global.button} 
             onPress={() => navigation.navigate("Register")}
             disabled={!wednesday.enable}
           />
@@ -431,7 +431,7 @@ const AddBusiness = () => {
             color={Colors.white}
             label={"Thursday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.btn} 
+            style={global.button} 
             onPress={() => navigation.navigate("Register")}
             disabled={!thursday.enable}
           />
@@ -443,7 +443,7 @@ const AddBusiness = () => {
             color={Colors.white}
             label={"Friday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.btn} 
+            style={global.button} 
             onPress={() => navigation.navigate("Register")}
             disabled={!friday.enable}  
           />
@@ -455,7 +455,7 @@ const AddBusiness = () => {
             color={Colors.white}
             label={"Saturday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.btn} 
+            style={global.button} 
             onPress={() => navigation.navigate("Register")}
             disabled={!saturday.enable}   
           />
@@ -467,7 +467,7 @@ const AddBusiness = () => {
             color={Colors.white}
             label={"Sunday"} 
             labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.btn} 
+            style={global.button} 
             onPress={() => navigation.navigate("Register")}
             disabled={!sunday.enable}    
           />
@@ -512,7 +512,7 @@ const AddBusiness = () => {
                   color={Colors.white}
                   label={"Cancel"} 
                   labelStyle={{ fontWeight: '600', padding: 4 }} 
-                  style={global.btn} 
+                  style={global.button} 
                   onPress={() => navigation.navigate("Register")}  
                   disabled={!monday.enable}
                 />
@@ -521,7 +521,7 @@ const AddBusiness = () => {
                   color={Colors.white}
                   label={"Save"} 
                   labelStyle={{ fontWeight: '600', padding: 4 }} 
-                  style={global.btn} 
+                  style={global.button} 
                   onPress={() => navigation.navigate("Register")}  
                   disabled={!monday.enable}
                 />

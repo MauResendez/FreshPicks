@@ -95,7 +95,7 @@ const UpdatePersonal = () => {
                   color={Colors.white}
                   label={"Update Personal Information"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 
-                  style={global.btnTest} 
+                  style={global.button} 
                   onPress={() => handleSubmit()}                
                 />
               </View>

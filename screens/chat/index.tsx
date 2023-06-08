@@ -64,7 +64,7 @@ const Chat = () => {
 
   if (chats.length == 0) {
     return (
-      <View useSafeArea flex style={[global.bgGray, global.center, global.container]}>
+      <View useSafeArea flex style={[global.white, global.center, global.container]}>
         <Text text65 marginV-4>Your inbox is empty</Text>
       </View>
     )

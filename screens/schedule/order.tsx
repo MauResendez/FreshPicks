@@ -93,7 +93,7 @@ const Order = ({ route }) => {
               color={Colors.white}
               label={"Send Meeting Request"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
-              style={global.btnTest} 
+              style={global.button} 
               // onPress={createOrder}          
             />
           </View>

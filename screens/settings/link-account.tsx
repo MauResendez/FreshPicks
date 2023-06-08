@@ -121,7 +121,7 @@ const LinkAccount = () => {
                     color={Colors.white}
                     label={"Link Account"} 
                     labelStyle={{ fontWeight: '600', padding: 8 }} 
-                    style={global.btnTest} 
+                    style={global.button} 
                     onPress={() => handleSubmit()}                
                   />
                 </View>

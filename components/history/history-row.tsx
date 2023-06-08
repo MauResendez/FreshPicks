@@ -3,7 +3,6 @@ import { doc, getDoc } from "firebase/firestore";
 import React, { memo, useEffect, useState } from "react";
 import { Colors, ListItem, Text, View } from "react-native-ui-lib";
 import { db } from "../../firebase";
-import { global } from "../../style";
 
 const HistoryRow = (props) => {
   const {item} = props;
@@ -44,11 +43,11 @@ const HistoryRow = (props) => {
       style={{ padding: 8, height: "auto" }}
     >
       <ListItem.Part middle column>
-        <View row style={global.spaceBetween}>
+        <View row spread>
           <Text text65 marginV-4>{farmer.business}</Text>
           <Text text65 marginV-4>Cost: ${item.total.toFixed(2)}</Text>
         </View>
-        <View row style={global.spaceBetween}>
+        <View row spread>
           <Text text80M grey30 marginV-4>{farmer?.address}</Text>
           <Text text80M grey30 marginV-4>{item.status}</Text>
         </View>

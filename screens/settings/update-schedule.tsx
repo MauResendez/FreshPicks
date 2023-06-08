@@ -17,78 +17,78 @@ const UpdateSchedule = () => {
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
           <View style={global.field}>
-            <View style={[global.row, global.spaceBetween]}>
+            <View row spread>
               <Text text65 marginV-4>Monday</Text>
               <Switch value={monday.enable} onValueChange={() => setMonday({...monday, enable: !monday.enable})} />
             </View>
 
-            {monday.enable && <View style={[global.row, global.spaceBetween]}>
+            {monday.enable && <View row spread>
               <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField />
               <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
             </View>}
           </View>
           <View style={global.field}>
-            <View style={[global.row, global.spaceBetween]}>
+            <View row spread>
               <Text text65 marginV-4>Tuesday</Text>
               <Switch value={tuesday.enable} onValueChange={() => setTuesday({...tuesday, enable: !tuesday.enable})} />
             </View>
 
-            {tuesday.enable && <View style={[global.row, global.spaceBetween]}>
+            {tuesday.enable && <View row spread>
               <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField />
               <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
             </View>}
           </View>
           <View style={global.field}>
-            <View style={[global.row, global.spaceBetween]}>
+            <View row spread>
               <Text text65 marginV-4>Wednesday</Text>
               <Switch value={wednesday.enable} onValueChange={() => setWednesday({...wednesday, enable: !wednesday.enable})} />
             </View>
 
-            {wednesday.enable && <View style={[global.row, global.spaceBetween]}>
+            {wednesday.enable && <View row spread>
               <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField />
               <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
             </View>}
           </View>
           <View style={global.field}>
-            <View style={[global.row, global.spaceBetween]}>
+            <View row spread>
               <Text text65 marginV-4>Thursday</Text>
               <Switch value={thursday.enable} onValueChange={() => setThursday({...thursday, enable: !thursday.enable})} />
             </View>
 
-            {thursday.enable && <View style={[global.row, global.spaceBetween]}>
+            {thursday.enable && <View row spread>
               <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField/>
               <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
             </View>}
           </View>
           <View style={global.field}>
-            <View style={[global.row, global.spaceBetween]}>
+            <View row spread>
               <Text text65 marginV-4>Friday</Text>
               <Switch value={friday.enable} onValueChange={() => setFriday({...friday, enable: !friday.enable})} />
             </View>
 
-            {friday.enable && <View style={[global.row, global.spaceBetween]}>
+            {friday.enable && <View row spread>
               <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField/>
               <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
             </View>}
           </View>
           <View style={global.field}>
-            <View style={[global.row, global.spaceBetween]}>
+            <View row spread>
               <Text text65 marginV-4>Saturday</Text>
               <Switch value={saturday.enable} onValueChange={() => setSaturday({...saturday, enable: !saturday.enable})} />
             </View>
 
-            {saturday.enable && <View style={[global.row, global.spaceBetween]}>
+            {saturday.enable && <View row spread>
               <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField/>
               <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
             </View>}
           </View>
           <View style={global.field}>
-            <View style={[global.row, global.spaceBetween]}>
+            <View row spread>
               <Text text65 marginV-4>Sunday</Text>
               <Switch value={sunday.enable} onValueChange={() => setSunday({...sunday, enable: !sunday.enable})} />
             </View>
 
-            {sunday.enable && <View style={[global.row, global.spaceBetween]}>
+            {sunday.enable && <View row spread>
               <DateTimePicker mode="time" placeholder="Start Time" timeFormat={'HH:mm'} migrateTextField/>
               <DateTimePicker mode="time" placeholder="End Time" timeFormat={'HH:mm'} migrateTextField />
             </View>}
@@ -101,7 +101,7 @@ const UpdateSchedule = () => {
             color={Colors.white}
             label={"Update Farmer Schedule"} 
             labelStyle={{ fontWeight: '600', padding: 8 }} 
-            style={global.btnTest} 
+            style={global.button} 
             // onPress={() => handleSubmit()}                
           />
         </KeyboardAwareScrollView>

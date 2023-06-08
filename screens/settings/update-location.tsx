@@ -141,7 +141,7 @@ const UploadLocation = () => {
 						// 			color={Colors.white}
 						// 			label={"Update Farmer Location"} 
 						// 			labelStyle={{ fontWeight: '600', padding: 8 }} 
-						// 			style={global.btnTest} 
+						// 			style={global.button} 
 						// 			onPress={() => handleSubmit()}                
 						// 		/>
 						// 	</View>
@@ -202,7 +202,7 @@ const UploadLocation = () => {
 								color={Colors.white}
 								label={"Update Farmer Location"} 
 								labelStyle={{ fontWeight: '600', padding: 8 }} 
-								style={global.btnTest} 
+								style={global.button} 
 								onPress={() => handleSubmit()}
 								disabled={!values.location}
 							/>

@@ -2,7 +2,6 @@ import React, { memo, useState } from "react";
 import { Colors, ExpandableSection, ListItem, Text, View } from "react-native-ui-lib";
 import { useDispatch, useSelector } from "react-redux";
 import { selectOrderItemsWithId } from "../../features/order-slice";
-import { global } from "../../style";
 
 const BasketRow = (props) => {
   const {item, count} = props;
@@ -31,11 +30,11 @@ const BasketRow = (props) => {
         }
       >
         <ListItem.Part middle column>
-          <View row style={global.spaceBetween}>
+          <View row spread>
             <Text text65 marginV-4 numberOfLines={1}>{item.title}</Text>
             <Text text65 marginV-4>${item.price.toFixed(2)}</Text>
           </View>
-          <View row style={global.spaceBetween}>
+          <View row spread>
             <Text text80M grey30 marginV-4>{item.description}</Text>
             <Text text80M grey30 marginV-4>x {count}</Text>
           </View>

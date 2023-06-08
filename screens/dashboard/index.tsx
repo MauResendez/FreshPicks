@@ -136,7 +136,7 @@ const Dashboard = () => {
               color={Colors.white}
               label={"Report"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
-              style={global.btn} 
+              style={global.button} 
             />
           </View>
           <View style={{ width: "47.5%" }}>
@@ -145,7 +145,7 @@ const Dashboard = () => {
               color={Colors.white}
               label={"CSV to Email"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
-              style={global.btn} 
+              style={global.button} 
             />
           </View>
         </View> */}
@@ -201,7 +201,7 @@ const Dashboard = () => {
               color={Colors.white}
               label={"Report"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
-              style={global.btn} 
+              style={global.button} 
             />
           </View>
           <View style={{ width: "47.5%" }}>
@@ -210,7 +210,7 @@ const Dashboard = () => {
               color={Colors.white}
               label={"CSV to Email"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
-              style={global.btn} 
+              style={global.button} 
             />
           </View>
         </View> */}
@@ -228,7 +228,7 @@ const Dashboard = () => {
   );
 
   return (
-    <View flex style={[global.container, global.bgWhite]}>
+    <View flex style={[global.container, global.white]}>
       <View style={global.field}>
         <Picker  
           value={data[0]}
@@ -285,12 +285,12 @@ const Dashboard = () => {
 
   // return (
   //   <GestureHandlerRootView style={global.flex}>
-  //     <View useSafeArea flex style={global.bgWhite}>
+  //     <View useSafeArea flex style={global.white}>
   //       <TabController items={[{label: 'Categories'}, {label: 'Products'}]}>  
   //         <TabController.TabBar 
   //           indicatorInsets={0}
   //           indicatorStyle={{ backgroundColor: Colors.primary }} 
-  //           selectedLabelColor={global.activeTabTextColor.color}
+  //           selectedLabelColor={Colors.tertiary}
   //           labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
   //         />  
   //         <View flex>    

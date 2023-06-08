@@ -5,7 +5,6 @@ import { Alert } from 'react-native';
 import { Colors, ListItem, Text, View } from 'react-native-ui-lib';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { db } from '../../firebase';
-import { global } from '../../style';
 
 const TransactionRow = (props) => {
 	const {item} = props;
@@ -37,11 +36,11 @@ const TransactionRow = (props) => {
 			</ListItem.Part>
 			<ListItem.Part middle column>
 				
-				<View row style={global.spaceBetween}>
+				<View row spread>
 					<Text text65 marginV-4 numberOfLines={1}>{item.party}</Text>
 					<Text text65 marginV-4>${item.price.toFixed(2)}</Text>
 				</View>
-				<View row style={global.spaceBetween}>
+				<View row spread>
 					<Text text80M grey30 marginV-4>{item.category}</Text>
 					<Text text80M grey30 marginV-4>{item.date.toDate().toLocaleDateString()}</Text>
 				</View>

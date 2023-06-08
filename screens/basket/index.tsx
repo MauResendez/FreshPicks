@@ -116,7 +116,7 @@ const Basket = () => {
 
   if (items.length == 0) {
     return (
-      <View useSafeArea flex style={[global.bgGray, global.center, global.container]}>
+      <View useSafeArea flex style={[global.white, global.center, global.container]}>
         <Text text65 marginV-4>Basket is empty</Text>
       </View>
     )
@@ -166,7 +166,7 @@ const Basket = () => {
               color={Colors.white}
               label={"Send Order Request"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
-              style={global.btnTest} 
+              style={global.button} 
               onPress={createOrder}          
             />
           </View>

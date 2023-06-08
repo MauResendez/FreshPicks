@@ -233,7 +233,7 @@ const EditProduct = ({ route }) => {
                 <View style={global.field}>
                   <Text text65 marginV-4>Description</Text>
                   <TextField
-                    style={global.textArea}
+                    style={global.area}
                     multiline
                     maxLength={100}
                     onChangeText={handleChange('description')}
@@ -317,7 +317,7 @@ const EditProduct = ({ route }) => {
                   color={Colors.white}
                   label={"Edit Product"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 
-                  style={global.btnTest} 
+                  style={global.button} 
                   onPress={() => handleSubmit()}                
                 />
               </View>

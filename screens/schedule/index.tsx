@@ -124,15 +124,15 @@ const Schedule = () => {
 
   return (
     <GestureHandlerRootView style={global.flex}>
-      <View useSafeArea flex style={global.bgWhite}>
+      <View useSafeArea flex style={global.white}>
         <TabController items={[{label: 'Schedule'}, {label: 'Requests'}, {label: 'Inbox'}]}>  
           <TabController.TabBar
             indicatorInsets={0}
             indicatorStyle={{ backgroundColor: Colors.primary }} 
-            selectedLabelColor={global.activeTabTextColor.color}
+            selectedLabelColor={Colors.tertiary}
             labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
           />  
-          <View flex style={global.bgWhite}>    
+          <View flex style={global.white}>    
             <TabController.TabPage index={0} lazy>{FirstRoute()}</TabController.TabPage>    
             <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
             <TabController.TabPage index={2} lazy>{ThirdRoute()}</TabController.TabPage>    

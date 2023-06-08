@@ -2,9 +2,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
-  Platform,
-  ScrollView,
-  StyleSheet,
+    Platform,
+    ScrollView,
+    StyleSheet,
 } from "react-native";
 import Ionicon from "react-native-vector-icons/Ionicons";
 
@@ -106,7 +106,7 @@ const Search = () => {
   }
 
   return (
-    <View useSafeArea flex style={global.bgWhite}>
+    <View useSafeArea flex style={global.white}>
       <View style={styles.search}>
         <TextField fieldStyle={{ backgroundColor: Colors.grey60, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Farmers, produce, subscriptions, etc." placeholderTextColor={Colors.grey30} leadingAccessory={<Ionicon name="search" color={Colors.grey30} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>

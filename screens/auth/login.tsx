@@ -166,7 +166,7 @@ const Login = () => {
                     color={Colors.white}
                     label={"Send Verification Code"} 
                     labelStyle={{ fontWeight: '600', padding: 8 }} 
-                    style={global.btnTest} 
+                    style={global.button} 
                     onPress={() => verifyPhone(values.phone)}                
                   />
                 </View>
@@ -179,7 +179,7 @@ const Login = () => {
                     code={values.sms}
                     onCodeChanged={handleChange("sms")}
                     autoFocusOnLoad={false}
-                    codeInputFieldStyle={global.otpInput}
+                    codeInputFieldStyle={global.otp}
                     codeInputHighlightStyle={styles.underlineStyleHighLighted}
                     onCodeFilled={() => handleSubmit()}
                   />

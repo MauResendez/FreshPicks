@@ -17,7 +17,7 @@ const Landing = () => {
   return (
     <ImageBackground style={global.flex} source={require("../../assets/landing.png")} >
       <View useSafeArea flex>
-        <View flex style={[global.container, global.spaceBetween]}>
+        <View flex spread style={global.container}>
           <Image style={{ width: "auto", height: 100, marginTop: 32 }} source={require("../../assets/logo.png")} resizeMode="contain" />
 
           <View style={global.field}>
@@ -26,7 +26,7 @@ const Landing = () => {
               color={Colors.white}
               label={"Register"} 
               labelStyle={{ fontWeight: '600', padding: 4 }} 
-              style={global.btnTest} 
+              style={global.button} 
               onPress={() => navigation.navigate("Register")}  
             />
 
@@ -35,7 +35,7 @@ const Landing = () => {
               color={Colors.black}
               label={"Login"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
-              style={global.btnTest} 
+              style={global.button} 
               onPress={() => navigation.navigate("Login")}  
             />
           </View>   

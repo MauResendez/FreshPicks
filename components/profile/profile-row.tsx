@@ -1,6 +1,5 @@
 import React, { memo, useState } from 'react';
 import { Alert } from 'react-native';
-import Toast from 'react-native-toast-message';
 import { Colors, ExpandableSection, Image, ListItem, Stepper, Text } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToOrder, clearOrder, getOrderFarmer, removeFromOrder, selectOrderItemsWithId } from '../../features/order-slice';
@@ -39,14 +38,6 @@ const ProfileRow = (props) => {
 
 		return;
   });
-
-  const showToast = (type, title, message) => {
-    Toast.show({
-      type: type,
-      text1: title,
-      text2: message
-    });
-  }
 
   return (
     <ExpandableSection
