@@ -118,7 +118,7 @@ const Basket = () => {
   if (items.length == 0) {
     return (
       <View useSafeArea flex style={[global.bgGray, global.center, global.container]}>
-        <Text subtitle>Basket is empty</Text>
+        <Text text65 marginV-4>Basket is empty</Text>
       </View>
     )
   }
@@ -132,7 +132,7 @@ const Basket = () => {
             height={60}
           >
             <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
-              <Text h2 numberOfLines={1} style={{ color: Colors.black }}>
+              <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
                 Basket
               </Text>
             </ListItem.Part>
@@ -149,7 +149,7 @@ const Basket = () => {
             height={60}
           >
             <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
-              <Text h2 numberOfLines={1} style={{ color: Colors.black }}>
+              <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
                 Your items
               </Text>
             </ListItem.Part>

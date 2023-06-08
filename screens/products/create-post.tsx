@@ -133,7 +133,7 @@ const CreatePost = () => {
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
               <View flex style={global.container}>                
                 <View style={global.field}>
-                  <Text subtitle>Title</Text>
+                  <Text text65 marginV-4>Title</Text>
                   <TextField
                     style={global.input}
                     onChangeText={handleChange('title')}
@@ -145,7 +145,7 @@ const CreatePost = () => {
                 {errors.title && touched.title && <Text style={{ color: Colors.red30}}>{errors.title}</Text>}
 
                 <View style={global.field}>
-                  <Text subtitle>Description</Text>
+                  <Text text65 marginV-4>Description</Text>
                   <TextField
                     style={global.textArea}
                     multiline
@@ -159,7 +159,7 @@ const CreatePost = () => {
                 {errors.description && touched.description && <Text style={{ color: Colors.red30}}>{errors.description}</Text>}
 
                 <View style={global.field}>
-                  <Text subtitle>Image</Text>
+                  <Text text65 marginV-4>Image</Text>
                   <TouchableOpacity onPress={() => gallery(setFieldValue)}>
                     {values.image.length == 0
                       ? <AnimatedImage style={{ width: "100%", height: 150 }} source={require("../../assets/image.png")} />

@@ -147,7 +147,7 @@ const UploadLocation = () => {
 						// 	</View>
 						// </MapView>
 						<KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]} keyboardShouldPersistTaps="always">
-							<Text subtitle>Business Address *</Text>
+							<Text text65 marginV-4>Business Address *</Text>
 							<GooglePlacesAutocomplete
 								textInputProps={{
 									onChange(text) {

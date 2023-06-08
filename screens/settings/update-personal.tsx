@@ -61,7 +61,7 @@ const UpdatePersonal = () => {
 					  {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
               <View flex style={global.container}>
                 <View style={global.field}>
-                  <Text subtitle>Full Name *</Text>
+                  <Text text65 marginV-4>Full Name *</Text>
                   <TextField 
                     value={values.name}
                     onChangeText={handleChange('name')}
@@ -75,7 +75,7 @@ const UpdatePersonal = () => {
                 {errors.name && touched.name && <Text style={{ color: Colors.red30 }}>{errors.name}</Text>}
 
                 <View style={global.field}>
-                  <Text subtitle>Email *</Text>
+                  <Text text65 marginV-4>Email *</Text>
                   <TextField 
                     value={values.email}
                     onChangeText={handleChange('email')}

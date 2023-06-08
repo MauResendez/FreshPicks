@@ -200,7 +200,7 @@ const UpdateFarmer = () => {
                 </Carousel>
                 <View flex style={global.container}>
                   <View style={global.field}>
-                    <Text subtitle>Business Name *</Text>
+                    <Text text65 marginV-4>Business Name *</Text>
                     <TextField
                       value={values.business}
                       onChangeText={handleChange('business')}
@@ -212,7 +212,7 @@ const UpdateFarmer = () => {
                   {errors.business && touched.business && <Text style={{ color: Colors.red30 }}>{errors.business}</Text>}
                   
                   <View style={global.field}>
-                    <Text subtitle>Describe your business *</Text>
+                    <Text text65 marginV-4>Describe your business *</Text>
                     <TextField
                       value={values.description}
                       onChangeText={handleChange('description')}
@@ -226,7 +226,7 @@ const UpdateFarmer = () => {
                   {errors.description && touched.description && <Text style={{ color: Colors.red30 }}>{errors.description}</Text>}
 
                   <View style={global.field}>
-                    <Text subtitle>Website</Text>
+                    <Text text65 marginV-4>Website</Text>
                     <TextField
                       value={values.website}
                       onChangeText={handleChange('website')}

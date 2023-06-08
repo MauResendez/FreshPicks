@@ -109,7 +109,7 @@ const EditPost = ({ route }) => {
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
               <View flex>                 
                 <View style={global.field}>
-                  <Text subtitle>Title</Text>
+                  <Text text65 marginV-4>Title</Text>
                   <TextField
                     style={global.input}
                     onChangeText={handleChange('title')}
@@ -121,7 +121,7 @@ const EditPost = ({ route }) => {
                 {errors.title && touched.title && <Text style={{ color: Colors.red30}}>{errors.title}</Text>}
 
                 <View style={global.field}>
-                  <Text subtitle>Description</Text>
+                  <Text text65 marginV-4>Description</Text>
                   <TextField
                     style={global.textArea}
                     placeholder="Enter the post description here"
@@ -136,7 +136,7 @@ const EditPost = ({ route }) => {
                 {errors.description && touched.description && <Text style={{ color: Colors.red30}}>{errors.description}</Text>}
 
                 <View style={global.field}>
-                  <Text subtitle>Image</Text>
+                  <Text text65 marginV-4>Image</Text>
                   <TouchableOpacity onPress={gallery}>
                     {!image
                       ? <AnimatedImage style={{ width: "100%", height: 200 }} source={require("../../assets/image.png")} />

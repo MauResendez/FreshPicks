@@ -19,8 +19,8 @@ const DateTimeRow = (props) => {
 		>
 			<ListItem.Part row spread>
         <View>
-					<Text h2 numberOfLines={3}>Date</Text>
-					<Text h3>{item.address}</Text>
+					<Text text65 marginV-4 numberOfLines={3}>Date</Text>
+					<Text text80M marginV-4>{item.address}</Text>
         </View>
         <View>
 					<Button color={'grey'} title={'Info'} onPress={buttonPressed} />

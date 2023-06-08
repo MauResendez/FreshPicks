@@ -279,7 +279,7 @@ const AddBusiness = () => {
         
         <View flexG style={{ padding: 24 }}>
           <View style={global.field}>
-            <Text subtitle>Business Name *</Text>
+            <Text text65 marginV-4>Business Name *</Text>
             <TextField 
               value={values.business} 
               onChangeText={handleChange('business')} 
@@ -291,7 +291,7 @@ const AddBusiness = () => {
           {errors.business && touched.business && <Text style={{ color: Colors.red30 }}>{errors.business}</Text>}
           
           <View style={global.field}>
-            <Text subtitle>Describe Your Business *</Text>
+            <Text text65 marginV-4>Describe Your Business *</Text>
             <TextField 
               value={values.description} 
               onChangeText={handleChange('description')} 
@@ -304,7 +304,7 @@ const AddBusiness = () => {
           {errors.description && touched.description && <Text style={{ color: Colors.red30 }}>{errors.description}</Text>}
 
           <View style={global.field}>
-            <Text subtitle>Website</Text>
+            <Text text65 marginV-4>Website</Text>
             <TextField 
               value={values.website} 
               onChangeText={handleChange('website')} 
@@ -328,7 +328,7 @@ const AddBusiness = () => {
 
     return (
       <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]} keyboardShouldPersistTaps="always">
-        <Text subtitle>Business Address *</Text>
+        <Text text65 marginV-4>Business Address *</Text>
         <GooglePlacesAutocomplete
           textInputProps={{
             onChange(text) {
@@ -480,11 +480,11 @@ const AddBusiness = () => {
           >
             <View padding-24>
               <View>
-                <Text subtitle>Monday</Text>
+                <Text text65 marginV-4>Monday</Text>
               </View>
               <View row spread>
                 <View>
-                  <Text h2>Start Time</Text>
+                  <Text text65 marginV-4>Start Time</Text>
                   <DateTimePicker
                     value={new Date()} 
                     mode="time" 
@@ -495,7 +495,7 @@ const AddBusiness = () => {
                 </View>
 
                 <View>
-                  <Text h2>End Time</Text>
+                  <Text text65 marginV-4>End Time</Text>
                   <DateTimePicker
                     value={new Date()} 
                     mode="time" 
@@ -537,7 +537,7 @@ const AddBusiness = () => {
           >
             <View padding-24 row spread>
               <View>
-                <Text h2>Start Time</Text>
+                <Text text65 marginV-4>Start Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -548,7 +548,7 @@ const AddBusiness = () => {
               </View>
 
               <View>
-                <Text h2>End Time</Text>
+                <Text text65 marginV-4>End Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -570,7 +570,7 @@ const AddBusiness = () => {
           >
             <View padding-24 row spread>
               <View>
-                <Text h2>Start Time</Text>
+                <Text text65 marginV-4>Start Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -581,7 +581,7 @@ const AddBusiness = () => {
               </View>
 
               <View>
-                <Text h2>End Time</Text>
+                <Text text65 marginV-4>End Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -603,7 +603,7 @@ const AddBusiness = () => {
           >
             <View padding-24 row spread>
               <View>
-                <Text h2>Start Time</Text>
+                <Text text65 marginV-4>Start Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -614,7 +614,7 @@ const AddBusiness = () => {
               </View>
 
               <View>
-                <Text h2>End Time</Text>
+                <Text text65 marginV-4>End Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -636,7 +636,7 @@ const AddBusiness = () => {
           >
             <View padding-24 row spread>
               <View>
-                <Text h2>Start Time</Text>
+                <Text text65 marginV-4>Start Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -647,7 +647,7 @@ const AddBusiness = () => {
               </View>
 
               <View>
-                <Text h2>End Time</Text>
+                <Text text65 marginV-4>End Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -669,7 +669,7 @@ const AddBusiness = () => {
           >
             <View padding-24 row spread>
               <View>
-                <Text h2>Start Time</Text>
+                <Text text65 marginV-4>Start Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -680,7 +680,7 @@ const AddBusiness = () => {
               </View>
 
               <View>
-                <Text h2>End Time</Text>
+                <Text text65 marginV-4>End Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -702,7 +702,7 @@ const AddBusiness = () => {
           >
             <View padding-24 row spread>
               <View>
-                <Text h2>Start Time</Text>
+                <Text text65 marginV-4>Start Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -713,7 +713,7 @@ const AddBusiness = () => {
               </View>
 
               <View>
-                <Text h2>End Time</Text>
+                <Text text65 marginV-4>End Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -742,12 +742,12 @@ const AddBusiness = () => {
     return (
       <View style={[global.container, global.flex]}>
         <View style={global.field}>
-          <Text subtitle>Add Your Business</Text>
+          <Text text65 marginV-4>Add Your Business</Text>
         </View>
         {errors.phone && touched.phone && <Text style={{ color: Colors.red30 }}>{errors.phone}</Text>}
 
         <View style={global.field}>
-          <Text h3>Submit to add in your business information to your account.</Text>
+          <Text text80M marginV-4>Submit to add in your business information to your account.</Text>
         </View> 
 
         <View flexG />

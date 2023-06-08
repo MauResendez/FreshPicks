@@ -318,7 +318,7 @@ const Register = () => {
     return (
       <View flex style={global.container}>
         <View style={global.field}>
-          <Text subtitle>Register as a Farmer?</Text>
+          <Text text65 marginV-4>Register as a Farmer?</Text>
           <Checkbox 
             value={farmer} 
             onValueChange={() => setFarmer(!farmer)} 
@@ -328,7 +328,7 @@ const Register = () => {
         </View>
 
         <View style={global.field}>
-          <Text subtitle>Full Name *</Text>
+          <Text text65 marginV-4>Full Name *</Text>
           <TextField 
             style={global.input} 
             value={values.name} 
@@ -342,7 +342,7 @@ const Register = () => {
         {errors.name && touched.name && <Text style={{ color: Colors.red30 }}>{errors.name}</Text>}
 
         <View style={global.field}>
-          <Text subtitle>Email *</Text>
+          <Text text65 marginV-4>Email *</Text>
           <TextField 
             style={global.input} 
             value={values.email} 
@@ -384,7 +384,7 @@ const Register = () => {
         
         <View flexG style={{ padding: 24 }}>
           <View style={global.field}>
-            <Text subtitle>Business Name *</Text>
+            <Text text65 marginV-4>Business Name *</Text>
             <TextField 
               value={values.business} 
               onChangeText={handleChange('business')} 
@@ -396,7 +396,7 @@ const Register = () => {
           {errors.business && touched.business && <Text style={{ color: Colors.red30 }}>{errors.business}</Text>}
           
           <View style={global.field}>
-            <Text subtitle>Describe Your Business *</Text>
+            <Text text65 marginV-4>Describe Your Business *</Text>
             <TextField 
               value={values.description} 
               onChangeText={handleChange('description')} 
@@ -409,7 +409,7 @@ const Register = () => {
           {errors.description && touched.description && <Text style={{ color: Colors.red30 }}>{errors.description}</Text>}
 
           <View style={global.field}>
-            <Text subtitle>Website</Text>
+            <Text text65 marginV-4>Website</Text>
             <TextField 
               value={values.website} 
               onChangeText={handleChange('website')} 
@@ -433,7 +433,7 @@ const Register = () => {
 
     return (
       <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]}>
-        <Text subtitle>Business Address *</Text>
+        <Text text65 marginV-4>Business Address *</Text>
         {errors.address && touched.address && <Text style={{ color: Colors.red30 }}>{errors.address}</Text>}
 
         {errors.location && touched.location && <Text style={{ color: Colors.red30 }}>{errors.location}</Text>}
@@ -654,11 +654,11 @@ const Register = () => {
           >
             <View padding-24>
               <View>
-                <Text subtitle>Monday</Text>
+                <Text text65 marginV-4>Monday</Text>
               </View>
               <View row spread>
                 <View>
-                  <Text h2>Start Time</Text>
+                  <Text text65 marginV-4>Start Time</Text>
                   <DateTimePicker
                     value={new Date()} 
                     mode="time" 
@@ -669,7 +669,7 @@ const Register = () => {
                 </View>
 
                 <View>
-                  <Text h2>End Time</Text>
+                  <Text text65 marginV-4>End Time</Text>
                   <DateTimePicker
                     value={new Date()} 
                     mode="time" 
@@ -711,7 +711,7 @@ const Register = () => {
           >
             <View padding-24 row spread>
               <View>
-                <Text h2>Start Time</Text>
+                <Text text65 marginV-4>Start Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -722,7 +722,7 @@ const Register = () => {
               </View>
 
               <View>
-                <Text h2>End Time</Text>
+                <Text text65 marginV-4>End Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -744,7 +744,7 @@ const Register = () => {
           >
             <View padding-24 row spread>
               <View>
-                <Text h2>Start Time</Text>
+                <Text text65 marginV-4>Start Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -755,7 +755,7 @@ const Register = () => {
               </View>
 
               <View>
-                <Text h2>End Time</Text>
+                <Text text65 marginV-4>End Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -777,7 +777,7 @@ const Register = () => {
           >
             <View padding-24 row spread>
               <View>
-                <Text h2>Start Time</Text>
+                <Text text65 marginV-4>Start Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -788,7 +788,7 @@ const Register = () => {
               </View>
 
               <View>
-                <Text h2>End Time</Text>
+                <Text text65 marginV-4>End Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -810,7 +810,7 @@ const Register = () => {
           >
             <View padding-24 row spread>
               <View>
-                <Text h2>Start Time</Text>
+                <Text text65 marginV-4>Start Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -821,7 +821,7 @@ const Register = () => {
               </View>
 
               <View>
-                <Text h2>End Time</Text>
+                <Text text65 marginV-4>End Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -843,7 +843,7 @@ const Register = () => {
           >
             <View padding-24 row spread>
               <View>
-                <Text h2>Start Time</Text>
+                <Text text65 marginV-4>Start Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -854,7 +854,7 @@ const Register = () => {
               </View>
 
               <View>
-                <Text h2>End Time</Text>
+                <Text text65 marginV-4>End Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -876,7 +876,7 @@ const Register = () => {
           >
             <View padding-24 row spread>
               <View>
-                <Text h2>Start Time</Text>
+                <Text text65 marginV-4>Start Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -887,7 +887,7 @@ const Register = () => {
               </View>
 
               <View>
-                <Text h2>End Time</Text>
+                <Text text65 marginV-4>End Time</Text>
                 <DateTimePicker
                   value={new Date()} 
                   mode="time" 
@@ -929,7 +929,7 @@ const Register = () => {
         </View>
         
         <View style={global.field}>
-          <Text subtitle>Phone Number</Text>
+          <Text text65 marginV-4>Phone Number</Text>
           <PhoneInput
             initialValue={values.phone}
             ref={phoneRef}
@@ -955,7 +955,7 @@ const Register = () => {
         </View>
 
         <View style={global.field}>
-          <Text subtitle>Verify SMS Code</Text>
+          <Text text65 marginV-4>Verify SMS Code</Text>
           <OTPInputView
             style={{width: '100%', height: 50}}
             pinCount={6}

@@ -3,7 +3,7 @@ import { FlashList } from "@shopify/flash-list";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  useWindowDimensions
+    useWindowDimensions
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Button, Colors, LoaderScreen, TabController, Text, View } from "react-native-ui-lib";
@@ -42,7 +42,7 @@ const Products = () => {
             estimatedItemSize={products.length != 0 ? products.length : 150}
             renderItem={renderProduct}
           />
-        : <Text subtitle>No products yet</Text>
+        : <Text text65 marginV-4>No products yet</Text>
       }
       <Button
         style={global.fab} 
@@ -65,7 +65,7 @@ const Products = () => {
             estimatedItemSize={subscriptions.length != 0 ? subscriptions.length : 150}
             renderItem={renderSubscription}
           />
-        : <Text subtitle>No subscriptions yet</Text>
+        : <Text text65 marginV-4>No subscriptions yet</Text>
       }
       <Button
         style={global.fab} 

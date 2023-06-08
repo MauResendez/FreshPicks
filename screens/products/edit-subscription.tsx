@@ -171,7 +171,7 @@ const EditSubscription = ({ route }) => {
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
               <View flex style={global.container}>
                 <View style={global.field}>
-                  <Text subtitle>Title</Text>
+                  <Text text65 marginV-4>Title</Text>
                   <TextField
                     style={global.input}
                     placeholder="Enter the subscription title here"
@@ -183,7 +183,7 @@ const EditSubscription = ({ route }) => {
                 {errors.title && touched.title && <Text style={{ color: Colors.red30}}>{errors.title}</Text>}
 
                 <View style={global.field}>
-                  <Text subtitle>Description</Text>
+                  <Text text65 marginV-4>Description</Text>
                   <TextField
                     style={global.textArea}
                     placeholder="Enter the subscription description here"
@@ -197,7 +197,7 @@ const EditSubscription = ({ route }) => {
                 {errors.description && touched.description && <Text style={{ color: Colors.red30}}>{errors.description}</Text>}
 
                 <View style={global.field}>
-                  <Text subtitle>Price</Text>
+                  <Text text65 marginV-4>Price</Text>
                   <CurrencyInput
                     value={values.price}
                     onChangeValue={(price) => setFieldValue("price", price)}
@@ -215,7 +215,7 @@ const EditSubscription = ({ route }) => {
                 {errors.price && touched.price && <Text style={{ color: Colors.red30}}>{errors.price}</Text>}
 
                 <View style={global.field}>
-                  <Text subtitle>Type</Text>
+                  <Text text65 marginV-4>Type</Text>
                   <Picker  
                     value={values.type}
                     placeholder={'Subscription Type'}
@@ -234,7 +234,7 @@ const EditSubscription = ({ route }) => {
                 {errors.type && touched.type && <Text style={{ color: Colors.red30}}>{errors.type}</Text>}
 
                 <View style={global.field}>
-                  <Text subtitle>Image</Text>
+                  <Text text65 marginV-4>Image</Text>
                   <TouchableOpacity onPress={() => setVisible(true)}>
                     {values.image.length == 0
                       ? <Image style={{ width: "100%", height: 150 }} source={require("../../assets/image.png")} />

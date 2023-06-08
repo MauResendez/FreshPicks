@@ -190,7 +190,7 @@ const CreateProduct = () => {
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
               <View flex style={global.container}>
                 <View style={global.field}>
-                  <Text subtitle>Title</Text>
+                  <Text text65 marginV-4>Title</Text>
                   <TextField
                     style={global.input}
                     onChangeText={handleChange('title')}
@@ -202,7 +202,7 @@ const CreateProduct = () => {
                 {errors.title && touched.title && <Text style={{ color: Colors.red30 }}>{errors.title}</Text>}
 
                 <View style={global.field}>
-                  <Text subtitle>Description</Text>
+                  <Text text65 marginV-4>Description</Text>
                   <TextField
                     style={global.textArea}
                     multiline
@@ -235,7 +235,7 @@ const CreateProduct = () => {
                 {errors.type && touched.type && <Text style={{ color: Colors.red30 }}>{errors.type}</Text>}
 
                 <View style={global.field}>
-                  <Text subtitle>Price</Text>
+                  <Text text65 marginV-4>Price</Text>
                   <CurrencyInput
                     value={values.price}
                     onChangeValue={(price) => setFieldValue("price", price)}
@@ -253,7 +253,7 @@ const CreateProduct = () => {
                 {errors.price && touched.price && <Text style={{ color: Colors.red30 }}>{errors.price}</Text>}
 
                 <View style={global.field}>
-                  <Text subtitle>Amount</Text>
+                  <Text text65 marginV-4>Amount</Text>
                   <Picker 
                     style={[global.input, { marginBottom: -16 }]}
                     value={values.amount} 
@@ -271,7 +271,7 @@ const CreateProduct = () => {
                 {errors.amount && touched.amount && <Text style={{ color: Colors.red30 }}>{errors.amount}</Text>}
 
                 <View style={global.field}>
-                  <Text subtitle>Image</Text>
+                  <Text text65 marginV-4>Image</Text>
                   <TouchableOpacity onPress={() => Alert.alert("Options", "Select photo from which option", [
                     {text: 'Cancel', style: 'cancel'},
                     {text: 'Camera', onPress: async () => await camera(setFieldValue)},

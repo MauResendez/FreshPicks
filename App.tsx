@@ -4,7 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { onAuthStateChanged, User } from "firebase/auth";
 import React, { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
-import { Colors, ConnectionStatusBar, LoaderScreen, ThemeManager, Typography } from "react-native-ui-lib";
+import { Colors, ConnectionStatusBar, LoaderScreen, ThemeManager } from "react-native-ui-lib";
 import { Provider } from "react-redux";
 import { auth } from "./firebase";
 import AuthStack from "./navigation/stack/auth-stack";
@@ -51,33 +51,6 @@ ThemeManager.setComponentTheme('Stepper', (props, context) => {
 ThemeManager.setComponentTheme('Wizard', (props, context) => {
   const activeConfig = {color: Colors.white, circleBackgroundColor: Colors.primary, circleColor: "transparent", indexLabelStyle: { fontWeight: "600" }, labelStyle: { fontWeight: "600" }};
   return {activeConfig};
-});
-
-Typography.loadTypographies({ 
-  title: {
-    color: Colors.secondary,
-    fontSize: 24,
-    fontWeight: "bold",
-    paddingBottom: 16
-  }, 
-  subtitle: {
-    color: Colors.black,
-    fontSize: 20,
-    fontWeight: "bold",
-    paddingBottom: 8
-  },
-  h2: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginVertical: 4,
-  }, 
-  h3: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#666",
-    marginVertical: 4
-  },
-  test: Typography.test65,
 });
 
 Notifications.setNotificationHandler({

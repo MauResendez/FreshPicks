@@ -18,7 +18,7 @@ const UpdateSchedule = () => {
         <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
           <View style={global.field}>
             <View style={[global.row, global.spaceBetween]}>
-              <Text subtitle>Monday</Text>
+              <Text text65 marginV-4>Monday</Text>
               <Switch value={monday.enable} onValueChange={() => setMonday({...monday, enable: !monday.enable})} />
             </View>
 
@@ -29,7 +29,7 @@ const UpdateSchedule = () => {
           </View>
           <View style={global.field}>
             <View style={[global.row, global.spaceBetween]}>
-              <Text subtitle>Tuesday</Text>
+              <Text text65 marginV-4>Tuesday</Text>
               <Switch value={tuesday.enable} onValueChange={() => setTuesday({...tuesday, enable: !tuesday.enable})} />
             </View>
 
@@ -40,7 +40,7 @@ const UpdateSchedule = () => {
           </View>
           <View style={global.field}>
             <View style={[global.row, global.spaceBetween]}>
-              <Text subtitle>Wednesday</Text>
+              <Text text65 marginV-4>Wednesday</Text>
               <Switch value={wednesday.enable} onValueChange={() => setWednesday({...wednesday, enable: !wednesday.enable})} />
             </View>
 
@@ -51,7 +51,7 @@ const UpdateSchedule = () => {
           </View>
           <View style={global.field}>
             <View style={[global.row, global.spaceBetween]}>
-              <Text subtitle>Thursday</Text>
+              <Text text65 marginV-4>Thursday</Text>
               <Switch value={thursday.enable} onValueChange={() => setThursday({...thursday, enable: !thursday.enable})} />
             </View>
 
@@ -62,7 +62,7 @@ const UpdateSchedule = () => {
           </View>
           <View style={global.field}>
             <View style={[global.row, global.spaceBetween]}>
-              <Text subtitle>Friday</Text>
+              <Text text65 marginV-4>Friday</Text>
               <Switch value={friday.enable} onValueChange={() => setFriday({...friday, enable: !friday.enable})} />
             </View>
 
@@ -73,7 +73,7 @@ const UpdateSchedule = () => {
           </View>
           <View style={global.field}>
             <View style={[global.row, global.spaceBetween]}>
-              <Text subtitle>Saturday</Text>
+              <Text text65 marginV-4>Saturday</Text>
               <Switch value={saturday.enable} onValueChange={() => setSaturday({...saturday, enable: !saturday.enable})} />
             </View>
 
@@ -84,7 +84,7 @@ const UpdateSchedule = () => {
           </View>
           <View style={global.field}>
             <View style={[global.row, global.spaceBetween]}>
-              <Text subtitle>Sunday</Text>
+              <Text text65 marginV-4>Sunday</Text>
               <Switch value={sunday.enable} onValueChange={() => setSunday({...sunday, enable: !sunday.enable})} />
             </View>
 

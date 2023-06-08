@@ -11,8 +11,8 @@ const FarmerResultRow = (props) => {
 			style={{ backgroundColor: Colors.white, padding: 8, height: "auto" }}
     >
       <ListItem.Part column>
-        <Text h2>{item.business}</Text>
-        <Text h3>{item.address}</Text>
+        <Text text65 marginV-4>{item.business}</Text>
+        <Text text80M marginV-4>{item.address}</Text>
       </ListItem.Part>
     </ListItem>
 	)

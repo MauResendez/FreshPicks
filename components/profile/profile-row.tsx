@@ -63,8 +63,8 @@ const ProfileRow = (props) => {
           <Image source={{ uri: item.image[0] }} style={{ width: 50, height: 50, marginRight: 12, borderWidth: 1, borderColor: Colors.black }}/>
         </ListItem.Part>}
         <ListItem.Part middle column>
-          <Text h2>{item.title}</Text>
-          <Text h3>${item.price.toFixed(2)}</Text>
+          <Text text65 marginV-4>{item.title}</Text>
+          <Text text80M marginV-4>${item.price.toFixed(2)}</Text>
         </ListItem.Part>
       </ListItem>} 
     >

@@ -107,7 +107,7 @@ const CreateTransaction = () => {
               <View flex>
                 <View row spread style={{ paddingVertical: 8 }}>
                   <View style={{ width: "47.5%" }}>
-                    <Text subtitle>Type</Text>
+                    <Text text65 marginV-4>Type</Text>
                     <Picker  
                       value={values.type}
                       style={[global.input, { marginBottom: -16 }]}
@@ -123,7 +123,7 @@ const CreateTransaction = () => {
                   </View>
 
                   <View style={{ width: "47.5%" }}>
-                    <Text subtitle>Price</Text>
+                    <Text text65 marginV-4>Price</Text>
                     <CurrencyInput
                       value={values.price}
                       onChangeValue={(price) => setFieldValue("price", price)}
@@ -143,8 +143,8 @@ const CreateTransaction = () => {
                 <View row spread style={{ paddingVertical: 8 }}>
                   <View style={{ width: "47.5%" }}>
                     {values.type == 'Expense' 
-                      ? <Text subtitle>Vendor Name</Text>
-                      : <Text subtitle>Customer Name</Text>
+                      ? <Text text65 marginV-4>Vendor Name</Text>
+                      : <Text text65 marginV-4>Customer Name</Text>
                     }
                     <TextField
                       style={global.input}
@@ -157,7 +157,7 @@ const CreateTransaction = () => {
                   </View>
 
                   <View style={{ width: "47.5%" }}>
-                    <Text subtitle>Date</Text>
+                    <Text text65 marginV-4>Date</Text>
                     <DateTimePicker 
                       value={values.date} 
                       onChange={(date) => setFieldValue("date", date)} 
@@ -171,7 +171,7 @@ const CreateTransaction = () => {
 
                 <View row spread style={{ paddingVertical: 8 }}>
                   <View style={{ width: "47.5%" }}>
-                    <Text subtitle>Product</Text>
+                    <Text text65 marginV-4>Product</Text>
                     <Picker  
                       value={values.product}
                       style={[global.input, { marginBottom: -16 }]}
@@ -196,7 +196,7 @@ const CreateTransaction = () => {
                   </View>
 
                   <View style={{ width: "47.5%" }}>
-                  <Text subtitle>Category</Text>
+                  <Text text65 marginV-4>Category</Text>
                   {values.type == 'Expense' 
                     ? <Picker  
                         numberOfLines = { 1 } 
@@ -236,7 +236,7 @@ const CreateTransaction = () => {
                 </View>
 
                 <View style={global.field}>
-                  <Text subtitle>Notes</Text>
+                  <Text text65 marginV-4>Notes</Text>
                   <TextField
                     style={global.textArea}
                     multiline

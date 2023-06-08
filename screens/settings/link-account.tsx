@@ -73,7 +73,7 @@ const LinkAccount = () => {
               <View flex>
                 <View flex style={global.container}>
 									<View style={global.field}>
-										<Text subtitle>Phone Number</Text>
+										<Text text65 marginV-4>Phone Number</Text>
 										<PhoneInput
 											initialValue={values.phone}
 											ref={phoneRef}
@@ -89,7 +89,7 @@ const LinkAccount = () => {
                   {errors.phone && touched.phone && <Text style={{ color: Colors.red30 }}>{errors.phone}</Text>}
 
                   <View style={global.field}>
-                    <Text subtitle>Email *</Text>
+                    <Text text65 marginV-4>Email *</Text>
                     <TextField
                       value={values.email}
                       onChangeText={handleChange('email')}
@@ -102,7 +102,7 @@ const LinkAccount = () => {
                   {errors.email && touched.email && <Text style={{ color: Colors.red30 }}>{errors.email}</Text>}
                   
                   <View style={global.field}>
-                    <Text subtitle>Password *</Text>
+                    <Text text65 marginV-4>Password *</Text>
                     <TextField
                       value={values.password}
                       onChangeText={handleChange('password')}

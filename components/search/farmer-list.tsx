@@ -17,18 +17,20 @@ const FarmerList = ({ title, description, farmers }) => {
 
   return (
     <View>
-      <View style={styles.title}>
-        <Text style={styles.titleText}>{title}</Text>
-        <Ionicon name={"arrow-forward"} size={36} onPress={() => navigation.navigate("Farmers")}/>
-      </View>
+      <View row spread marginH-16 marginT-16 centerV>
+        <View>
+          <Text text65 marginV-4>{title}</Text>      
+          <Text text90L marginV-4>{description}</Text>
+        </View>
 
-      <Text style={styles.description}>{description}</Text>
+        <Ionicon name={"arrow-forward"} size={32} onPress={() => navigation.navigate("Farmers")}/>
+      </View>
 
       <FlashList 
         data={farmers}
         keyExtractor={(item: any) => item.id}
         horizontal
-        contentContainerStyle={{ padding: 15 }}
+        contentContainerStyle={{ padding: 16 }}
         showsHorizontalScrollIndicator={false}
         estimatedItemSize={farmers.length != 0 ? farmers.length : 150}
         renderItem={renderItem}

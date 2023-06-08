@@ -111,7 +111,7 @@ const ChangePhone = () => {
           </View>
 
           <View style={global.field}>
-            <Text subtitle>Phone Number</Text>
+            <Text text65 marginV-4>Phone Number</Text>
             <PhoneInput
               ref={phoneRef}
               initialCountry={'us'}
@@ -136,7 +136,7 @@ const ChangePhone = () => {
           />
 
           <View style={global.field}>
-            <Text subtitle>Verify SMS Code</Text>
+            <Text text65 marginV-4>Verify SMS Code</Text>
             <OTPInputView
               style={{width: '100%', height: 50}}
               pinCount={6}

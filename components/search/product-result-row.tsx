@@ -11,8 +11,8 @@ const ProductResultRow = (props) => {
 			style={{ backgroundColor: Colors.white, padding: 8, height: "auto" }}
     >
       <ListItem.Part column>
-        <Text h2 numberOfLines={1}>{item.title}</Text>
-        <Text h3>${item.price.toFixed(2)}/{item.amount}</Text>
+        <Text text65 marginV-4 numberOfLines={1}>{item.title}</Text>
+        <Text text80M marginV-4>${item.price.toFixed(2)}/{item.amount}</Text>
       </ListItem.Part>
     </ListItem>
 	)

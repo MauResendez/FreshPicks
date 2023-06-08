@@ -32,10 +32,10 @@ const ProductCard = (props) => {
     >
       <Card.Image source={{ uri: item.images[0] }} height={125} />
       <View padding-12>
-        <Text h2>
+        <Text text65 marginV-4>
           {item.title}
         </Text>
-        <Text h3>
+        <Text text80M marginV-4>
           ${item.price.toFixed(2)}/{item.amount}
         </Text>
       </View>

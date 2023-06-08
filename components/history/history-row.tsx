@@ -45,12 +45,12 @@ const HistoryRow = (props) => {
     >
       <ListItem.Part middle column>
         <View row style={global.spaceBetween}>
-          <Text h2>{farmer.business}</Text>
-          <Text h2>Cost: ${item.total.toFixed(2)}</Text>
+          <Text text65 marginV-4>{farmer.business}</Text>
+          <Text text65 marginV-4>Cost: ${item.total.toFixed(2)}</Text>
         </View>
         <View row style={global.spaceBetween}>
-          <Text h3>{farmer?.address}</Text>
-          <Text h3>{item.status}</Text>
+          <Text text80M marginV-4>{farmer?.address}</Text>
+          <Text text80M marginV-4>{item.status}</Text>
         </View>
       </ListItem.Part>
     </ListItem>
