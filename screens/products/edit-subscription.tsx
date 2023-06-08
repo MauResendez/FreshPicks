@@ -147,7 +147,7 @@ const EditSubscription = ({ route }) => {
 
   if (loading) {
     return (
-      <LoaderScreen color={Colors.primary} />
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
     )
   }
 

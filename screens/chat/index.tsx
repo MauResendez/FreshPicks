@@ -58,7 +58,7 @@ const Chat = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={Colors.tertiary} />
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
     )
   }
 

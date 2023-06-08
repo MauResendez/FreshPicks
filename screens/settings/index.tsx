@@ -120,7 +120,7 @@ const Settings = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={Colors.primary} />
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
     )
   }
   
@@ -281,6 +281,20 @@ const Settings = () => {
             <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
                 Add Your Business
+              </Text>
+            </ListItem.Part>
+          </ListItem>
+        )}  
+        {user?.farmer && (
+          <ListItem
+            backgroundColor={Colors.white}
+            activeOpacity={0.3}
+            height={60}
+            onPress={() => navigation.navigate("Farmer Preview", { id: auth.currentUser.uid })}
+          >
+            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+              <Text text80M grey30 marginV-4 numberOfLines={1}>
+                Preview Your Profile
               </Text>
             </ListItem.Part>
           </ListItem>

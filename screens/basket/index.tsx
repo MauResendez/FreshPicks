@@ -65,7 +65,6 @@ const Basket = () => {
       total: Number(orderTotal.toFixed(2)),
       status: "Pending",
       createdAt: new Date(),
-      meetAt: null,
       title: `Order for ${orderUser.name}`,
     }).then(async () => {
       handleChat();
@@ -111,7 +110,7 @@ const Basket = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={Colors.tertiary} />
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
     )
   }
 

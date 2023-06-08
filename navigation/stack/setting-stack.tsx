@@ -7,6 +7,7 @@ import Conversation from "../../screens/chat/conversation";
 import Settings from "../../screens/settings";
 import AddBusiness from "../../screens/settings/add-business";
 import LinkAccount from "../../screens/settings/link-account";
+import Preview from "../../screens/settings/preview";
 import UpdateFarmer from "../../screens/settings/update-farmer";
 import UpdateLocation from "../../screens/settings/update-location";
 import UpdatePersonal from "../../screens/settings/update-personal";
@@ -36,6 +37,7 @@ const SettingStack = () => {
       <Stack.Screen name="Farmer Information" component={UpdateFarmer} />
       <Stack.Screen name="Farmer Location" component={UpdateLocation} />
       <Stack.Screen name="Farmer Schedule" component={UpdateSchedule} />
+      <Stack.Screen name="Farmer Preview" component={Preview} />
     </Stack.Navigator>
   )
 }

@@ -118,18 +118,18 @@ const Orders = () => {
   
   if (loading) {
     return (
-      <LoaderScreen color={Colors.primary} />
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
     )
   }
 
   return (
     <GestureHandlerRootView style={global.flex}>
       <View useSafeArea flex style={global.bgWhite}>
-        <TabController items={[{label: 'Orders'}, {label: 'Requests'}, {label: 'Inbox'}]}>  
+        <TabController items={[{label: 'Orders'}, {label: 'Requests'}, {label: 'Chats'}]}>  
           <TabController.TabBar
             indicatorInsets={0}
-            indicatorStyle={{ backgroundColor: Colors.primary }} 
-            selectedLabelColor={global.activeTabTextColor.color}
+            indicatorStyle={{ backgroundColor: Colors.tertiary }} 
+            selectedLabelColor={Colors.tertiary}
             labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
           />  
           <View flex style={global.bgWhite}>    

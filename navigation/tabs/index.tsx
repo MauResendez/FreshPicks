@@ -51,7 +51,7 @@ const MainTabs = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={Colors.tertiary} />
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
     );
   }
 
@@ -61,7 +61,7 @@ const MainTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarActiveBackgroundColor: Colors.white,
-        tabBarActiveTintColor: Colors.primary,
+        tabBarActiveTintColor: Colors.tertiary,
         tabBarInactiveTintColor: Colors.grey40,
         tabBarShowLabel: true,
         unmountOnBlur: true

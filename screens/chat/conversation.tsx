@@ -37,8 +37,8 @@ const renderBubble = props => {
 
 const renderLoading = () => {
   return (
-    <LoaderScreen color={Colors.tertiary} />
-  )
+    <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
+    )
 }
 
 const renderQuickReplies = (props: QuickRepliesProps<IMessage>) => {
@@ -203,7 +203,6 @@ const Conversation = ({ route }) => {
               name={"ellipsis-vertical"} 
               size={24} 
               color={Colors.black} 
-              style={{ marginHorizontal: 8 }} 
               onPress={() => Alert.alert("Delete Chat", "Would you like to delete this chat?", [
                 {text: 'Cancel', style: 'cancel'},
                 {text: 'OK', onPress: () => deleteChat(id)},
@@ -219,7 +218,7 @@ const Conversation = ({ route }) => {
 
   if (loading) {
     return (
-      <LoaderScreen color={Colors.tertiary} />
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
     )
   }
 

@@ -10,7 +10,7 @@ import { selectOrderItems } from "../../features/order-slice";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
-const Profile = ({ route }) => {
+const Preview = ({ route }) => {
   const navigation = useNavigation<any>();
   const [products, setProducts] = useState([]);
   const [chat, setChat] = useState(null);
@@ -278,4 +278,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default Preview;

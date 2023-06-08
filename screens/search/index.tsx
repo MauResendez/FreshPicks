@@ -101,7 +101,7 @@ const Search = () => {
   if (loading) {
     return null;
     // return (
-    //   <LoaderScreen color={Colors.primary} />
+    //   <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
     // )
   }
 

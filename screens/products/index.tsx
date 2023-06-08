@@ -3,7 +3,7 @@ import { FlashList } from "@shopify/flash-list";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import React, { useCallback, useEffect, useState } from "react";
 import {
-    useWindowDimensions
+  useWindowDimensions
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Button, Colors, LoaderScreen, TabController, Text, View } from "react-native-ui-lib";
@@ -103,7 +103,7 @@ const Products = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={Colors.primary} />
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
     )
   }
 
