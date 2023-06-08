@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { onAuthStateChanged, User } from "firebase/auth";
 import React, { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Colors, ConnectionStatusBar, LoaderScreen, ThemeManager } from "react-native-ui-lib";
 import { Provider } from "react-redux";
 import { auth } from "./firebase";
@@ -158,11 +159,13 @@ const App = () => {
   }
 
   return (
-    <Provider store={store}>
-      <StatusBar style={"auto"} animated />
-      <ConnectionStatusBar onConnectionChange={() => console.log('connection changed')}/>
-      {auth.currentUser ? <MainStack /> : <AuthStack />}
-    </Provider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Provider store={store}>
+        <StatusBar style={"auto"} animated />
+        <ConnectionStatusBar onConnectionChange={() => console.log('connection changed')}/>
+        {auth.currentUser ? <MainStack /> : <AuthStack />}
+      </Provider>
+    </GestureHandlerRootView>
   );
 }
 
