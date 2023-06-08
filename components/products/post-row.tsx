@@ -9,7 +9,7 @@ const PostRow = ({ image, title, description, onPress }) => {
 			onPress={onPress}
 		>
 			<ListItem.Part column>
-				<Text text65 marginV-4 numberOfLines={3}>{title}</Text>
+				<Text text65 marginV-4 numberOfLines={1}>{title}</Text>
 				<Text text80M grey30 marginV-4>{description}</Text>
 			</ListItem.Part>
 		</ListItem> 

@@ -28,7 +28,7 @@ const RequestRow = (props) => {
 			onPress={onPress}
 		>
 			<ListItem.Part column>
-				<Text text65 marginV-4 numberOfLines={3}>{item.title}</Text>
+				<Text text65 marginV-4 numberOfLines={1}>{item.title}</Text>
 				<Text text80M grey30 marginV-4>Price: ${item.total.toFixed(2)}</Text>
 			</ListItem.Part>
 		</ListItem> 

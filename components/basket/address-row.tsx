@@ -10,7 +10,7 @@ const AddressRow = (props) => {
 			style={{ backgroundColor: Colors.white, padding: 8, height: "auto" }}
 		>
 			<ListItem.Part column>
-				<Text text65 marginV-4 numberOfLines={3}>Address</Text>
+				<Text text65 marginV-4 numberOfLines={1}>Address</Text>
 				<Text text80M grey30 marginV-4>{item.address}</Text>
 			</ListItem.Part>
 		</ListItem>
