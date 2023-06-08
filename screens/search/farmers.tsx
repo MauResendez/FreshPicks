@@ -75,7 +75,7 @@ const Farmers = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.primary} />
     )
   }
   
@@ -100,7 +100,7 @@ const Farmers = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white"
+    backgroundColor: Colors.white
   },
   content: {
     paddingVertical: 8
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
   search: {
     padding: 6,
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
   }, 
   body: {
     backgroundColor: "#F3F4F6"
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     color: "#eeaf3b"
   },
   tabTextColor: {
-    color: "black"
+    color: Colors.black
   }
 });
 

@@ -347,7 +347,7 @@ const AddBusiness = () => {
               borderColor: "rgba(0, 0, 0, 0.2)",
               borderRadius: 8,
               paddingHorizontal: 8,
-              backgroundColor: "white",
+              backgroundColor: Colors.white,
               marginBottom: 16,
             },
             listView: {
@@ -801,7 +801,7 @@ const AddBusiness = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.primary} />
     )
   }
 

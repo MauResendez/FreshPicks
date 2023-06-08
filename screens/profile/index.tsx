@@ -112,7 +112,7 @@ const Profile = ({ route }) => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.primary} />
     )
   }
 
@@ -154,9 +154,9 @@ const Profile = ({ route }) => {
           </View>
 
           <View row style={[global.spaceBetween, global.flexWrap]}>
-            <Chip backgroundColor="green" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${farmer.name}`} labelStyle={{ color: "white" }} onPress={handleChat}/>
-            <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`tel:${farmer.phone}`) }}/>
-            <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: "white" }} onPress={() => { Linking.openURL(`mailto:${farmer.email}`) }}/>
+            <Chip backgroundColor={Colors.primary} containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${farmer.name}`} labelStyle={{ color: Colors.white }} onPress={handleChat}/>
+            <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`tel:${farmer.phone}`) }}/>
+            <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`mailto:${farmer.email}`) }}/>
           </View>
         </View>
 
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   header: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     padding: 16,
   },
   title: {
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
   description: {
     paddingBottom: 16,
     marginTop: 8,
-    color: "black",
+    color: Colors.black,
   },
   products: {
   },
@@ -270,19 +270,19 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontWeight: "bold",
     letterSpacing: 1,
-    color: "white",
+    color: Colors.white,
   },
   cart: {
     padding: 16,
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
   },
   checkout: {
     padding: 16,
     borderRadius: 8,
-    backgroundColor: "green",
+    backgroundColor: Colors.primary,
   },
   checkoutText: {
-    color: "white",
+    color: Colors.white,
     fontSize: 18,
     lineHeight: 28,
     fontWeight: "700",

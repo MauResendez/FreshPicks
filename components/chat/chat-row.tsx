@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import React, { memo, useEffect, useState } from "react";
-import { ListItem, Text } from "react-native-ui-lib";
+import { Colors, ListItem, Text } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 
 const ChatRow = (props) => {
@@ -53,9 +53,9 @@ const ChatRow = (props) => {
 
   return (
     <ListItem
-      activeBackgroundColor={"white"}
+      activeBackgroundColor={Colors.white}
       activeOpacity={0.3}
-			style={{ backgroundColor: "white", padding: 8, height: "auto" }}
+			style={{ backgroundColor: Colors.white, padding: 8, height: "auto" }}
       onPress={conversation}
     >
       <ListItem.Part column>

@@ -456,7 +456,7 @@ const Register = () => {
               borderColor: "rgba(0, 0, 0, 0.2)",
               borderRadius: 8,
               paddingHorizontal: 8,
-              backgroundColor: "white",
+              backgroundColor: Colors.white,
               marginBottom: 16,
             },
             listView: {
@@ -515,7 +515,7 @@ const Register = () => {
       //           borderColor: "rgba(0, 0, 0, 0.2)",
       //           borderRadius: 8,
       //           paddingHorizontal: 8,
-      //           backgroundColor: "white",
+      //           backgroundColor: Colors.white,
       //         },
       //         textInputContainer: {
       //           paddingHorizontal: 16,

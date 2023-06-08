@@ -217,7 +217,7 @@ const CreateProduct = () => {
                 {errors.type && touched.type && <Text style={{ color: Colors.red30 }}>{errors.type}</Text>}
 
                 <View style={global.field}>
-                  <Text subtitle>Type</Text>
+                  <Text text65 marginV-8>Type</Text>
                   <Picker  
                     value={values.type}
                     style={[global.input, { marginBottom: -16 }]}

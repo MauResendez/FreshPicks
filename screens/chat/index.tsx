@@ -2,8 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
 import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { Button, Colors, LoaderScreen, Text, View } from "react-native-ui-lib";
-import Ionicon from "react-native-vector-icons/Ionicons";
+import { Colors, LoaderScreen, Text, View } from "react-native-ui-lib";
 import ChatRow from "../../components/chat/chat-row";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
@@ -67,7 +66,6 @@ const Chat = () => {
     return (
       <View useSafeArea flex style={[global.bgGray, global.center, global.container]}>
         <Text subtitle>Your inbox is empty</Text>
-        {user?.role === "Farmer" && <Button style={{ width: 64, height: 64, margin: 16 }} round animateLayout animateTo={'right'} onPress={() => navigation.navigate("Search")} backgroundColor="green" size={Button.sizes.small} iconSource={() => <Ionicon name="search" color="white" size={24} />} />}
       </View>
     )
   }

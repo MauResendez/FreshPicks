@@ -169,10 +169,10 @@ const styles = StyleSheet.create({
   underlineStyleBase: {
     width: 30,
     height: 45,
-    borderColor: "black",
+    borderColor: Colors.black,
     borderWidth: 0,
     borderBottomWidth: 1,
-    color: "black"
+    color: Colors.black
   },
 
   underlineStyleHighLighted: {

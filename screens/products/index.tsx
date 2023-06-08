@@ -6,7 +6,7 @@ import {
   useWindowDimensions
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Button, LoaderScreen, TabController, Text, View } from "react-native-ui-lib";
+import { Button, Colors, LoaderScreen, TabController, Text, View } from "react-native-ui-lib";
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProductRow from "../../components/products/product-row";
 import SubscriptionRow from "../../components/products/subscription-row";
@@ -50,8 +50,8 @@ const Products = () => {
         animateLayout 
         animateTo={'right'} 
         onPress={() => navigation.navigate("Create Product")} 
-        backgroundColor="#32CD32" 
-        iconSource={() => <MCIcon name="plus" color="white" size={24} />} 
+        backgroundColor={Colors.primary} 
+        iconSource={() => <MCIcon name="plus" color={Colors.white} size={24} />} 
       /> 
     </View>
   );
@@ -73,8 +73,8 @@ const Products = () => {
         animateLayout 
         animateTo={'right'} 
         onPress={() => navigation.navigate("Create Subscription")} 
-        backgroundColor="#32CD32" 
-        iconSource={() => <MCIcon name="plus" color="white" size={24} />} 
+        backgroundColor={Colors.primary}
+        iconSource={() => <MCIcon name="plus" color={Colors.white} size={24} />} 
       /> 
     </View>
   );
@@ -103,7 +103,7 @@ const Products = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.primary} />
     )
   }
 
@@ -113,7 +113,7 @@ const Products = () => {
         <TabController items={[{label: 'Products'}, {label: 'Subscriptions'}]}>  
           <TabController.TabBar 
             indicatorInsets={0}
-            indicatorStyle={{ backgroundColor: "#32CD32" }} 
+            indicatorStyle={{ backgroundColor: Colors.primary }} 
             selectedLabelColor={global.activeTabTextColor.color}
             labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
           />  

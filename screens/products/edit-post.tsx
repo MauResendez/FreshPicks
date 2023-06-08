@@ -87,7 +87,7 @@ const EditPost = ({ route }) => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.primary} />
     )
   }
 

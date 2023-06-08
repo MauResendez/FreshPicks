@@ -79,7 +79,7 @@ const CreateTransaction = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.primary} />
     )
   }
 
@@ -259,7 +259,7 @@ const CreateTransaction = () => {
                 <View flexG />
 
                 <Button 
-                  backgroundColor={"#32CD32"}
+                  backgroundColor={Colors.primary}
                   color={Colors.white}
                   label={"Create Transaction"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 

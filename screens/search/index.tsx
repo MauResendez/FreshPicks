@@ -101,7 +101,7 @@ const Search = () => {
   if (loading) {
     return null;
     // return (
-    //   <LoaderScreen color={"#32CD32"} />
+    //   <LoaderScreen color={Colors.primary} />
     // )
   }
 

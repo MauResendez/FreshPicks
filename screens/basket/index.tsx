@@ -132,7 +132,7 @@ const Basket = () => {
             height={60}
           >
             <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
-              <Text h2 numberOfLines={1} style={{ color: "black" }}>
+              <Text h2 numberOfLines={1} style={{ color: Colors.black }}>
                 Basket
               </Text>
             </ListItem.Part>
@@ -149,7 +149,7 @@ const Basket = () => {
             height={60}
           >
             <ListItem.Part containerStyle={[{paddingHorizontal: 15}]}>
-              <Text h2 numberOfLines={1} style={{ color: "black" }}>
+              <Text h2 numberOfLines={1} style={{ color: Colors.black }}>
                 Your items
               </Text>
             </ListItem.Part>

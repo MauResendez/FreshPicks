@@ -32,13 +32,13 @@ export const global = StyleSheet.create({
     width: "100%"
   },
   white: {
-    color: "white"
+    color: Colors.white
   },
   black: {
-    color: "black"
+    color: Colors.black
   },
   bgWhite: {
-    backgroundColor: "white"
+    backgroundColor: Colors.white
   },
   bgGray: {
     backgroundColor: "#F3F4F6"
@@ -48,7 +48,7 @@ export const global = StyleSheet.create({
     borderRadius: 8
   },
   bgGreen: {
-    backgroundColor: "green"
+    backgroundColor: Colors.primary
   },
   bgDarkGreen: {
     backgroundColor: Colors.green5
@@ -85,7 +85,7 @@ export const global = StyleSheet.create({
     paddingBottom: 16
   },
   subtitle: {
-    color: "black",
+    color: Colors.black,
     fontSize: 20,
     fontWeight: "bold",
     paddingBottom: 8
@@ -95,13 +95,13 @@ export const global = StyleSheet.create({
     width: "100%"
   },
   checkbox: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderColor: "rgba(0, 0, 0, 0.2)",
     borderRadius: 8,
     borderWidth: 1,
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderColor: "rgba(0, 0, 0, 0.2)",
     borderRadius: 8,
     borderWidth: 1,
@@ -114,7 +114,7 @@ export const global = StyleSheet.create({
     width: "100%"
   },
   password: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderColor: "rgba(0, 0, 0, 0.2)",
     borderBottomLeftRadius: 8,
     borderTopLeftRadius: 8,
@@ -124,7 +124,7 @@ export const global = StyleSheet.create({
     width: "100%"
   },
   textArea: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderColor: "rgba(0, 0, 0, 0.2)",
     borderRadius: 8,
     borderWidth: 1,
@@ -132,11 +132,11 @@ export const global = StyleSheet.create({
     paddingHorizontal: 8,
   },
   otpInput: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderColor: "rgba(0, 0, 0, 0.2)",
     borderRadius: 8,
     borderWidth: 1,
-    color: "black",
+    color: Colors.black,
     height: 50,
     paddingHorizontal: 8,
     width: 50
@@ -149,7 +149,7 @@ export const global = StyleSheet.create({
     })
   },
   autocomplete: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderColor: "rgba(0, 0, 0, 0.2)",
     borderRadius: 8,
     borderWidth: 1,
@@ -184,7 +184,7 @@ export const global = StyleSheet.create({
     textAlign: "center"
   },
   buttonText: {
-    color: "white",
+    color: Colors.white,
     fontSize: 18,
     lineHeight: 20,
     fontWeight: "bold",
@@ -242,7 +242,7 @@ export const global = StyleSheet.create({
     elevation: 16,
   },
   link: {
-    color: "black",
+    color: Colors.black,
     fontSize: 16,
     fontWeight: "700",
     paddingVertical: 8,
@@ -268,7 +268,7 @@ export const global = StyleSheet.create({
     lineHeight: 24
   },
   card: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderRadius: 8,
     margin: 16,
   },
@@ -284,7 +284,7 @@ export const global = StyleSheet.create({
     color: "#32CD32"
   },
   tabTextColor: {
-    color: "black"
+    color: Colors.black
   },
   androidHeader: {
     width: 200, 

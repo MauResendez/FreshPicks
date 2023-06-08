@@ -55,7 +55,7 @@ const UploadLocation = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.primary} />
     )
   }
 
@@ -100,7 +100,7 @@ const UploadLocation = () => {
 						// 					borderColor: "rgba(0, 0, 0, 0.2)",
 						// 					borderRadius: 8,
 						// 					paddingHorizontal: 8,
-						// 					backgroundColor: "white",
+						// 					backgroundColor: Colors.white,
 						// 				}
 						// 			}}
 						// 			onPress={(data, details) => {
@@ -166,7 +166,7 @@ const UploadLocation = () => {
 										borderColor: "rgba(0, 0, 0, 0.2)",
 										borderRadius: 8,
 										paddingHorizontal: 8,
-										backgroundColor: "white",
+										backgroundColor: Colors.white,
 									}
 								}}
 								onPress={(data, details) => {

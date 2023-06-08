@@ -47,7 +47,7 @@ const Order = ({ route }) => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.primary} />
     )
   }
 
@@ -60,7 +60,7 @@ const Order = ({ route }) => {
             height={60}
           >
             <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
-              <Text h2 numberOfLines={1} style={{ color: "black" }}>
+              <Text h2 numberOfLines={1} style={{ color: Colors.black }}>
                 Order
               </Text>
             </ListItem.Part>
@@ -75,7 +75,7 @@ const Order = ({ route }) => {
             height={60}
           >
             <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
-              <Text h2 numberOfLines={1} style={{ color: "black" }}>
+              <Text h2 numberOfLines={1} style={{ color: Colors.black }}>
                 Your items
               </Text>
             </ListItem.Part>

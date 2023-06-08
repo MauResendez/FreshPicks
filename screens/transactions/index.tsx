@@ -39,7 +39,7 @@ const Transactions = () => {
         animateTo={'right'} 
         onPress={() => navigation.navigate("Create Transaction")} 
         backgroundColor={Colors.tertiary}
-        iconSource={() => <MCIcon name="plus" color="white" size={24} />} 
+        iconSource={() => <MCIcon name="plus" color={Colors.white} size={24} />} 
       />
     </View>
   );
@@ -58,8 +58,8 @@ const Transactions = () => {
         animateLayout 
         animateTo={'right'} 
         onPress={() => navigation.navigate("Create Transaction")} 
-        backgroundColor="#32CD32" 
-        iconSource={() => <MCIcon name="plus" color="white" size={24} />} 
+        backgroundColor={Colors.primary} 
+        iconSource={() => <MCIcon name="plus" color={Colors.white} size={24} />} 
       />
     </View>
   );
@@ -78,8 +78,8 @@ const Transactions = () => {
         animateLayout 
         animateTo={'right'} 
         onPress={() => navigation.navigate("Create Transaction")} 
-        backgroundColor="#32CD32" 
-        iconSource={() => <MCIcon name="plus" color="white" size={24} />} 
+        backgroundColor={Colors.primary} 
+        iconSource={() => <MCIcon name="plus" color={Colors.white} size={24} />} 
       />
     </View>
   );
@@ -134,7 +134,7 @@ const Transactions = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.primary} />
     )
   }
 	
@@ -152,8 +152,8 @@ const Transactions = () => {
         animateLayout 
         animateTo={'right'} 
         onPress={() => navigation.navigate("Create Transaction")} 
-        backgroundColor="#32CD32" 
-        iconSource={() => <MCIcon name="plus" color="white" size={24} />} 
+        backgroundColor={Colors.primary} 
+        iconSource={() => <MCIcon name="plus" color={Colors.white} size={24} />} 
       />
     </View>
 	)

@@ -10,6 +10,7 @@ import { auth } from "./firebase";
 import AuthStack from "./navigation/stack/auth-stack";
 import MainStack from "./navigation/stack/main-stack";
 import { store } from "./redux/store";
+import "./setup";
 
 Colors.loadColors({  
   primary: "#008000",  
@@ -43,7 +44,7 @@ ThemeManager.setComponentTheme('Card', (props, context) => {
 });
 
 ThemeManager.setComponentTheme('Stepper', (props, context) => {
-  const config = {color: "black", backgroundColor: Colors.tertiary, circleColor: "black"};
+  const config = {color: Colors.black, backgroundColor: Colors.tertiary, circleColor: Colors.black};
   return {config};
 });
 
@@ -60,7 +61,7 @@ Typography.loadTypographies({
     paddingBottom: 16
   }, 
   subtitle: {
-    color: "black",
+    color: Colors.black,
     fontSize: 20,
     fontWeight: "bold",
     paddingBottom: 8
@@ -75,7 +76,8 @@ Typography.loadTypographies({
     fontWeight: "600",
     color: "#666",
     marginVertical: 4
-  }
+  },
+  test: Typography.test65,
 });
 
 Notifications.setNotificationHandler({

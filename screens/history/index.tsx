@@ -130,7 +130,7 @@ const Orders = () => {
         <TabController items={[{label: 'Orders'}, {label: 'History'}, {label: 'Chats'}]}>  
           <TabController.TabBar
             indicatorInsets={0}
-            indicatorStyle={{ backgroundColor: "#32CD32" }} 
+            indicatorStyle={{ backgroundColor: Colors.primary }} 
             selectedLabelColor={global.activeTabTextColor.color}
             labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
           />  

@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
 import { AgendaList, AgendaSchedule } from 'react-native-calendars';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { LoaderScreen, TabController, View } from 'react-native-ui-lib';
+import { Colors, LoaderScreen, TabController, View } from 'react-native-ui-lib';
 import ChatRow from '../../components/chat/chat-row';
 import AgendaItem from '../../components/orders/agenda-item';
 import RequestRow from '../../components/orders/request-row';
@@ -118,7 +118,7 @@ const Schedule = () => {
   
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.primary} />
     )
   }
 
@@ -128,7 +128,7 @@ const Schedule = () => {
         <TabController items={[{label: 'Schedule'}, {label: 'Requests'}, {label: 'Inbox'}]}>  
           <TabController.TabBar
             indicatorInsets={0}
-            indicatorStyle={{ backgroundColor: "#32CD32" }} 
+            indicatorStyle={{ backgroundColor: Colors.primary }} 
             selectedLabelColor={global.activeTabTextColor.color}
             labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
           />  

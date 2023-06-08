@@ -63,7 +63,7 @@ const MainTabs = () => {
         tabBarActiveBackgroundColor: Colors.white,
         tabBarActiveTintColor: Colors.primary,
         tabBarInactiveTintColor: Colors.grey40,
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
         unmountOnBlur: true
       }}
     >

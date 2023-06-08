@@ -92,7 +92,7 @@ const EditTransaction = ({ route }) => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.primary} />
     )
   }
 
@@ -237,7 +237,7 @@ const EditTransaction = ({ route }) => {
                 <View flexG />
 
                 <Button 
-                  backgroundColor={"#32CD32"}
+                  backgroundColor={Colors.primary}
                   color={Colors.white}
                   label={"Create Transaction"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 

@@ -120,7 +120,7 @@ const Settings = () => {
 
   if (loading) {
     return (
-      <LoaderScreen color={"#32CD32"} />
+      <LoaderScreen color={Colors.primary} />
     )
   }
   
@@ -149,7 +149,7 @@ const Settings = () => {
             ]);
           }}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
             <Text h3 numberOfLines={1}>
               Switch to {user.role === "Farmer" ? "Consumer Role" : "Farmer Role"}
             </Text>
@@ -172,7 +172,7 @@ const Settings = () => {
           height={60}
           onPress={share}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
             <Text h3 numberOfLines={1}>
               Report an issue
             </Text>
@@ -184,7 +184,7 @@ const Settings = () => {
           height={60}
           onPress={share}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
             <Text h3 numberOfLines={1}>
               Share with your friends
             </Text>
@@ -207,7 +207,7 @@ const Settings = () => {
           height={60}
           onPress={() => navigation.navigate("Change Phone")}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
             <Text h3 numberOfLines={1}>
               Change Phone
             </Text>
@@ -219,7 +219,7 @@ const Settings = () => {
           height={60}
           onPress={() => navigation.navigate("Link Account")}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
             <Text h3 numberOfLines={1}>
               Link Account
             </Text>
@@ -242,7 +242,7 @@ const Settings = () => {
           height={60}
           onPress={() => navigation.navigate("Personal Information")}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
             <Text h3 numberOfLines={1}>
               Update Personal Information
             </Text>
@@ -254,7 +254,7 @@ const Settings = () => {
           height={60}
           onPress={() => navigation.navigate("Order History")}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
             <Text h3 numberOfLines={1}>
               My Order History
             </Text>
@@ -278,7 +278,7 @@ const Settings = () => {
             height={60}
             onPress={() => navigation.navigate("Add Your Business")}
           >
-            <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
               <Text h3 numberOfLines={1}>
                 Add Your Business
               </Text>
@@ -292,7 +292,7 @@ const Settings = () => {
             height={60}
             onPress={() => navigation.navigate("Farmer Information")}
           >
-            <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
               <Text h3 numberOfLines={1}>
                 Update Farmer Information
               </Text>
@@ -306,7 +306,7 @@ const Settings = () => {
             height={60}
             onPress={() => navigation.navigate("Farmer Location")}
           >
-            <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
               <Text h3 numberOfLines={1}>
                 Update Farmer Location
               </Text>
@@ -320,7 +320,7 @@ const Settings = () => {
             height={60}
             onPress={() => navigation.navigate("Farmer Schedule")}
           >
-            <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
               <Text h3 numberOfLines={1}>
                 Update Farmer Schedule
               </Text>
@@ -344,7 +344,7 @@ const Settings = () => {
           height={60}
           onPress={share}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
             <Text h3 numberOfLines={1}>
               About Us
             </Text>
@@ -372,7 +372,7 @@ const Settings = () => {
             ]);
           }}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
             <Text h3 numberOfLines={1}>
               Log Out
             </Text>
@@ -394,7 +394,7 @@ const Settings = () => {
             ]);
           }}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: "white", paddingHorizontal: 15}]}>
+          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
             <Text h3 numberOfLines={1}>
               Delete Account
             </Text>
