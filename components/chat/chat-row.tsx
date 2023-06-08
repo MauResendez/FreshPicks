@@ -60,7 +60,7 @@ const ChatRow = (props) => {
     >
       <ListItem.Part column>
         <Text text65 marginV-4 numberOfLines={1}>{farmer.business}</Text>
-        <Text text80M marginV-4>{chat.messages?.length === 0 ? "No messages" : `${chat.messages[0]?.user.name === auth.currentUser.displayName ? "You" : chat.messages[0]?.user.name}: ${chat.messages[0]?.text}`}</Text>
+        <Text text80M grey30 marginV-4>{chat.messages?.length === 0 ? "No messages" : `${chat.messages[0]?.user.name === auth.currentUser.displayName ? "You" : chat.messages[0]?.user.name}: ${chat.messages[0]?.text}`}</Text>
       </ListItem.Part>
     </ListItem>
   )

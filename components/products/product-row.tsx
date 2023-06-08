@@ -29,7 +29,7 @@ const ProductRow = (props) => {
 		>
 			<ListItem.Part column>
 				<Text text65 marginV-4 numberOfLines={3}>{item.title}</Text>
-				<Text text80M marginV-4>Price: ${item.price.toFixed(2)}</Text>
+				<Text text80M grey30 marginV-4>Price: ${item.price.toFixed(2)}</Text>
 			</ListItem.Part>
 		</ListItem> 
 	)

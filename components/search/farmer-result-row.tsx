@@ -12,7 +12,7 @@ const FarmerResultRow = (props) => {
     >
       <ListItem.Part column>
         <Text text65 marginV-4>{item.business}</Text>
-        <Text text80M marginV-4>{item.address}</Text>
+        <Text text80M grey30 marginV-4>{item.address}</Text>
       </ListItem.Part>
     </ListItem>
 	)

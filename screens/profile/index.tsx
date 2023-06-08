@@ -146,11 +146,11 @@ const Profile = ({ route }) => {
           </View>
 
           <View row>
-            <Text text80M marginV-4>{farmer.address}</Text>
+            <Text text80M grey30 marginV-4>{farmer.address}</Text>
           </View>
 
           <View row>
-            <Text text80M marginV-4>{farmer.description}</Text>
+            <Text text80M grey30 marginV-4>{farmer.description}</Text>
           </View>
 
           <View row style={[global.spaceBetween, global.flexWrap]}>

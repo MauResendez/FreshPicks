@@ -49,8 +49,8 @@ const HistoryRow = (props) => {
           <Text text65 marginV-4>Cost: ${item.total.toFixed(2)}</Text>
         </View>
         <View row style={global.spaceBetween}>
-          <Text text80M marginV-4>{farmer?.address}</Text>
-          <Text text80M marginV-4>{item.status}</Text>
+          <Text text80M grey30 marginV-4>{farmer?.address}</Text>
+          <Text text80M grey30 marginV-4>{item.status}</Text>
         </View>
       </ListItem.Part>
     </ListItem>

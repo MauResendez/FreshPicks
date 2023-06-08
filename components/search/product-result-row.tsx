@@ -12,7 +12,7 @@ const ProductResultRow = (props) => {
     >
       <ListItem.Part column>
         <Text text65 marginV-4 numberOfLines={1}>{item.title}</Text>
-        <Text text80M marginV-4>${item.price.toFixed(2)}/{item.amount}</Text>
+        <Text text80M grey30 marginV-4>${item.price.toFixed(2)}/{item.amount}</Text>
       </ListItem.Part>
     </ListItem>
 	)

@@ -35,7 +35,7 @@ const FarmerCard = (props) => {
         <Text text65 marginV-4>
           {item.business}
         </Text>
-        <Text text80M marginV-4>
+        <Text text80M grey30 marginV-4>
           {item.address}
         </Text>
       </View>

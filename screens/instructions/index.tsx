@@ -69,7 +69,7 @@ const Instructions = () => {
         </View>
         <View flex style={[global.container, global.bgWhite]}>
           <Text text65 marginV-4>Searching for fresh produce</Text>
-          <Text text80M marginV-4>Search for a farmer near you and pick out fresh produce that you would like to purchase</Text>
+          <Text text80M grey30 marginV-4>Search for a farmer near you and pick out fresh produce that you would like to purchase</Text>
           <View flexG />
           <Buttons />
         </View>
@@ -85,7 +85,7 @@ const Instructions = () => {
         </View>
         <View flex style={[global.container, global.bgWhite]}>
           <Text text65 marginV-4>Request a meeting</Text>
-          <Text text80M marginV-4>Request a meeting to the farmer with your order at their available time options that they have to be able to purchase your order.</Text>
+          <Text text80M grey30 marginV-4>Request a meeting to the farmer with your order at their available time options that they have to be able to purchase your order.</Text>
           <View flexG />
           <Buttons />
         </View>
@@ -101,7 +101,7 @@ const Instructions = () => {
         </View>
         <View flex style={[global.container, global.bgWhite]}>
           <Text text65 marginV-4>Decide on your requests</Text>
-          <Text text80M marginV-4>Farmers would need to decide on if they would accept or decline your meeting request.</Text>
+          <Text text80M grey30 marginV-4>Farmers would need to decide on if they would accept or decline your meeting request.</Text>
           <View flexG />
           <Buttons />
         </View>
@@ -117,7 +117,7 @@ const Instructions = () => {
         </View>
         <View flex style={[global.container, global.bgWhite]}>
           <Text text65 marginV-4>Meet up</Text>
-          <Text text80M marginV-4>If the request has been confirmed, the consumer would meet at the farmer's location to purchase their order of fresh produce.</Text>
+          <Text text80M grey30 marginV-4>If the request has been confirmed, the consumer would meet at the farmer's location to purchase their order of fresh produce.</Text>
           <View flexG />
           <Buttons />
         </View>
@@ -133,7 +133,7 @@ const Instructions = () => {
         </View>
         <View flex style={[global.container, global.bgWhite]}>
           <Text text65 marginV-4>Enjoy!</Text>
-          <Text text80M marginV-4>Enjoy your fresh produce!</Text>
+          <Text text80M grey30 marginV-4>Enjoy your fresh produce!</Text>
           <View flexG />
           <Buttons />
         </View>

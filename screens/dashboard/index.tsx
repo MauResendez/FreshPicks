@@ -66,13 +66,13 @@ const Dashboard = () => {
               marginRight: 20
             }}>
             {renderDot('#006DFF')}
-            <Text text80M marginV-4>Excellent: 47%</Text>
+            <Text text80M grey30 marginV-4>Excellent: 47%</Text>
           </View>
   
           <View
             style={{flexDirection: 'row', alignItems: 'center', width: 120}}>
             {renderDot('#8F80F3')}
-            <Text text80M marginV-4>Okay: 16%</Text>
+            <Text text80M grey30 marginV-4>Okay: 16%</Text>
           </View>
         </View>
   
@@ -85,13 +85,13 @@ const Dashboard = () => {
               marginRight: 20
             }}>
             {renderDot('#3BE9DE')}
-            <Text text80M marginV-4>Good: 40%</Text>
+            <Text text80M grey30 marginV-4>Good: 40%</Text>
           </View>
   
           <View
             style={{flexDirection: 'row', alignItems: 'center', width: 120}}>
             {renderDot('#FF7F97')}
-            <Text text80M marginV-4>Poor: 3%</Text>
+            <Text text80M grey30 marginV-4>Poor: 3%</Text>
           </View>
         </View>
       </>

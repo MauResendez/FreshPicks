@@ -35,7 +35,7 @@ const ProductCard = (props) => {
         <Text text65 marginV-4>
           {item.title}
         </Text>
-        <Text text80M marginV-4>
+        <Text text80M grey30 marginV-4>
           ${item.price.toFixed(2)}/{item.amount}
         </Text>
       </View>

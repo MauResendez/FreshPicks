@@ -747,7 +747,7 @@ const AddBusiness = () => {
         {errors.phone && touched.phone && <Text style={{ color: Colors.red30 }}>{errors.phone}</Text>}
 
         <View style={global.field}>
-          <Text text80M marginV-4>Submit to add in your business information to your account.</Text>
+          <Text text80M grey30 marginV-4>Submit to add in your business information to your account.</Text>
         </View> 
 
         <View flexG />

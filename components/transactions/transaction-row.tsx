@@ -42,8 +42,8 @@ const TransactionRow = (props) => {
 					<Text text65 marginV-4>${item.price.toFixed(2)}</Text>
 				</View>
 				<View row style={global.spaceBetween}>
-					<Text text80M marginV-4>{item.category}</Text>
-					<Text text80M marginV-4>{item.date.toDate().toLocaleDateString()}</Text>
+					<Text text80M grey30 marginV-4>{item.category}</Text>
+					<Text text80M grey30 marginV-4>{item.date.toDate().toLocaleDateString()}</Text>
 				</View>
 			</ListItem.Part>
 		</ListItem>

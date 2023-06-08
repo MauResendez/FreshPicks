@@ -150,7 +150,7 @@ const Settings = () => {
           }}
         >
           <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
-            <Text text80M marginV-4 numberOfLines={1}>
+            <Text text80M grey30 marginV-4 numberOfLines={1}>
               Switch to {user.role === "Farmer" ? "Consumer Role" : "Farmer Role"}
             </Text>
           </ListItem.Part>
@@ -173,7 +173,7 @@ const Settings = () => {
           onPress={share}
         >
           <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
-            <Text text80M marginV-4 numberOfLines={1}>
+            <Text text80M grey30 marginV-4 numberOfLines={1}>
               Report an issue
             </Text>
           </ListItem.Part>
@@ -185,7 +185,7 @@ const Settings = () => {
           onPress={share}
         >
           <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
-            <Text text80M marginV-4 numberOfLines={1}>
+            <Text text80M grey30 marginV-4 numberOfLines={1}>
               Share with your friends
             </Text>
           </ListItem.Part>
@@ -208,7 +208,7 @@ const Settings = () => {
           onPress={() => navigation.navigate("Change Phone")}
         >
           <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
-            <Text text80M marginV-4 numberOfLines={1}>
+            <Text text80M grey30 marginV-4 numberOfLines={1}>
               Change Phone
             </Text>
           </ListItem.Part>
@@ -220,7 +220,7 @@ const Settings = () => {
           onPress={() => navigation.navigate("Link Account")}
         >
           <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
-            <Text text80M marginV-4 numberOfLines={1}>
+            <Text text80M grey30 marginV-4 numberOfLines={1}>
               Link Account
             </Text>
           </ListItem.Part>
@@ -243,7 +243,7 @@ const Settings = () => {
           onPress={() => navigation.navigate("Personal Information")}
         >
           <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
-            <Text text80M marginV-4 numberOfLines={1}>
+            <Text text80M grey30 marginV-4 numberOfLines={1}>
               Update Personal Information
             </Text>
           </ListItem.Part>
@@ -255,7 +255,7 @@ const Settings = () => {
           onPress={() => navigation.navigate("Order History")}
         >
           <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
-            <Text text80M marginV-4 numberOfLines={1}>
+            <Text text80M grey30 marginV-4 numberOfLines={1}>
               My Order History
             </Text>
           </ListItem.Part>
@@ -279,7 +279,7 @@ const Settings = () => {
             onPress={() => navigation.navigate("Add Your Business")}
           >
             <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
-              <Text text80M marginV-4 numberOfLines={1}>
+              <Text text80M grey30 marginV-4 numberOfLines={1}>
                 Add Your Business
               </Text>
             </ListItem.Part>
@@ -293,7 +293,7 @@ const Settings = () => {
             onPress={() => navigation.navigate("Farmer Information")}
           >
             <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
-              <Text text80M marginV-4 numberOfLines={1}>
+              <Text text80M grey30 marginV-4 numberOfLines={1}>
                 Update Farmer Information
               </Text>
             </ListItem.Part>
@@ -307,7 +307,7 @@ const Settings = () => {
             onPress={() => navigation.navigate("Farmer Location")}
           >
             <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
-              <Text text80M marginV-4 numberOfLines={1}>
+              <Text text80M grey30 marginV-4 numberOfLines={1}>
                 Update Farmer Location
               </Text>
             </ListItem.Part>
@@ -321,7 +321,7 @@ const Settings = () => {
             onPress={() => navigation.navigate("Farmer Schedule")}
           >
             <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
-              <Text text80M marginV-4 numberOfLines={1}>
+              <Text text80M grey30 marginV-4 numberOfLines={1}>
                 Update Farmer Schedule
               </Text>
             </ListItem.Part>
@@ -345,7 +345,7 @@ const Settings = () => {
           onPress={share}
         >
           <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
-            <Text text80M marginV-4 numberOfLines={1}>
+            <Text text80M grey30 marginV-4 numberOfLines={1}>
               About Us
             </Text>
           </ListItem.Part>
@@ -373,7 +373,7 @@ const Settings = () => {
           }}
         >
           <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
-            <Text text80M marginV-4 numberOfLines={1}>
+            <Text text80M grey30 marginV-4 numberOfLines={1}>
               Log Out
             </Text>
           </ListItem.Part>
@@ -395,7 +395,7 @@ const Settings = () => {
           }}
         >
           <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 15}]}>
-            <Text text80M marginV-4 numberOfLines={1}>
+            <Text text80M grey30 marginV-4 numberOfLines={1}>
               Delete Account
             </Text>
           </ListItem.Part>
