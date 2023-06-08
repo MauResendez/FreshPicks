@@ -57,7 +57,7 @@ const MainDrawer = () => {
         headerTitle: () => (
           <Image
             style={{ width: 200, height: 50 }}
-            source={require("../../assets/logo.png")}
+            source={require("../../assets/images/logo.png")}
             resizeMode="contain"
           />
         ),

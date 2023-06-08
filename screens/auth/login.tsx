@@ -134,7 +134,7 @@ const Login = () => {
                 <View style={global.field}>
                   <Image
                     style={{ width: "auto", height: 100 }}
-                    source={require("../../assets/logo.png")}
+                    source={require("../../assets/images/logo.png")}
                     resizeMode="contain"
                   />
                   <FirebaseRecaptchaVerifierModal

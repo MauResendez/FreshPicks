@@ -62,7 +62,7 @@ const Settings = () => {
     const options = {
       title: 'Fresh Picks by UTRGV',
       message: 'Find the best fresh produce in the RGV with Fresh Picks by UTRGV',
-      url: require("../../assets/image.png")
+      url: require("../../assets/images/default.png")
     }
 
     try {

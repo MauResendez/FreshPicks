@@ -306,7 +306,7 @@ const EditProduct = ({ route }) => {
                     {text: 'Gallery', onPress: async () => await gallery(setFieldValue)},
                   ])}>
                     {values.images.length == 0
-                      ? <Image style={{ width: "100%", height: 150 }} source={require("../../assets/image.png")} />
+                      ? <Image style={{ width: "100%", height: 150 }} source={require("../../assets/images/default.png")} />
                       : <Image style={{ width: "100%", height: 150 }} source={{ uri: values.images[0] }} />
                     }
                   </TouchableOpacity>

@@ -153,7 +153,7 @@ const CreatePost = () => {
                   <Text text65 marginV-4>Image</Text>
                   <TouchableOpacity onPress={() => gallery(setFieldValue)}>
                     {values.image.length == 0
-                      ? <AnimatedImage style={{ width: "100%", height: 150 }} source={require("../../assets/image.png")} />
+                      ? <AnimatedImage style={{ width: "100%", height: 150 }} source={require("../../assets/images/default.png")} />
                       : <AnimatedImage style={{ width: "100%", height: 150 }} source={{ uri: values.image }} />
                     }
                   </TouchableOpacity>

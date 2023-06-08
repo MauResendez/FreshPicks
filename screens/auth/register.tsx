@@ -375,7 +375,7 @@ const Register = () => {
           ])}>
             <View flex centerV>
               {values.images.length == 0
-                ? <Image style={global.flex} source={require("../../assets/default.png")} overlayType={Image.overlayTypes.BOTTOM} />
+                ? <Image style={global.flex} source={require("../../assets/images/default.png")} overlayType={Image.overlayTypes.BOTTOM} />
                 : <Image style={global.flex} source={{ uri: values.images[0] }} cover overlayType={Image.overlayTypes.BOTTOM} />
               }
             </View>
@@ -918,7 +918,7 @@ const Register = () => {
         <View style={global.field}>
           <Image
             style={{ width: "auto", height: 100 }}
-            source={require("../../assets/logo.png")}
+            source={require("../../assets/images/logo.png")}
             resizeMode="contain"
           />
           <FirebaseRecaptchaVerifierModal

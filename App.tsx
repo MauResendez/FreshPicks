@@ -68,8 +68,6 @@ const App = () => {
   const appConfig = require("./app.json");
   const projectId = appConfig?.expo?.extra?.eas?.projectId;
   const [user, setUser] = useState<User | null>(null);
-  const [expoPushToken, setExpoPushToken] = useState("");
-  const [notification, setNotification] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const registerForPushNotificationsAsync = async () => {
@@ -113,11 +111,11 @@ const App = () => {
   useEffect(() => {
     try {
       if (Platform.OS !== "web") {
-        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+        registerForPushNotificationsAsync();
   
         // This listener is fired whenever a notification is received while the app is foregrounded
         notificationListener.current = Notifications.addNotificationReceivedListener((notification: any) => {
-          setNotification(notification);
+          console.log(notification);
         });
   
         // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)

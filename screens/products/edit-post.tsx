@@ -139,7 +139,7 @@ const EditPost = ({ route }) => {
                   <Text text65 marginV-4>Image</Text>
                   <TouchableOpacity onPress={gallery}>
                     {!image
-                      ? <AnimatedImage style={{ width: "100%", height: 200 }} source={require("../../assets/image.png")} />
+                      ? <AnimatedImage style={{ width: "100%", height: 200 }} source={require("../../assets/images/default.png")} />
                       : <AnimatedImage style={{ width: "100%", height: 200 }} source={{ uri: image }} />
                     }
                   </TouchableOpacity>

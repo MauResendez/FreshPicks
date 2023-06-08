@@ -15,10 +15,10 @@ const Landing = () => {
   }, []);
 
   return (
-    <ImageBackground style={global.flex} source={require("../../assets/landing.png")} >
+    <ImageBackground style={global.flex} source={require("../../assets/images/landing.png")} >
       <View useSafeArea flex>
         <View flex spread style={global.container}>
-          <Image style={{ width: "auto", height: 100, marginTop: 32 }} source={require("../../assets/logo.png")} resizeMode="contain" />
+          <Image style={{ width: "auto", height: 100, marginTop: 32 }} source={require("../../assets/images/logo.png")} resizeMode="contain" />
 
           <View style={global.field}>
             <Button 

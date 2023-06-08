@@ -270,7 +270,7 @@ const AddBusiness = () => {
           ])}>
             <View flex centerV>
               {values.images.length == 0
-                ? <Image style={global.flex} source={require("../../assets/default.png")} overlayType={Image.overlayTypes.BOTTOM} />
+                ? <Image style={global.flex} source={require("../../assets/images/default.png")} overlayType={Image.overlayTypes.BOTTOM} />
                 : <Image style={global.flex} source={{ uri: values.images[0] }} cover overlayType={Image.overlayTypes.BOTTOM} />
               }
             </View>

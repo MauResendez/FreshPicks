@@ -206,7 +206,7 @@ const CreateSubscription = () => {
                   <Text text65 marginV-4>Image</Text>
                   <TouchableOpacity onPress={() => setVisible(true)}>
                     {values.image.length == 0
-                      ? <Image style={{ width: "100%", height: 150 }} source={require("../../assets/image.png")} />
+                      ? <Image style={{ width: "100%", height: 150 }} source={require("../../assets/images/default.png")} />
                       : <Image style={{ width: "100%", height: 150 }} source={{ uri: values.image[0] }} />
                     }
                   </TouchableOpacity>
