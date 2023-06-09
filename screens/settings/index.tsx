@@ -1,11 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
-import { Platform } from "expo-modules-core";
 import * as Notifications from 'expo-notifications';
 import { signOut } from "firebase/auth";
 import { arrayRemove, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Alert, ScrollView, Share } from "react-native";
+import { Alert, Platform, ScrollView, Share } from "react-native";
 import { Colors, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 

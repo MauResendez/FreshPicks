@@ -3,9 +3,9 @@ import React from "react";
 import Map from "../../screens/map";
 import Profile from "../../screens/profile";
 
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const MapStack = () => {
   return (

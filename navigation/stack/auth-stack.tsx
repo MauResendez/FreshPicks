@@ -5,13 +5,13 @@ import Login from "../../screens/auth/login";
 import Register from "../../screens/auth/register";
 
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import Instructions from "../../screens/instructions";
 // import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 // options={{ headerLeft: () => <MCIcon name="chevron-left" size={36} style={{ marginLeft: 8 }} />}}
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const AuthStack = () => {
   return (
