@@ -129,7 +129,7 @@ const CreateSubscription = () => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView contentContainerStyle={global.flex}>
           <Formik
             initialValues={{ user: auth.currentUser.uid, title: '', description: '', price: 1.00, image: [] }}
             validationSchema={validate}

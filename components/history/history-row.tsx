@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { doc, getDoc } from "firebase/firestore";
 import React, { memo, useEffect, useState } from "react";
-import { Colors, ListItem, Text, View } from "react-native-ui-lib";
+import { Colors, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { db } from "../../firebase";
 
 const HistoryRow = (props) => {
@@ -31,7 +31,9 @@ const HistoryRow = (props) => {
   }, [farmer]);
 
   if (loading) {
-    return null
+    return (
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />
+    )
   }
 
   return (

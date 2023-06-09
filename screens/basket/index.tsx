@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { addDoc, collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Keyboard, Platform, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
 import { Button, Colors, KeyboardAwareScrollView, ListItem, LoaderScreen, Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import AddressRow from '../../components/basket/address-row';
@@ -160,7 +160,7 @@ const Basket = () => {
 
           <View flexG />
 
-          <View style={styles.cart}>
+          <View padding-16>
             <Button 
               backgroundColor={Colors.primary}
               color={Colors.white}
@@ -175,11 +175,5 @@ const Basket = () => {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  cart: {
-    padding: 16,
-  }
-});
 
 export default Basket

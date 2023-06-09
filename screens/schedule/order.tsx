@@ -1,6 +1,6 @@
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Platform, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
 import { Button, Colors, KeyboardAwareScrollView, ListItem, LoaderScreen, Text, View } from 'react-native-ui-lib';
 import AddressRow from '../../components/basket/address-row';
 import BasketRow from '../../components/basket/basket-row';
@@ -87,7 +87,7 @@ const Order = ({ route }) => {
 
           <View flexG />
 
-          <View style={styles.cart}>
+          <View padding-16>
             <Button 
               backgroundColor={Colors.primary}
               color={Colors.white}
@@ -102,11 +102,5 @@ const Order = ({ route }) => {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  cart: {
-    padding: 16,
-  }
-});
 
 export default Order

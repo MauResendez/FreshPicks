@@ -2,13 +2,12 @@ import * as SplashScreen from 'expo-splash-screen';
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
-    Platform,
-    ScrollView,
-    StyleSheet,
+  Platform,
+  ScrollView
 } from "react-native";
 import Ionicon from "react-native-vector-icons/Ionicons";
 
-import { Colors, TextField, View } from "react-native-ui-lib";
+import { Colors, LoaderScreen, TextField, View } from "react-native-ui-lib";
 import FarmerList from "../../components/search/farmer-list";
 import ProductList from "../../components/search/product-list";
 import { auth, db } from "../../firebase";
@@ -99,15 +98,14 @@ const Search = () => {
   }, [ff, fp]);
 
   if (loading) {
-    return null;
-    // return (
-    //   <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
-    // )
+    return (
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
+    )
   }
 
   return (
     <View useSafeArea flex style={global.white}>
-      <View style={styles.search}>
+      <View padding-8>
         <TextField fieldStyle={{ backgroundColor: Colors.grey60, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Farmers, produce, subscriptions, etc." placeholderTextColor={Colors.grey30} leadingAccessory={<Ionicon name="search" color={Colors.grey30} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>
 
@@ -121,32 +119,5 @@ const Search = () => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    paddingVertical: 8
-  },
-  header: {
-    paddingBottom: 12, 
-    marginHorizontal: 16, 
-    flexDirection: "row", 
-    alignItems: "center" 
-  },
-  flex: {
-    flex: 1
-  },
-  greeting: {
-    fontSize: 20,
-    lineHeight: 28,
-    fontWeight: "700",
-    paddingTop: 8 
-  },
-  search: {
-    padding: 8,
-  }, 
-});
 
 export default Search

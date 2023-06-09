@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Linking from 'expo-linking';
 import { addDoc, collection, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Platform, ScrollView, StyleSheet } from "react-native";
+import { ScrollView } from "react-native";
 import { Button, Carousel, Chip, Colors, Image, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { useSelector } from "react-redux";
 import ProfileRow from "../../components/profile/profile-row";
@@ -123,7 +123,7 @@ const Preview = ({ route }) => {
           })}
         </Carousel>
 
-        <View style={styles.header}>
+        <View padding-16>
           <View row>
             <Text text65 marginV-4>{farmer.business}</Text>
           </View>
@@ -149,13 +149,13 @@ const Preview = ({ route }) => {
 
         <View flexG />
 
-        <View style={styles.cart}>
+        <View padding-16>
           <Button 
-            backgroundColor={Colors.primary}
+            backgroundColor={items.length == 0 ? Colors.disabled : Colors.primary}
             color={Colors.white}
             label={items.length != 0 ? "Go to Basket" : "Add items to Basket"} 
             labelStyle={{ fontWeight: '600', padding: 8 }} 
-            style={[global.button, items.length == 0 ? styles.disabled : styles.checkout]}
+            style={global.button}
             onPress={() => items.length != 0 && navigation.navigate("Second", { screen: "Basket" })}               
           />
         </View>
@@ -163,119 +163,5 @@ const Preview = ({ route }) => {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  cover: {
-    height: 200,
-    width: "100%",
-  },
-  image: {
-    ...Platform.select({
-      web: {
-        padding: 16,
-        width: "100%",
-        height: 250,
-      },
-      ios: {
-        padding: 16,
-        width: "100%",
-        height: 200,
-      },
-      android: {
-        padding: 16,
-        width: "100%",
-        height: 200,
-      },
-    }),
-  },
-  back: {
-    position: "absolute",
-    left: 10,
-    top: 56,
-    padding: 8,
-    backgroundColor: "#F3F4F6",
-    borderRadius: 50,
-  },
-  header: {
-    backgroundColor: Colors.white,
-    padding: 16,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginVertical: 8,
-  },
-  content: {
-    marginVertical: 4,
-    flexDirection: "row",
-  },
-  ratingContainer: {
-    marginLeft: 4,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  rating: {
-    color: "#059669",
-    flex: 1,
-    textAlign: "right",
-  },
-  address: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#666",
-    textAlign: "left",
-    marginTop: 4,
-    marginBottom: 4,
-  },
-  description: {
-    paddingBottom: 16,
-    marginTop: 8,
-    color: Colors.black,
-  },
-  products: {
-  },
-  productsTitle: {
-    paddingHorizontal: 16,
-    paddingTop: 32,
-    marginBottom: 12,
-    fontSize: 20,
-    lineHeight: 32,
-    fontWeight: "700",
-  },
-  basket: {
-    fontSize: 18,
-    lineHeight: 28,
-    fontWeight: "700",
-    textAlign: "center",
-  },
-  text: {
-    fontSize: 20,
-    lineHeight: 20,
-    fontWeight: "bold",
-    letterSpacing: 1,
-    color: Colors.white,
-  },
-  cart: {
-    padding: 16,
-    backgroundColor: Colors.white,
-  },
-  checkout: {
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: Colors.primary,
-  },
-  checkoutText: {
-    color: Colors.white,
-    fontSize: 18,
-    lineHeight: 28,
-    fontWeight: "700",
-    textAlign: "center",
-  },
-  disabled: {
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: "lightgray",
-  },
-});
 
 export default Preview;

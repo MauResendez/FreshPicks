@@ -1,9 +1,9 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { deleteDoc, doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { Alert, Platform, StyleSheet } from "react-native";
-import { Bubble, GiftedChat, IMessage, Send } from "react-native-gifted-chat";
-import { QuickReplies, QuickRepliesProps } from "react-native-gifted-chat/lib/QuickReplies";
+import { Alert, Platform } from "react-native";
+import { Bubble, GiftedChat, Send } from "react-native-gifted-chat";
+import { QuickReplies } from "react-native-gifted-chat/lib/QuickReplies";
 import { Colors, LoaderScreen, Text, View } from "react-native-ui-lib";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicon from "react-native-vector-icons/Ionicons";
@@ -40,16 +40,6 @@ const renderLoading = () => {
     <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
   )
 }
-
-const renderQuickReplies = (props: QuickRepliesProps<IMessage>) => {
-  return (
-    <QuickReplies
-      color="#6A4035"
-      quickReplyStyle={styles.quickReply}
-      {...props}
-    />
-  );
-};
 
 const renderSend = props => {
   return (
@@ -272,11 +262,5 @@ const Conversation = ({ route }) => {
   );
 }
 
-const styles = StyleSheet.create({
-  quickReply: {
-    backgroundColor: "#FFF9D2",
-    borderWidth: 1,
-  },
-})
 
 export default Conversation

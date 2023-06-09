@@ -4,11 +4,12 @@ import * as Location from "expo-location";
 import * as SplashScreen from 'expo-splash-screen';
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useCallback, useEffect, useState } from "react";
-import { Platform, StyleSheet } from "react-native";
+import { Platform } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { View } from "react-native-ui-lib";
+import { Colors, LoaderScreen, View } from "react-native-ui-lib";
 import MapRow from "../../components/map/map-row";
 import { auth, db } from "../../firebase";
+import { global } from "../../style";
 
 // Keep the splash screen visible while we fetch resources
 // SplashScreen.preventAutoHideAsync();
@@ -84,15 +85,17 @@ const Map = () => {
   // }, [loading]);
 
   if (loading) {
-    return null;
+    return (
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />
+    );
   }
 
   return (
     <View useSafeArea flex>
-      <View style={styles.map}>
+      <View flex>
         <MapView
           ref={map => (this.map = map)} 
-          style={styles.mapview}
+          style={global.fullscreen}
           region={mapRegion}
           showsUserLocation={true}
           showsMyLocationButton={true}
@@ -111,7 +114,7 @@ const Map = () => {
                 title={farmer.business} 
                 description={farmer.address} 
                 coordinate={{ latitude: farmer?.location?.latitude, longitude: farmer?.location?.longitude }}
-                onPress={() => {
+                onCalloutPress={() => {
                   navigateToApp(farmer.location);
                 }}
               />
@@ -119,7 +122,7 @@ const Map = () => {
           })}
         </MapView>
       </View>
-      <View style={styles.farmers}>
+      <View flex>
         <FlashList 
           data={farmers}
           keyExtractor={(item: any) => item.id}
@@ -130,20 +133,5 @@ const Map = () => {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  mapview: {
-    width: "100%",
-    height: "100%"
-  },
-  map: {
-    width: "100%",
-    height: "50%",
-  },
-  farmers: {
-    width: "100%",
-    height: "50%"
-  }
-});
 
 export default Map;

@@ -17,14 +17,16 @@ const DateTimeRow = (props) => {
 			activeOpacity={0.3}
 			style={{ backgroundColor: Colors.white, padding: 8, height: "auto" }}
 		>
-			<ListItem.Part row spread>
-        <View>
-					<Text text65 marginV-4 numberOfLines={1}>Date</Text>
-					<Text text80M grey30 marginV-4>{item.address}</Text>
-        </View>
-        <View>
-					<Button color={'grey'} title={'Info'} onPress={buttonPressed} />
-        </View>
+			<ListItem.Part>
+				<View row spread>
+					<View>
+						<Text text65 marginV-4 numberOfLines={1}>Date</Text>
+						<Text text80M grey30 marginV-4>{item.address}</Text>
+					</View>
+					<View>
+						<Button color={'grey'} title={'Info'} onPress={buttonPressed} />
+					</View>
+				</View> 
       </ListItem.Part>
 		</ListItem>
 	)

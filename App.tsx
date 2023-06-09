@@ -12,11 +12,13 @@ import AuthStack from "./navigation/stack/auth-stack";
 import MainStack from "./navigation/stack/main-stack";
 import { store } from "./redux/store";
 import "./setup";
+import { global } from "./style";
 
 Colors.loadColors({  
   primary: "#008000",  
   secondary: '#FF4500',
-  tertiary: "#32CD32"
+  tertiary: "#32CD32",
+  disabled: "lightgray"
 });
 
 Colors.loadDesignTokens({ primaryColor: Colors.primary });
@@ -157,7 +159,7 @@ const App = () => {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={global.flex}>
       <Provider store={store}>
         <StatusBar style={"auto"} animated />
         <ConnectionStatusBar />

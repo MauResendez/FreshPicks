@@ -1,7 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
 import { Colors, LoaderScreen, TextField, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import ProductResultRow from "../../components/search/product-result-row";
@@ -87,7 +86,7 @@ const Products = () => {
   
   return (
     <View useSafeArea flex style={global.white}>
-      <View style={styles.search}>
+      <View padding-8>
         <TextField fieldStyle={{ backgroundColor: Colors.grey60, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Search for produce here" placeholderTextColor={Colors.grey30} leadingAccessory={<Ionicon name="search" color={"gray"} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>
 
@@ -102,37 +101,5 @@ const Products = () => {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.white
-  },
-  content: {
-    paddingVertical: 8
-  },
-  header: {
-    paddingBottom: 12, 
-    marginHorizontal: 16, 
-    flexDirection: "row", 
-    alignItems: "center" 
-  },
-  flex: {
-    flex: 1
-  },
-  search: {
-    padding: 6,
-    backgroundColor: Colors.white
-  }, 
-  body: {
-    backgroundColor: "#F3F4F6"
-  },
-  activeTabTextColor: {
-    color: "#eeaf3b"
-  },
-  tabTextColor: {
-    color: Colors.black
-  }
-});
 
 export default Products

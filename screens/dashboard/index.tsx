@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useWindowDimensions } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
-import { Button, Colors, Picker, Text, View } from "react-native-ui-lib";
+import { Button, Colors, Picker, TabController, Text, View } from "react-native-ui-lib";
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { global } from "../../style";
 
@@ -100,135 +100,7 @@ const Dashboard = () => {
   };
 
   const FirstRoute = () => (
-    <View useSafeArea flex>
-      <View flex style={global.container}>
-        <View style={global.field}>
-          <Picker  
-            value={data[0]}
-            placeholder={'Month'}
-            style={[global.input, { marginBottom: -16 }]}
-            migrate 
-            useSafeArea={true} 
-            topBarProps={{ title: 'Month' }} 
-            migrateTextField           
-          >  
-            {data.map((type) => (   
-              <Picker.Item key={type.value} value={type.value} label={type.value.toString()} />
-            ))}
-          </Picker>
-        </View>
-        <PieChart 
-          data={data} 
-          donut 
-          showText
-          textColor={Colors.black}
-          innerRadius={50}
-          showTextBackground
-          textBackgroundColor={Colors.white}
-          textBackgroundRadius={15} 
-        />
-        {/* <LineChart data = {data} areaChart /> */}
-        {/* <View flexG />
-        <View row spread style={{ paddingVertical: 8 }}>
-          <View style={{ width: "47.5%" }}>
-            <Button 
-              backgroundColor={Colors.primary}
-              color={Colors.white}
-              label={"Report"} 
-              labelStyle={{ fontWeight: '600', padding: 8 }} 
-              style={global.button} 
-            />
-          </View>
-          <View style={{ width: "47.5%" }}>
-            <Button 
-              backgroundColor={Colors.primary}
-              color={Colors.white}
-              label={"CSV to Email"} 
-              labelStyle={{ fontWeight: '600', padding: 8 }} 
-              style={global.button} 
-            />
-          </View>
-        </View> */}
-
-        <Button
-          style={global.fab} 
-          round 
-          animateLayout 
-          animateTo={'right'} 
-          onPress={() => navigation.navigate("Report")} 
-          backgroundColor={Colors.tertiary}
-          iconSource={() => <MCIcon name="file-document" color={Colors.white} size={24} />} 
-        /> 
-      </View>
-    </View>
-  );
-
-  const SecondRoute = () => (
-    <View useSafeArea flex>
-      <View flex style={global.container}>
-        <View style={global.field}>
-          <Picker  
-            value={data[0]}
-            placeholder={'Month'}
-            title={'Month'}
-            label={'Month'}
-            style={[global.input, { marginBottom: -16 }]}
-            migrate 
-            useSafeArea={true} 
-            topBarProps={{ title: 'Month' }} 
-            migrateTextField           
-          >  
-            {data.map((type) => (   
-              <Picker.Item key={type.value} value={type.value} label={type.value.toString()} />
-            ))}
-          </Picker>
-        </View>
-        {/* <PieChart 
-          data={data} 
-          donut 
-          showText
-          textColor={Colors.black}
-          innerRadius={50}
-          showTextBackground
-          textBackgroundColor={Colors.white}
-          textBackgroundRadius={15} 
-        /> */}
-        {/* <View flexG />
-        <View row spread style={{ paddingVertical: 8 }}>
-          <View style={{ width: "47.5%" }}>
-            <Button 
-              backgroundColor={Colors.primary}
-              color={Colors.white}
-              label={"Report"} 
-              labelStyle={{ fontWeight: '600', padding: 8 }} 
-              style={global.button} 
-            />
-          </View>
-          <View style={{ width: "47.5%" }}>
-            <Button 
-              backgroundColor={Colors.primary}
-              color={Colors.white}
-              label={"CSV to Email"} 
-              labelStyle={{ fontWeight: '600', padding: 8 }} 
-              style={global.button} 
-            />
-          </View>
-        </View> */}
-        <Button
-          style={global.fab} 
-          round 
-          animateLayout 
-          animateTo={'right'} 
-          onPress={() => navigation.navigate("Report")} 
-          backgroundColor={Colors.tertiary}
-          iconSource={() => <MCIcon name="file-document" color={Colors.white} size={24} />} 
-        /> 
-      </View>
-    </View>
-  );
-
-  return (
-    <View flex style={[global.container, global.white]}>
+    <View flex style={global.container}>
       <View style={global.field}>
         <Picker  
           value={data[0]}
@@ -245,62 +117,131 @@ const Dashboard = () => {
         </Picker>
       </View>
 
-      <View
-        style={{
-          padding: 16,
-          borderRadius: 20,
-          backgroundColor: 'white'
-        }}>
-        <Text text65 marginV-4>
-          Performance
-        </Text>
+      <PieChart 
+        data={data} 
+        donut 
+        showText
+        textColor={Colors.black}
+        innerRadius={50}
+        showTextBackground
+        textBackgroundColor={Colors.white}
+        textBackgroundRadius={15} 
+      />
 
-        <View style={{padding: 20, alignItems: 'center'}}>
-          <PieChart
-            data={pieData}
-            donut
-            showGradient
-            sectionAutoFocus
-            radius={90}
-            innerRadius={60}
-            innerCircleColor={'#232B5D'}
-            centerLabelComponent={() => {
-              return (
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Text
-                    style={{fontSize: 22, color: 'white', fontWeight: 'bold'}}>
-                    47%
-                  </Text>
-                  <Text style={{fontSize: 14, color: 'white'}}>Excellent</Text>
-                </View>
-              );
-            }}
-          />
-        </View>
+      <Button
+        style={global.fab} 
+        round 
+        animateLayout 
+        animateTo={'right'} 
+        onPress={() => navigation.navigate("Report")} 
+        backgroundColor={Colors.tertiary}
+        iconSource={() => <MCIcon name="file-document" color={Colors.white} size={24} />} 
+      /> 
+    </View>
+  );
 
-        {renderLegendComponent()}
+  const SecondRoute = () => (
+    <View flex style={global.container}>
+      <View style={global.field}>
+        <Picker  
+          value={data[0]}
+          placeholder={'Month'}
+          style={[global.input, { marginBottom: -16 }]}
+          migrate 
+          useSafeArea={true} 
+          topBarProps={{ title: 'Month' }} 
+          migrateTextField           
+        >  
+          {data.map((type) => (   
+            <Picker.Item key={type.value} value={type.value} label={type.value.toString()} />
+          ))}
+        </Picker>
       </View>
+      
+      <Button
+        style={global.fab} 
+        round 
+        animateLayout 
+        animateTo={'right'} 
+        onPress={() => navigation.navigate("Report")} 
+        backgroundColor={Colors.tertiary}
+        iconSource={() => <MCIcon name="file-document" color={Colors.white} size={24} />} 
+      /> 
     </View>
   );
 
   // return (
-  //   <GestureHandlerRootView style={global.flex}>
-  //     <View useSafeArea flex style={global.white}>
-  //       <TabController items={[{label: 'Categories'}, {label: 'Products'}]}>  
-  //         <TabController.TabBar 
-  //           indicatorInsets={0}
-  //           indicatorStyle={{ backgroundColor: Colors.primary }} 
-  //           selectedLabelColor={Colors.tertiary}
-  //           labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
-  //         />  
-  //         <View flex>    
-  //           <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
-  //           <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
-  //         </View>
-  //       </TabController>
+  //   <View flex style={[global.container, global.white]}>
+  //     <View style={global.field}>
+  //       <Picker  
+  //         value={data[0]}
+  //         placeholder={'Month'}
+  //         style={[global.input, { marginBottom: -16 }]}
+  //         migrate 
+  //         useSafeArea={true} 
+  //         topBarProps={{ title: 'Month' }} 
+  //         migrateTextField           
+  //       >  
+  //         {data.map((type) => (   
+  //           <Picker.Item key={type.value} value={type.value} label={type.value.toString()} />
+  //         ))}
+  //       </Picker>
   //     </View>
-  //   </GestureHandlerRootView>
+
+  //     <View
+  //       style={{
+  //         padding: 16,
+  //         borderRadius: 20,
+  //         backgroundColor: 'white'
+  //       }}>
+  //       <Text text65 marginV-4>
+  //         Performance
+  //       </Text>
+
+  //       <View style={{padding: 20, alignItems: 'center'}}>
+  //         <PieChart
+  //           data={pieData}
+  //           donut
+  //           showGradient
+  //           sectionAutoFocus
+  //           radius={90}
+  //           innerRadius={60}
+  //           innerCircleColor={'#232B5D'}
+  //           centerLabelComponent={() => {
+  //             return (
+  //               <View style={{justifyContent: 'center', alignItems: 'center'}}>
+  //                 <Text
+  //                   style={{fontSize: 22, color: 'white', fontWeight: 'bold'}}>
+  //                   47%
+  //                 </Text>
+  //                 <Text style={{fontSize: 14, color: 'white'}}>Excellent</Text>
+  //               </View>
+  //             );
+  //           }}
+  //         />
+  //       </View>
+
+  //       {renderLegendComponent()}
+  //     </View>
+  //   </View>
   // );
+
+  return (
+    <View useSafeArea flex style={global.white}>
+      <TabController items={[{label: 'Products'}, {label: 'Cashflow'}]}>  
+        <TabController.TabBar 
+          indicatorInsets={0}
+          indicatorStyle={{ backgroundColor: Colors.tertiary }} 
+          selectedLabelColor={Colors.tertiary}
+          labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
+        />  
+        <View useSafeArea flex>    
+          <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
+          <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
+        </View>
+      </TabController>
+    </View>
+  );
 }
 
 export default Dashboard

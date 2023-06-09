@@ -51,15 +51,7 @@ const CreateTransaction = () => {
       console.log(error);
     });
   }
-
-  // const validationSchema = yup.object({
-  //   title: yup.string().required('First name is required'),
-  //   description: yup.string().required('Last name is required'),
-  //   type: yup.string().email('Invalid email address').required('Email is required'),
-  //   amount: yup.string().email('Invalid email address').required('Email is required'),
-  //   price: yup.string().email('Invalid email address').required('Email is required'),
-  // });
-
+  
   useEffect(() => {
     const subscriber = onSnapshot(query(collection(db, "Products"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
       setProducts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));

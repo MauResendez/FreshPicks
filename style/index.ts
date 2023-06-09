@@ -9,6 +9,10 @@ export const global = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
+  fullscreen: {
+    width: "100%",
+    height: "100%"
+  },
   flex: {
     flex: 1
   },
@@ -85,5 +89,60 @@ export const global = StyleSheet.create({
     borderWidth: 1,
     minHeight: 50,
     paddingHorizontal: 8,
+  },
+  underline: {
+    borderColor: "#03DAC6",
+  },
+  item: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgrey',
+    flexDirection: 'row',
+    alignItems: "center",
+  },
+  itemHourText: {
+    color: 'black'
+  },
+  itemDurationText: {
+    color: 'grey',
+    fontSize: 12,
+    marginTop: 4,
+    marginLeft: 4
+  },
+  itemTitleText: {
+    color: 'black',
+    marginLeft: 16,
+    fontWeight: 'bold',
+    fontSize: 16
+  },
+  itemButtonContainer: {
+    flex: 1,
+    alignItems: 'flex-end'
+  },
+  emptyItem: {
+    paddingLeft: 20,
+    height: 52,
+    justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgrey'
+  },
+  emptyItemText: {
+    color: 'lightgrey',
+    fontSize: 14
+  },
+  reserve: {
+    backgroundColor: 'white',
+    flex: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17
+  },
+  emptyDate: {
+    height: 15,
+    flex: 1,
+    paddingTop: 30
   }
 });

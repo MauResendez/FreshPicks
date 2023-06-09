@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import React, { memo, useEffect, useState } from "react";
-import { Colors, ListItem, Text } from "react-native-ui-lib";
+import { Colors, ListItem, LoaderScreen, Text } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 
 const ChatRow = (props) => {
@@ -48,7 +48,9 @@ const ChatRow = (props) => {
   }, [consumer, farmer]);
 
   if (loading) {
-    return null
+    return (
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />
+    )
   }
 
   return (

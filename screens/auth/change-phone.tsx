@@ -4,7 +4,7 @@ import { FirebaseRecaptchaBanner, FirebaseRecaptchaVerifierModal } from "expo-fi
 import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
 import * as React from "react";
 import { useRef, useState } from "react";
-import { Keyboard, Platform, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
 import PhoneInput from 'react-native-phone-input';
 import { Button, Colors, Text, View } from "react-native-ui-lib";
 import { app, auth } from "../../firebase";
@@ -144,7 +144,7 @@ const ChangePhone = () => {
               onCodeChanged={code => setSMS(code)}
               autoFocusOnLoad={false}
               codeInputFieldStyle={global.otp}
-              codeInputHighlightStyle={styles.underlineStyleHighLighted}
+              codeInputHighlightStyle={global.underline}
               onCodeFilled={code => onSubmit(code)}
             />
           </View>          
@@ -155,29 +155,5 @@ const ChangePhone = () => {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  borderStyleBase: {
-    width: 30,
-    height: 45
-  },
-
-  borderStyleHighLighted: {
-    borderColor: "#03DAC6",
-  },
-
-  underlineStyleBase: {
-    width: 30,
-    height: 45,
-    borderColor: Colors.black,
-    borderWidth: 0,
-    borderBottomWidth: 1,
-    color: Colors.black
-  },
-
-  underlineStyleHighLighted: {
-    borderColor: "#03DAC6",
-  },
-});
 
 export default ChangePhone

@@ -113,11 +113,12 @@
 
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { Agenda, AgendaEntry, AgendaSchedule, DateData } from 'react-native-calendars';
 import { Colors, LoaderScreen } from 'react-native-ui-lib';
 import ReserveItem from '../../components/basket/reserve-item';
 import { auth, db } from '../../firebase';
+import { global } from '../../style';
 
 interface State {
   items?: AgendaSchedule;
@@ -175,7 +176,7 @@ const Reserve = () => {
 
     return (
       <TouchableOpacity
-        style={[styles.item, {height: 75}]}
+        style={[global.reserve, {height: 75}]}
         onPress={() => Alert.alert(reservation.name)}
       >
         <Text style={{fontSize, color}}>{reservation.name}</Text>
@@ -185,7 +186,7 @@ const Reserve = () => {
 
   const renderEmptyDate = () => {
     return (
-      <View style={styles.emptyDate}>
+      <View style={global.emptyDate}>
         <Text>This is empty date!</Text>
       </View>
     );
@@ -279,21 +280,5 @@ const Reserve = () => {
       />
     );
 }
-
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: 'white',
-    flex: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17
-  },
-  emptyDate: {
-    height: 15,
-    flex: 1,
-    paddingTop: 30
-  }
-});
 
 export default Reserve

@@ -7,7 +7,7 @@ import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { Formik } from "formik";
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
-import { Alert, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from "react-native";
 import PhoneInput from 'react-native-phone-input';
 import { Button, Colors, Image, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { app, auth, db } from "../../firebase";
@@ -180,7 +180,7 @@ const Login = () => {
                     onCodeChanged={handleChange("sms")}
                     autoFocusOnLoad={false}
                     codeInputFieldStyle={global.otp}
-                    codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                    codeInputHighlightStyle={global.underline}
                     onCodeFilled={() => handleSubmit()}
                   />
                 </View>   
@@ -197,29 +197,5 @@ const Login = () => {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  borderStyleBase: {
-    width: 30,
-    height: 45
-  },
-
-  borderStyleHighLighted: {
-    borderColor: "#03DAC6",
-  },
-
-  underlineStyleBase: {
-    width: 30,
-    height: 45,
-    borderColor: Colors.black,
-    borderWidth: 0,
-    borderBottomWidth: 1,
-    color: Colors.black
-  },
-
-  underlineStyleHighLighted: {
-    borderColor: "#03DAC6",
-  },
-});
 
 export default Login
