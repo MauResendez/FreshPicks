@@ -64,7 +64,7 @@ const Instructions = () => {
     return (
       <View flex>
         <View flex>
-          <ImageBackground style={global.flex} source={require("../../assets/onboarding/search.jpg")} />
+          <ImageBackground style={global.flex} source={require("../../assets/images/search.jpg")} />
         </View>
         <View flex style={[global.container, global.white]}>
           <Text text65 marginV-4>Searching for fresh produce</Text>
@@ -80,7 +80,7 @@ const Instructions = () => {
     return (
       <View flex>
         <View flex>
-          <ImageBackground style={global.flex} source={require("../../assets/onboarding/request.jpg")} />
+          <ImageBackground style={global.flex} source={require("../../assets/images/request.jpg")} />
         </View>
         <View flex style={[global.container, global.white]}>
           <Text text65 marginV-4>Request a meeting</Text>
@@ -96,7 +96,7 @@ const Instructions = () => {
     return (
       <View flex>
         <View flex>
-          <ImageBackground style={global.flex} source={require("../../assets/onboarding/decide.jpg")} />
+          <ImageBackground style={global.flex} source={require("../../assets/images/decide.jpg")} />
         </View>
         <View flex style={[global.container, global.white]}>
           <Text text65 marginV-4>Decide on your requests</Text>
@@ -112,7 +112,7 @@ const Instructions = () => {
     return (
       <View flex>
         <View flex>
-          <ImageBackground style={global.flex} source={require("../../assets/onboarding/meet.jpg")} />
+          <ImageBackground style={global.flex} source={require("../../assets/images/meet.jpg")} />
         </View>
         <View flex style={[global.container, global.white]}>
           <Text text65 marginV-4>Meet up</Text>
@@ -128,7 +128,7 @@ const Instructions = () => {
     return (
       <View flex>
         <View flex>
-          <ImageBackground style={global.flex} source={require("../../assets/onboarding/enjoy.jpg")} />
+          <ImageBackground style={global.flex} source={require("../../assets/images/enjoy.jpg")} />
         </View>
         <View flex style={[global.container, global.white]}>
           <Text text65 marginV-4>Enjoy!</Text>

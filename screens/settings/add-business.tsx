@@ -191,7 +191,7 @@ const AddBusiness = () => {
         images: values.images,
         farmer: true
       }).then(() => {
-        navigation.navigate("Settings");
+        navigation.goBack();
       });
     } catch (err: any) {
       Toast.show(`Error: ${err.message}`, {

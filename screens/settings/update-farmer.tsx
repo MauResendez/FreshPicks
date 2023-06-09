@@ -139,7 +139,7 @@ const UpdateFarmer = () => {
       images: imgs
     })
     .then(() => {
-      navigation.navigate("Settings");
+      navigation.goBack();
     })
     .catch((error) => {
       console.log(error);

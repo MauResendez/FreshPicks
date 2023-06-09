@@ -33,7 +33,7 @@ const UploadLocation = () => {
       location: values.location,
     })
     .then(() => {
-      navigation.navigate("Settings");
+      navigation.goBack();
     })
     .catch((error) => {
       console.log(error);

@@ -16,7 +16,7 @@ const UpdatePersonal = () => {
   const onSubmit = async (values) => {
     await updateDoc(doc(db, "Users", auth.currentUser.uid), values)
       .then(() => {
-        navigation.navigate("Settings");
+        navigation.goBack();
       })
       .catch((error) => {
         console.log(error);

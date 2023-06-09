@@ -193,7 +193,6 @@ const Login = () => {
           </Formik>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
-
     </View>
   );
 }
