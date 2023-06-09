@@ -31,7 +31,7 @@ const AgendaItem = (props: ItemProps) => {
 
   return (
     <TouchableOpacity onPress={itemPressed} style={global.item}>
-      <Text style={global.itemHourText}>{item.meetAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+      <Text style={global.itemHourText}>{item.createdAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
       <Text style={global.itemTitleText}>{item.title}</Text>
       <View style={global.itemButtonContainer}>
         <Button color={'grey'} title={'Info'} onPress={buttonPressed}/>

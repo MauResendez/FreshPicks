@@ -8,7 +8,6 @@ const MapRow = (props) => {
 
 	const onPress = () => {
     navigation.navigate("Profile", { id: item.id });
-		// navigation.navigate("First", { screen: "Profile" }, { id: item.id })
   }
 
 	return (

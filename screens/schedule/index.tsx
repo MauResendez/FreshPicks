@@ -6,8 +6,8 @@ import { AgendaList, AgendaSchedule } from 'react-native-calendars';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Colors, LoaderScreen, TabController, View } from 'react-native-ui-lib';
 import ChatRow from '../../components/chat/chat-row';
-import AgendaItem from '../../components/orders/agenda-item';
-import RequestRow from '../../components/orders/request-row';
+import AgendaItem from '../../components/schedule/agenda-item';
+import RequestRow from '../../components/schedule/request-row';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
 interface State {

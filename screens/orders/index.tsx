@@ -7,7 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Colors, LoaderScreen, TabController, View } from 'react-native-ui-lib';
 import ChatRow from '../../components/chat/chat-row';
 import AgendaItem from '../../components/orders/agenda-item';
-import RequestRow from '../../components/orders/request-row';
+import HistoryRow from '../../components/orders/history-row';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
 interface State {
@@ -28,8 +28,8 @@ const Orders = () => {
     return <AgendaItem item={item} />;
   }, []);
 
-	const renderRequest = useCallback(({item}: any) => {
-    return <RequestRow item={item} />;
+  const renderHistory = useCallback(({item}: any) => {
+    return <HistoryRow item={item} />;
   }, []);
 
 	const renderChat = useCallback(({item}: any) => {
@@ -48,10 +48,10 @@ const Orders = () => {
 	const SecondRoute = () => (
     <View useSafeArea flex>
       <FlashList 
-        data={pending}
+        data={orders}
         keyExtractor={(item: any) => item.id}
-        estimatedItemSize={pending.length != 0 ? pending.length : 150}
-        renderItem={renderRequest}
+        estimatedItemSize={orders.length != 0 ? orders.length : 150}
+        renderItem={renderHistory}
       />
     </View>
   );
@@ -125,7 +125,7 @@ const Orders = () => {
   return (
     <GestureHandlerRootView style={global.flex}>
       <View useSafeArea flex style={global.white}>
-        <TabController items={[{label: 'Orders'}, {label: 'Requests'}, {label: 'Chats'}]}>  
+        <TabController items={[{label: 'Orders'}, {label: 'History'}, {label: 'Chats'}]}>  
           <TabController.TabBar
             indicatorInsets={0}
             indicatorStyle={{ backgroundColor: Colors.tertiary }} 
