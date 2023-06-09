@@ -112,7 +112,7 @@ const Profile = ({ route }) => {
               <View flex centerV key={i}>
                 <Image
                   overlayType={Image.overlayTypes.BOTTOM}
-                  style={{flex: 1}}
+                  style={global.flex}
                   source={{
                     uri: image
                   }}

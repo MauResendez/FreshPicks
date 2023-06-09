@@ -7,7 +7,7 @@ import { Formik } from "formik"
 import React, { useState } from "react"
 import { Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import CurrencyInput from "react-native-currency-input"
-import { ActionSheet, Button, Colors, Image, KeyboardAwareScrollView, Picker, Text, TextField, View } from "react-native-ui-lib"
+import { ActionSheet, Button, Colors, Image, KeyboardAwareScrollView, Text, TextField, View } from "react-native-ui-lib"
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import * as Yup from 'yup'
 import { auth, db, storage } from "../../firebase"
@@ -102,7 +102,6 @@ const CreateSubscription = () => {
       image: u,
       price: values.price,
       title: values.title,
-      type: values.type,
       user: values.user,
     }).then(() => {
       console.log("Data saved!");
@@ -124,7 +123,6 @@ const CreateSubscription = () => {
   const validate = Yup.object().shape({
     title: Yup.string().required('Title is required'),
     description: Yup.string().required('Description is required'),
-    type: Yup.string().required('Type is required'),
     price: Yup.number().required('Price is required'),
   });
 
@@ -133,7 +131,7 @@ const CreateSubscription = () => {
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView>
           <Formik
-            initialValues={{ user: auth.currentUser.uid, title: '', description: '', type: '', price: 1.00, image: [] }}
+            initialValues={{ user: auth.currentUser.uid, title: '', description: '', price: 1.00, image: [] }}
             validationSchema={validate}
             onSubmit={handleSubmit}
           >
@@ -182,25 +180,6 @@ const CreateSubscription = () => {
                   />
                 </View>
                 {errors.price && touched.price && <Text style={{ color: Colors.red30}}>{errors.price}</Text>}
-
-                <View style={global.field}>
-                  <Text text65 marginV-4>Type</Text>
-                  <Picker  
-                    style={[global.input, { marginBottom: -16 }]}
-                    value={values.type}
-                    onChange={handleChange('type')}
-                    onBlur={handleBlur('type')}
-                    migrate 
-                    useSafeArea={true} 
-                    topBarProps={{ title: 'Types' }} 
-                    migrateTextField           
-                  >  
-                    {subscriptionTypes.map((type) => (   
-                      <Picker.Item key={type.value} value={type.value} label={type.label} />
-                    ))}
-                  </Picker>
-                </View>
-                {errors.type && touched.type && <Text style={{ color: Colors.red30}}>{errors.type}</Text>}
 
                 <View style={global.field}>
                   <Text text65 marginV-4>Image</Text>

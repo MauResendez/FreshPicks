@@ -7,7 +7,7 @@ import { Formik } from 'formik'
 import React, { useEffect, useState } from "react"
 import { Alert, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import CurrencyInput from "react-native-currency-input"
-import { Button, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Picker, Text, TextField, View } from "react-native-ui-lib"
+import { Button, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
 import * as Yup from 'yup'
 import { auth, db, storage } from "../../firebase"
 import { global } from "../../style"
@@ -15,23 +15,7 @@ import { global } from "../../style"
 const EditProduct = ({ route }) => {
   const navigation = useNavigation<any>();
   const [product, setProduct] = useState<any>(null);
-  const types = [
-    {label: "Fruits", value: "Fruits"},
-    {label: "Vegetables", value: "Vegetables"},
-    {label: "Dairy", value: "Dairy"},
-    {label: "Meat", value: "Meat"},
-    {label: "Deli", value: "Deli"},
-    {label: "Bakery", value: "Bakery"},
-    {label: "Frozen", value: "Frozen"},
-    {label: "Other", value: "Other"},
-  ]
-  const amounts = [
-    {label: 'Each', value: 'Each'},
-    {label: 'LB', value: 'LB'},
-    {label: 'Bunch', value: 'Bunch'},
-  ]
   const [loading, setLoading] = useState<boolean>(false);
-  const [visible, setVisible] = useState(false);
 
   const checkIfImageIsAppropriate = async (images) => {
     try {
@@ -149,12 +133,10 @@ const EditProduct = ({ route }) => {
 
   const editProduct = async (values, images) => {
     await updateDoc(doc(db, "Products", route.params.id), {
-      amount: values.amount,
       description: values.description,
       images: images,
       price: values.price,
       title: values.title,
-      type: values.type,
       user: values.user,
     }).then(() => {
       console.log("Data saved!");
@@ -201,8 +183,6 @@ const EditProduct = ({ route }) => {
   const validate = Yup.object().shape({
     title: Yup.string().required('Title is required'),
     description: Yup.string().required('Description is required'),
-    type: Yup.string().required('Type is required'),
-    amount: Yup.string().required('Amount is required'),
     price: Yup.number().required('Price is required'),
   });
   
@@ -211,7 +191,7 @@ const EditProduct = ({ route }) => {
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView>
           <Formik 
-            initialValues={product || { user: "", title: "", description: "", type: '', amount: "", price: 1, images: [] }} 
+            initialValues={product || { user: "", title: "", description: "", price: 1, images: [] }} 
             onSubmit={handleSubmit}
             validationSchema={validate}
             enableReinitialize={true}
@@ -245,24 +225,6 @@ const EditProduct = ({ route }) => {
                 {errors.description && touched.description && <Text style={{ color: Colors.red30}}>{errors.description}</Text>}
 
                 <View style={global.field}>
-                  <Text text65 marginV-4>Type</Text>
-                  <Picker  
-                    value={values.type}
-                    style={[global.input, { marginBottom: -16 }]}
-                    onChange={handleChange('type')}
-                    onBlur={handleBlur('type')}
-                    useSafeArea={true} 
-                    topBarProps={{ title: 'Type' }} 
-                    customPickerProps={{ padding: 64, margin: 64 }}
-                  >  
-                    {types.map((type) => (   
-                      <Picker.Item key={type.value} value={type.value} label={type.label} />
-                    ))}
-                  </Picker>
-                </View>
-                {errors.type && touched.type && <Text style={{ color: Colors.red30}}>{errors.type}</Text>}
-
-                <View style={global.field}>
                   <Text text65 marginV-4>Price</Text>
                   <CurrencyInput
                     value={values.price}
@@ -279,24 +241,6 @@ const EditProduct = ({ route }) => {
                   />
                 </View>
                 {errors.price && touched.price && <Text style={{ color: Colors.red30}}>{errors.price}</Text>}
-
-                <View style={global.field}>
-                  <Text text65 marginV-4>Amount</Text>
-                  <Picker 
-                    value={values.amount} 
-                    style={[global.input, { marginBottom: -16 }]}
-                    onChange={handleChange('amount')}
-                    onBlur={handleBlur('amount')}
-                    useSafeArea={true} 
-                    topBarProps={{ title: 'Amount' }} 
-                    customPickerProps={{ padding: 0, margin: 0 }}
-                  >  
-                    {amounts.map((type) => (   
-                      <Picker.Item key={type.value} value={type.value} label={type.label} />
-                    ))}
-                  </Picker>
-                </View>
-                {errors.amount && touched.amount && <Text style={{ color: Colors.red30}}>{errors.amount}</Text>}
 
                 <View style={global.field}>
                   <Text text65 marginV-4>Image</Text>

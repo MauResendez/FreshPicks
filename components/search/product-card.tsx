@@ -36,7 +36,7 @@ const ProductCard = (props) => {
           {item.title}
         </Text>
         <Text text80M grey30 marginV-4>
-          ${item.price.toFixed(2)}/{item.amount}
+          ${item.price.toFixed(2)}
         </Text>
       </View>
     </Card>
