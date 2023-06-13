@@ -5,7 +5,7 @@ import * as Notifications from 'expo-notifications';
 import { GeoPoint, doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Formik } from 'formik';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Keyboard, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Button, Carousel, Checkbox, Colors, DateTimePicker, Image, KeyboardAwareScrollView, LoaderScreen, PageControl, Text, TextField, Toast, View, Wizard } from 'react-native-ui-lib';
@@ -17,29 +17,11 @@ import { global } from '../../style';
 
 const AddBusiness = () => {
   const navigation = useNavigation<any>();
-  const phoneRef = useRef<any>(null);
-  const recaptchaVerifier = useRef<any>(null);
-  const attemptInvisibleVerification = true;
-  const days = [
-    {label: 'Monday', value: 'Monday'},
-    {label: 'Tuesday', value: 'Tuesday'},
-    {label: 'Wednesday', value: 'Wednesday'},
-    {label: 'Thursday', value: 'Thursday'},
-    {label: 'Friday', value: 'Friday'},
-    {label: 'Saturday', value: 'Saturday'},
-    {label: 'Sunday', value: 'Sunday'},
-  ];
-
-  const IMAGES = [
-    'https://images.pexels.com/photos/2529159/pexels-photo-2529159.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    'https://images.pexels.com/photos/2529146/pexels-photo-2529146.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    'https://images.pexels.com/photos/2529158/pexels-photo-2529158.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
-  ];
+  const appConfig = require("../../app.json");
+  const projectId = appConfig?.expo?.extra?.eas?.projectId;
 
   const [active, setActive] = useState(0);
   const [completedStep, setCompletedStep] = useState(undefined);
-  const [vid, setVID] = useState<any>();
-  const [farmer, setFarmer] = useState<boolean>(false);
   const [monday, setMonday] = useState<any>({ enable: false, start: null, end: null });
   const [tuesday, setTuesday] = useState<any>({ enable: false, start: null, end: null });
   const [wednesday, setWednesday] = useState<any>({ enable: false, start: null, end: null });
@@ -782,7 +764,7 @@ const AddBusiness = () => {
   }
 
   const getToken = async () => {
-    let token = await Notifications.getExpoPushTokenAsync();
+    let token = await Notifications.getExpoPushTokenAsync({ projectId });
 
     setToken(token.data);
 

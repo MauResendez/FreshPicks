@@ -17,7 +17,16 @@ const AuthStack = () => {
   return (
     <NavigationContainer>
       <StatusBar style={"auto"} animated />
-      <Stack.Navigator initialRouteName="Landing" screenOptions={{ headerShown: true }}>
+      <Stack.Navigator 
+        initialRouteName="Landing" 
+        screenOptions={{ 
+          headerShown: true,
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontSize: 17,
+          }
+        }}
+      >
         <Stack.Screen name="Landing" component={Landing} />
         <Stack.Screen name="Login" component={Login}  />
         <Stack.Screen name="Register" component={Register} />

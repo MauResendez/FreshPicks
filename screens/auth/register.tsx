@@ -22,6 +22,8 @@ import { global } from '../../style';
 const Register = () => {
   const navigation = useNavigation<any>();
   const phoneRef = useRef<any>(null);
+  const appConfig = require("../../app.json");
+  const projectId = appConfig?.expo?.extra?.eas?.projectId;
   const recaptchaVerifier = useRef<any>(null);
   const attemptInvisibleVerification = true;
 
@@ -1010,7 +1012,11 @@ const Register = () => {
   }
 
   const getToken = async () => {
-    let token = await Notifications.getExpoPushTokenAsync();
+    console.log("Token:", "HI");
+
+    let token = await Notifications.getExpoPushTokenAsync({ projectId });
+
+    console.log("Token:", token);
 
     setToken(token.data);
 
@@ -1018,6 +1024,7 @@ const Register = () => {
   }
 
   useEffect(() => {
+    console.log("HELLO");
     getToken();
   }, [])
 

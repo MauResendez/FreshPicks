@@ -25,7 +25,9 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.mauresendez.freshpicks"
+      "package": "com.mauresendez.freshpicks",
+      "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,6 +36,19 @@
       "eas": {
         "projectId": "997391e7-9dfa-4b61-83cf-5b12220baf49"
       }
-    }
+    },
+    "client": [
+      {
+        "api_key": [
+          {
+            "current_key": "AIzaSyBGvgDvtNEIHkghRXxz1EcybY2kX6wVduQ"
+          }
+        ]
+      }
+    ]
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-6098190619619551~3381580224",
+    "ios_app_id": "ca-app-pub-6098190619619551~5420548068"
   }
 }

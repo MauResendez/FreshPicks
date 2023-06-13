@@ -10,12 +10,14 @@ import { auth, db } from "../../firebase";
 
 const Settings = () => {
   const navigation = useNavigation<any>();
+  const appConfig = require("../../app.json");
+  const projectId = appConfig?.expo?.extra?.eas?.projectId;
   const [user, setUser] = useState<any>(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState<any>(true);
 
   const getToken = async () => {
-    let token = await Notifications.getExpoPushTokenAsync();
+    let token = await Notifications.getExpoPushTokenAsync({ projectId });
 
     setToken(token.data);
   }

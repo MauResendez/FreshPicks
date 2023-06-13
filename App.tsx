@@ -11,7 +11,6 @@ import { auth } from "./firebase";
 import AuthStack from "./navigation/stack/auth-stack";
 import MainStack from "./navigation/stack/main-stack";
 import { store } from "./redux/store";
-import "./setup";
 import { global } from "./style";
 
 Colors.loadColors({  
@@ -162,6 +161,13 @@ const App = () => {
     <GestureHandlerRootView style={global.flex}>
       <Provider store={store}>
         <StatusBar style={"auto"} animated />
+        {/* <BannerAd
+          unitId={adUnitId}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        /> */}
         <ConnectionStatusBar />
         {auth.currentUser ? <MainStack /> : <AuthStack />}
       </Provider>

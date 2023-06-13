@@ -46,7 +46,7 @@ const CreateProduct = () => {
     const compressed = [];
     
     result.assets.forEach(async (asset) => {
-      const manipulatedImage = await ImageManipulator.manipulateAsync(asset.uri, [{ resize: { height: 400 }}], { compress: 0 });
+      const manipulatedImage = await ImageManipulator.manipulateAsync(asset.uri, [{ resize: { height: 512 }}], { compress: 0.5 });
 
       compressed.push(manipulatedImage.uri);
     });
@@ -76,7 +76,7 @@ const CreateProduct = () => {
         base64: true,
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         aspect: [4, 3],
-        quality: 0,
+        quality: 0.5,
       });
 
       if (!result.canceled) {
@@ -101,7 +101,7 @@ const CreateProduct = () => {
         base64: true,
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         aspect: [4, 3],
-        quality: 0,
+        quality: 0.5,
       });
 
       if (!result.canceled) {

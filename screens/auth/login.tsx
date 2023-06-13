@@ -16,6 +16,8 @@ import { global } from "../../style";
 const Login = () => {
   const navigation = useNavigation<any>();
   const phoneRef = useRef<any>(null);
+  const appConfig = require("../../app.json");
+  const projectId = appConfig?.expo?.extra?.eas?.projectId;
   const recaptchaVerifier = useRef<any>(null);
   const attemptInvisibleVerification = true;
 
@@ -51,7 +53,7 @@ const Login = () => {
   };
 
   const getToken = async () => {
-    let token = await Notifications.getExpoPushTokenAsync();
+    let token = await Notifications.getExpoPushTokenAsync({ projectId });
 
     setToken(token.data);
   }
