@@ -85,6 +85,7 @@ const EditProduct = ({ route }) => {
         compress(result, setFieldValue);
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -110,6 +111,7 @@ const EditProduct = ({ route }) => {
         compress(result, setFieldValue);
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -142,6 +144,7 @@ const EditProduct = ({ route }) => {
       console.log("Data saved!");
       navigation.goBack();
     }).catch((error) => {
+      alert(error.message);
       console.log(error);
     });
   };
@@ -154,6 +157,7 @@ const EditProduct = ({ route }) => {
       // await deleteObject(oldImg);
       await editProduct(values, imgs);
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   };

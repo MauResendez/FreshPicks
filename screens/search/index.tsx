@@ -86,6 +86,7 @@ const Search = () => {
         setFP(fp);
       }  
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }, [farmers, products, search]);

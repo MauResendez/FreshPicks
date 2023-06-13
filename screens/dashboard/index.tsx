@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { useWindowDimensions } from "react-native";
-import { PieChart } from "react-native-gifted-charts";
+import { Keyboard, Platform, TouchableWithoutFeedback, useWindowDimensions } from "react-native";
 import { Button, Colors, Picker, TabController, Text, View } from "react-native-ui-lib";
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import DateRange from "../../components/calendar/date-range";
 import { global } from "../../style";
 
 const Dashboard = () => {
@@ -100,43 +100,37 @@ const Dashboard = () => {
   };
 
   const FirstRoute = () => (
-    <View flex style={global.container}>
-      <View style={global.field}>
-        <Picker  
-          value={data[0]}
-          placeholder={'Month'}
-          style={[global.input, { marginBottom: -16 }]}
-          migrate 
-          useSafeArea={true} 
-          topBarProps={{ title: 'Month' }} 
-          migrateTextField           
-        >  
-          {data.map((type) => (   
-            <Picker.Item key={type.value} value={type.value} label={type.value.toString()} />
-          ))}
-        </Picker>
-      </View>
+    // <View flex style={global.container}>
+    //   <View style={global.field}>
+    //     <Picker  
+    //       value={data[0]}
+    //       placeholder={'Month'}
+    //       style={[global.input, { marginBottom: -16 }]}
+    //       migrate 
+    //       useSafeArea={true} 
+    //       topBarProps={{ title: 'Month' }} 
+    //       migrateTextField           
+    //     >  
+    //       {data.map((type) => (   
+    //         <Picker.Item key={type.value} value={type.value} label={type.value.toString()} />
+    //       ))}
+    //     </Picker>
+    //   </View>
 
-      <PieChart 
-        data={data} 
-        donut 
-        showText
-        textColor={Colors.black}
-        innerRadius={50}
-        showTextBackground
-        textBackgroundColor={Colors.white}
-        textBackgroundRadius={15} 
-      />
-
-      <Button
-        style={global.fab} 
-        round 
-        animateLayout 
-        animateTo={'right'} 
-        onPress={() => navigation.navigate("Report")} 
-        backgroundColor={Colors.tertiary}
-        iconSource={() => <MCIcon name="file-document" color={Colors.white} size={24} />} 
-      /> 
+    //   <Button
+    //     style={global.fab} 
+    //     round 
+    //     animateLayout 
+    //     animateTo={'right'} 
+    //     onPress={() => navigation.navigate("Report")} 
+    //     backgroundColor={Colors.tertiary}
+    //     iconSource={() => <MCIcon name="file-document" color={Colors.white} size={24} />} 
+    //   /> 
+    // </View>
+    <View useSafeArea flex>
+      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
+      <DateRange />
+      </TouchableWithoutFeedback>
     </View>
   );
 

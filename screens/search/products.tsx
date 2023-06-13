@@ -62,6 +62,7 @@ const Products = () => {
         setFP(fp);
       }  
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }, [products, search]);

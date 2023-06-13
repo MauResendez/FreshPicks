@@ -59,6 +59,7 @@ const EditSubscription = ({ route }) => {
         compress(result.assets[0].uri, setFieldValue);
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -84,6 +85,7 @@ const EditSubscription = ({ route }) => {
         compress(result.assets[0].uri, setFieldValue);
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -116,6 +118,7 @@ const EditSubscription = ({ route }) => {
       console.log("Data saved!");
       navigation.goBack();
     }).catch((error) => {
+      alert(error.message);
       console.log(error);
     });
   };
@@ -125,6 +128,7 @@ const EditSubscription = ({ route }) => {
       const imgs = await uploadImages(values.image);
       await editSubscription(values, auth.currentUser, imgs);
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   };

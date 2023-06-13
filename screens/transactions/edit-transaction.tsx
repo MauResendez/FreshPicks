@@ -46,6 +46,7 @@ const EditTransaction = ({ route }) => {
       console.log("Data saved!");
       navigation.goBack();
     }).catch((error) => {
+      alert(error.message);
       console.log(error);
     });
   };

@@ -83,6 +83,7 @@ const CreateProduct = () => {
         compress(result, setFieldValue);
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -108,6 +109,7 @@ const CreateProduct = () => {
         compress(result, setFieldValue);
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -140,6 +142,7 @@ const CreateProduct = () => {
       console.log("Data saved!");
       navigation.goBack();
     }).catch((error) => {
+      alert(error.message);
       console.log(error);
     });
   };
@@ -149,6 +152,7 @@ const CreateProduct = () => {
       const imgs = await uploadImages(values.images);
       await createProduct(values, imgs);
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   };

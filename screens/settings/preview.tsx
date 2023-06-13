@@ -40,20 +40,6 @@ const Preview = ({ route }) => {
     .catch(e => alert(e.message));
   }
 
-  // const rateFarmer = async (rating) => {
-  //   await updateDoc(doc(db, "Users", farmer.id), { rating: ((farmer.ratings * 5) + rating)/(farmer.ratings + 1), ratings: farmer.ratings + 1 })
-  //   .then(() => {
-  //     Toast.show("Rating successful", {
-  //       duration: Toast.durations.SHORT,
-  //       backgroundColor: "orange",
-  //       position: Platform.OS == "web" ? 650 : 700
-  //     });
-  //   })
-  //   .catch((err) => {
-  //     console.log(err.message);
-  //   });
-  // }
-
   useEffect(() => {
     getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnapshot) => {
       const data = docSnapshot.data();

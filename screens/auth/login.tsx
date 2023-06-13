@@ -58,14 +58,6 @@ const Login = () => {
     setToken(token.data);
   }
 
-  // const showToast = (type, title, message) => {
-  //   Toast.show({
-  //     type: type,
-  //     text1: title,
-  //     text2: message
-  //   });
-  // }
-
   const verifyPhone = async (phone) => {
     console.log(phone);
     try {
@@ -75,17 +67,15 @@ const Login = () => {
         const phoneProvider = new PhoneAuthProvider(auth);
         const vid = await phoneProvider.verifyPhoneNumber(phone, recaptchaVerifier.current);
         setVID(vid);
-
-        // showToast("info", "Info", "Verification code has been sent to your phone");
       } else {
         Alert.alert("User doesn't exist", "There's no user with that registered with this phone number.\n\n Would you like to create an account?", [
           {text: 'Cancel', style: 'cancel'},
           {text: 'OK', onPress: () => navigation.navigate("Register")},
         ]);
       }
-    } catch (err: any) {
-      console.log(err.message);
-      // showToast("error", "Error", `${err.message}`);
+    } catch (error: any) {
+      alert(error.message);
+      console.log(error.message);
     }
   }
 
@@ -102,8 +92,9 @@ const Login = () => {
           createdAt: new Date(),
         });
       });
-    } catch (err: any) {
-      // showToast("error", "Error", `${err.message}`);
+    } catch (error: any) {
+      alert(error.message);
+      console.log(error.message);
     }
   };
 

@@ -1,9 +1,7 @@
 import React from "react";
 
 import Dashboard from "../../screens/products";
-import CreatePost from "../../screens/products/create-post";
 import CreateSubscription from "../../screens/products/create-subscription";
-import EditPost from "../../screens/products/edit-post";
 import EditSubscription from "../../screens/products/edit-subscription";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -26,10 +24,8 @@ const ProductStack = () => {
     >
       <Stack.Screen name="Products" component={Dashboard} />
       <Stack.Screen name="Create Product" component={CreateProduct} />
-      <Stack.Screen name="Create Post" component={CreatePost} />
       <Stack.Screen name="Create Subscription" component={CreateSubscription} />
       <Stack.Screen name="Edit Product" component={EditProduct} />
-      <Stack.Screen name="Edit Post" component={EditPost} />
       <Stack.Screen name="Edit Subscription" component={EditSubscription} />
     </Stack.Navigator>
   )

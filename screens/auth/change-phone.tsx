@@ -52,14 +52,9 @@ const ChangePhone = () => {
       const phoneProvider = new PhoneAuthProvider(auth);
       const vid = await phoneProvider.verifyPhoneNumber(phone, recaptchaVerifier.current);
       setVID(vid);
-      // Toast.show("Verification code has been sent to your phone.", {
-      //   duration: Toast.durations.SHORT,
-      // });
-    } catch (err: any) {
-      console.log(err.message);
-      // Toast.show(`Error: ${err.message}`, {
-      //   duration: Toast.durations.SHORT,
-      // });
+    } catch (error: any) {
+      alert(error.message);
+      console.log(error.message);
     }
   }
 
@@ -68,11 +63,6 @@ const ChangePhone = () => {
 
     if (phone.length == 0) {
       error = true;
-      // Toast.show("Phone is required", {
-      //   duration: Toast.durations.SHORT,
-      //   backgroundColor: "orange",
-      //   position: Platform.OS == "web" ? 650 : 700
-      // });
       return
     }
 
@@ -91,10 +81,9 @@ const ChangePhone = () => {
       const credential = PhoneAuthProvider.credential(vid, sms);
 
       await signInWithCredential(auth, credential);
-    } catch (err: any) {
-      // Toast.show(`Error: ${err.message}`, {
-      //   duration: Toast.durations.SHORT,
-      // });
+    } catch (error: any) {
+      alert(error.message);
+      console.log(error.message);
     }
   };
 

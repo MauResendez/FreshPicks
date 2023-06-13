@@ -50,6 +50,7 @@ const CreateSubscription = () => {
         compress(result.assets[0].uri, setFieldValue);
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -75,6 +76,7 @@ const CreateSubscription = () => {
         compress(result.assets[0].uri, setFieldValue);
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -107,6 +109,7 @@ const CreateSubscription = () => {
       console.log("Data saved!");
       navigation.goBack();
     }).catch((error) => {
+      alert(error.message);
       console.log(error);
     });
   };
@@ -116,6 +119,7 @@ const CreateSubscription = () => {
       const imgs = await uploadImages(values.image);
       await createSubscription(values, auth.currentUser, imgs);
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   };

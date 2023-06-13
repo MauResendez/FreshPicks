@@ -75,29 +75,10 @@ const Settings = () => {
 
   const switchRoles = async () => {
     if (user.role === "Farmer") {
-      await updateDoc(doc(db, "Users", auth.currentUser.uid), { role: "Consumer" }).then(() => {
-        // Toast.show("Switched roles", {
-        //   duration: Toast.durations.SHORT,
-        //   backgroundColor: "orange",
-        //   position: Platform.OS == "web" ? 650 : 700
-        // });
-      });
+      await updateDoc(doc(db, "Users", auth.currentUser.uid), { role: "Consumer" });
     } else {
-      await updateDoc(doc(db, "Users", auth.currentUser.uid), { role: "Farmer" }).then(() => {
-        // Toast.show("Switched roles", {
-        //   duration: Toast.durations.SHORT,
-        //   backgroundColor: "orange",
-        //   position: Platform.OS == "web" ? 650 : 700
-        // });
-      });
+      await updateDoc(doc(db, "Users", auth.currentUser.uid), { role: "Farmer" });
     }
-    // await updateDoc(doc(db, "Users", auth.currentUser.uid), { role: !user.role }).then(() => {
-    //   // Toast.show("Switched roles", {
-    //   //   duration: Toast.durations.SHORT,
-    //   //   backgroundColor: "orange",
-    //   //   position: Platform.OS == "web" ? 650 : 700
-    //   // });
-    // });
   }
 
   useEffect(() => {

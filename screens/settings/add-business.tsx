@@ -111,6 +111,7 @@ const AddBusiness = () => {
         compress(result, setFieldValue);
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -138,6 +139,7 @@ const AddBusiness = () => {
         compress(result, setFieldValue);
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -175,10 +177,9 @@ const AddBusiness = () => {
       }).then(() => {
         navigation.goBack();
       });
-    } catch (err: any) {
-      Toast.show(`Error: ${err.message}`, {
-        duration: Toast.durations.SHORT,
-      });
+    } catch (error: any) {
+      alert(error.message);
+      console.log(error.message);
     }
   };
 

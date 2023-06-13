@@ -64,6 +64,7 @@ const UpdateFarmer = () => {
         compress(result, setFieldValue);
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -89,6 +90,7 @@ const UpdateFarmer = () => {
         compress(result, setFieldValue);
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -142,6 +144,7 @@ const UpdateFarmer = () => {
       navigation.goBack();
     })
     .catch((error) => {
+      alert(error.message);
       console.log(error);
     });
   };

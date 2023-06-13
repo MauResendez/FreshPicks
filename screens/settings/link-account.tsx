@@ -29,6 +29,7 @@ const LinkAccount = () => {
 				navigation.goBack();
 			});
 		} catch (error) {
+      alert(error.message);
 			console.log(error);
 		}
 		

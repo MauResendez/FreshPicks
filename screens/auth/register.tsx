@@ -89,6 +89,7 @@ const Register = () => {
         compress(result, setFieldValue);
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -114,6 +115,7 @@ const Register = () => {
         compress(result, setFieldValue);
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -138,7 +140,6 @@ const Register = () => {
   }
 
   const verifyPhone = async (phone) => {
-    console.log("Phone:", phone);
     try {
       const i = await checkIfUserExists(phone);
 
@@ -146,18 +147,15 @@ const Register = () => {
         const phoneProvider = new PhoneAuthProvider(auth);
         const vid = await phoneProvider.verifyPhoneNumber(phone, recaptchaVerifier.current);
         setVID(vid);
-        console.log(vid);
-
-        // showToast("info", "Info", "Verification code has been sent to your phone");
       } else {
         Alert.alert("User already exists", "There's a user that registered with this phone number.\n\n Would you like to login with it?", [
           {text: 'Cancel', style: 'cancel'},
           {text: 'OK', onPress: () => navigation.navigate("Login")},
         ]);
       }
-    } catch (err: any) {
-      console.log(err.message);
-      // showToast("error", "Error", `${err.message}`);
+    } catch (error: any) {
+      alert(error.message);
+      console.log(error.message);
     }
   }
 
@@ -320,7 +318,7 @@ const Register = () => {
     return (
       <View flex style={global.container}>
         <View style={global.field}>
-          <Text text65 marginV-4>Register as a Farmer?</Text>
+          <Text text65 marginV-4>Register as a Vendor?</Text>
           <Checkbox 
             value={farmer} 
             onValueChange={() => setFarmer(!farmer)} 

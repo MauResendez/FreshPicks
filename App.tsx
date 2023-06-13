@@ -105,6 +105,7 @@ const App = () => {
 
       return token;
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }
@@ -130,6 +131,7 @@ const App = () => {
         };
       }
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }, []);
@@ -147,6 +149,7 @@ const App = () => {
         }
       });
     } catch (error) {
+      alert(error.message);
       console.log(error);
     }
   }, [user]);
