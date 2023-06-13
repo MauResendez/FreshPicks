@@ -15,7 +15,7 @@ import { global } from "./style";
 
 Colors.loadColors({  
   primary: "#008000",  
-  secondary: '#FF4500',
+  secondary: "#FF4500",
   tertiary: "#32CD32",
   disabled: "lightgray"
 });
