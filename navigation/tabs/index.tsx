@@ -43,6 +43,7 @@ const MainTabs = () => {
     const subscriber = onSnapshot(doc(db, "Users", auth.currentUser.uid), (doc) => {
       setUser(doc.data());
       setLoading(false);
+      console.log("2");
     });
 
     // Unsubscribe from events when no longer in use
@@ -64,7 +65,7 @@ const MainTabs = () => {
         tabBarActiveTintColor: Colors.tertiary,
         tabBarInactiveTintColor: Colors.grey40,
         tabBarShowLabel: true,
-        unmountOnBlur: true
+        unmountOnBlur: false
       }}
     >
       <Tab.Screen

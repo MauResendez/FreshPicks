@@ -94,6 +94,7 @@ const Search = () => {
   useEffect(() => {
     if (ff && fp) {
       setLoading(false);
+      console.log("3");
       SplashScreen.hideAsync();
     }
   }, [ff, fp]);

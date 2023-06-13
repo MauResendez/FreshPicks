@@ -1,11 +1,12 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from "expo-status-bar";
 import { onAuthStateChanged, User } from "firebase/auth";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Colors, ConnectionStatusBar, LoaderScreen, ThemeManager } from "react-native-ui-lib";
+import { Colors, ConnectionStatusBar, ThemeManager } from "react-native-ui-lib";
 import { Provider } from "react-redux";
 import { auth } from "./firebase";
 import AuthStack from "./navigation/stack/auth-stack";
@@ -63,6 +64,9 @@ Notifications.setNotificationHandler({
   }),
 });
 
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
+
 const App = () => {
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
@@ -70,6 +74,17 @@ const App = () => {
   const projectId = appConfig?.expo?.extra?.eas?.projectId;
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (!loading) {
+      // This tells the splash screen to hide immediately! If we call this after
+      // `setAppIsReady`, then we may see a blank screen while the app is
+      // loading its initial state and rendering its first pixels. So instead,
+      // we hide the splash screen once we know the root view has already
+      // performed layout.
+      await SplashScreen.hideAsync();
+    }
+  }, [loading]);
 
   const registerForPushNotificationsAsync = async () => {
     try {
@@ -138,30 +153,36 @@ const App = () => {
 
   useEffect(() => {
     try {
-      onAuthStateChanged(auth, async (user: any) => {
-        // auth.currentUser.reload();
+      const subscriber = onAuthStateChanged(auth, async (user) => {
         if (user) {
+          // User is signed in
           setUser(user);
           setLoading(false);
+          console.log('User is signed in:', user.uid);
         } else {
-          setUser(null);
+          // User is signed out
+          setUser(user);
           setLoading(false);
+          console.log('User is signed out');
         }
+
+        console.log("1");
       });
+  
+      // Clean up the listener when the component unmounts
+      return () => subscriber();
     } catch (error) {
       alert(error.message);
       console.log(error);
     }
-  }, [user]);
+  }, []);
 
   if (loading) {
-    return (
-      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />
-    );
+    return null;
   }
 
   return (
-    <GestureHandlerRootView style={global.flex}>
+    <GestureHandlerRootView style={global.flex} onLayout={onLayoutRootView}>
       <Provider store={store}>
         <StatusBar style={"auto"} animated />
         {/* <BannerAd
@@ -172,7 +193,7 @@ const App = () => {
           }}
         /> */}
         <ConnectionStatusBar />
-        {auth.currentUser ? <MainStack /> : <AuthStack />}
+        {user ? <MainStack /> : <AuthStack />}
       </Provider>
     </GestureHandlerRootView>
   );
