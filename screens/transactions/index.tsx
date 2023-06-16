@@ -3,7 +3,8 @@ import { FlashList } from '@shopify/flash-list';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
-import { Button, Colors, LoaderScreen, View } from 'react-native-ui-lib';
+import { FloatingAction } from 'react-native-floating-action';
+import { Colors, LoaderScreen, View } from 'react-native-ui-lib';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import TransactionRow from '../../components/transactions/transaction-row';
 import { auth, db } from '../../firebase';
@@ -12,77 +13,33 @@ import { global } from '../../style';
 const Transactions = () => {
   const navigation = useNavigation<any>();
   const layout = useWindowDimensions();
-  const width = layout.width/4;
   const [transactions, setTransactions] = useState(null);
   const [expenses, setExpenses] = useState(null);
   const [revenue, setRevenue] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const actions = [
+    {
+      text: "Create Expense",
+      icon: <MCIcon name="credit-card" color={Colors.white} size={24} />,
+      name: "Create Expense",
+      position: 1,
+      color: Colors.tertiary
+    },
+    {
+      text: "Create Revenue",
+      icon: <MCIcon name="cash" color={Colors.white} size={24} />,
+      name: "Create Revenue",
+      position: 2,
+      color: Colors.tertiary
+    }
+  ];
 
   const renderItem = useCallback(({item}) => {
     return (
       <TransactionRow item={item} />
     );
   }, []);
-
-  const FirstRoute = () => (
-    <View useSafeArea flex>
-      <FlashList 
-        data={transactions}
-        keyExtractor={(item: any) => item.id}
-        estimatedItemSize={transactions.length != 0 ? transactions.length : 150}
-        renderItem={renderItem}
-      />
-      <Button
-        style={global.fab} 
-        round 
-        animateLayout 
-        animateTo={'right'} 
-        onPress={() => navigation.navigate("Create Transaction")} 
-        backgroundColor={Colors.tertiary}
-        iconSource={() => <MCIcon name="plus" color={Colors.white} size={24} />} 
-      />
-    </View>
-  );
-
-  const SecondRoute = () => (
-    <View useSafeArea flex>
-      <FlashList 
-        data={revenue}
-        keyExtractor={(item: any) => item.id}
-        estimatedItemSize={revenue.length != 0 ? revenue.length : 150}
-        renderItem={renderItem}
-      />
-      <Button
-        style={global.fab} 
-        round 
-        animateLayout 
-        animateTo={'right'} 
-        onPress={() => navigation.navigate("Create Transaction")} 
-        backgroundColor={Colors.primary} 
-        iconSource={() => <MCIcon name="plus" color={Colors.white} size={24} />} 
-      />
-    </View>
-  );
-
-	const ThirdRoute = () => (
-    <View useSafeArea flex>
-      <FlashList 
-        data={expenses}
-        keyExtractor={(item: any) => item.id}
-        estimatedItemSize={expenses.length != 0 ? expenses.length : 150}
-        renderItem={renderItem}
-      />
-      <Button 
-        style={global.fab} 
-        round 
-        animateLayout 
-        animateTo={'right'} 
-        onPress={() => navigation.navigate("Create Transaction")} 
-        backgroundColor={Colors.primary} 
-        iconSource={() => <MCIcon name="plus" color={Colors.white} size={24} />} 
-      />
-    </View>
-  );
 
   useEffect(() => {
     const subscriber = onSnapshot(query(collection(db, "Transactions"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
@@ -146,14 +103,12 @@ const Transactions = () => {
         estimatedItemSize={transactions.length != 0 ? transactions.length : 150}
         renderItem={renderItem}
       />
-      <Button
-        style={global.fab} 
-        round 
-        animateLayout 
-        animateTo={'right'} 
-        onPress={() => navigation.navigate("Create Transaction")} 
-        backgroundColor={Colors.primary} 
-        iconSource={() => <MCIcon name="plus" color={Colors.white} size={24} />} 
+      <FloatingAction
+        actions={actions}
+        color={Colors.tertiary}
+        tintColor={Colors.tertiary}
+        distanceToEdge={16}
+        onPressItem={(name) => navigation.navigate(name)}
       />
     </View>
 	)

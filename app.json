@@ -26,8 +26,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.mauresendez.freshpicks",
-      "googleServicesFile": "./google-services.json",
-      "useNextNotificationsApi": true
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"

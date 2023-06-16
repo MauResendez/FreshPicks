@@ -3,7 +3,7 @@ import React, { memo, useCallback } from 'react';
 import { Button } from 'react-native';
 import { Colors, ListItem, Text, View } from 'react-native-ui-lib';
 
-const DateTimeRow = (props) => {
+const ReserveRow = (props) => {
 	const {item} = props;
 	const navigation = useNavigation<any>();
 
@@ -17,14 +17,14 @@ const DateTimeRow = (props) => {
 			activeOpacity={0.3}
 			style={{ backgroundColor: Colors.white, padding: 8, height: "auto" }}
 		>
-			<ListItem.Part>
-				<View row spread>
+			<ListItem.Part middle column>
+				<View row spread centerV>
 					<View>
 						<Text text65 marginV-4 numberOfLines={1}>Date</Text>
 						<Text text80M grey30 marginV-4>{item.address}</Text>
 					</View>
 					<View>
-						<Button color={'grey'} title={'Info'} onPress={buttonPressed} />
+						<Button color={'grey'} title={'Select'} onPress={buttonPressed} />
 					</View>
 				</View> 
       </ListItem.Part>
@@ -32,4 +32,4 @@ const DateTimeRow = (props) => {
 	)
 }
 
-export default memo(DateTimeRow);
+export default memo(ReserveRow);

@@ -27,11 +27,15 @@ const Settings = () => {
       token: arrayRemove(token)
     });
 
-    signOut(auth);
+    await signOut(auth);
   }
 
   const deleteAccount = async () => {
     try {
+      const uid = auth.currentUser.uid;
+
+      await signOut(auth);
+      
       const response = await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/deleteAccount", {
         method: 'POST',
         headers: {
@@ -40,7 +44,7 @@ const Settings = () => {
         },
         body: JSON.stringify({
           'data': {
-            'uid': auth.currentUser.uid,
+            'uid': uid,
           }
         }),
       });
@@ -383,9 +387,6 @@ const Settings = () => {
               {text: 'Cancel', style: 'cancel'},
               {text: 'OK', onPress: async () => {
                 await deleteAccount();
-                // await auth.updateCurrentUser(null);
-                // await auth.currentUser.reload();
-                // auth.currentUser.refreshToken;
               }},
             ]);
           }}
@@ -396,22 +397,6 @@ const Settings = () => {
             </Text>
           </ListItem.Part>
         </ListItem>
-        {/* <Dialog
-          isVisible={visible}
-          onDismiss={toggleDialog}
-          panDirection={PanningProvider.Directions.DOWN}
-        >
-          <Dialog.Title title="Would you like to switch roles?" />
-          <Dialog.Actions>
-            <Dialog.Button
-              title="OK"
-              onPress={async () => {
-                switchRoles();
-              }}
-            />
-            <Dialog.Button title="Cancel" onPress={toggleDialog} />
-          </Dialog.Actions>
-        </Dialog> */}
       </ScrollView>
     </View>
   );

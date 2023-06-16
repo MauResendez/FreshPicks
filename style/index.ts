@@ -43,23 +43,6 @@ export const global = StyleSheet.create({
     width: "100%",
     height: 150
   },
-  fab: {
-    bottom: 16,
-    right: 16,
-    backgroundColor: '#32CD32',
-    padding: 16,
-    width: 64,
-    height: 64,
-    position: 'absolute',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 16,
-  },
   field: {
     paddingVertical: 8,
     width: "100%"
@@ -69,7 +52,15 @@ export const global = StyleSheet.create({
     borderColor: "rgba(0, 0, 0, 0.2)",
     borderRadius: 8,
     borderWidth: 1,
-    height: 50,
+    height: 48,
+    paddingHorizontal: 8,
+  },
+  time: {
+    backgroundColor: Colors.white,
+    borderColor: "rgba(0, 0, 0, 0.2)",
+    borderRadius: 8,
+    borderWidth: 1,
+    height: 24,
     paddingHorizontal: 8,
   },
   otp: {

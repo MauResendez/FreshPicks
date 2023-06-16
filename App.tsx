@@ -51,10 +51,10 @@ ThemeManager.setComponentTheme('Stepper', (props, context) => {
   return {config};
 });
 
-ThemeManager.setComponentTheme('Wizard', (props, context) => {
-  const activeConfig = {color: Colors.white, circleBackgroundColor: Colors.primary, circleColor: "transparent", indexLabelStyle: { fontWeight: "600" }, labelStyle: { fontWeight: "600" }};
-  return {activeConfig};
-});
+// ThemeManager.setComponentTheme('Wizard', (props, context) => {
+//   const activeConfig = {color: Colors.white, circleBackgroundColor: Colors.primary, circleColor: "transparent", indexLabelStyle: { fontWeight: "600" }, labelStyle: { fontWeight: "600" }};
+//   return {activeConfig};
+// });
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

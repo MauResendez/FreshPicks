@@ -359,7 +359,7 @@ const Register = () => {
     return (
       <View useSafeArea flex>
         <Carousel containerStyle={{ height: 200 }}>
-          <TouchableOpacity style={global.flex} onPress={() => Alert.alert("Delete Chat", "Would you like to delete this post?", [
+          <TouchableOpacity style={global.flex} onPress={() => Alert.alert("Photo", "Would you like to delete this post?", [
             {text: 'Cancel', style: 'cancel'},
             {text: 'Camera', onPress: async () => await camera(setFieldValue)},
             {text: 'Gallery', onPress: async () => await gallery(setFieldValue)},

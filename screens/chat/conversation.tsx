@@ -117,7 +117,7 @@ const Conversation = ({ route }) => {
         messages: GiftedChat.append(messages, m)
       }, {merge: true});
 
-      await fetch("https://us-central1-cfsifreshpicks.cloudfunctions.net/sendMessage", {
+      await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/sendMessage", {
         method: 'POST',
         headers: {
           Accept: 'application/json',

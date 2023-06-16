@@ -111,13 +111,11 @@
 
 // export default Reserve
 
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import React, { useCallback, useEffect, useState } from 'react';
+import moment from 'moment';
+import React, { useCallback, useState } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { Agenda, AgendaEntry, AgendaSchedule, DateData } from 'react-native-calendars';
-import { Colors, LoaderScreen } from 'react-native-ui-lib';
 import ReserveItem from '../../components/basket/reserve-item';
-import { auth, db } from '../../firebase';
 import { global } from '../../style';
 
 interface State {
@@ -125,19 +123,35 @@ interface State {
 }
 
 const Reserve = () => {
-  const [items, setItems] = useState<any>(null);
-  const [orders, setOrders] = useState<any>(null);
-  const [confirmed, setConfirmed] = useState<any>(null);
-  const [pending, setPending] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  // reservationsKeyExtractor = (item, index) => {
-  //   return `${item?.reservation?.day}${index}`;
-  // };
+  const [items, setItems] = useState<any>({});
 
   const renderReserve = useCallback(({item}: any) => {
     return <ReserveItem item={item} />;
   }, []);
+
+  const generateTimeSlots = () => {
+    // Get farmer's schedule here
+
+    // Check day of the week
+
+    // Setup start and ending hour
+
+    // 
+    const startHour = 9;
+    const endHour = 17;
+    const timeSlots = [];
+  
+    for (let hour = startHour; hour <= endHour; ++hour) {
+      const time = moment().hour(hour).startOf('hour').format();
+      console.log(time);
+      timeSlots.push({
+        time,
+        title: `Reserve at ${moment(time).format('hh:mm A')}`,
+      });
+    }
+  
+    return timeSlots;
+  };
 
   const loadItems = (day: DateData) => {
     const dates = items || {};
@@ -170,6 +184,15 @@ const Reserve = () => {
     }, 1000);
   }
 
+  const loadItems2 = (day: DateData) => {
+    console.log(day);
+    const timeSlots = generateTimeSlots();
+
+    setItems({
+      [day.dateString]: timeSlots,
+    });
+  };
+
   const renderItem = (reservation: AgendaEntry, isFirst: boolean) => {
     const fontSize = 16;
     const color = 'black';
@@ -201,84 +224,29 @@ const Reserve = () => {
     return date.toISOString().split('T')[0];
   }
 
-  useEffect(() => {
-    const subscriber = onSnapshot(query(collection(db, "Orders"), where("consumer", "!=", auth.currentUser.uid)), async (snapshot) => {
-      setOrders(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
-    });
-
-    // Unsubscribe from events when no longer in use
-    return () => {
-      subscriber();
-    } 
-  }, []);
-
-	useEffect(() => {
-    if (orders) {
-      const c = orders.filter((element) => element.status === 'Confirmed');
-      const p = orders.filter((element) => element.status === 'Pending');
-
-      setConfirmed(c);
-      setPending(p);
-    }
-  }, [orders]);
-
-  useEffect(() => {
-    if (confirmed && pending) {
-      const newArray = [];
-      confirmed.forEach(doc => {
-        // Create a new object and save it to a new variable
-        const newObj = {
-          // Add desired properties from Firestore document data
-          title: doc.meetAt.toDate().toISOString().split('T')[0],
-          data: [doc]
-        };
-
-        newArray.push(newObj);
-      });
-
-      setItems(newArray);
-    }
-  }, [confirmed, pending]);
-
-  useEffect(() => {
-    if (items) {
-      setLoading(false);
-    }
-  }, [items]);
-  
-  if (loading) {
-    return (
-      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
-    )
-  }
+  const renderTest = (item) => {
+    const fontSize = 16;
+    const color = 'black';
 
     return (
-      <Agenda
-        items={items}
-        loadItemsForMonth={loadItems}
-        selected={'2017-05-16'}
-        renderItem={renderItem}
-        renderEmptyDate={renderEmptyDate}
-        rowHasChanged={rowHasChanged}
-        showClosingKnob={true}
-        // markingType={'period'}
-        // markedDates={{
-        //    '2017-05-08': {textColor: '#43515c'},
-        //    '2017-05-09': {textColor: '#43515c'},
-        //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-        //    '2017-05-21': {startingDay: true, color: 'blue'},
-        //    '2017-05-22': {endingDay: true, color: 'gray'},
-        //    '2017-05-24': {startingDay: true, color: 'gray'},
-        //    '2017-05-25': {color: 'gray'},
-        //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-        // monthFormat={'yyyy'}
-        // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-        //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-        // hideExtraDays={false}
-        // showOnlySelectedDayItems
-        // reservationsKeyExtractor={this.reservationsKeyExtractor}
-      />
+      <TouchableOpacity
+        style={[global.reserve, {height: 75}]}
+        onPress={() => Alert.alert(item.title)}
+      >
+        <Text style={{fontSize, color}}>{item.title}</Text>
+      </TouchableOpacity>
     );
+  };
+
+  return (
+    <Agenda
+      date={new Date()}
+      items={items}
+      loadItemsForMonth={loadItems}
+      renderItem={renderItem}
+      // contentContainerStyle={{ marginBottom: 16 }}
+    />
+  );
 }
 
 export default Reserve

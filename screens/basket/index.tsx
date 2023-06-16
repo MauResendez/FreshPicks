@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AddressRow from '../../components/basket/address-row';
 import BasketRow from '../../components/basket/basket-row';
 import BusinessRow from '../../components/basket/business-row';
-import DatetimeRow from '../../components/basket/datetime-row';
+import ReserveRow from '../../components/basket/reserve-row';
 import { clearOrder, getOrderFarmer, getOrderUser, selectOrderItems, selectOrderTotal } from '../../features/order-slice';
 import { db } from '../../firebase';
 import { global } from '../../style';
@@ -141,7 +141,7 @@ const Basket = () => {
 
           <AddressRow item={orderFarmer} />
 
-          <DatetimeRow item={orderFarmer} />
+          <ReserveRow item={orderFarmer} />
           
           <ListItem
             activeOpacity={0.3}

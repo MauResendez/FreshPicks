@@ -3,7 +3,6 @@ import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
 import { AgendaList, AgendaSchedule } from 'react-native-calendars';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Colors, LoaderScreen, TabController, View } from 'react-native-ui-lib';
 import ChatRow from '../../components/chat/chat-row';
 import AgendaItem from '../../components/orders/agenda-item';
@@ -123,24 +122,21 @@ const Orders = () => {
   }
 
   return (
-    <GestureHandlerRootView style={global.flex}>
-      <View useSafeArea flex style={global.white}>
-        <TabController items={[{label: 'Orders'}, {label: 'History'}, {label: 'Chats'}]}>  
-          <TabController.TabBar
-            indicatorInsets={0}
-            indicatorStyle={{ backgroundColor: Colors.tertiary }} 
-            selectedLabelColor={Colors.tertiary}
-            labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
-          />  
-          <View flex style={global.white}>    
-            <TabController.TabPage index={0} lazy>{FirstRoute()}</TabController.TabPage>    
-            <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
-            <TabController.TabPage index={2} lazy>{ThirdRoute()}</TabController.TabPage>    
-          </View>
-        </TabController>
-      </View>
-    </GestureHandlerRootView>
-    
+    <View useSafeArea flex style={global.white}>
+      <TabController items={[{label: 'Orders'}, {label: 'History'}, {label: 'Chats'}]}>  
+        <TabController.TabBar
+          indicatorInsets={0}
+          indicatorStyle={{ backgroundColor: Colors.tertiary }} 
+          selectedLabelColor={Colors.tertiary}
+          labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
+        />  
+        <View flex style={global.white}>    
+          <TabController.TabPage index={0} lazy>{FirstRoute()}</TabController.TabPage>    
+          <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
+          <TabController.TabPage index={2} lazy>{ThirdRoute()}</TabController.TabPage>    
+        </View>
+      </TabController>
+    </View>    
   );
 }
 

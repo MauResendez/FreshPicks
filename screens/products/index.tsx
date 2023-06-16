@@ -5,8 +5,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   useWindowDimensions
 } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Button, Colors, LoaderScreen, TabController, Text, View } from "react-native-ui-lib";
+import { FloatingAction } from "react-native-floating-action";
+import { Colors, LoaderScreen, TabController, Text, View } from "react-native-ui-lib";
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProductRow from "../../components/products/product-row";
 import SubscriptionRow from "../../components/products/subscription-row";
@@ -20,6 +20,23 @@ const Products = () => {
   const [products, setProducts] = useState<any>(null);
   const [subscriptions, setSubscriptions] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  const actions = [
+    {
+      text: "Create Product",
+      icon: <MCIcon name="credit-card" color={Colors.white} size={24} />,
+      name: "Create Product",
+      position: 1,
+      color: Colors.tertiary
+    },
+    {
+      text: "Create Subscription",
+      icon: <MCIcon name="cash" color={Colors.white} size={24} />,
+      name: "Create Subscription",
+      position: 2,
+      color: Colors.tertiary
+    }
+  ];
 
   const renderProduct = useCallback(({item}) => {
     return (
@@ -44,15 +61,6 @@ const Products = () => {
           />
         : <Text text65 marginV-4>No products yet</Text>
       }
-      <Button
-        style={global.fab} 
-        round 
-        animateLayout 
-        animateTo={'right'} 
-        onPress={() => navigation.navigate("Create Product")} 
-        backgroundColor={Colors.primary} 
-        iconSource={() => <MCIcon name="plus" color={Colors.white} size={24} />} 
-      /> 
     </View>
   );
 
@@ -67,15 +75,6 @@ const Products = () => {
           />
         : <Text text65 marginV-4>No subscriptions yet</Text>
       }
-      <Button
-        style={global.fab} 
-        round 
-        animateLayout 
-        animateTo={'right'} 
-        onPress={() => navigation.navigate("Create Subscription")} 
-        backgroundColor={Colors.primary}
-        iconSource={() => <MCIcon name="plus" color={Colors.white} size={24} />} 
-      /> 
     </View>
   );
 
@@ -108,23 +107,27 @@ const Products = () => {
   }
 
   return (
-    <GestureHandlerRootView style={global.flex}>
-      <View useSafeArea flex style={global.white}>
-        <TabController items={[{label: 'Products'}, {label: 'Subscriptions'}]}>  
-          <TabController.TabBar 
-            indicatorInsets={0}
-            indicatorStyle={{ backgroundColor: Colors.primary }} 
-            selectedLabelColor={Colors.tertiary}
-            labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
-          />  
-          <View flex>    
-            <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
-            <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
-          </View>
-        </TabController>
-      </View>
-    </GestureHandlerRootView>
-    
+    <View useSafeArea flex style={global.white}>
+      <TabController items={[{label: 'Products'}, {label: 'Subscriptions'}]}>  
+        <TabController.TabBar 
+          indicatorInsets={0}
+          indicatorStyle={{ backgroundColor: Colors.tertiary }} 
+          selectedLabelColor={Colors.tertiary}
+          labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
+        />  
+        <View flex>    
+          <TabController.TabPage index={0} lazy>{FirstRoute()}</TabController.TabPage>    
+          <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
+        </View>
+      </TabController>
+      <FloatingAction
+        actions={actions}
+        color={Colors.tertiary}
+        tintColor={Colors.tertiary}
+        distanceToEdge={16}
+        onPressItem={(name) => navigation.navigate(name)}
+      />
+    </View>    
   );
 }
 

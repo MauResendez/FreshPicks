@@ -1,240 +1,287 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { Keyboard, Platform, TouchableWithoutFeedback, useWindowDimensions } from "react-native";
-import { Button, Colors, Picker, TabController, Text, View } from "react-native-ui-lib";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import React, { useCallback, useEffect, useState } from "react";
+import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
+import { FloatingAction } from "react-native-floating-action";
+import { Button, Colors, KeyboardAwareScrollView, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import DateRange from "../../components/calendar/date-range";
+import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
 const Dashboard = () => {
   const navigation = useNavigation<any>();
-  const data = [ {value:50}, {value:80}, {value:90}, {value:70} ];
-  const layout = useWindowDimensions();
-  const width = layout.width/3;
-  const pieData = [{value: 47, color: '#009FFF', gradientCenterColor: '#006DFF', focused: true}, {value: 40, color: '#93FCF8', gradientCenterColor: '#3BE9DE'}, {value: 16, color: '#BDB2FA', gradientCenterColor: '#8F80F3'}, {value: 3, color: '#FFA5BA', gradientCenterColor: '#FF7F97'},];
+  const [transactions, setTransactions] = useState(null);
+  const [allTime, setAllTime] = useState(null);
+  const [allTimeSum, setAllTimeSum] = useState(null);
+  const [ytd, setYTD] = useState(null);
+  const [ytdSum, setYTDSum] = useState(null);
+  const [month, setMonth] = useState(null);
+  const [monthSum, setMonthSum] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const renderDot = color => {
+  const exportTransactions = useCallback(async () => {
+    try {
+      await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/exportTransactions", {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          'uid': auth.currentUser.uid
+        }),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
-    return (
-  
-      <View
-  
-        style={{
-  
-          height: 10,
-  
-          width: 10,
-  
-          borderRadius: 5,
-  
-          backgroundColor: color,
-  
-          marginRight: 10,
-  
-        }}
-  
-      />
-  
-    );
-  
-  };
-  
-  
-  const renderLegendComponent = () => {
-  
-    return (
-  
-      <>
-  
-        <View
-  
-          style={{
-  
-            flexDirection: 'row',
-  
-            justifyContent: 'center',
-  
-            marginBottom: 10,
-  
-          }}>
-  
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: 120,
-              marginRight: 20
-            }}>
-            {renderDot('#006DFF')}
-            <Text text80M grey30 marginV-4>Excellent: 47%</Text>
-          </View>
-  
-          <View
-            style={{flexDirection: 'row', alignItems: 'center', width: 120}}>
-            {renderDot('#8F80F3')}
-            <Text text80M grey30 marginV-4>Okay: 16%</Text>
-          </View>
-        </View>
-  
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: 120,
-              marginRight: 20
-            }}>
-            {renderDot('#3BE9DE')}
-            <Text text80M grey30 marginV-4>Good: 40%</Text>
-          </View>
-  
-          <View
-            style={{flexDirection: 'row', alignItems: 'center', width: 120}}>
-            {renderDot('#FF7F97')}
-            <Text text80M grey30 marginV-4>Poor: 3%</Text>
-          </View>
-        </View>
-      </>
-    );
-  
-  };
+  const actions = [
+    {
+      text: "View Cashflow",
+      icon: <MCIcon name="file-document" color={Colors.white} size={24} />,
+      name: "Cashflow",
+      position: 1,
+      color: Colors.tertiary
+    },
+    {
+      text: "View Products",
+      icon: <MCIcon name="file-document" color={Colors.white} size={24} />,
+      name: "Products",
+      position: 2,
+      color: Colors.tertiary
+    }
+  ];
 
-  const FirstRoute = () => (
-    // <View flex style={global.container}>
-    //   <View style={global.field}>
-    //     <Picker  
-    //       value={data[0]}
-    //       placeholder={'Month'}
-    //       style={[global.input, { marginBottom: -16 }]}
-    //       migrate 
-    //       useSafeArea={true} 
-    //       topBarProps={{ title: 'Month' }} 
-    //       migrateTextField           
-    //     >  
-    //       {data.map((type) => (   
-    //         <Picker.Item key={type.value} value={type.value} label={type.value.toString()} />
-    //       ))}
-    //     </Picker>
-    //   </View>
+  useEffect(() => {
+    const subscriber = onSnapshot(query(collection(db, "Transactions"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
+      setTransactions(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+    });
 
-    //   <Button
-    //     style={global.fab} 
-    //     round 
-    //     animateLayout 
-    //     animateTo={'right'} 
-    //     onPress={() => navigation.navigate("Report")} 
-    //     backgroundColor={Colors.tertiary}
-    //     iconSource={() => <MCIcon name="file-document" color={Colors.white} size={24} />} 
-    //   /> 
-    // </View>
-    <View useSafeArea flex>
-      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-      <DateRange />
-      </TouchableWithoutFeedback>
-    </View>
-  );
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
 
-  const SecondRoute = () => (
-    <View flex style={global.container}>
-      <View style={global.field}>
-        <Picker  
-          value={data[0]}
-          placeholder={'Month'}
-          style={[global.input, { marginBottom: -16 }]}
-          migrate 
-          useSafeArea={true} 
-          topBarProps={{ title: 'Month' }} 
-          migrateTextField           
-        >  
-          {data.map((type) => (   
-            <Picker.Item key={type.value} value={type.value} label={type.value.toString()} />
-          ))}
-        </Picker>
-      </View>
+  useEffect(() => {
+    if (transactions) {
+      // Get today's date
+      const today = new Date();
+
+      // Using reduce to find the oldest element
+      const oldestElement = transactions.reduce((oldest, current) => {
+        if (!oldest || current.date < oldest.date) {
+          return current;
+        } else {
+          return oldest;
+        }
+      }, null);
+
+      // Get the start of the year
+      const startOfAt = new Date(oldestElement.date.toDate());
+      const startOfYear = new Date(today.getFullYear(), 0, 1);
+      const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+      // Filter elements based on date being between start of year and today
+      const at = transactions.filter(element => {return new Date(element.date.toDate()) >= startOfAt && new Date(element.date.toDate()) <= today});
+      const atSum = at.reduce((acc, item) => item.type == "Revenue" ? acc + item.price : acc - item.price, 0);
+
+      // Filter elements based on date being between start of year and today
+      const ytd = transactions.filter(element => {return new Date(element.date.toDate()) >= startOfYear && new Date(element.date.toDate()) <= today});
+      const ytdSum = ytd.reduce((acc, item) => item.type == "Revenue" ? acc + item.price : acc - item.price, 0);
+
+      // Filter elements based on date being between start of year and today
+      const month = transactions.filter(element => {return new Date(element.date.toDate()) >= startOfMonth && new Date(element.date.toDate()) <= today});
+      const monthSum = month.reduce((acc, item) => item.type == "Revenue" ? acc + item.price : acc - item.price, 0);
       
-      <Button
-        style={global.fab} 
-        round 
-        animateLayout 
-        animateTo={'right'} 
-        onPress={() => navigation.navigate("Report")} 
-        backgroundColor={Colors.tertiary}
-        iconSource={() => <MCIcon name="file-document" color={Colors.white} size={24} />} 
-      /> 
-    </View>
-  );
+      setAllTime(at);
+      setAllTimeSum(atSum);
+      setYTD(ytd);
+      setYTDSum(ytdSum);
+      setMonth(month);
+      setMonthSum(monthSum);
+    }
+  }, [transactions]);
 
-  // return (
-  //   <View flex style={[global.container, global.white]}>
-  //     <View style={global.field}>
-  //       <Picker  
-  //         value={data[0]}
-  //         placeholder={'Month'}
-  //         style={[global.input, { marginBottom: -16 }]}
-  //         migrate 
-  //         useSafeArea={true} 
-  //         topBarProps={{ title: 'Month' }} 
-  //         migrateTextField           
-  //       >  
-  //         {data.map((type) => (   
-  //           <Picker.Item key={type.value} value={type.value} label={type.value.toString()} />
-  //         ))}
-  //       </Picker>
-  //     </View>
+  useEffect(() => {
+    if (transactions && ytd && month && allTime) {
+      setLoading(false);
+    }
+  }, [transactions, ytd, month, allTime]);
 
-  //     <View
-  //       style={{
-  //         padding: 16,
-  //         borderRadius: 20,
-  //         backgroundColor: 'white'
-  //       }}>
-  //       <Text text65 marginV-4>
-  //         Performance
-  //       </Text>
-
-  //       <View style={{padding: 20, alignItems: 'center'}}>
-  //         <PieChart
-  //           data={pieData}
-  //           donut
-  //           showGradient
-  //           sectionAutoFocus
-  //           radius={90}
-  //           innerRadius={60}
-  //           innerCircleColor={'#232B5D'}
-  //           centerLabelComponent={() => {
-  //             return (
-  //               <View style={{justifyContent: 'center', alignItems: 'center'}}>
-  //                 <Text
-  //                   style={{fontSize: 22, color: 'white', fontWeight: 'bold'}}>
-  //                   47%
-  //                 </Text>
-  //                 <Text style={{fontSize: 14, color: 'white'}}>Excellent</Text>
-  //               </View>
-  //             );
-  //           }}
-  //         />
-  //       </View>
-
-  //       {renderLegendComponent()}
-  //     </View>
-  //   </View>
-  // );
+  if (loading) {
+    return (
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
+    )
+  }
 
   return (
-    <View useSafeArea flex style={global.white}>
-      <TabController items={[{label: 'Products'}, {label: 'Cashflow'}]}>  
-        <TabController.TabBar 
-          indicatorInsets={0}
-          indicatorStyle={{ backgroundColor: Colors.tertiary }} 
-          selectedLabelColor={Colors.tertiary}
-          labelStyle={{ width: width, textAlign: "center", fontWeight: "500" }}
-        />  
-        <View useSafeArea flex>    
-          <TabController.TabPage index={0}>{FirstRoute()}</TabController.TabPage>    
-          <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
-        </View>
-      </TabController>
-    </View>
+    <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
+      <View>
+        <KeyboardAwareScrollView showsVerticalScrollIndicator={Platform.OS == "web"}>
+          <ListItem
+            activeOpacity={0.3}
+            height={60}
+            key={1}
+          >
+            <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+              <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
+                Your Cashflow
+              </Text>
+            </ListItem.Part>
+          </ListItem>
+
+          <ListItem
+            activeOpacity={0.3}
+            backgroundColor={Colors.white}
+            style={{ padding: 8, height: "auto" }}
+          >
+            <ListItem.Part column>
+              <Text text65 marginV-4 numberOfLines={1}>All Time</Text>
+              <Text text80M grey30 marginV-4>{allTimeSum.toLocaleString('en-US', { style: 'currency', currency: 'USD'})}</Text>
+            </ListItem.Part>
+          </ListItem>
+
+          <ListItem
+            activeOpacity={0.3}
+            backgroundColor={Colors.white}
+            style={{ padding: 8, height: "auto" }} 
+          >
+            <ListItem.Part column>
+              <Text text65 marginV-4 numberOfLines={1}>YTD</Text>
+              <Text text80M grey30 marginV-4>{ytdSum.toLocaleString('en-US', { style: 'currency', currency: 'USD'})}</Text>
+            </ListItem.Part>
+          </ListItem>
+
+          <ListItem
+            activeOpacity={0.3}
+            backgroundColor={Colors.white}
+            style={{ padding: 8, height: "auto" }}
+          >
+            <ListItem.Part column>
+              <Text text65 marginV-4 numberOfLines={1}>This Month</Text>
+              <Text text80M grey30 marginV-4>{monthSum.toLocaleString('en-US', { style: 'currency', currency: 'USD'})}</Text>
+            </ListItem.Part>
+          </ListItem>
+
+          <ListItem
+            activeOpacity={0.3}
+            height={60}
+            key={2}
+          >
+            <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+              <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
+                Products Sold
+              </Text>
+            </ListItem.Part>
+          </ListItem>
+
+          <ListItem
+            activeOpacity={0.3}
+            backgroundColor={Colors.white}
+            style={{ padding: 8, height: "auto" }}
+          >
+            <ListItem.Part column>
+              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
+              <Text text80M grey30 marginV-4>45</Text>
+            </ListItem.Part>
+          </ListItem>
+
+          <ListItem
+            activeOpacity={0.3}
+            backgroundColor={Colors.white}
+            style={{ padding: 8, height: "auto" }}
+            key={4}
+          >
+            <ListItem.Part column>
+              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
+              <Text text80M grey30 marginV-4>45</Text>
+            </ListItem.Part>
+          </ListItem>
+
+          <ListItem
+            activeOpacity={0.3}
+            backgroundColor={Colors.white}
+            style={{ padding: 8, height: "auto" }}
+            key={5}
+          >
+            <ListItem.Part column>
+              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
+              <Text text80M grey30 marginV-4>45</Text>
+            </ListItem.Part>
+          </ListItem>
+
+          <ListItem
+            activeOpacity={0.3}
+            backgroundColor={Colors.white}
+            style={{ padding: 8, height: "auto" }}
+            key={6}
+          >
+            <ListItem.Part column>
+              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
+              <Text text80M grey30 marginV-4>45</Text>
+            </ListItem.Part>
+          </ListItem>
+
+          <ListItem
+            activeOpacity={0.3}
+            backgroundColor={Colors.white}
+            style={{ padding: 8, height: "auto" }}
+            key={7}
+          >
+            <ListItem.Part column>
+              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
+              <Text text80M grey30 marginV-4>45</Text>
+            </ListItem.Part>
+          </ListItem>
+
+          <ListItem
+            activeOpacity={0.3}
+            backgroundColor={Colors.white}
+            style={{ padding: 8, height: "auto" }}
+            key={8}
+          >
+            <ListItem.Part column>
+              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
+              <Text text80M grey30 marginV-4>45</Text>
+            </ListItem.Part>
+          </ListItem>
+
+          <ListItem
+            activeOpacity={0.3}
+            backgroundColor={Colors.white}
+            style={{ padding: 8, height: "auto" }}
+            key={9}
+          >
+            <ListItem.Part column>
+              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
+              <Text text80M grey30 marginV-4>45</Text>
+            </ListItem.Part>
+          </ListItem>
+
+          <ListItem
+            activeOpacity={0.3}
+            backgroundColor={Colors.white}
+            style={{ padding: 8, height: "auto" }}
+            key={10}
+          >
+            <ListItem.Part column>
+              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
+              <Text text80M grey30 marginV-4>45</Text>
+            </ListItem.Part>
+          </ListItem>
+          <Button onPress={exportTransactions} />
+
+        </KeyboardAwareScrollView>
+        <FloatingAction
+          actions={actions}
+          color={Colors.tertiary}
+          tintColor={Colors.tertiary}
+          distanceToEdge={16}
+          onPressItem={(name) => navigation.navigate(name)}
+        />
+
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
