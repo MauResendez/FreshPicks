@@ -64,6 +64,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (transactions) {
+      if (transactions.length == 0) {
+        setAllTime([]);
+        setAllTimeSum(0);
+        setYTD([]);
+        setYTDSum(0);
+        setMonth([]);
+        setMonthSum(0);
+        return;
+      }
+
       // Get today's date
       const today = new Date();
 

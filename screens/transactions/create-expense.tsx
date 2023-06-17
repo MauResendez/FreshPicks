@@ -14,7 +14,7 @@ const CreateExpense = () => {
   const expense = [
     {label: "Uncategorized", value: "Uncategorized"},
     {label: "Assets", value: "Assets"},
-    {label: "Business Administration", value: "Business Administration"},
+    {label: "Business Admin", value: "Business Admin"},
     {label: "Equipment", value: "Equipment"},
     {label: "Inputs", value: "Inputs"},
     {label: "Labor", value: "Labor"},

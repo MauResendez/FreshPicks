@@ -4,7 +4,7 @@ import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
 import { FloatingAction } from 'react-native-floating-action';
-import { Colors, LoaderScreen, View } from 'react-native-ui-lib';
+import { Colors, LoaderScreen, Text, View } from 'react-native-ui-lib';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import TransactionRow from '../../components/transactions/transaction-row';
 import { auth, db } from '../../firebase';
@@ -92,6 +92,21 @@ const Transactions = () => {
   if (loading) {
     return (
       <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
+    )
+  }
+
+  if (transactions.length == 0) {
+    return (
+      <View useSafeArea flex style={[global.white, global.center, global.container]}>
+        <Text text65 marginV-4>No transactions made</Text>
+        <FloatingAction
+          actions={actions}
+          color={Colors.tertiary}
+          tintColor={Colors.tertiary}
+          distanceToEdge={16}
+          onPressItem={(name) => navigation.navigate(name)}
+        />
+      </View>
     )
   }
 	

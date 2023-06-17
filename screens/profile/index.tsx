@@ -73,12 +73,6 @@ const Profile = ({ route }) => {
     }
   }, [chat]);
 
-  // useLayoutEffect(() => {
-  //   parent.setOptions({
-  //     headerShown: isFocused ? false : true
-  //   });
-  // }, [isFocused]);
-
   if (loading) {
     return (
       <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    

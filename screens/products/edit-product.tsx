@@ -7,7 +7,7 @@ import { Formik } from 'formik'
 import React, { useEffect, useState } from "react"
 import { Alert, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import CurrencyInput from "react-native-currency-input"
-import { Button, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
+import { Button, Colors, Image, KeyboardAwareScrollView, LoaderScreen, NumberInput, Text, TextField, View } from "react-native-ui-lib"
 import * as Yup from 'yup'
 import { auth, db, storage } from "../../firebase"
 import { global } from "../../style"
@@ -193,9 +193,9 @@ const EditProduct = ({ route }) => {
   return (
     <View useSafeArea flex>
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView contentContainerStyle={global.flex}>
           <Formik 
-            initialValues={product || { user: "", title: "", description: "", price: 1, images: [] }} 
+            initialValues={product || { user: "", title: "", description: "", price: 1, quantity: 1, images: [] }} 
             onSubmit={handleSubmit}
             validationSchema={validate}
             enableReinitialize={true}
@@ -228,23 +228,40 @@ const EditProduct = ({ route }) => {
                 </View>
                 {errors.description && touched.description && <Text style={{ color: Colors.red30}}>{errors.description}</Text>}
 
-                <View style={global.field}>
-                  <Text text65 marginV-4>Price</Text>
-                  <CurrencyInput
-                    value={values.price}
-                    onChangeValue={(price) => setFieldValue("price", price)}
-                    style={global.input}
-                    prefix={"$ "}
-                    delimiter=","
-                    separator="."
-                    precision={2}
-                    minValue={0}
-                    onChangeText={(formattedValue) => {
-                      console.log(formattedValue); // R$ +2.310,46
-                    }}
-                  />
+                <View row spread style={{ paddingVertical: 8 }}>
+                  <View style={{ width: "47.5%" }}>
+                    <Text text65 marginV-4>Price *</Text>
+                    <CurrencyInput
+                      value={values.price}
+                      onChangeValue={(price) => setFieldValue("price", price)}
+                      style={global.input}
+                      prefix={values.type == 'Expense' ? "- $ " : "+ $ "}
+                      delimiter=","
+                      separator="."
+                      precision={2}
+                      minValue={0}
+                      onBlur={handleBlur('price')}
+                      onChangeText={(formattedValue) => {
+                        console.log(formattedValue); // R$ +2.310,46
+                      }}
+                    />
+                    {errors.price && touched.price && <Text style={{ color: Colors.red30 }}>{errors.price}</Text>}
+                  </View>
+
+                  <View style={{ width: "47.5%" }}>
+                  <Text text65 marginV-4>Quantity *</Text>
+                    <NumberInput
+                      initialNumber={values.quantity}
+                      style={global.input}
+                      onChangeNumber={(data) => setFieldValue("quantity", data.number)}
+                      onBlur={handleBlur('quantity')}
+                      keyboardType={'numeric'}
+                      fractionDigits={2}
+                      migrate
+                    />
+                    {errors.quantity && touched.descripquantitytion && <Text style={{ color: Colors.red30 }}>{errors.quantity}</Text>}
+                  </View>
                 </View>
-                {errors.price && touched.price && <Text style={{ color: Colors.red30}}>{errors.price}</Text>}
 
                 <View style={global.field}>
                   <Text text65 marginV-4>Image</Text>
@@ -259,6 +276,8 @@ const EditProduct = ({ route }) => {
                     }
                   </TouchableOpacity>
                 </View>
+
+                <View flexG />
 
                 <Button 
                   backgroundColor={Colors.primary}

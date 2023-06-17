@@ -7,7 +7,7 @@ import { Formik } from 'formik'
 import React from "react"
 import { Alert, Keyboard, Platform, TouchableWithoutFeedback } from "react-native"
 import CurrencyInput from "react-native-currency-input"
-import { Button, Colors, Image, KeyboardAwareScrollView, Text, TextField, TouchableOpacity, View } from "react-native-ui-lib"
+import { Button, Colors, Image, KeyboardAwareScrollView, NumberInput, Text, TextField, TouchableOpacity, View } from "react-native-ui-lib"
 import * as Yup from 'yup'
 import { auth, db, storage } from "../../firebase"
 import { global } from "../../style"
@@ -134,10 +134,11 @@ const CreateProduct = () => {
   const createProduct = async (values, images) => {
     await addDoc(collection(db, "Products"), {
       description: values.description,
-      image: images,
+      images: images,
       price: values.price,
       title: values.title,
       user: values.user,
+      quantity: values.quantity
     }).then(() => {
       console.log("Data saved!");
       navigation.goBack();
@@ -160,7 +161,8 @@ const CreateProduct = () => {
   const validate = Yup.object().shape({
     title: Yup.string().required('Title is required'),
     description: Yup.string().required('Description is required'),
-    price: Yup.number().min(1, 'Price is required')
+    price: Yup.number().min(1, 'Price is required'),
+    quantity: Yup.number().min(1, 'Quantity is required'),
   });
 
   return (
@@ -168,14 +170,14 @@ const CreateProduct = () => {
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView contentContainerStyle={global.flex}>
           <Formik
-            initialValues={{ user: auth.currentUser.uid, title: '', description: '', price: 1.00, images: [] }}
+            initialValues={{ user: auth.currentUser.uid, title: '', description: '', price: 1.00, quantity: 1, images: [] }}
             validationSchema={validate}
             onSubmit={handleSubmit}
           >
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
               <View flex style={global.container}>
                 <View style={global.field}>
-                  <Text text65 marginV-4>Title</Text>
+                  <Text text65 marginV-4>Title *</Text>
                   <TextField
                     style={global.input}
                     onChangeText={handleChange('title')}
@@ -187,7 +189,7 @@ const CreateProduct = () => {
                 {errors.title && touched.title && <Text style={{ color: Colors.red30 }}>{errors.title}</Text>}
 
                 <View style={global.field}>
-                  <Text text65 marginV-4>Description</Text>
+                  <Text text65 marginV-4>Description *</Text>
                   <TextField
                     style={global.area}
                     multiline
@@ -200,23 +202,40 @@ const CreateProduct = () => {
                 </View>
                 {errors.description && touched.description && <Text style={{ color: Colors.red30}}>{errors.description}</Text>}
 
-                <View style={global.field}>
-                  <Text text65 marginV-4>Price</Text>
-                  <CurrencyInput
-                    value={values.price}
-                    onChangeValue={(price) => setFieldValue("price", price)}
-                    style={global.input}
-                    prefix={"$ "}
-                    delimiter=","
-                    separator="."
-                    precision={2}
-                    minValue={0}
-                    onChangeText={(formattedValue) => {
-                      console.log(formattedValue); // R$ +2.310,46
-                    }}
-                  />
+                <View row spread style={{ paddingVertical: 8 }}>
+                  <View style={{ width: "47.5%" }}>
+                    <Text text65 marginV-4>Price *</Text>
+                    <CurrencyInput
+                      value={values.price}
+                      onChangeValue={(price) => setFieldValue("price", price)}
+                      style={global.input}
+                      prefix={values.type == 'Expense' ? "- $ " : "+ $ "}
+                      delimiter=","
+                      separator="."
+                      precision={2}
+                      minValue={0}
+                      onBlur={handleBlur('price')}
+                      onChangeText={(formattedValue) => {
+                        console.log(formattedValue); // R$ +2.310,46
+                      }}
+                    />
+                    {errors.price && touched.price && <Text style={{ color: Colors.red30 }}>{errors.price}</Text>}
+                  </View>
+
+                  <View style={{ width: "47.5%" }}>
+                  <Text text65 marginV-4>Quantity *</Text>
+                    <NumberInput
+                      initialNumber={values.quantity}
+                      style={global.input}
+                      onChangeNumber={(data) => setFieldValue("quantity", data.number)}
+                      onBlur={handleBlur('quantity')}
+                      keyboardType={'numeric'}
+                      fractionDigits={2}
+                      migrate
+                    />
+                    {errors.quantity && touched.descripquantitytion && <Text style={{ color: Colors.red30 }}>{errors.quantity}</Text>}
+                  </View>
                 </View>
-                {errors.price && touched.price && <Text style={{ color: Colors.red30 }}>{errors.price}</Text>}
 
                 <View style={global.field}>
                   <Text text65 marginV-4>Image</Text>

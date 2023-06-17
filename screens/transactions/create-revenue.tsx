@@ -183,14 +183,18 @@ const CreateRevenue = () => {
                   </View>
                 </View>
 
-                {errors.notes && touched.notes && <Text style={{ color: Colors.red30 }}>{errors.notes}</Text>}
-                {errors.party && touched.party && <Text style={{ color: Colors.red30 }}>{errors.party}</Text>}
-                {errors.type && touched.type && <Text style={{ color: Colors.red30 }}>{errors.type}</Text>}
-                {errors.price && touched.price && <Text style={{ color: Colors.red30 }}>{errors.price}</Text>}
-                {errors.product && touched.product && <Text style={{ color: Colors.red30 }}>{errors.product}</Text>}
-                {errors.label && touched.label && <Text style={{ color: Colors.red30 }}>{errors.label}</Text>}
-                {errors.category && touched.category && <Text style={{ color: Colors.red30 }}>{errors.category}</Text>}
-                {errors.date && touched.date && <Text style={{ color: Colors.red30 }}>{errors.date}</Text>}
+                <View style={global.field}>
+                  <Text text65 marginV-4>Notes</Text>
+                  <TextField
+                    style={global.area}
+                    multiline
+                    maxLength={100}
+                    onChangeText={handleChange('notes')}
+                    onBlur={handleBlur('notes')}
+                    value={values.notes}
+                    migrate
+                  />
+                </View>
 
                 <View flexG />
 

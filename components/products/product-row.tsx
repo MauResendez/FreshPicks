@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { deleteDoc, doc } from 'firebase/firestore';
 import React, { memo } from 'react';
 import { Alert } from 'react-native';
-import { Colors, ListItem, Text } from 'react-native-ui-lib';
+import { Colors, Image, ListItem, Text } from 'react-native-ui-lib';
 import { db } from '../../firebase';
 
 const ProductRow = (props) => {
@@ -27,10 +27,13 @@ const ProductRow = (props) => {
 			style={{ backgroundColor: Colors.white, padding: 8, height: "auto", width: "100%" }}
 			onPress={onPress}
 		>
-			<ListItem.Part column>
+			<ListItem.Part middle column>
 				<Text text65 marginV-4 numberOfLines={1}>{item.title}</Text>
-				<Text text80M grey30 marginV-4>Price: ${item.price.toFixed(2)}</Text>
+				<Text text80M grey30 marginV-4>${item.price.toFixed(2)} ({item?.quantity} remaining)</Text>
 			</ListItem.Part>
+			{item.image && <ListItem.Part right>
+				<Image source={{ uri: item.image[0] }} style={{ width: 50, height: 50 }} />
+			</ListItem.Part>}
 		</ListItem> 
 	)
 }

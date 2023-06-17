@@ -145,7 +145,7 @@ const EditTransaction = ({ route }) => {
                   <View style={{ width: "30%" }}>
                     <Text text65 marginV-4>Date</Text>
                     <DateTimePicker 
-                      value={values.date} 
+                      value={values.date.toDate()} 
                       onChange={(date) => setFieldValue("date", date)} 
                       style={global.input} 
                       placeholder="Transaction Date" 

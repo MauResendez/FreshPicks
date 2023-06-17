@@ -45,13 +45,16 @@ const Basket = () => {
       obj.count = 1;
       obj.description = curr.description;
       obj.farmer = curr.user;
-      // obj.image = curr.image;
+      obj.images = curr.images;
       obj.price = curr.price;
       obj.title = curr.title;
+      obj.quantity = curr.quantity;
       acc.push(obj)
     } else {
       acc[isElemExist].count += 1
     }
+
+    console.log(acc);
 
     return acc;
   }, []);

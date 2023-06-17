@@ -54,8 +54,8 @@ const ProfileRow = (props) => {
           <Text text65 marginV-4>{item.title}</Text>
           <Text text80M grey30 marginV-4>${item.price.toFixed(2)}</Text>
         </ListItem.Part>
-        {item.image && <ListItem.Part right>
-          <Image source={{ uri: item.image[0] }} style={{ width: 50, height: 50 }} />
+        {item.images[0] && <ListItem.Part right>
+          <Image source={{ uri: item.images[0] }} style={{ width: 50, height: 50 }} />
         </ListItem.Part>}
       </ListItem>} 
     >
@@ -68,7 +68,7 @@ const ProfileRow = (props) => {
         style={{ borderRadius: 8, paddingHorizontal: 8, height: "auto" }}
       >
         <ListItem.Part middle column>
-          <Stepper value={items.length} onValueChange={(value) => updateItemCount(value)} useCustomTheme={true} />
+          <Stepper value={items.length} onValueChange={(value) => updateItemCount(value)} useCustomTheme={true} minValue={0} maxValue={item.quantity} />
         </ListItem.Part>
       </ListItem>
     </ExpandableSection>
