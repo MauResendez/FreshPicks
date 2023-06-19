@@ -67,8 +67,8 @@ const EditTransaction = ({ route }) => {
 
 	useEffect(() => {
     if (route.params.id) {
-      getDoc(doc(db, "Transactions", route.params.id)).then((docSnapshot) => {
-        const data = docSnapshot.data();
+      getDoc(doc(db, "Transactions", route.params.id)).then((doc) => {
+        const data = doc.data();
         setTransaction(data);
       });
     }

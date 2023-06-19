@@ -16,8 +16,8 @@ const HistoryRow = (props) => {
 
   useEffect(() => {
     if (item) {
-      getDoc(doc(db, "Users", item.farmer)).then((docSnapshot) => {
-        const data = docSnapshot.data();
+      getDoc(doc(db, "Users", item.farmer)).then((doc) => {
+        const data = doc.data();
     
         setFarmer({...data, id: item.farmer});
       });

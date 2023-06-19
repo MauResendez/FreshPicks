@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { Alert, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
@@ -115,6 +115,16 @@ const UpdateFarmer = () => {
     }
   };
 
+  const deleteImage = async () => {
+    try {
+      const storageRef = ref(storage, `${auth.currentUser.uid}/images`);
+      await deleteObject(storageRef);
+      console.log('Image deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting image:', error);
+    }
+  };
+
   const uploadImages = async (images) => {
     const imagePromises = Array.from(images, (image) => uploadImage(image));
   
@@ -133,25 +143,24 @@ const UpdateFarmer = () => {
   }
 
   const onSubmit = async (values) => {
+    await deleteImage();
     const imgs = await uploadImages(values.images);
     await updateDoc(doc(db, "Users", auth.currentUser.uid), {
       business: values.business,
       description: values.description,
       website: values.website,
       images: imgs
-    })
-    .then(() => {
+    }).then(() => {
       navigation.goBack();
-    })
-    .catch((error) => {
+    }).catch((error) => {
       alert(error.message);
       console.log(error);
     });
   };
 
   useEffect(() => {
-    getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnapshot) => {
-      const data = docSnapshot.data();
+    getDoc(doc(db, "Users", auth.currentUser.uid)).then((doc) => {
+      const data = doc.data();
       setUser(data);
     });
   }, []);

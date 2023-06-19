@@ -22,10 +22,10 @@ const ConsumerTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarActiveBackgroundColor: Colors.white,
-        tabBarActiveTintColor: Colors.primary,
+        tabBarActiveTintColor: Colors.tertiary,
         tabBarInactiveTintColor: Colors.grey40,
-        tabBarShowLabel: false,
-        unmountOnBlur: true
+        tabBarShowLabel: true,
+        unmountOnBlur: false
       }}
     >
       <Tab.Screen

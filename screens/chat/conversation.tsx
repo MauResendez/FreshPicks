@@ -9,51 +9,6 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import { auth, db } from "../../firebase";
 
-const renderBubble = props => {
-  const margin = Platform.OS != "web" ? 8 : 4;
-  return (
-    <Bubble {...props} 
-      wrapperStyle={{
-        right: {
-          backgroundColor: Colors.tertiary,
-        },
-        left: {
-          backgroundColor: Colors.white,
-        }
-      }}
-      textStyle={{
-        right: {
-          marginLeft: margin,
-          color: Colors.white,
-        },
-        left: {
-          marginRight: margin,
-          color: Colors.black,
-        }
-      }}
-    />
-  )
-}
-
-const renderLoading = () => {
-  return (
-    <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
-  )
-}
-
-const renderSend = props => {
-  return (
-    <Send {...props}>
-      <View>
-        <Ionicon name="send" size={24} style={{
-          marginBottom: 10,
-          marginRight: 10
-        }}/>
-      </View>
-    </Send>
-  )
-}
-
 const Conversation = ({ route }) => {
   const {
     params: {
@@ -90,6 +45,51 @@ const Conversation = ({ route }) => {
       value: 'Hello!',
     },
   ];
+
+  const renderBubble = props => {
+    const margin = Platform.OS != "web" ? 8 : 4;
+    return (
+      <Bubble {...props} 
+        wrapperStyle={{
+          right: {
+            backgroundColor: Colors.tertiary,
+          },
+          left: {
+            backgroundColor: Colors.white,
+          }
+        }}
+        textStyle={{
+          right: {
+            marginLeft: margin,
+            color: Colors.white,
+          },
+          left: {
+            marginRight: margin,
+            color: Colors.black,
+          }
+        }}
+      />
+    )
+  }
+  
+  const renderLoading = () => {
+    return (
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
+    )
+  }
+  
+  const renderSend = props => {
+    return (
+      <Send {...props}>
+        <View>
+          <Ionicon name="send" size={24} style={{
+            marginBottom: 10,
+            marginRight: 10
+          }}/>
+        </View>
+      </Send>
+    )
+  }
 
   const renderQuickReplies = (props) => {
     return <QuickReplies quickReplies={quickReplies} color={Colors.blue20} {...props} />;
@@ -169,14 +169,14 @@ const Conversation = ({ route }) => {
 
   useEffect(() => {
     if (chat) {
-      getDoc(doc(db, "Users", chat.consumer)).then((docSnapshot) => {
-        const data = docSnapshot.data();
+      getDoc(doc(db, "Users", chat.consumer)).then((doc) => {
+        const data = doc.data();
 
         setConsumer({...data, id: chat.consumer});
       });
   
-      getDoc(doc(db, "Users", chat.farmer)).then((docSnapshot) => {
-        const data = docSnapshot.data();
+      getDoc(doc(db, "Users", chat.farmer)).then((doc) => {
+        const data = doc.data();
   
         setFarmer({...data, id: chat.farmer});
       });
@@ -184,7 +184,7 @@ const Conversation = ({ route }) => {
   }, [chat]);
 
   useLayoutEffect(() => {
-    if (chat && consumer && farmer) {
+    if (chat && consumer && farmer && messages) {
       navigation.setOptions({
         headerTitle: chat?.consumer == auth.currentUser.uid ? consumer.name : farmer.name,
         headerRight: () => (
@@ -204,13 +204,7 @@ const Conversation = ({ route }) => {
 
       setLoading(false);
     }
-  }, [chat, consumer, farmer]);
-
-  if (loading) {
-    return (
-      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
-    )
-  }
+  }, [chat, consumer, farmer, messages]);
 
   const onQuickReply = replies => {
     const createdAt = new Date()
@@ -235,6 +229,12 @@ const Conversation = ({ route }) => {
     } else {
       console.warn('replies param is not set correctly')
     }
+  }
+
+  if (loading) {
+    return (
+      <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
+    )
   }
 
   return (

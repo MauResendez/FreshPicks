@@ -15,7 +15,7 @@ interface State {
 
 const Schedule = () => {
   const layout = useWindowDimensions();
-  const width = layout.width/4;
+  const width = layout.width/3;
   const [items, setItems] = useState<any>(null);
   const [chats, setChats] = useState([]);
   const [orders, setOrders] = useState<any>(null);
@@ -44,18 +44,7 @@ const Schedule = () => {
     </View>
   );
 
-	const SecondRoute = () => (
-    <View useSafeArea flex>
-      <FlashList 
-        data={pending}
-        keyExtractor={(item: any) => item.id}
-        estimatedItemSize={pending.length != 0 ? pending.length : 150}
-        renderItem={renderRequest}
-      />
-    </View>
-  );
-
-  const ThirdRoute = () => (
+  const SecondRoute = () => (
     <View useSafeArea flex>
       <FlashList 
         data={chats}
@@ -123,7 +112,7 @@ const Schedule = () => {
 
   return (
     <View useSafeArea flex style={global.white}>
-      <TabController items={[{label: 'Schedule'}, {label: 'Requests'}, {label: 'Inbox'}]}>  
+      <TabController items={[{label: 'Schedule'}, {label: 'Inbox'}]}>  
         <TabController.TabBar
           indicatorInsets={0}
           indicatorStyle={{ backgroundColor: Colors.tertiary }} 
@@ -133,7 +122,6 @@ const Schedule = () => {
         <View flex style={global.white}>    
           <TabController.TabPage index={0} lazy>{FirstRoute()}</TabController.TabPage>    
           <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
-          <TabController.TabPage index={2} lazy>{ThirdRoute()}</TabController.TabPage>    
         </View>
       </TabController>
     </View>    

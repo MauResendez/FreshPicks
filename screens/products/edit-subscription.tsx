@@ -135,8 +135,8 @@ const EditSubscription = ({ route }) => {
 
 	useEffect(() => {
     if (route.params.id) {
-      getDoc(doc(db, "Subscriptions", route.params.id)).then((docSnapshot) => {
-        const data = docSnapshot.data();
+      getDoc(doc(db, "Subscriptions", route.params.id)).then((doc) => {
+        const data = doc.data();
         setSubscription(data);
       });
     }

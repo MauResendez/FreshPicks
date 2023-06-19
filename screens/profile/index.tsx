@@ -41,13 +41,13 @@ const Profile = ({ route }) => {
   }
 
   useEffect(() => {
-    getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnapshot) => {
-      const data = docSnapshot.data();
+    getDoc(doc(db, "Users", auth.currentUser.uid)).then((doc) => {
+      const data = doc.data();
       setConsumer({...data, id: auth.currentUser.uid});
     });
 
-    getDoc(doc(db, "Users", route.params.id)).then((docSnapshot) => {
-      const data = docSnapshot.data();
+    getDoc(doc(db, "Users", route.params.id)).then((doc) => {
+      const data = doc.data();
       setFarmer({...data, id: route.params.id});
     });
 

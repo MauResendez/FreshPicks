@@ -18,7 +18,7 @@ const Products = () => {
   const actions = [
     {
       text: "Create Product",
-      icon: <MCIcon name="plus" color={Colors.white} size={24} />,
+      icon: <MCIcon name="apple" color={Colors.white} size={24} />,
       name: "Create Product",
       position: 1,
       color: Colors.tertiary
@@ -85,7 +85,6 @@ const Products = () => {
           onPressItem={
             (name) => navigation.navigate(name)
           }
-          overrideWithAction
           tintColor={Colors.tertiary}
         />
       </View>

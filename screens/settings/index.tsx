@@ -15,6 +15,7 @@ const Settings = () => {
   const [user, setUser] = useState<any>(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState<any>(true);
+  const url = "https://www.utrgv.edu";
 
   const getToken = async () => {
     let token = await Notifications.getExpoPushTokenAsync({ projectId });
@@ -63,17 +64,60 @@ const Settings = () => {
     }
   };
 
-  const share = async () => {
-    const options = {
-      title: 'Fresh Picks by UTRGV',
-      message: 'Find the best fresh produce in the RGV with Fresh Picks by UTRGV',
-      url: require("../../assets/images/default.png")
-    }
-
+  const deleteBusiness = async () => {
     try {
-      const response = await Share.share(options);
-    } catch (error) {
+      const uid = auth.currentUser.uid;
       
+      const response = await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/deleteBusiness", {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          'data': {
+            'uid': uid,
+          }
+        }),
+      });
+
+      setLoading(true);
+
+      console.log(response);
+
+      const json = await response.json();
+
+      console.log(json);
+
+      auth.currentUser.reload();
+
+      setLoading(false);
+
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const share = async () => {
+    try {
+      const options = {
+        title: 'Fresh Picks by UTRGV',
+        message: 'Find the best fresh produce in the RGV with Fresh Picks',
+        url: url
+      }
+
+      const response = await Share.share(options);
+
+      if (response.action === Share.dismissedAction) {
+        console.log("Shared dismissed");
+        return;
+      } else if (response.action === Share.sharedAction) {
+        console.log("Shared completed");
+        return;
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -113,34 +157,38 @@ const Settings = () => {
   return (
     <View useSafeArea flex>
       <ScrollView showsVerticalScrollIndicator={Platform.OS == "web"}>
-        <ListItem
-          activeBackgroundColor={Colors.grey60}
-          activeOpacity={0.3}
-          height={60}
-        >
-          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
-            <Text text65 marginV-4 numberOfLines={1}>
-              Roles
-            </Text>
-          </ListItem.Part>
-        </ListItem>
-        <ListItem
-          backgroundColor={Colors.white}
-          activeOpacity={0.3}
-          height={60}
-          onPress={() => {
-            Alert.alert("Switch Roles", "Would you like to switch roles?", [
-              {text: 'Cancel', style: 'cancel'},
-              {text: 'OK', onPress: switchRoles},
-            ]);
-          }}
-        >
-          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
-            <Text text80M grey30 marginV-4 numberOfLines={1}>
-              Switch to {user.role === "Farmer" ? "Consumer Role" : "Farmer Role"}
-            </Text>
-          </ListItem.Part>
-        </ListItem>
+        {user?.farmer && (
+          <ListItem
+            activeBackgroundColor={Colors.grey60}
+            activeOpacity={0.3}
+            height={60}
+          >
+            <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+              <Text text65 marginV-4 numberOfLines={1}>
+                Roles
+              </Text>
+            </ListItem.Part>
+          </ListItem>
+        )}
+        {user?.farmer && (
+          <ListItem
+            backgroundColor={Colors.white}
+            activeOpacity={0.3}
+            height={60}
+            onPress={() => {
+              Alert.alert("Switch Roles", "Would you like to switch roles?", [
+                {text: 'Cancel', style: 'cancel'},
+                {text: 'OK', onPress: switchRoles},
+              ]);
+            }}
+          >
+            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+              <Text text80M grey30 marginV-4 numberOfLines={1}>
+                Switch to {user.role === "Farmer" ? "Consumer Role" : "Farmer Role"}
+              </Text>
+            </ListItem.Part>
+          </ListItem>
+        )}
         <ListItem
           activeBackgroundColor={Colors.grey60}
           activeOpacity={0.3}
@@ -212,17 +260,6 @@ const Settings = () => {
           </ListItem.Part>
         </ListItem>
         <ListItem
-          activeBackgroundColor={Colors.grey60}
-          activeOpacity={0.3}
-          height={60}
-        >
-          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
-            <Text text65 marginV-4 numberOfLines={1}>
-              Consumer
-            </Text>
-          </ListItem.Part>
-        </ListItem>
-        <ListItem
           backgroundColor={Colors.white}
           activeOpacity={0.3}
           height={60}
@@ -234,18 +271,6 @@ const Settings = () => {
             </Text>
           </ListItem.Part>
         </ListItem>
-        {/* <ListItem
-          backgroundColor={Colors.white}
-          activeOpacity={0.3}
-          height={60}
-          onPress={() => navigation.navigate("Order History")}
-        >
-          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
-            <Text text80M grey30 marginV-4 numberOfLines={1}>
-              My Order History
-            </Text>
-          </ListItem.Part>
-        </ListItem> */}
         <ListItem
           activeBackgroundColor={Colors.grey60}
           activeOpacity={0.3}
@@ -270,7 +295,28 @@ const Settings = () => {
               </Text>
             </ListItem.Part>
           </ListItem>
-        )}  
+        )}
+        {user?.farmer && (
+          <ListItem
+            backgroundColor={Colors.white}
+            activeOpacity={0.3}
+            height={60}
+            onPress={async () => {
+              Alert.alert("Delete Your Business", "Are you sure to delete your business?\n\n Your data will be permanently deleted.\n\n (Transactions, Orders, Products, Chats)", [
+                {text: 'Cancel', style: 'cancel'},
+                {text: 'OK', onPress: async () => {
+                  await deleteBusiness();
+                }},
+              ]);
+            }}
+          >
+            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+              <Text text80M grey30 marginV-4 numberOfLines={1}>
+              Delete Your Business
+              </Text>
+            </ListItem.Part>
+          </ListItem>
+        )}
         {user?.farmer && (
           <ListItem
             backgroundColor={Colors.white}

@@ -32,8 +32,32 @@ const Transactions = () => {
       name: "Create Revenue",
       position: 2,
       color: Colors.tertiary
+    },
+    {
+      text: "Send CSV to your email",
+      icon: <MCIcon name="email" color={Colors.white} size={24} />,
+      name: "Create Expense",
+      position: 3,
+      color: Colors.tertiary
     }
   ];
+
+  const exportTransactions = useCallback(async () => {
+    try {
+      await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/exportTransactions", {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          'uid': auth.currentUser.uid
+        }),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
   const renderItem = useCallback(({item}) => {
     return (

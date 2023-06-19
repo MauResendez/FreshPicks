@@ -25,8 +25,8 @@ const UpdatePersonal = () => {
   };
 
   useEffect(() => {
-    getDoc(doc(db, "Users", auth.currentUser.uid)).then((docSnapshot) => {
-      const data = docSnapshot.data();
+    getDoc(doc(db, "Users", auth.currentUser.uid)).then((doc) => {
+      const data = doc.data();
       setUser(data);
     });
   }, []);

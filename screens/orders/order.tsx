@@ -15,8 +15,8 @@ const Order = ({ route }) => {
   const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-    getDoc(doc(db, "Orders", route.params.id)).then((docSnapshot) => {
-      const data = docSnapshot.data();
+    getDoc(doc(db, "Orders", route.params.id)).then((doc) => {
+      const data = doc.data();
       setOrder({...data, id: route.params.id});
     });
   }, []);
@@ -24,13 +24,13 @@ const Order = ({ route }) => {
 	useEffect(() => {
 		if (order) {
       console.log("Order:", order);
-			getDoc(doc(db, "Users", order.consumer)).then((docSnapshot) => {
-				const data = docSnapshot.data();
+			getDoc(doc(db, "Users", order.consumer)).then((doc) => {
+				const data = doc.data();
 				setConsumer({...data, id: order.consumer});
 			});
 		
-			getDoc(doc(db, "Users", order.farmer)).then((docSnapshot) => {
-				const data = docSnapshot.data();
+			getDoc(doc(db, "Users", order.farmer)).then((doc) => {
+				const data = doc.data();
 				setFarmer({...data, id: order.farmer});
 			});
 		}

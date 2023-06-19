@@ -180,7 +180,7 @@ const Dashboard = () => {
           >
             <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
               <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
-                Products Sold
+                Cashflow per Product
               </Text>
             </ListItem.Part>
           </ListItem>

@@ -27,14 +27,14 @@ const ChatRow = (props) => {
 
   useEffect(() => {
     if (chat) {
-      getDoc(doc(db, "Users", chat.consumer)).then((docSnapshot) => {
-        const data = docSnapshot.data();
+      getDoc(doc(db, "Users", chat.consumer)).then((doc) => {
+        const data = doc.data();
     
         setConsumer({...data, id: chat.consumer});
       });
   
-      getDoc(doc(db, "Users", chat.farmer)).then((docSnapshot) => {
-        const data = docSnapshot.data();
+      getDoc(doc(db, "Users", chat.farmer)).then((doc) => {
+        const data = doc.data();
     
         setFarmer({...data, id: chat.farmer});
       });

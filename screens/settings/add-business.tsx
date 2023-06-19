@@ -6,10 +6,9 @@ import { GeoPoint, doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { Alert, Keyboard, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Alert, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { Button, Carousel, Checkbox, Colors, DateTimePicker, Image, KeyboardAwareScrollView, LoaderScreen, PageControl, Text, TextField, Toast, View, Wizard } from 'react-native-ui-lib';
-import { Dialog } from 'react-native-ui-lib/src/incubator';
+import { Button, Carousel, Checkbox, Colors, DateTimePicker, Image, KeyboardAwareScrollView, LoaderScreen, PageControl, Text, TextField, View, Wizard } from 'react-native-ui-lib';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Yup from 'yup';
 import { auth, db, storage } from '../../firebase';
@@ -29,13 +28,8 @@ const AddBusiness = () => {
   const [friday, setFriday] = useState<any>({ enable: false, start: null, end: null });
   const [saturday, setSaturday] = useState<any>({ enable: false, start: null, end: null });
   const [sunday, setSunday] = useState<any>({ enable: false, start: null, end: null });
-  const [visible, setVisible] = useState<boolean>(false);
   const [token, setToken] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-
-  const hideToast = () => {
-    setVisible(false);
-  }
 
   const checkIfImageIsAppropriate = async (images) => {
     try {
@@ -73,23 +67,18 @@ const AddBusiness = () => {
       compressed.push(manipulatedImage.uri);
     });
 
-    // const i = await checkIfImageIsAppropriate(result.assets);
+    const i = await checkIfImageIsAppropriate(result.assets);
 
-    // if (!i.result) {
-    //   Alert.alert("Image has inappropriate content", "The image has been scanned to have some inappropriate content. Please select another image to upload.", [
-    //     {text: 'OK', style: 'cancel'},
-    //   ]);
-    // } else {
-    //   setFieldValue('images', compressed)
-    // }
-
-    setFieldValue('images', compressed)
-
+    if (!i.result) {
+      Alert.alert("Image has inappropriate content", "The image has been scanned to have some inappropriate content. Please select another image to upload.", [
+        {text: 'OK', style: 'cancel'},
+      ]);
+    } else {
+      setFieldValue('images', compressed)
+    }
   };
 
   const camera = async (setFieldValue) => {
-    console.log("HERE 2");
-    setVisible(true);
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (permissionResult.granted === false) {
@@ -100,11 +89,10 @@ const AddBusiness = () => {
     try {
       // No permissions request is necessary for launching the image library
       let result = await ImagePicker.launchCameraAsync({
+        base64: true,
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsMultipleSelection: true,
         aspect: [4, 3],
         quality: 0,
-        selectionLimit: 4
       });
 
       if (!result.canceled) {
@@ -117,7 +105,6 @@ const AddBusiness = () => {
   }
 
   const gallery = async (setFieldValue) => {
-    setVisible(true);
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
@@ -128,11 +115,10 @@ const AddBusiness = () => {
     try {
       // No permissions request is necessary for launching the image library
       let result = await ImagePicker.launchImageLibraryAsync({
+        base64: true,
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsMultipleSelection: true,
         aspect: [4, 3],
         quality: 0,
-        selectionLimit: 4
       });
 
       if (!result.canceled) {
@@ -161,7 +147,7 @@ const AddBusiness = () => {
     return url;
   }
 
-  const handleSubmit = async (values) => {
+  const createBusiness = async (values, images) => {
     try {
       await updateDoc(doc(db, "Users", auth.currentUser.uid), {
         business: values.business,
@@ -172,9 +158,20 @@ const AddBusiness = () => {
         schedule: {
           monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday, sunday: sunday
         },
-        images: values.images,
+        images: images,
         farmer: true
-      }).then(() => {
+      })
+    } catch (error) {
+      console.error('Error uploading images', error);
+    }
+  };
+
+  const handleSubmit = async (values) => {
+    try {
+      console.log(values.images);
+      const imgs = await uploadImages(values.images);
+      console.log("IMGs:", imgs);
+      await createBusiness(values, imgs).then(() => {
         navigation.goBack();
       });
     } catch (error: any) {
@@ -219,7 +216,7 @@ const AddBusiness = () => {
 
     return (
       <View>
-        {active !== 3 
+        {active !== 2
           ? <Button style={{ backgroundColor: Colors.primary }} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} />
           : <Button style={{ backgroundColor: Colors.primary }} iconSource={() => <MCIcon name={"check"} size={48} color={Colors.white} />} onPress={handleSubmit} />
         }
@@ -233,7 +230,7 @@ const AddBusiness = () => {
         <View row spread centerV>
           {Prev()}
           {/* <Text>{active}</Text> */}
-          <PageControl numOfPages={4} currentPage={active} color={Colors.primary} />
+          <PageControl numOfPages={3} currentPage={active} color={Colors.primary} />
           {Next(props)}
         </View>
       </View>
@@ -310,7 +307,7 @@ const AddBusiness = () => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
-      <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]} keyboardShouldPersistTaps="always">
+      <View flex padding-24>
         <Text text65 marginV-4>Business Address *</Text>
         <GooglePlacesAutocomplete
           textInputProps={{
@@ -363,7 +360,7 @@ const AddBusiness = () => {
         />
         
         {Buttons(props)}  
-      </KeyboardAwareScrollView> 
+      </View> 
     );
   };
 
@@ -371,371 +368,257 @@ const AddBusiness = () => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
-      <ScrollView contentContainerStyle={[global.container, global.flex]}>
-        <View row spread style={{ alignItems: "center" }}>
-          <Button 
-            backgroundColor={Colors.primary}
-            color={Colors.white}
-            label={"Monday"} 
-            labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.button} 
-            onPress={() => navigation.navigate("Register")}  
-            disabled={!monday.enable}
+      <View flex padding-24>
+        <Text text65 marginV-4>Business Schedule *</Text>
+
+        <View row spread paddingV-16>
+          <Checkbox
+            label={<Text text65 marginV-4>Monday</Text>}
+            value={monday.enable} 
+            onValueChange={(value) => {
+              if (!value) {
+                setMonday({ enable: !monday.enable, start: null, end: null});
+              } else {
+                setMonday({ ...monday, enable: !monday.enable })
+              }
+            }} 
+            style={global.checkbox} 
           />
-          <Checkbox value={monday.enable} onValueChange={() => setMonday({ ...monday, enable: !monday.enable })} style={global.checkbox} />
+
+          {monday.enable && <View row spread centerV style={global.time}>
+            <DateTimePicker
+              value={monday.start || new Date()}
+              onChange={(date) => setMonday({ ...monday, start: date.toTimeString() })}
+              mode="time" 
+              timeFormat={'hh:mm A'}
+              display="clock"
+            />
+
+            <Text> - </Text>
+
+            <DateTimePicker
+              value={monday.end || new Date()}
+              onChange={(date) => setMonday({ ...monday, end: date })}
+              mode="time" 
+              timeFormat={'hh:mm A'}
+              display="clock"
+            />
+          </View>}
         </View>
-        <View row spread style={{ alignItems: "center" }}>
-          <Button 
-            backgroundColor={Colors.primary}
-            color={Colors.white}
-            label={"Tuesday"} 
-            labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.button} 
-            onPress={() => navigation.navigate("Register")}
-            disabled={!tuesday.enable}
+
+        <View row spread paddingV-16>
+          <Checkbox
+            label={<Text text65 marginV-4>Tuesday</Text>} 
+            value={tuesday.enable} 
+            onValueChange={(value) => {
+              if (!value) {
+                setTuesday({ enable: !tuesday.enable, start: null, end: null});
+              } else {
+                setTuesday({ ...tuesday, enable: !tuesday.enable })
+              }
+            }} 
+            style={global.checkbox} 
           />
-          <Checkbox value={tuesday.enable} onValueChange={() => setTuesday({ ...tuesday, enable: !tuesday.enable })} style={global.checkbox} />
+
+          {tuesday.enable && <View row spread centerV style={global.time}>
+            <DateTimePicker
+              value={tuesday.start || new Date()}
+              onChange={(date) => setTuesday({ ...tuesday, start: date })}
+              mode="time" 
+              timeFormat={'hh:mm A'} 
+              display="clock"
+            />
+
+            <Text> - </Text>
+
+            <DateTimePicker
+              value={tuesday.end || new Date()}
+              onChange={(date) => setTuesday({ ...tuesday, end: date })}
+              mode="time" 
+              timeFormat={'hh:mm A'}
+              display="clock"
+            />
+          </View>}
         </View>
-        <View row spread style={{ alignItems: "center" }}>
-          <Button 
-            backgroundColor={Colors.primary}
-            color={Colors.white}
-            label={"Wednesday"} 
-            labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.button} 
-            onPress={() => navigation.navigate("Register")}
-            disabled={!wednesday.enable}
+
+        <View row spread paddingV-16>
+          <Checkbox
+            label={<Text text65 marginV-4>Wednesday</Text>} 
+            value={wednesday.enable} 
+            onValueChange={(value) => {
+              if (!value) {
+                setWednesday({ enable: !wednesday.enable, start: null, end: null});
+              } else {
+                setWednesday({ ...wednesday, enable: !wednesday.enable })
+              }
+            }} 
+            style={global.checkbox} 
           />
-          <Checkbox value={wednesday.enable} onValueChange={() => setWednesday({ ...wednesday, enable: !wednesday.enable })} style={global.checkbox} />
+
+          {wednesday.enable && <View row spread centerV style={global.time}>
+            <DateTimePicker
+              value={wednesday.start || new Date()}
+              onChange={(date) => setWednesday({ ...wednesday, start: date })}
+              mode="time" 
+              timeFormat={'hh:mm A'} 
+              display="clock"
+            />
+
+            <Text> - </Text>
+
+            <DateTimePicker
+              value={wednesday.end || new Date()}
+              onChange={(date) => setWednesday({ ...wednesday, end: date })}
+              mode="time" 
+              timeFormat={'hh:mm A'}
+              display="clock"
+            />
+          </View>}
         </View>
-        <View row spread style={{ alignItems: "center" }}>
-          <Button 
-            backgroundColor={Colors.primary}
-            color={Colors.white}
-            label={"Thursday"} 
-            labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.button} 
-            onPress={() => navigation.navigate("Register")}
-            disabled={!thursday.enable}
+
+        <View row spread paddingV-16>
+          <Checkbox 
+            label={<Text text65 marginV-4>Thursday</Text>} 
+            value={thursday.enable} 
+            onValueChange={(value) => {
+              if (!value) {
+                setThursday({ enable: !thursday.enable, start: null, end: null});
+              } else {
+                setThursday({ ...thursday, enable: !thursday.enable })
+              }
+            }} 
+            style={global.checkbox} 
           />
-          <Checkbox value={thursday.enable} onValueChange={() => setThursday({ ...thursday, enable: !thursday.enable })} style={global.checkbox} />
+
+          {thursday.enable &&<View row spread centerV style={global.time}>
+            <DateTimePicker
+              value={thursday.start || new Date()}
+              onChange={(date) => setThursday({ ...thursday, start: date })}
+              mode="time" 
+              timeFormat={'hh:mm A'} 
+              display="clock"
+            />
+
+            <Text> - </Text>
+
+            <DateTimePicker
+              value={thursday.end ||new Date()} 
+              onChange={(date) => setThursday({ ...thursday, end: date })}
+              mode="time" 
+              timeFormat={'hh:mm A'}
+              display="clock"
+            />
+          </View>}
         </View>
-        <View row spread style={{ alignItems: "center" }}>
-          <Button 
-            backgroundColor={Colors.primary}
-            color={Colors.white}
-            label={"Friday"} 
-            labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.button} 
-            onPress={() => navigation.navigate("Register")}
-            disabled={!friday.enable}  
+
+        <View row spread paddingV-16>
+          <Checkbox
+            label={<Text text65 marginV-4>Friday</Text>} 
+            value={friday.enable} 
+            onValueChange={(value) => {
+              if (!value) {
+                setFriday({ enable: !friday.enable, start: null, end: null});
+              } else {
+                setFriday({ ...friday, enable: !friday.enable })
+              }
+            }} 
+            style={global.checkbox} 
           />
-          <Checkbox value={friday.enable} onValueChange={() => setFriday({ ...friday, enable: !friday.enable })} style={global.checkbox} />
+
+          {friday.enable && <View row spread centerV style={global.time}>
+            <DateTimePicker
+              value={friday.start || new Date()}
+              onChange={(date) => setFriday({ ...friday, start: date })}
+              mode="time" 
+              timeFormat={'hh:mm A'} 
+              display="clock"
+            />
+
+            <Text> - </Text>
+
+            <DateTimePicker
+              value={friday.end || new Date()}
+              onChange={(date) => setFriday({ ...friday, end: date })}
+              mode="time" 
+              timeFormat={'hh:mm A'}
+              display="clock"
+            />
+          </View>}
         </View>
-        <View row spread style={{ alignItems: "center" }}>
-          <Button 
-            backgroundColor={Colors.primary}
-            color={Colors.white}
-            label={"Saturday"} 
-            labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.button} 
-            onPress={() => navigation.navigate("Register")}
-            disabled={!saturday.enable}   
+
+        <View row spread paddingV-16>
+          <Checkbox
+            label={<Text text65 marginV-4>Saturday</Text>} 
+            value={saturday.enable} 
+            onValueChange={(value) => {
+              if (!value) {
+                setSaturday({ enable: !saturday.enable, start: null, end: null});
+              } else {
+                setSaturday({ ...saturday, enable: !saturday.enable })
+              }
+            }} 
+            style={global.checkbox} 
           />
-          <Checkbox value={saturday.enable} onValueChange={() => setSaturday({ ...saturday, enable: !saturday.enable })} style={global.checkbox} />
+
+          {saturday.enable &&<View row spread centerV style={global.time}>
+            <DateTimePicker
+              value={saturday.start || new Date()}
+              onChange={(date) => setSaturday({ ...saturday, start: date })}
+              mode="time" 
+              timeFormat={'hh:mm A'} 
+              display="clock"
+            />
+
+            <Text> - </Text>
+
+            <DateTimePicker
+              value={saturday.end || new Date()}
+              onChange={(date) => setSaturday({ ...saturday, end: date })}
+              mode="time" 
+              timeFormat={'hh:mm A'}
+              display="clock"
+            />
+          </View>}
         </View>
-        <View row spread style={{ alignItems: "center" }}>
-          <Button 
-            backgroundColor={Colors.primary}
-            color={Colors.white}
-            label={"Sunday"} 
-            labelStyle={{ fontWeight: '600', padding: 4 }} 
-            style={global.button} 
-            onPress={() => navigation.navigate("Register")}
-            disabled={!sunday.enable}    
+
+        <View row spread paddingV-16>
+          <Checkbox
+            label={<Text text65 marginV-4>Sunday</Text>} 
+            value={sunday.enable} 
+            onValueChange={(value) => {
+              if (!value) {
+                setSunday({ enable: !sunday.enable, start: null, end: null});
+              } else {
+                setSunday({ ...sunday, enable: !sunday.enable })
+              }
+            }} 
+            style={global.checkbox} 
           />
-          <Checkbox value={sunday.enable} onValueChange={() => setSunday({ ...sunday, enable: !sunday.enable })} style={global.checkbox} />
 
-          <Dialog
-            visible={monday.enable}
-            centerH
-            centerV
-          >
-            <View padding-24>
-              <View>
-                <Text text65 marginV-4>Monday</Text>
-              </View>
-              <View row spread>
-                <View>
-                  <Text text65 marginV-4>Start Time</Text>
-                  <DateTimePicker
-                    value={new Date()} 
-                    mode="time" 
-                    is24Hour={true} 
-                    timeFormat={'HH:mm A'} 
-                    display="clock"
-                  />
-                </View>
+          {sunday.enable && <View row spread centerV style={global.time}>
+            <DateTimePicker
+              value={sunday.start || new Date()}
+              onChange={(date) => setSunday({ ...sunday, start: date })}
+              mode="time" 
+              timeFormat={'hh:mm A'}
+              display="clock"
+            />
 
-                <View>
-                  <Text text65 marginV-4>End Time</Text>
-                  <DateTimePicker
-                    value={new Date()} 
-                    mode="time" 
-                    is24Hour={false} 
-                    timeFormat={'HH:mm A'}
-                    display="clock" 
-                  />
-                </View>
-              </View>
-              <View paddingT-24 row spread>
-                {/* <Button text60 label="Save" /> */}
-                <Button 
-                  backgroundColor={Colors.primary}
-                  color={Colors.white}
-                  label={"Cancel"} 
-                  labelStyle={{ fontWeight: '600', padding: 4 }} 
-                  style={global.button} 
-                  onPress={() => navigation.navigate("Register")}  
-                  disabled={!monday.enable}
-                />
-                <Button 
-                  backgroundColor={Colors.primary}
-                  color={Colors.white}
-                  label={"Save"} 
-                  labelStyle={{ fontWeight: '600', padding: 4 }} 
-                  style={global.button} 
-                  onPress={() => navigation.navigate("Register")}  
-                  disabled={!monday.enable}
-                />
-              </View>
-            </View>
-            
-          </Dialog>
+            <Text> - </Text>
 
-          <Dialog
-            visible={tuesday.enable}
-            centerH
-            centerV
-          >
-            <View padding-24 row spread>
-              <View>
-                <Text text65 marginV-4>Start Time</Text>
-                <DateTimePicker
-                  value={new Date()} 
-                  mode="time" 
-                  is24Hour={true} 
-                  timeFormat={'HH:mm A'} 
-                  display="clock"
-                />
-              </View>
-
-              <View>
-                <Text text65 marginV-4>End Time</Text>
-                <DateTimePicker
-                  value={new Date()} 
-                  mode="time" 
-                  is24Hour={false} 
-                  timeFormat={'HH:mm A'}
-                  display="clock" 
-                />
-              </View>
-            </View>
-            <View margin-16 right>
-              <Button text60 label="Save" />
-            </View>
-          </Dialog>
-
-          <Dialog
-            visible={wednesday.enable}
-            centerH
-            centerV
-          >
-            <View padding-24 row spread>
-              <View>
-                <Text text65 marginV-4>Start Time</Text>
-                <DateTimePicker
-                  value={new Date()} 
-                  mode="time" 
-                  is24Hour={true} 
-                  timeFormat={'HH:mm A'} 
-                  display="clock"
-                />
-              </View>
-
-              <View>
-                <Text text65 marginV-4>End Time</Text>
-                <DateTimePicker
-                  value={new Date()} 
-                  mode="time" 
-                  is24Hour={false} 
-                  timeFormat={'HH:mm A'}
-                  display="clock" 
-                />
-              </View>
-            </View>
-            <View margin-16 right>
-              <Button text60 label="Save" />
-            </View>
-          </Dialog>
-
-          <Dialog
-            visible={thursday.enable}
-            centerH
-            centerV
-          >
-            <View padding-24 row spread>
-              <View>
-                <Text text65 marginV-4>Start Time</Text>
-                <DateTimePicker
-                  value={new Date()} 
-                  mode="time" 
-                  is24Hour={true} 
-                  timeFormat={'HH:mm A'} 
-                  display="clock"
-                />
-              </View>
-
-              <View>
-                <Text text65 marginV-4>End Time</Text>
-                <DateTimePicker
-                  value={new Date()} 
-                  mode="time" 
-                  is24Hour={false} 
-                  timeFormat={'HH:mm A'}
-                  display="clock" 
-                />
-              </View>
-            </View>
-            <View margin-16 right>
-              <Button text60 label="Save" />
-            </View>
-          </Dialog>
-
-          <Dialog
-            visible={friday.enable}
-            centerH
-            centerV
-          >
-            <View padding-24 row spread>
-              <View>
-                <Text text65 marginV-4>Start Time</Text>
-                <DateTimePicker
-                  value={new Date()} 
-                  mode="time" 
-                  is24Hour={true} 
-                  timeFormat={'HH:mm A'} 
-                  display="clock"
-                />
-              </View>
-
-              <View>
-                <Text text65 marginV-4>End Time</Text>
-                <DateTimePicker
-                  value={new Date()} 
-                  mode="time" 
-                  is24Hour={false} 
-                  timeFormat={'HH:mm A'}
-                  display="clock" 
-                />
-              </View>
-            </View>
-            <View margin-16 right>
-              <Button text60 label="Save" />
-            </View>
-          </Dialog>
-
-          <Dialog
-            visible={saturday.enable}
-            centerH
-            centerV
-          >
-            <View padding-24 row spread>
-              <View>
-                <Text text65 marginV-4>Start Time</Text>
-                <DateTimePicker
-                  value={new Date()} 
-                  mode="time" 
-                  is24Hour={true} 
-                  timeFormat={'HH:mm A'} 
-                  display="clock"
-                />
-              </View>
-
-              <View>
-                <Text text65 marginV-4>End Time</Text>
-                <DateTimePicker
-                  value={new Date()} 
-                  mode="time" 
-                  is24Hour={false} 
-                  timeFormat={'HH:mm A'}
-                  display="clock" 
-                />
-              </View>
-            </View>
-            <View margin-16 right>
-              <Button text60 label="Save" />
-            </View>
-          </Dialog>
-
-          <Dialog
-            visible={sunday.visible}
-            centerH
-            centerV
-          >
-            <View padding-24 row spread>
-              <View>
-                <Text text65 marginV-4>Start Time</Text>
-                <DateTimePicker
-                  value={new Date()} 
-                  mode="time" 
-                  is24Hour={true} 
-                  timeFormat={'HH:mm A'} 
-                  display="clock"
-                />
-              </View>
-
-              <View>
-                <Text text65 marginV-4>End Time</Text>
-                <DateTimePicker
-                  value={new Date()} 
-                  mode="time" 
-                  is24Hour={false} 
-                  timeFormat={'HH:mm A'}
-                  display="clock" 
-                />
-              </View>
-            </View>
-            <View margin-16 right>
-              <Button text60 label="Save" />
-            </View>
-          </Dialog>
+            <DateTimePicker
+              value={sunday.end || new Date()}
+              onChange={(date) => setSunday({ ...sunday, end: date })}
+              mode="time" 
+              timeFormat={'hh:mm A'}
+              display="clock"
+            />
+          </View>}
         </View>
 
         <View flexG />
 
         {Buttons(props)}
-      </ScrollView>
-    );
-  };
-
-  const AccountInformation = (props) => {
-    const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
-
-    return (
-      <View style={[global.container, global.flex]}>
-        <View style={global.field}>
-          <Text text65 marginV-4>Add Your Business</Text>
-        </View>
-        {errors.phone && touched.phone && <Text style={{ color: Colors.red30 }}>{errors.phone}</Text>}
-
-        <View style={global.field}>
-          <Text text80M grey30 marginV-4>Submit to add in your business information to your account.</Text>
-        </View> 
-
-        <View flexG />
-
-        {Buttons(props)}   
       </View>
     );
   };
@@ -748,8 +631,6 @@ const AddBusiness = () => {
         return FarmerAddress(props);
       case 2:
         return FarmerSchedule(props);
-      case 3:
-        return AccountInformation(props);
     }
   };
 
@@ -805,19 +686,10 @@ const AddBusiness = () => {
           validationSchema={validate}
           onSubmit={handleSubmit}
         >
-            {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-            <View flex>
-              <Toast visible={Object.keys(errors).length > 0} message={"One or more fields currently have errors. Please correct them to register your account"} position={'top'} backgroundColor={Colors.red30} autoDismiss={1000} onDismiss={hideToast} swipeable />
-              <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
-                <Wizard.Step state={getStepState(0)} label={'Farmer Information'} />
-                <Wizard.Step state={getStepState(1)} label={'Farmer Address'} />
-                <Wizard.Step state={getStepState(2)} label={'Farmer Schedule'} />
-                <Wizard.Step state={getStepState(3)} label={'Account Information'} />
-              </Wizard>
-              <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex}> 
-                {Current({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values })}
-              </KeyboardAwareScrollView>
-            </View>
+          {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
+            <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex}> 
+              {Current({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values })}
+            </KeyboardAwareScrollView>
           )}
         </Formik>
       </TouchableWithoutFeedback>
