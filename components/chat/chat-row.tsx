@@ -8,8 +8,8 @@ const ChatRow = (props) => {
   const {item} = props;
   const navigation = useNavigation<any>();
   const [chat, setChat] = useState(null);
-  const [consumer, setConsumer] = useState(null);
-  const [farmer, setFarmer] = useState(null);
+  const [customer, setCustomer] = useState(null);
+  const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const conversation = () => {
@@ -27,25 +27,25 @@ const ChatRow = (props) => {
 
   useEffect(() => {
     if (chat) {
-      getDoc(doc(db, "Users", chat.consumer)).then((doc) => {
+      getDoc(doc(db, "Users", chat.customer)).then((doc) => {
         const data = doc.data();
     
-        setConsumer({...data, id: chat.consumer});
+        setCustomer({...data, id: chat.customer});
       });
   
-      getDoc(doc(db, "Users", chat.farmer)).then((doc) => {
+      getDoc(doc(db, "Users", chat.vendor)).then((doc) => {
         const data = doc.data();
     
-        setFarmer({...data, id: chat.farmer});
+        setVendor({...data, id: chat.vendor});
       });
     }
   }, [chat]);
 
   useEffect(() => {
-    if (consumer && farmer) {
+    if (customer && vendor) {
       setLoading(false);
     }
-  }, [consumer, farmer]);
+  }, [customer, vendor]);
 
   if (loading) {
     return (
@@ -61,7 +61,7 @@ const ChatRow = (props) => {
       onPress={conversation}
     >
       <ListItem.Part column>
-        <Text text65 marginV-4 numberOfLines={1}>{farmer.business}</Text>
+        <Text text65 marginV-4 numberOfLines={1}>{vendor.business}</Text>
         <Text text80M grey30 marginV-4>{chat.messages?.length === 0 ? "No messages" : `${chat.messages[0]?.user.name === auth.currentUser.displayName ? "You" : chat.messages[0]?.user.name}: ${chat.messages[0]?.text}`}</Text>
       </ListItem.Part>
     </ListItem>

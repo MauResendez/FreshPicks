@@ -1,7 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Colors, LoaderScreen, View } from 'react-native-ui-lib';
+import { Colors, LoaderScreen, Text, View } from 'react-native-ui-lib';
 import HistoryRow from '../../components/orders/history-row';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
@@ -15,7 +15,7 @@ const OrderHistory = () => {
   }, []);
 
 	useEffect(() => {
-    const subscriber = onSnapshot(query(collection(db, "Orders"), where("consumer", "==", auth.currentUser.uid)), async (snapshot) => {
+    const subscriber = onSnapshot(query(collection(db, "Orders"), where("customer", "==", auth.currentUser.uid)), async (snapshot) => {
       setOrders(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
 
@@ -32,6 +32,14 @@ const OrderHistory = () => {
 	if (loading) {
     return (
       <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
+    )
+  }
+
+  if (orders.length == 0) {
+    return (
+      <View useSafeArea flex style={[global.white, global.center, global.container]}>
+        <Text text65 marginV-4>No orders created yet</Text>
+      </View>
     )
   }
 

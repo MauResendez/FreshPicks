@@ -20,8 +20,8 @@ const Conversation = ({ route }) => {
   const navigation = useNavigation<any>();
   const [messages, setMessages] = useState(null);
   const [chat, setChat] = useState(null);
-  const [consumer, setConsumer] = useState(null);
-  const [farmer, setFarmer] = useState(null);
+  const [customer, setCustomer] = useState(null);
+  const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
   const chatsRef = doc(db, "Chats", route.params.id);
 
@@ -125,8 +125,8 @@ const Conversation = ({ route }) => {
         },
         body: JSON.stringify({
           'message': m[0].text,
-          'sender': auth.currentUser.uid == chat.consumer ? consumer.name : farmer.business,
-          'tokens': auth.currentUser.uid == chat.consumer ? farmer.token : consumer.token,
+          'sender': auth.currentUser.uid == chat.customer ? customer.name : vendor.business,
+          'tokens': auth.currentUser.uid == chat.customer ? vendor.token : customer.token,
         }),
       });
     } catch (error) {
@@ -169,24 +169,24 @@ const Conversation = ({ route }) => {
 
   useEffect(() => {
     if (chat) {
-      getDoc(doc(db, "Users", chat.consumer)).then((doc) => {
+      getDoc(doc(db, "Users", chat.customer)).then((doc) => {
         const data = doc.data();
 
-        setConsumer({...data, id: chat.consumer});
+        setCustomer({...data, id: chat.customer});
       });
   
-      getDoc(doc(db, "Users", chat.farmer)).then((doc) => {
+      getDoc(doc(db, "Users", chat.vendor)).then((doc) => {
         const data = doc.data();
   
-        setFarmer({...data, id: chat.farmer});
+        setVendor({...data, id: chat.vendor});
       });
     }
   }, [chat]);
 
   useLayoutEffect(() => {
-    if (chat && consumer && farmer && messages) {
+    if (chat && customer && vendor && messages) {
       navigation.setOptions({
-        headerTitle: chat?.consumer == auth.currentUser.uid ? consumer.name : farmer.name,
+        headerTitle: chat?.customer == auth.currentUser.uid ? customer.name : vendor.name,
         headerRight: () => (
           <View row>
             <Ionicon 
@@ -204,7 +204,7 @@ const Conversation = ({ route }) => {
 
       setLoading(false);
     }
-  }, [chat, consumer, farmer, messages]);
+  }, [chat, customer, vendor, messages]);
 
   const onQuickReply = replies => {
     const createdAt = new Date()
@@ -244,7 +244,7 @@ const Conversation = ({ route }) => {
         onSend={messages => onSend(messages)}
         user={{
           _id: auth.currentUser.uid,
-          name: chat?.consumer == auth.currentUser.uid ? consumer.name : farmer.name,
+          name: chat?.customer == auth.currentUser.uid ? customer.name : vendor.name,
         }}
         // multiline={false}
         alwaysShowSend={true}

@@ -33,12 +33,12 @@ const Chat = () => {
       return;
     }
 
-    if (user.role === "Farmer") {
-      onSnapshot(query(collection(db, "Chats"), where("farmer", "==", auth.currentUser.uid)), async (snapshot) => {
+    if (user.role === "Vendor") {
+      onSnapshot(query(collection(db, "Chats"), where("vendor", "==", auth.currentUser.uid)), async (snapshot) => {
         setChats(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
       });
     } else {
-      onSnapshot(query(collection(db, "Chats"), where("consumer", "==", auth.currentUser.uid)), async (snapshot) => {
+      onSnapshot(query(collection(db, "Chats"), where("customer", "==", auth.currentUser.uid)), async (snapshot) => {
         setChats(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
       });
     }

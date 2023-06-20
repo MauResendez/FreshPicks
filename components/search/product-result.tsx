@@ -1,7 +1,7 @@
 import React from 'react';
 import { Colors, ListItem, Text } from 'react-native-ui-lib';
 
-const FarmerResultRow = (props) => {
+const ProductResult = (props) => {
   const {item} = props;
 
 	return (
@@ -11,11 +11,11 @@ const FarmerResultRow = (props) => {
 			style={{ backgroundColor: Colors.white, padding: 8, height: "auto" }}
     >
       <ListItem.Part column>
-        <Text text65 marginV-4>{item.business}</Text>
-        <Text text80M grey30 marginV-4>{item.address}</Text>
+        <Text text65 marginV-4 numberOfLines={1}>{item.title}</Text>
+        <Text text80M grey30 marginV-4>${item.price.toFixed(2)}</Text>
       </ListItem.Part>
     </ListItem>
 	)
 }
 
-export default FarmerResultRow
+export default ProductResult;

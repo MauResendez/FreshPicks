@@ -1,17 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
 export const orderSlice = createSlice({
   name: "order",
   initialState: {
     items: [],
-    farmer: null,
-    user: null
+    vendor: null,
+    customer: null
   },
   reducers: {
     addToOrder: (state, action) => {
       state.items = [...state.items, action.payload.product];
-      state.farmer = action.payload.farmer;
-      state.user = action.payload.user;
+      state.vendor = action.payload.vendor;
+      state.customer = action.payload.customer;
     },
     removeFromOrder: (state, action) => {
       const index = state.items.findIndex((item) => item.id === action.payload.id);
@@ -27,12 +27,12 @@ export const orderSlice = createSlice({
       state.items = newOrder;
 
       if (state.items.length == 0) {
-        state.farmer = null;
+        state.vendor = null;
       }
     },
     clearOrder: (state) => {
       state.items = [];
-      state.farmer = null;
+      state.vendor = null;
     }
   }
 });
@@ -47,8 +47,8 @@ export const selectOrderTotal = (state) => state.order.items.reduce((total, item
   return total + item.price;
 }, 0);
 
-export const getOrderFarmer = (state) => state.order.farmer;
+export const getOrderVendor = (state) => state.order.vendor;
 
-export const getOrderUser = (state) => state.order.user;
+export const getOrderCustomer = (state) => state.order.customer;
 
 export default orderSlice.reducer

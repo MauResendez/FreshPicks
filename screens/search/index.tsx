@@ -8,8 +8,8 @@ import {
 import Ionicon from "react-native-vector-icons/Ionicons";
 
 import { Colors, LoaderScreen, TextField, View } from "react-native-ui-lib";
-import FarmerList from "../../components/search/farmer-list";
 import ProductList from "../../components/search/product-list";
+import VendorList from "../../components/search/vendor-list";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
@@ -19,7 +19,7 @@ import { global } from "../../style";
 const Search = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [farmers, setFarmers] = useState(null);
+  const [vendors, setVendors] = useState(null);
   const [products, setProducts] = useState(null);
   const [fp, setFP] = useState(null);
   const [ff, setFF] = useState(null);
@@ -43,8 +43,8 @@ const Search = () => {
   }
 
   useEffect(() => {
-    const subscriber = onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
-      setFarmers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+    const subscriber = onSnapshot(query(collection(db, "Users"), where("vendor", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
+      setVendors(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     })
 
     const subscriber2 = onSnapshot(query(collection(db, "Products"), where("user", "!=", auth.currentUser.uid)), async (snapshot) => {
@@ -60,18 +60,18 @@ const Search = () => {
 
   useEffect(() => {
     try {
-      if (!farmers || !products) {
+      if (!vendors || !products) {
         return;
       }
 
       if (search.length == 0) {
-        const ff = shuffle(farmers);
+        const ff = shuffle(vendors);
         const fp = shuffle(products);
 
         setFF(ff);
         setFP(fp);
       } else {
-        const fr = farmers.filter(result => {
+        const fr = vendors.filter(result => {
           return (result.business.toLowerCase().indexOf(search.toLowerCase()) !== -1 || result.address.toLowerCase().indexOf(search.toLowerCase()) !== -1);
         });
     
@@ -89,7 +89,7 @@ const Search = () => {
       alert(error.message);
       console.log(error);
     }
-  }, [farmers, products, search]);
+  }, [vendors, products, search]);
 
   useEffect(() => {
     if (ff && fp) {
@@ -108,14 +108,14 @@ const Search = () => {
   return (
     <View useSafeArea flex style={global.white}>
       <View padding-8>
-        <TextField fieldStyle={{ backgroundColor: Colors.grey60, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Farmers, produce, subscriptions, etc." placeholderTextColor={Colors.grey30} leadingAccessory={<Ionicon name="search" color={Colors.grey30} size={20} style={{ marginRight: 8 }} />} migrate />
+        <TextField fieldStyle={{ backgroundColor: Colors.grey60, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Vendors, produce, subscriptions, etc." placeholderTextColor={Colors.grey30} leadingAccessory={<Ionicon name="search" color={Colors.grey30} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>
 
       <ScrollView
         contentContainerStyle={{ paddingBottom: 16 }}
         showsVerticalScrollIndicator={Platform.OS == "web"}
       >
-        <FarmerList title={"Farmers"} description={"Available Farmers"} farmers={ff} />
+        <VendorList title={"Vendors"} description={"Available Vendors"} vendors={ff} />
         <ProductList title={"Products"} description={"Available Products"} products={fp} />
       </ScrollView>
     </View>

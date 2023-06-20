@@ -15,7 +15,7 @@ import { global } from "../../style";
 // SplashScreen.preventAutoHideAsync();
 
 const Map = () => {
-  const [farmers, setFarmers] = useState([]);
+  const [vendors, setVendors] = useState([]);
   const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mapRegion, setMapRegion] = useState(null);
@@ -38,19 +38,19 @@ const Map = () => {
     setLocation(location);
   }
 
-  const navigateToApp = (farmer) => {
+  const navigateToApp = (vendor) => {
     if (Platform.OS == "android") {
-      Linking.openURL(`google.navigation:q=${farmer.latitude}+${farmer.longitude}`);
+      Linking.openURL(`google.navigation:q=${vendor.latitude}+${vendor.longitude}`);
     } else {
-      Linking.openURL(`maps://app?saddr=${location.coords.latitude}+${location.coords.longitude}&daddr=${farmer.latitude}+${farmer.longitude}`);
+      Linking.openURL(`maps://app?saddr=${location.coords.latitude}+${location.coords.longitude}&daddr=${vendor.latitude}+${vendor.longitude}`);
     }
   }
 
   useEffect(() => { 
     getLocation();
 
-    const subscriber = onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
-      setFarmers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+    const subscriber = onSnapshot(query(collection(db, "Users"), where("vendor", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
+      setVendors(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
 
     // Unsubscribe from events when no longer in use
@@ -106,16 +106,16 @@ const Map = () => {
           showsTraffic
           // cacheEnabled={NetInfo.fetch().}
         >
-          {farmers.map((farmer, index) => {
+          {vendors.map((vendor, index) => {
             return (
               <Marker 
                 key={index} 
                 focusable 
-                title={farmer.business} 
-                description={farmer.address} 
-                coordinate={{ latitude: farmer?.location?.latitude, longitude: farmer?.location?.longitude }}
+                title={vendor.business} 
+                description={vendor.address} 
+                coordinate={{ latitude: vendor?.location?.latitude, longitude: vendor?.location?.longitude }}
                 onCalloutPress={() => {
-                  navigateToApp(farmer.location);
+                  navigateToApp(vendor.location);
                 }}
               />
             );
@@ -124,9 +124,9 @@ const Map = () => {
       </View>
       <View flex>
         <FlashList 
-          data={farmers}
+          data={vendors}
           keyExtractor={(item: any) => item.id}
-          estimatedItemSize={farmers.length != 0 ? farmers.length : 150}
+          estimatedItemSize={vendors.length != 0 ? vendors.length : 150}
           renderItem={renderItem}
         />
       </View>

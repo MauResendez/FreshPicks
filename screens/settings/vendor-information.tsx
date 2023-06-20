@@ -11,7 +11,7 @@ import * as Yup from 'yup';
 import { auth, db, storage } from "../../firebase";
 import { global } from "../../style";
 
-const UpdateFarmer = () => {
+const VendorInformation = () => {
   const navigation = useNavigation<any>();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState<any>(true);
@@ -254,7 +254,7 @@ const UpdateFarmer = () => {
                   <Button 
                     backgroundColor={Colors.primary}
                     color={Colors.white}
-                    label={"Update Farmer Information"} 
+                    label={"Update Vendor Information"} 
                     labelStyle={{ fontWeight: '600', padding: 8 }} 
                     style={global.button} 
                     onPress={() => handleSubmit()}                
@@ -269,4 +269,4 @@ const UpdateFarmer = () => {
   );
 }
 
-export default UpdateFarmer
+export default VendorInformation

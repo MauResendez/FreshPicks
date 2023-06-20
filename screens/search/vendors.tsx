@@ -1,17 +1,23 @@
 import { FlashList } from "@shopify/flash-list";
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Colors, LoaderScreen, TextField, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
-import FarmerResultRow from "../../components/search/farmer-result-row";
+import VendorResult from "../../components/search/vendor-result";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
-const Farmers = () => {
+const Vendors = () => {
   const [search, setSearch] = useState("");
-  const [farmers, setFarmers] = useState(null);
+  const [vendors, setVendors] = useState(null);
   const [ff, setFF] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const renderItem = useCallback(({item}) => {
+    return (
+      <VendorResult item={item} />
+    );
+  }, []);
 
   const shuffle = (array) => {
     let currentIndex = array.length;
@@ -32,8 +38,8 @@ const Farmers = () => {
   }
 
   useEffect(() => {
-    const subscriber = onSnapshot(query(collection(db, "Users"), where("farmer", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
-      setFarmers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+    const subscriber = onSnapshot(query(collection(db, "Users"), where("vendor", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
+      setVendors(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     })
 
     // Unsubscribe from events when no longer in use
@@ -44,16 +50,16 @@ const Farmers = () => {
 
   useEffect(() => {
     try {
-      if (!farmers) {
+      if (!vendors) {
         return;
       }
 
       if (search.length == 0) {
-        const ff = shuffle(farmers);
+        const ff = shuffle(vendors);
 
         setFF(ff);
       } else {
-        const fr = farmers.filter(result => {
+        const fr = vendors.filter(result => {
           return (result.business.toLowerCase().indexOf(search.toLowerCase()) !== -1 || result.address.toLowerCase().indexOf(search.toLowerCase()) !== -1);
         });
   
@@ -65,7 +71,7 @@ const Farmers = () => {
       alert(error.message);
       console.log(error);
     }
-  }, [farmers, search]);
+  }, [vendors, search]);
 
   useEffect(() => {
     if (ff) {
@@ -82,19 +88,17 @@ const Farmers = () => {
   return (
     <View useSafeArea flex style={global.white}>
       <View padding-8>
-        <TextField fieldStyle={{ backgroundColor: Colors.grey60, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Search for farmers here" placeholderTextColor={Colors.grey30} leadingAccessory={<Ionicon name="search" color={"gray"} size={20} style={{ marginRight: 8 }} />} migrate />
+        <TextField fieldStyle={{ backgroundColor: Colors.grey60, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Search for vendors here" placeholderTextColor={Colors.grey30} leadingAccessory={<Ionicon name="search" color={"gray"} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>
 
       <FlashList 
         data={ff}
         keyExtractor={(item: any) => item.id}
-        estimatedItemSize={farmers.length != 0 ? farmers.length : 150}
-        renderItem={({item}) => (
-          <FarmerResultRow item={item} />
-        )}
+        estimatedItemSize={vendors.length != 0 ? vendors.length : 150}
+        renderItem={renderItem}
       />
     </View>
   );
 }
 
-export default Farmers
+export default Vendors

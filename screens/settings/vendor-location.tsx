@@ -9,7 +9,7 @@ import * as Yup from 'yup';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
 
-const UploadLocation = () => {
+const VendorLocation = () => {
 	const navigation = useNavigation<any>();
   const [coordinates, setCoordinates] = useState({ latitude: 26.212379, longitude: -98.318153 });
 	const [region, setRegion] = useState(null);
@@ -140,7 +140,7 @@ const UploadLocation = () => {
 						// 		<Button 
 						// 			backgroundColor={Colors.primary}
 						// 			color={Colors.white}
-						// 			label={"Update Farmer Location"} 
+						// 			label={"Update Vendor Location"} 
 						// 			labelStyle={{ fontWeight: '600', padding: 8 }} 
 						// 			style={global.button} 
 						// 			onPress={() => handleSubmit()}                
@@ -201,7 +201,7 @@ const UploadLocation = () => {
 							<Button 
 								backgroundColor={Colors.primary}
 								color={Colors.white}
-								label={"Update Farmer Location"} 
+								label={"Update Vendor Location"} 
 								labelStyle={{ fontWeight: '600', padding: 8 }} 
 								style={global.button} 
 								onPress={() => handleSubmit()}
@@ -215,4 +215,4 @@ const UploadLocation = () => {
   );
 };
 
-export default UploadLocation;
+export default VendorLocation;

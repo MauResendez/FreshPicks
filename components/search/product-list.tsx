@@ -7,11 +7,6 @@ import ProductCard from "./product-card";
 
 const ProductList = ({ title, description, products }) => {
   const navigation = useNavigation<any>();
-  const handlePress = (user) => {
-    navigation.navigate("Profile", {
-      id: user
-    });
-  };
 
   const renderItem = useCallback(({item}) => {
     return (

@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
 
-const UpdatePersonal = () => {
+const AccountInformation = () => {
   const navigation = useNavigation<any>();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState<any>(true);
@@ -108,4 +108,4 @@ const UpdatePersonal = () => {
   )
 }
 
-export default UpdatePersonal
+export default AccountInformation

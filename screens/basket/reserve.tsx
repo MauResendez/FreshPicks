@@ -21,7 +21,7 @@
 //   }, []);
 
 // 	useEffect(() => {
-//     const subscriber = onSnapshot(query(collection(db, "Orders"), where("consumer", "!=", auth.currentUser.uid)), async (snapshot) => {
+//     const subscriber = onSnapshot(query(collection(db, "Orders"), where("customer", "!=", auth.currentUser.uid)), async (snapshot) => {
 //       setOrders(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
 //     });
 
@@ -130,7 +130,7 @@ const Reserve = () => {
   }, []);
 
   const generateTimeSlots = () => {
-    // Get farmer's schedule here
+    // Get vendor's schedule here
 
     // Check day of the week
 

@@ -8,7 +8,7 @@ import AddressRow from '../../components/basket/address-row';
 import BasketRow from '../../components/basket/basket-row';
 import BusinessRow from '../../components/basket/business-row';
 import ReserveRow from '../../components/basket/reserve-row';
-import { clearOrder, getOrderFarmer, getOrderUser, selectOrderItems, selectOrderTotal } from '../../features/order-slice';
+import { clearOrder, getOrderCustomer, getOrderVendor, selectOrderItems, selectOrderTotal } from '../../features/order-slice';
 import { db } from '../../firebase';
 import { global } from '../../style';
 
@@ -17,9 +17,9 @@ const Basket = () => {
   const [chat, setChat] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const items = useSelector(selectOrderItems);
-  const orderFarmer = useSelector(getOrderFarmer);
+  const orderCustomer = useSelector(getOrderCustomer);
+  const orderVendor = useSelector(getOrderVendor);
   const orderTotal = useSelector(selectOrderTotal);
-  const orderUser = useSelector(getOrderUser);
   const dispatch = useDispatch();
 
   const clearOrderItems = (() => {
@@ -44,7 +44,7 @@ const Basket = () => {
       obj.id = curr.id;
       obj.count = 1;
       obj.description = curr.description;
-      obj.farmer = curr.user;
+      obj.vendor = curr.user;
       obj.images = curr.images;
       obj.price = curr.price;
       obj.title = curr.title;
@@ -62,20 +62,20 @@ const Basket = () => {
 
   const createOrder = async () => {
     await addDoc(collection(db, "Orders"), {
-      consumer: orderUser.id,
-      farmer: orderFarmer.id,
+      customer: orderCustomer.id,
+      vendor: orderVendor.id,
       products: result,
       total: Number(orderTotal.toFixed(2)),
       status: "Pending",
       createdAt: new Date(),
-      title: `Order for ${orderUser.name}`,
+      title: `Order for ${orderCustomer.name}`,
     }).then(async () => {
       handleChat();
     }).catch((e) => alert(e.message));
   }
 
   const handleChat = (async () => {
-    // let message = `${orderUser.name} has recently created an order (ID: ${order}) of (List of items here) for $${data.total.toFixed(2)}.`;
+    // let message = `${orderCustomer.name} has recently created an order (ID: ${order}) of (List of items here) for $${data.total.toFixed(2)}.`;
 
     if (chat.length != 0) {
       clearOrderItems();
@@ -84,8 +84,8 @@ const Basket = () => {
     }
 
     await addDoc(collection(db, "Chats"), {
-      consumer: orderUser.id,
-      farmer: orderFarmer.id,
+      customer: orderCustomer.id,
+      vendor: orderVendor.id,
       messages: []
     }).then((doc) => {
       clearOrderItems();
@@ -95,14 +95,14 @@ const Basket = () => {
 
   // Get the user's chats first
   useEffect(() => {
-    if (orderUser && orderFarmer) {
-      onSnapshot(query(collection(db, "Chats"), where("consumer", "==", orderUser.id), where("farmer", "==", orderFarmer.id)), async (snapshot) => {
+    if (orderCustomer && orderVendor) {
+      onSnapshot(query(collection(db, "Chats"), where("customer", "==", orderCustomer.id), where("vendor", "==", orderVendor.id)), async (snapshot) => {
         setChat(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
       });
     } else {
       setLoading(false); 
     }
-  }, [orderUser, orderFarmer]);
+  }, [orderCustomer, orderVendor]);
 
   useEffect(() => {
     if (chat) {
@@ -141,11 +141,11 @@ const Basket = () => {
             </ListItem.Part>
           </ListItem>
 
-          <BusinessRow item={orderFarmer} />
+          <BusinessRow item={orderVendor} />
 
-          <AddressRow item={orderFarmer} />
+          <AddressRow item={orderVendor} />
 
-          <ReserveRow item={orderFarmer} />
+          <ReserveRow item={orderVendor} />
           
           <ListItem
             activeOpacity={0.3}

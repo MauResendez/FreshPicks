@@ -12,7 +12,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import PhoneInput from 'react-native-phone-input';
-import { Button, Carousel, Checkbox, Colors, DateTimePicker, Image, KeyboardAwareScrollView, LoaderScreen, PageControl, Text, TextField, Toast, View, Wizard } from 'react-native-ui-lib';
+import { Button, Carousel, Checkbox, Colors, DateTimePicker, Image, KeyboardAwareScrollView, LoaderScreen, PageControl, Text, TextField, View, Wizard } from 'react-native-ui-lib';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Yup from 'yup';
 import { app, auth, db, storage } from '../../firebase';
@@ -29,7 +29,7 @@ const Register = () => {
   const [active, setActive] = useState(0);
   const [completedStep, setCompletedStep] = useState(undefined);
   const [vid, setVID] = useState<any>();
-  const [farmer, setFarmer] = useState<boolean>(false);
+  const [vendor, setVendor] = useState<boolean>(false);
   const [monday, setMonday] = useState<any>({ enable: false, start: null, end: null });
   const [tuesday, setTuesday] = useState<any>({ enable: false, start: null, end: null });
   const [wednesday, setWednesday] = useState<any>({ enable: false, start: null, end: null });
@@ -215,9 +215,9 @@ const Register = () => {
       await setDoc(doc(db, "Users", user.uid), {
         name: values.name,
         phone: values.phone,
-        role: farmer ? "Farmer" : "Consumer",
+        role: vendor ? "Vendor" : "Customer",
         admin: false,
-        farmer: farmer,
+        vendor: vendor,
         email: values.email,
         address: values.address,
         location: values.location,
@@ -241,7 +241,7 @@ const Register = () => {
 
       const auth_credential = await signInWithCredential(auth, credential);
       const user = auth_credential.user;
-      const imgs = farmer ? await uploadImages(values.images) : [];
+      const imgs = vendor ? await uploadImages(values.images) : [];
       await createUser(values, user, imgs);
     } catch (error) {
       console.log(error);
@@ -282,7 +282,7 @@ const Register = () => {
   const Next = () => {
     return (
       <View>
-        {farmer 
+        {vendor 
           ? <Button style={active !== 4 && {backgroundColor: Colors.primary}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 4} />
           : <Button style={active !== 1 && {backgroundColor: Colors.primary}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 1} />
         }
@@ -296,7 +296,7 @@ const Register = () => {
         <View row spread centerV>
           {Prev()}
           {/* <Text>{active}</Text> */}
-          <PageControl numOfPages={farmer ? 5 : 2} currentPage={active} color={Colors.primary} />
+          <PageControl numOfPages={vendor ? 5 : 2} currentPage={active} color={Colors.primary} />
           {Next()}
         </View>
       </View>
@@ -311,8 +311,8 @@ const Register = () => {
         <View style={global.field}>
           <Text text65 marginV-4>Register as a Vendor?</Text>
           <Checkbox 
-            value={farmer} 
-            onValueChange={() => setFarmer(!farmer)} 
+            value={vendor} 
+            onValueChange={() => setVendor(!vendor)} 
             style={global.checkbox}
             color={Colors.primary}
           />
@@ -353,7 +353,7 @@ const Register = () => {
     )
   }
 
-  const FarmerInformation = (props) => {
+  const VendorInformation = (props) => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
@@ -419,7 +419,7 @@ const Register = () => {
     );
   };
 
-  const FarmerAddress = (props) => {
+  const VendorAddress = (props) => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
@@ -549,7 +549,7 @@ const Register = () => {
     );
   };
 
-  const FarmerSchedule = (props) => {
+  const VendorSchedule = (props) => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
@@ -881,14 +881,14 @@ const Register = () => {
       case 0:
         return PersonalInformation(props);
       case 1:
-        if (farmer)
-          return FarmerInformation(props);
+        if (vendor)
+          return VendorInformation(props);
 
         return AccountInformation(props);
       case 2:
-        return FarmerAddress(props);
+        return VendorAddress(props);
       case 3:
-        return FarmerSchedule(props);
+        return VendorSchedule(props);
       case 4:
         return AccountInformation(props);
     }
@@ -960,23 +960,23 @@ const Register = () => {
     name: Yup.string().required('Name is required'), 
     email: Yup.string().email("Email must be a valid email").required('Email is required'), 
     address: Yup.string().when([], {
-      is: () => farmer,
+      is: () => vendor,
       then: (schema) => schema.required('Address is required'),
     }),
     location: Yup.object().when([], {
-      is: () => farmer,
+      is: () => vendor,
       then: (schema) => schema.required('Location is required'),
     }),
     business: Yup.string().when([], {
-      is: () => farmer,
+      is: () => vendor,
       then: (schema) => schema.required('Business is required'),
     }),
     description: Yup.string().when([], {
-      is: () => farmer,
+      is: () => vendor,
       then: (schema) => schema.required('Description is required'),
     }),
     website: Yup.string().url("Website must be a valid URL\nE.g. (https://www.google.com)").when([], {
-      is: () => farmer,
+      is: () => vendor,
       then: (schema) => schema.notRequired(),
     }),
     phone: Yup.string().required('Phone is required'), 
@@ -993,21 +993,6 @@ const Register = () => {
       >
           {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values, isSubmitting, submitCount }) => (
           <View useSafeArea flex>
-            <Toast visible={submitCount > 0 && Object.keys(errors).length > 0} message={"One or more fields currently have errors. Please correct them to register your account"} position={'top'} backgroundColor={Colors.red30} autoDismiss={1000} onDismiss={hideToast} swipeable />
-            {farmer 
-              ? <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
-                  <Wizard.Step state={getStepState(0)} label={'Personal Information'} />
-                  <Wizard.Step state={getStepState(1)} label={'Farmer Information'} />
-                  <Wizard.Step state={getStepState(1)} label={'Farmer Address'} />
-                  <Wizard.Step state={getStepState(2)} label={'Farmer Schedule'} />
-                  <Wizard.Step state={getStepState(3)} label={'Account Information'} />
-                </Wizard>
-              : <Wizard testID={'uilib.wizard'} activeIndex={active} onActiveIndexChanged={onActiveIndexChanged}>
-                  <Wizard.Step state={getStepState(0)} label={'Personal Information'} />
-                  <Wizard.Step state={getStepState(1)} label={'Account Information'} />
-                </Wizard>
-            }
-            {/* <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex} enableOnAndroid={true} enableAutomaticScroll={(Platform.OS === 'ios')}>  */}
             <KeyboardAwareScrollView contentContainerStyle={global.flex}>
               {Current({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values })}
             </KeyboardAwareScrollView>

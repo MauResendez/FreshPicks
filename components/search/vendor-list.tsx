@@ -3,14 +3,14 @@ import { FlashList } from "@shopify/flash-list";
 import React, { useCallback } from "react";
 import { Text, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
-import FarmerCard from "./farmer-card";
+import VendorCard from "./vendor-card";
 
-const FarmerList = ({ title, description, farmers }) => {
+const VendorList = ({ title, description, vendors }) => {
   const navigation = useNavigation<any>();
 
   const renderItem = useCallback(({item}) => {
     return (
-      <FarmerCard item={item} />
+      <VendorCard item={item} />
     );
   }, []);
 
@@ -22,20 +22,20 @@ const FarmerList = ({ title, description, farmers }) => {
           <Text text90L marginV-4>{description}</Text>
         </View>
 
-        <Ionicon name={"arrow-forward"} size={32} onPress={() => navigation.navigate("Farmers")}/>
+        <Ionicon name={"arrow-forward"} size={32} onPress={() => navigation.navigate("Vendors")}/>
       </View>
 
       <FlashList 
-        data={farmers}
+        data={vendors}
         keyExtractor={(item: any) => item.id}
         horizontal
         contentContainerStyle={{ padding: 16 }}
         showsHorizontalScrollIndicator={false}
-        estimatedItemSize={farmers.length != 0 ? farmers.length : 150}
+        estimatedItemSize={vendors.length != 0 ? vendors.length : 150}
         renderItem={renderItem}
       />
     </View>
   );
 };
 
-export default FarmerList;
+export default VendorList;

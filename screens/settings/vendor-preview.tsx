@@ -10,17 +10,17 @@ import { selectOrderItems } from "../../features/order-slice";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
-const Preview = ({ route }) => {
+const VendorPreview = ({ route }) => {
   const navigation = useNavigation<any>();
   const [products, setProducts] = useState([]);
   const [chat, setChat] = useState(null);
-  const [consumer, setConsumer] = useState(null);
-  const [farmer, setFarmer] = useState(null);
+  const [customer, setCustomer] = useState(null);
+  const [vendor, setVendor] = useState(null);
   const items = useSelector(selectOrderItems);
   const [loading, setLoading] = useState(true);
 
   const handleChat = async () => {
-    // Check user if they have current farmer id saved in chatted
+    // Check user if they have current vendor id saved in chatted
     // If there isn't, create a chat and 
     // Find a chat that has both ids in the chat
     
@@ -30,8 +30,8 @@ const Preview = ({ route }) => {
     }
 
     await addDoc(collection(db, "Chats"), {
-      consumer: consumer.id,
-      farmer: farmer.id,
+      customer: customer.id,
+      vendor: vendor.id,
       messages: []
     })
     .then((doc) => {
@@ -43,12 +43,12 @@ const Preview = ({ route }) => {
   useEffect(() => {
     getDoc(doc(db, "Users", auth.currentUser.uid)).then((doc) => {
       const data = doc.data();
-      setConsumer({...data, id: auth.currentUser.uid});
+      setCustomer({...data, id: auth.currentUser.uid});
     });
 
     getDoc(doc(db, "Users", route.params.id)).then((doc) => {
       const data = doc.data();
-      setFarmer({...data, id: route.params.id});
+      setVendor({...data, id: route.params.id});
     });
 
     const subscriber = onSnapshot(query(collection(db, "Products"), where("user", "==", route.params.id)), async (snapshot) => {
@@ -60,12 +60,12 @@ const Preview = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    if (consumer && farmer) {
-      onSnapshot(query(collection(db, "Chats"), where("consumer", "==", auth.currentUser.uid), where("farmer", "==", route.params.id)), async (snapshot) => {
+    if (customer && vendor) {
+      onSnapshot(query(collection(db, "Chats"), where("customer", "==", auth.currentUser.uid), where("vendor", "==", route.params.id)), async (snapshot) => {
         setChat(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
       });
     }
-  }, [consumer, farmer]);
+  }, [customer, vendor]);
 
   useEffect(() => {
     if (chat) {
@@ -93,7 +93,7 @@ const Preview = ({ route }) => {
             height: 200
           }}
         >
-          {farmer.images?.map((image, i) => {
+          {vendor.images?.map((image, i) => {
             return (
               <View flex centerV key={i}>
                 <Image
@@ -111,26 +111,26 @@ const Preview = ({ route }) => {
 
         <View padding-16>
           <View row>
-            <Text text65 marginV-4>{farmer.business}</Text>
+            <Text text65 marginV-4>{vendor.business}</Text>
           </View>
 
           <View row>
-            <Text text80M grey30 marginV-4>{farmer.address}</Text>
+            <Text text80M grey30 marginV-4>{vendor.address}</Text>
           </View>
 
           <View row>
-            <Text text80M grey30 marginV-4>{farmer.description}</Text>
+            <Text text80M grey30 marginV-4>{vendor.description}</Text>
           </View>
 
           <View row spread style={global.flexWrap}>
-            <Chip backgroundColor={Colors.primary} containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${farmer.name}`} labelStyle={{ color: Colors.white }} onPress={handleChat}/>
-            <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`tel:${farmer.phone}`) }}/>
-            <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`mailto:${farmer.email}`) }}/>
+            <Chip backgroundColor={Colors.primary} containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${vendor.name}`} labelStyle={{ color: Colors.white }} onPress={handleChat}/>
+            <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`tel:${vendor.phone}`) }}/>
+            <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`mailto:${vendor.email}`) }}/>
           </View>
         </View>
 
         {products.map((item) => (
-          <ProfileRow item={item} farmer={farmer} user={consumer} />
+          <ProfileRow item={item} vendor={vendor} customer={customer} />
         ))}
 
         <View flexG />
@@ -150,4 +150,4 @@ const Preview = ({ route }) => {
   );
 }
 
-export default Preview;
+export default VendorPreview;

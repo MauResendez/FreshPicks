@@ -154,7 +154,7 @@ const Settings = () => {
   return (
     <View useSafeArea flex style={global.white}>
       <ScrollView showsVerticalScrollIndicator={Platform.OS == "web"}>
-        {user?.farmer && (
+        {user?.vendor && (
           <ListItem
             activeOpacity={0.3}
             backgroundColor={Colors.grey60}
@@ -186,7 +186,7 @@ const Settings = () => {
             </ListItem.Part>
           </ListItem>
         )}
-        {user?.farmer && (
+        {user?.vendor && (
           <ListItem
             backgroundColor={Colors.white}
             activeOpacity={0.3}
@@ -194,13 +194,13 @@ const Settings = () => {
             onPress={() => {
               Alert.alert("Switch Roles", "Would you like to switch roles?", [
                 {text: 'Cancel', style: 'cancel'},
-                {text: 'OK', onPress: () => { user.role === "Farmer" ? switchRoles("Consumer") : switchRoles("Farmer")}},
+                {text: 'OK', onPress: () => { user.role === "Vendor" ? switchRoles("Customer") : switchRoles("Vendor")}},
               ]);
             }}
           >
             <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
-                Switch to {user.role === "Farmer" ? "Consumer Role" : "Farmer Role"}
+                Switch to {user.role === "Vendor" ? "Customer Role" : "Vendor Role"}
               </Text>
             </ListItem.Part>
           </ListItem>
@@ -317,11 +317,11 @@ const Settings = () => {
         >
           <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
             <Text text65 marginV-4 numberOfLines={1}>
-              Farmer
+              Vendor
             </Text>
           </ListItem.Part>
         </ListItem>
-        {!user?.farmer && (
+        {!user?.vendor && (
           <ListItem
             backgroundColor={Colors.white}
             activeOpacity={0.3}
@@ -335,7 +335,7 @@ const Settings = () => {
             </ListItem.Part>
           </ListItem>
         )}
-        {user?.farmer && (
+        {user?.vendor && (
           <ListItem
             backgroundColor={Colors.white}
             activeOpacity={0.3}
@@ -356,12 +356,12 @@ const Settings = () => {
             </ListItem.Part>
           </ListItem>
         )}
-        {user?.farmer && (
+        {user?.vendor && (
           <ListItem
             backgroundColor={Colors.white}
             activeOpacity={0.3}
             height={60}
-            onPress={() => navigation.navigate("Farmer Preview", { id: auth.currentUser.uid })}
+            onPress={() => navigation.navigate("Vendor Preview", { id: auth.currentUser.uid })}
           >
             <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
@@ -370,44 +370,44 @@ const Settings = () => {
             </ListItem.Part>
           </ListItem>
         )}
-        {user?.farmer && (
+        {user?.vendor && (
           <ListItem
             backgroundColor={Colors.white}
             activeOpacity={0.3}
             height={60}
-            onPress={() => navigation.navigate("Farmer Information")}
+            onPress={() => navigation.navigate("Vendor Information")}
           >
             <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
-                Update Farmer Information
+                Update Vendor Information
               </Text>
             </ListItem.Part>
           </ListItem>
         )}
-        {user?.farmer && (
+        {user?.vendor && (
           <ListItem
             backgroundColor={Colors.white}
             activeOpacity={0.3}
             height={60}
-            onPress={() => navigation.navigate("Farmer Location")}
+            onPress={() => navigation.navigate("Vendor Location")}
           >
             <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
-                Update Farmer Location
+                Update Vendor Location
               </Text>
             </ListItem.Part>
           </ListItem>
         )}
-        {user?.farmer && (
+        {user?.vendor && (
           <ListItem
             backgroundColor={Colors.white}
             activeOpacity={0.3}
             height={60}
-            onPress={() => navigation.navigate("Farmer Schedule")}
+            onPress={() => navigation.navigate("Vendor Schedule")}
           >
             <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
-                Update Farmer Schedule
+                Update Vendor Schedule
               </Text>
             </ListItem.Part>
           </ListItem>

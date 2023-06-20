@@ -10,8 +10,8 @@ import { global } from '../../style';
 
 const Order = ({ route }) => {
 	const [order, setOrder] = useState(null);
-	const [consumer, setConsumer] = useState(null);
-	const [farmer, setFarmer] = useState(null);
+	const [customer, setCustomer] = useState(null);
+	const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -24,26 +24,26 @@ const Order = ({ route }) => {
 	useEffect(() => {
 		if (order) {
       console.log("Order:", order);
-			getDoc(doc(db, "Users", order.consumer)).then((doc) => {
+			getDoc(doc(db, "Users", order.customer)).then((doc) => {
 				const data = doc.data();
-				setConsumer({...data, id: order.consumer});
+				setCustomer({...data, id: order.customer});
 			});
 		
-			getDoc(doc(db, "Users", order.farmer)).then((doc) => {
+			getDoc(doc(db, "Users", order.vendor)).then((doc) => {
 				const data = doc.data();
-				setFarmer({...data, id: order.farmer});
+				setVendor({...data, id: order.vendor});
 			});
 		}
   }, [order]);
 
 	useEffect(() => {
-		if (consumer && farmer) {
-      console.log("Consumer:", consumer.id);
-      console.log("Farmer:", farmer.id);
+		if (customer && vendor) {
+      console.log("Customer:", customer.id);
+      console.log("Vendor:", vendor.id);
       console.log("Products:", order.products);
 			setLoading(false);
 		}
-  }, [consumer, farmer]);
+  }, [customer, vendor]);
 
   if (loading) {
     return (
@@ -66,9 +66,9 @@ const Order = ({ route }) => {
             </ListItem.Part>
           </ListItem>
 
-          <BusinessRow item={farmer} />
+          <BusinessRow item={vendor} />
 
-          <AddressRow item={farmer} />
+          <AddressRow item={vendor} />
           
           <ListItem
             activeOpacity={0.3}

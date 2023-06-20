@@ -159,7 +159,7 @@ const AddBusiness = () => {
           monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday, sunday: sunday
         },
         images: images,
-        farmer: true
+        vendor: true
       })
     } catch (error) {
       console.error('Error uploading images', error);
@@ -237,7 +237,7 @@ const AddBusiness = () => {
     )
   }
 
-  const FarmerInformation = (props) => {
+  const VendorInformation = (props) => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
@@ -303,7 +303,7 @@ const AddBusiness = () => {
     );
   };
 
-  const FarmerAddress = (props) => {
+  const VendorAddress = (props) => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
@@ -364,7 +364,7 @@ const AddBusiness = () => {
     );
   };
 
-  const FarmerSchedule = (props) => {
+  const VendorSchedule = (props) => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
@@ -626,11 +626,11 @@ const AddBusiness = () => {
   const Current = (props) => {
     switch (active) {
       case 0:
-        return FarmerInformation(props);
+        return VendorInformation(props);
       case 1:
-        return FarmerAddress(props);
+        return VendorAddress(props);
       case 2:
-        return FarmerSchedule(props);
+        return VendorSchedule(props);
     }
   };
 
@@ -682,7 +682,7 @@ const AddBusiness = () => {
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}> 
         <Formik 
-          initialValues={{ farmer: false, name: "", email: "", address: "", location: "", business: "", description: "", website: "", phone: "", sms: "", images: [] }} 
+          initialValues={{ vendor: false, name: "", email: "", address: "", location: "", business: "", description: "", website: "", phone: "", sms: "", images: [] }} 
           validationSchema={validate}
           onSubmit={handleSubmit}
         >

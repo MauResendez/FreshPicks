@@ -12,10 +12,10 @@ import TransactionStack from '../stack/transaction-stack';
 
 const Tab = createBottomTabNavigator();
 
-const FarmerTabs = () => {
+const VendorTabs = () => {
 	return (
 		<Tab.Navigator
-      initialRouteName={"Users"}
+      initialRouteName={"First"}
       screenOptions={{
         headerShown: false,
         tabBarActiveBackgroundColor: Colors.white,
@@ -122,4 +122,4 @@ const FarmerTabs = () => {
 	)
 }
 
-export default FarmerTabs
+export default VendorTabs;

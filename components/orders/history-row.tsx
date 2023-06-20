@@ -7,7 +7,7 @@ import { db } from "../../firebase";
 const HistoryRow = (props) => {
   const {item} = props;
   const navigation = useNavigation<any>();
-  const [farmer, setFarmer] = useState(null);
+  const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
 
 	const onPress = () => {
@@ -16,19 +16,19 @@ const HistoryRow = (props) => {
 
   useEffect(() => {
     if (item) {
-      getDoc(doc(db, "Users", item.farmer)).then((doc) => {
+      getDoc(doc(db, "Users", item.vendor)).then((doc) => {
         const data = doc.data();
     
-        setFarmer({...data, id: item.farmer});
+        setVendor({...data, id: item.vendor});
       });
     }
   }, [item]);
 
   useEffect(() => {
-    if (farmer) {
+    if (vendor) {
       setLoading(false);
     }
-  }, [farmer]);
+  }, [vendor]);
 
   if (loading) {
     return null
@@ -44,11 +44,11 @@ const HistoryRow = (props) => {
     >
       <ListItem.Part middle column>
         <View row spread>
-          <Text text65 marginV-4>{farmer.business}</Text>
+          <Text text65 marginV-4>{vendor.business}</Text>
           <Text text65 marginV-4>Cost: ${item.total.toFixed(2)}</Text>
         </View>
         <View row spread>
-          <Text text80M grey30 marginV-4>{farmer?.address}</Text>
+          <Text text80M grey30 marginV-4>{vendor?.address}</Text>
           <Text text80M grey30 marginV-4>{item.status}</Text>
         </View>
       </ListItem.Part>

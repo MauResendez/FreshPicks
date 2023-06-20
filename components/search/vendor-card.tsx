@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { memo } from "react";
 import { Card, Text, View } from "react-native-ui-lib";
 
-const FarmerCard = (props) => {
+const VendorCard = (props) => {
   const {item} = props;
   const navigation = useNavigation<any>();
 
@@ -43,4 +43,4 @@ const FarmerCard = (props) => {
   );
 };
 
-export default memo(FarmerCard);
+export default memo(VendorCard);

@@ -1,9 +1,9 @@
 import { FlashList } from "@shopify/flash-list";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Colors, LoaderScreen, TextField, View } from "react-native-ui-lib";
 import Ionicon from "react-native-vector-icons/Ionicons";
-import ProductResultRow from "../../components/search/product-result-row";
+import ProductResult from "../../components/search/product-result";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
@@ -12,6 +12,12 @@ const Products = () => {
   const [products, setProducts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [fp, setFP] = useState(null);
+
+  const renderItem = useCallback(({item}) => {
+    return (
+      <ProductResult item={item} />
+    );
+  }, []);
 
   const shuffle = (array) => {
     let currentIndex = array.length;
@@ -95,9 +101,7 @@ const Products = () => {
         data={fp}
         keyExtractor={(item: any) => item.id}
         estimatedItemSize={products.length != 0 ? products.length : 150}
-        renderItem={({item}) => (
-          <ProductResultRow item={item} />
-        )}
+        renderItem={renderItem}
       />
     </View>
   );

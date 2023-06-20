@@ -3,7 +3,7 @@ import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
 import { Button, Colors, DateTimePicker, KeyboardAwareScrollView, Switch, Text, View } from 'react-native-ui-lib';
 import { global } from '../../style';
 
-const UpdateSchedule = () => {
+const VendorSchedule = () => {
   const [monday, setMonday] = useState<any>({ enable: false, start: null, end: null });
   const [tuesday, setTuesday] = useState<any>({ enable: false, start: null, end: null });
   const [wednesday, setWednesday] = useState<any>({ enable: false, start: null, end: null });
@@ -99,7 +99,7 @@ const UpdateSchedule = () => {
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
-            label={"Update Farmer Schedule"} 
+            label={"Update Vendor Schedule"} 
             labelStyle={{ fontWeight: '600', padding: 8 }} 
             style={global.button} 
             // onPress={() => handleSubmit()}                
@@ -110,4 +110,4 @@ const UpdateSchedule = () => {
   );
 }
 
-export default UpdateSchedule
+export default VendorSchedule

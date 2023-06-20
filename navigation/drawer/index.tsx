@@ -41,7 +41,7 @@ const MainDrawer = () => {
   
   return (
     <Drawer.Navigator
-      initialRouteName={user?.role === "Farmer" ? "Dashboard" : "Home"}
+      initialRouteName={user?.role === "Vendor" ? "Dashboard" : "Home"}
       // useLegacyImplementation
       // drawerContent={props => <CustomDrawer {...props} />}
       screenOptions={({ navigation, route }) => ({ 
@@ -66,16 +66,16 @@ const MainDrawer = () => {
       })}
     >
       <Drawer.Screen
-        name={user?.role === "Farmer" ? "Dashboard" : "Home"}
-        component={user?.role === "Farmer" ? DashboardStack : SearchStack}
+        name={user?.role === "Vendor" ? "Dashboard" : "Home"}
+        component={user?.role === "Vendor" ? DashboardStack : SearchStack}
         options={({ route }) => {
-          let routeName = user?.role === "Farmer" ? "Dashboard" : "Home";
+          let routeName = user?.role === "Vendor" ? "Dashboard" : "Home";
           // const current = getFocusedRouteNameFromRoute(route) ?? "Index";
 
           return {
             drawerIcon: ({ color }) => (
               <MCIcon 
-                name={user?.role === "Farmer" ? "view-dashboard" : "home"}
+                name={user?.role === "Vendor" ? "view-dashboard" : "home"}
                 size={24} 
                 color={Colors.white} 
               />
@@ -85,16 +85,16 @@ const MainDrawer = () => {
         }}
       />
       <Drawer.Screen
-        name={user?.role === "Farmer" ? "Products" : "Feed"}
-        component={user?.role === "Farmer" ? ProductStack : ProductStack}
+        name={user?.role === "Vendor" ? "Products" : "Feed"}
+        component={user?.role === "Vendor" ? ProductStack : ProductStack}
         options={({ route }) => {
-          let routeName = user?.role === "Farmer" ? "Products" : "Feed";
+          let routeName = user?.role === "Vendor" ? "Products" : "Feed";
           // const current = getFocusedRouteNameFromRoute(route) ?? "Index";
 
           return {
             drawerIcon: ({ color }) => (
               <MCIcon
-                name={user?.role === "Farmer" ? "food-apple" : "timeline"}
+                name={user?.role === "Vendor" ? "food-apple" : "timeline"}
                 size={24}
                 color={Colors.white}
               />
@@ -104,16 +104,16 @@ const MainDrawer = () => {
         }}
       />
       <Drawer.Screen
-        name={user?.role === "Farmer" ? "Transactions" : "Map"}
-        component={user?.role === "Farmer" ? TransactionStack : MapStack}
+        name={user?.role === "Vendor" ? "Transactions" : "Map"}
+        component={user?.role === "Vendor" ? TransactionStack : MapStack}
         options={({ route }) => {
-          let routeName = user?.role === "Farmer" ? "Transactions" : "Map";
+          let routeName = user?.role === "Vendor" ? "Transactions" : "Map";
           // const current = getFocusedRouteNameFromRoute(route) ?? "Index";
 
           return {
             drawerIcon: ({ color }) => (
               <MCIcon 
-                name={user?.role === "Farmer" ? "swap-horizontal-circle-outline" : "map-marker"}
+                name={user?.role === "Vendor" ? "swap-horizontal-circle-outline" : "map-marker"}
                 size={24} 
                 color={Colors.white} 
               />
@@ -123,16 +123,16 @@ const MainDrawer = () => {
         }}
       />
       <Drawer.Screen
-        name={user?.role === "Farmer" ? "Orders" : "History"}
-        component={user?.role === "Farmer" ? OrderStack : OrderStack}
+        name={user?.role === "Vendor" ? "Orders" : "History"}
+        component={user?.role === "Vendor" ? OrderStack : OrderStack}
         options={({ route }) => {
-          let routeName = user?.role === "Farmer" ? "Meetings" : "History";
+          let routeName = user?.role === "Vendor" ? "Meetings" : "History";
           // const current = getFocusedRouteNameFromRoute(route) ?? "Index";
 
           return {
             drawerIcon: ({ color }) => (
               <MCIcon 
-                name={user?.role === "Farmer" ? "clock-time-four-outline" : "history"}
+                name={user?.role === "Vendor" ? "clock-time-four-outline" : "history"}
                 size={24} 
                 color={Colors.white} 
               />
@@ -150,7 +150,7 @@ const MainDrawer = () => {
           return {
             drawerIcon: ({ color }) => (
               <MCIcon 
-                name={user?.role === "Farmer" ? "view-dashboard" : "home"}
+                name={user?.role === "Vendor" ? "view-dashboard" : "home"}
                 size={24} 
                 color={Colors.white} 
               />

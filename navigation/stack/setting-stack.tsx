@@ -5,14 +5,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChangePhone from "../../screens/auth/change-phone";
 import Conversation from "../../screens/chat/conversation";
 import Settings from "../../screens/settings";
+import AccountInformation from "../../screens/settings/account-information";
 import AddBusiness from "../../screens/settings/add-business";
 import LinkAccount from "../../screens/settings/link-account";
 import OrderHistory from "../../screens/settings/order-history";
-import Preview from "../../screens/settings/preview";
-import UpdateFarmer from "../../screens/settings/update-farmer";
-import UpdateLocation from "../../screens/settings/update-location";
-import UpdatePersonal from "../../screens/settings/update-personal";
-import UpdateSchedule from "../../screens/settings/update-schedule";
+import VendorInformation from "../../screens/settings/vendor-information";
+import VendorLocation from "../../screens/settings/vendor-location";
+import VendorPreview from "../../screens/settings/vendor-preview";
+import VendorSchedule from "../../screens/settings/vendor-schedule";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,11 +34,11 @@ const SettingStack = () => {
       <Stack.Screen name="Change Phone" component={ChangePhone} />
       <Stack.Screen name="Add Your Business" component={AddBusiness} />
       <Stack.Screen name="Link Account" component={LinkAccount} />
-      <Stack.Screen name="Personal Information" component={UpdatePersonal} />
-      <Stack.Screen name="Farmer Information" component={UpdateFarmer} />
-      <Stack.Screen name="Farmer Location" component={UpdateLocation} />
-      <Stack.Screen name="Farmer Schedule" component={UpdateSchedule} />
-      <Stack.Screen name="Farmer Preview" component={Preview} />
+      <Stack.Screen name="Account Information" component={AccountInformation} />
+      <Stack.Screen name="Vendor Information" component={VendorInformation} />
+      <Stack.Screen name="Vendor Location" component={VendorLocation} />
+      <Stack.Screen name="Vendor Schedule" component={VendorSchedule} />
+      <Stack.Screen name="Vendor Preview" component={VendorPreview} />
       <Stack.Screen name="Order History" component={OrderHistory} />
     </Stack.Navigator>
   )

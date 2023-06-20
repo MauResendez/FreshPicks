@@ -58,7 +58,7 @@ const MainTabs = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={user?.role === "Farmer" ? "Dashboard" : "Home"}
+      initialRouteName={user?.role === "Vendor" ? "Dashboard" : "Home"}
       screenOptions={{
         headerShown: false,
         tabBarActiveBackgroundColor: Colors.white,
@@ -70,14 +70,14 @@ const MainTabs = () => {
     >
       <Tab.Screen
         name={"First"}
-        component={user?.role === "Farmer" ? DashboardStack : SearchStack}
+        component={user?.role === "Vendor" ? DashboardStack : SearchStack}
         options={({ route }) => {
-          let routeName = user?.role === "Farmer" ? "Dashboard" : "Search";
+          let routeName = user?.role === "Vendor" ? "Dashboard" : "Search";
           
           return {
             tabBarIcon: ({ color }) => (
               <MCIcon 
-                name={user?.role === "Farmer" ? "google-analytics" : "home"}
+                name={user?.role === "Vendor" ? "google-analytics" : "home"}
                 size={24} 
                 color={color} 
               />
@@ -89,14 +89,14 @@ const MainTabs = () => {
       />
       <Tab.Screen
         name={"Second"}
-        component={user?.role === "Farmer" ? ProductStack : BasketStack}
+        component={user?.role === "Vendor" ? ProductStack : BasketStack}
         options={({ route }) => {
-          let routeName = user?.role === "Farmer" ? "Products" : "Basket";
+          let routeName = user?.role === "Vendor" ? "Products" : "Basket";
           
           return {
             tabBarIcon: ({ color }) => (
               <MCIcon
-                name={user?.role === "Farmer" ? "food-apple" : "basket"}
+                name={user?.role === "Vendor" ? "food-apple" : "basket"}
                 size={24}
                 color={color}
               />
@@ -109,15 +109,15 @@ const MainTabs = () => {
       />
       <Tab.Screen
         name={"Third"}
-        component={user?.role === "Farmer" ? TransactionStack : MapStack}
+        component={user?.role === "Vendor" ? TransactionStack : MapStack}
         options={({ route }) => {
-          let routeName = user?.role === "Farmer" ? "Transactions" : "Map";
+          let routeName = user?.role === "Vendor" ? "Transactions" : "Map";
 
           return {
             headerTitle: routeName,
             tabBarIcon: ({ color }) => (
               <MCIcon
-                name={user?.role === "Farmer" ? "swap-horizontal-circle-outline" : "map-marker"}
+                name={user?.role === "Vendor" ? "swap-horizontal-circle-outline" : "map-marker"}
                 size={24}
                 color={color}
               />
@@ -129,14 +129,14 @@ const MainTabs = () => {
       />
       <Tab.Screen
         name={"Fourth"}
-        component={user?.role === "Farmer" ? ScheduleStack : OrderStack}
+        component={user?.role === "Vendor" ? ScheduleStack : OrderStack}
         options={({ route }) => {
-          let routeName = user?.role === "Farmer" ? "Schedule" : "Orders";
+          let routeName = user?.role === "Vendor" ? "Schedule" : "Orders";
           
           return {
             tabBarIcon: ({ color }) => (
               <MCIcon
-                name={user?.role === "Farmer" ? "calendar-month" : "history"}
+                name={user?.role === "Vendor" ? "calendar-month" : "history"}
                 size={24}
                 color={color}
               />

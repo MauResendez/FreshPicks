@@ -2,13 +2,13 @@ import React, { memo, useState } from 'react';
 import { Alert } from 'react-native';
 import { Colors, ExpandableSection, Image, ListItem, Stepper, Text } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToOrder, clearOrder, getOrderFarmer, removeFromOrder, selectOrderItemsWithId } from '../../features/order-slice';
+import { addToOrder, clearOrder, getOrderVendor, removeFromOrder, selectOrderItemsWithId } from '../../features/order-slice';
 
 const ProfileRow = (props) => {
-  const {item, farmer, user} = props;
+  const {item, vendor, customer} = props;
   const [isPressed, setIsPressed] = useState(false);
   let items = useSelector((state) => selectOrderItemsWithId(state, item.id));
-  const orderFarmer = useSelector(getOrderFarmer);
+  const orderVendor = useSelector(getOrderVendor);
   const dispatch = useDispatch();
 
   const clearOrderItems = (() => {
@@ -16,8 +16,8 @@ const ProfileRow = (props) => {
   });
 
 	const updateItemCount = ((value) => {
-    if (orderFarmer && farmer.id !== orderFarmer.id) {
-      Alert.alert("Clear Basket", "Your cart currently has items from another farmer, would you like us to clear it to fill items from this farmer?", [
+    if (orderVendor && vendor.id !== orderVendor.id) {
+      Alert.alert("Clear Basket", "Your cart currently has items from another vendor, would you like us to clear it to fill items from this vendor?", [
         {text: 'Cancel', style: 'cancel'},
         {text: 'OK', onPress: clearOrderItems},
       ]);
@@ -29,9 +29,9 @@ const ProfileRow = (props) => {
 
 		if (value > items.length) {
       console.log(item);
-			dispatch(addToOrder({ product: item, farmer: farmer, user: user }));
-      console.log(farmer);
-      console.log(user);
+			dispatch(addToOrder({ product: item, vendor: vendor, customer: customer }));
+      console.log(vendor);
+      console.log(customer);
 		} else if (value < items.length) {
 			dispatch(removeFromOrder(item));
 		}

@@ -15,7 +15,7 @@ import SettingStack from "../stack/setting-stack";
 
 const Tab = createBottomTabNavigator();
 
-const ConsumerTabs = () => {
+const CustomerTabs = () => {
   return (
     <Tab.Navigator
       initialRouteName={"Home"}
@@ -124,4 +124,4 @@ const ConsumerTabs = () => {
   );
 }
 
-export default ConsumerTabs
+export default CustomerTabs;

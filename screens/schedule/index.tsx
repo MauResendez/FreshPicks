@@ -6,7 +6,6 @@ import { AgendaList, AgendaSchedule } from 'react-native-calendars';
 import { Colors, LoaderScreen, TabController, View } from 'react-native-ui-lib';
 import ChatRow from '../../components/chat/chat-row';
 import AgendaItem from '../../components/schedule/agenda-item';
-import RequestRow from '../../components/schedule/request-row';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
 interface State {
@@ -26,11 +25,7 @@ const Schedule = () => {
 	const renderOrder = useCallback(({item}: any) => {
     return <AgendaItem item={item} />;
   }, []);
-
-	const renderRequest = useCallback(({item}: any) => {
-    return <RequestRow item={item} />;
-  }, []);
-
+  
 	const renderChat = useCallback(({item}: any) => {
     return <ChatRow item={item} />
   }, []);
@@ -56,13 +51,13 @@ const Schedule = () => {
   );
 
   useEffect(() => {
-    onSnapshot(query(collection(db, "Chats"), where("farmer", "==", auth.currentUser.uid)), async (snapshot) => {
+    onSnapshot(query(collection(db, "Chats"), where("vendor", "==", auth.currentUser.uid)), async (snapshot) => {
       setChats(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
   }, []);
 
 	useEffect(() => {
-    const subscriber = onSnapshot(query(collection(db, "Orders"), where("farmer", "==", auth.currentUser.uid)), async (snapshot) => {
+    const subscriber = onSnapshot(query(collection(db, "Orders"), where("vendor", "==", auth.currentUser.uid)), async (snapshot) => {
       setOrders(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
 
