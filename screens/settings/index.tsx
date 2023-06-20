@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Alert, Platform, ScrollView, Share } from "react-native";
 import { Colors, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
+import { global } from "../../style";
 
 const Settings = () => {
   const navigation = useNavigation<any>();
@@ -121,14 +122,10 @@ const Settings = () => {
     }
   }
 
-  const switchRoles = async () => {
-    if (user.role === "Farmer") {
-      await updateDoc(doc(db, "Users", auth.currentUser.uid), { role: "Consumer" });
-    } else {
-      await updateDoc(doc(db, "Users", auth.currentUser.uid), { role: "Farmer" });
-    }
+  const switchRoles = async (role) => {
+    await updateDoc(doc(db, "Users", auth.currentUser.uid), { role: role });
   }
-
+  
   useEffect(() => {
     getToken();
   }, []);
@@ -140,7 +137,7 @@ const Settings = () => {
 
     // Unsubscribe from events when no longer in use
     return () => subscriber();
-  }, [auth.currentUser.uid]);
+  }, []);
 
   useEffect(() => {
     if (user && token) {
@@ -155,17 +152,36 @@ const Settings = () => {
   }
   
   return (
-    <View useSafeArea flex>
+    <View useSafeArea flex style={global.white}>
       <ScrollView showsVerticalScrollIndicator={Platform.OS == "web"}>
         {user?.farmer && (
           <ListItem
-            activeBackgroundColor={Colors.grey60}
             activeOpacity={0.3}
+            backgroundColor={Colors.grey60}
             height={60}
           >
             <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
               <Text text65 marginV-4 numberOfLines={1}>
                 Roles
+              </Text>
+            </ListItem.Part>
+          </ListItem>
+        )}
+        {(user?.admin && user?.role !== "Admin") && (
+          <ListItem
+            backgroundColor={Colors.white}
+            activeOpacity={0.3}
+            height={60}
+            onPress={() => {
+              Alert.alert("Switch Roles", "Would you like to switch roles?", [
+                {text: 'Cancel', style: 'cancel'},
+                {text: 'OK', onPress: () => switchRoles("Admin")},
+              ]);
+            }}
+          >
+            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+              <Text text80M grey30 marginV-4 numberOfLines={1}>
+                Switch to Admin Role
               </Text>
             </ListItem.Part>
           </ListItem>
@@ -178,7 +194,7 @@ const Settings = () => {
             onPress={() => {
               Alert.alert("Switch Roles", "Would you like to switch roles?", [
                 {text: 'Cancel', style: 'cancel'},
-                {text: 'OK', onPress: switchRoles},
+                {text: 'OK', onPress: () => { user.role === "Farmer" ? switchRoles("Consumer") : switchRoles("Farmer")}},
               ]);
             }}
           >
@@ -190,8 +206,8 @@ const Settings = () => {
           </ListItem>
         )}
         <ListItem
-          activeBackgroundColor={Colors.grey60}
           activeOpacity={0.3}
+          backgroundColor={Colors.grey60}
           height={60}
         >
           <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
@@ -225,8 +241,8 @@ const Settings = () => {
           </ListItem.Part>
         </ListItem>
         <ListItem
-          activeBackgroundColor={Colors.grey60}
           activeOpacity={0.3}
+          backgroundColor={Colors.grey60}
           height={60}
         >
           <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
@@ -265,15 +281,38 @@ const Settings = () => {
           height={60}
           onPress={() => navigation.navigate("Personal Information")}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+          <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
-              Update Personal Information
+              Update Account Information
             </Text>
           </ListItem.Part>
         </ListItem>
         <ListItem
-          activeBackgroundColor={Colors.grey60}
           activeOpacity={0.3}
+          backgroundColor={Colors.grey60}
+          height={60}
+        >
+          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+            <Text text65 marginV-4 numberOfLines={1}>
+              Customer
+            </Text>
+          </ListItem.Part>
+        </ListItem>
+        <ListItem
+          backgroundColor={Colors.white}
+          activeOpacity={0.3}
+          height={60}
+          onPress={() => navigation.navigate("Order History")}
+        >
+          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+            <Text text80M grey30 marginV-4 numberOfLines={1}>
+              My Order History
+            </Text>
+          </ListItem.Part>
+        </ListItem>
+        <ListItem
+          activeOpacity={0.3}
+          backgroundColor={Colors.grey60}
           height={60}
         >
           <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
@@ -374,8 +413,8 @@ const Settings = () => {
           </ListItem>
         )}
         <ListItem
-          activeBackgroundColor={Colors.grey60}
           activeOpacity={0.3}
+          backgroundColor={Colors.grey60}
           height={60}
         >
           <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
@@ -397,8 +436,8 @@ const Settings = () => {
           </ListItem.Part>
         </ListItem>
         <ListItem
-          activeBackgroundColor={Colors.grey60}
           activeOpacity={0.3}
+          backgroundColor={Colors.grey60}
           height={60}
         >
           <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>

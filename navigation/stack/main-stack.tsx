@@ -45,10 +45,9 @@ const MainStack = () => {
   return (
     <NavigationContainer>
       {/* {Platform.OS !== "web" ? <MainTabs /> : <MainDrawer />} */}
-      {(user.admin  && user.role === "Admin") && <AdminTabs />}
+      {(user.admin && user.role === "Admin") && <AdminTabs />}
       {user.role === "Consumer" && <ConsumerTabs />}
       {user.role === "Farmer" && <FarmerTabs />}
-
     </NavigationContainer>
   )
 }

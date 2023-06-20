@@ -126,11 +126,12 @@ const Basket = () => {
   }
 
   return (
-    <View useSafeArea flex>
+    <View useSafeArea flex style={global.white}>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView contentContainerStyle={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
           <ListItem
             activeOpacity={0.3}
+            backgroundColor={Colors.grey60}
             height={60}
           >
             <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
@@ -148,6 +149,7 @@ const Basket = () => {
           
           <ListItem
             activeOpacity={0.3}
+            backgroundColor={Colors.grey60}
             height={60}
           >
             <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
@@ -167,7 +169,7 @@ const Basket = () => {
             <Button 
               backgroundColor={Colors.primary}
               color={Colors.white}
-              label={"Send Order Request"} 
+              label={"Send Order"} 
               labelStyle={{ fontWeight: '600', padding: 8 }} 
               style={global.button} 
               onPress={createOrder}          

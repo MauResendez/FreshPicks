@@ -31,8 +31,8 @@ const ProductRow = (props) => {
 				<Text text65 marginV-4 numberOfLines={1}>{item.title}</Text>
 				<Text text80M grey30 marginV-4>${item.price.toFixed(2)} ({item?.quantity} remaining)</Text>
 			</ListItem.Part>
-			{item.image && <ListItem.Part right>
-				<Image source={{ uri: item.image[0] }} style={{ width: 50, height: 50 }} />
+			{item.images && <ListItem.Part right>
+				<Image source={{ uri: item.images[0] }} style={{ width: 50, height: 50 }} />
 			</ListItem.Part>}
 		</ListItem> 
 	)

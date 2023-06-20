@@ -166,7 +166,7 @@ const CreateProduct = () => {
   });
 
   return (
-    <View useSafeArea flex>
+    <View useSafeArea flex style={global.white}>
       <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView contentContainerStyle={global.flex}>
           <Formik

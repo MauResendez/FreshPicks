@@ -1,5 +1,5 @@
 import React, { memo, useState } from "react";
-import { Colors, ExpandableSection, ListItem, Text, View } from "react-native-ui-lib";
+import { Colors, ExpandableSection, Image, ListItem, Text, View } from "react-native-ui-lib";
 import { useDispatch, useSelector } from "react-redux";
 import { selectOrderItemsWithId } from "../../features/order-slice";
 
@@ -29,6 +29,9 @@ const BasketRow = (props) => {
           setIsPressed(!isPressed)}
         }
       >
+        {item.images && <ListItem.Part left>
+          <Image source={{ uri: item.images[0] }} style={{ width: 50, height: 50, marginRight: 8 }} />
+        </ListItem.Part>}
         <ListItem.Part middle column>
           <View row spread>
             <Text text65 marginV-4 numberOfLines={1}>{item.title}</Text>

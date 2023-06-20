@@ -22,6 +22,13 @@ const Products = () => {
       name: "Create Product",
       position: 1,
       color: Colors.tertiary
+    },
+    {
+      text: "Create Subscription",
+      icon: <MCIcon name="apple" color={Colors.white} size={24} />,
+      name: "Create Subscription",
+      position: 2,
+      color: Colors.tertiary
     }
   ];
 
@@ -93,15 +100,12 @@ const Products = () => {
 
   return (
     <View useSafeArea flex style={global.white}>
-      {products.length != 0 
-        ? <FlashList 
-            data={products}
-            keyExtractor={(item: any) => item.id}
-            estimatedItemSize={products.length != 0 ? products.length : 150}
-            renderItem={renderProduct}
-          />
-        : <Text text65 marginV-4>No products yet</Text>
-      }
+      <FlashList 
+        data={products}
+        keyExtractor={(item: any) => item.id}
+        estimatedItemSize={products.length != 0 ? products.length : 150}
+        renderItem={renderProduct}
+      />
       <FloatingAction
         actions={actions}
         color={Colors.tertiary}
