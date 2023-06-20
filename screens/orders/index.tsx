@@ -6,7 +6,6 @@ import { AgendaList, AgendaSchedule } from 'react-native-calendars';
 import { Colors, LoaderScreen, TabController, View } from 'react-native-ui-lib';
 import ChatRow from '../../components/chat/chat-row';
 import AgendaItem from '../../components/orders/agenda-item';
-import HistoryRow from '../../components/orders/history-row';
 import { auth, db } from '../../firebase';
 import { global } from '../../style';
 interface State {
@@ -15,7 +14,7 @@ interface State {
 
 const Orders = () => {
   const layout = useWindowDimensions();
-  const width = layout.width/4;
+  const width = layout.width/3;
   const [items, setItems] = useState<any>(null);
   const [chats, setChats] = useState([]);
   const [orders, setOrders] = useState<any>(null);
@@ -25,10 +24,6 @@ const Orders = () => {
 
 	const renderOrder = useCallback(({item}: any) => {
     return <AgendaItem item={item} />;
-  }, []);
-
-  const renderHistory = useCallback(({item}: any) => {
-    return <HistoryRow item={item} />;
   }, []);
 
 	const renderChat = useCallback(({item}: any) => {
@@ -44,18 +39,7 @@ const Orders = () => {
     </View>
   );
 
-	const SecondRoute = () => (
-    <View useSafeArea flex>
-      <FlashList 
-        data={orders}
-        keyExtractor={(item: any) => item.id}
-        estimatedItemSize={orders.length != 0 ? orders.length : 150}
-        renderItem={renderHistory}
-      />
-    </View>
-  );
-
-  const ThirdRoute = () => (
+  const SecondRoute = () => (
     <View useSafeArea flex>
       <FlashList 
         data={chats}
@@ -123,7 +107,7 @@ const Orders = () => {
 
   return (
     <View useSafeArea flex style={global.white}>
-      <TabController items={[{label: 'Orders'}, {label: 'History'}, {label: 'Chats'}]}>  
+      <TabController items={[{label: 'Orders'}, {label: 'Chats'}]}>  
         <TabController.TabBar
           indicatorInsets={0}
           indicatorStyle={{ backgroundColor: Colors.tertiary }} 
@@ -132,8 +116,7 @@ const Orders = () => {
         />  
         <View flex style={global.white}>    
           <TabController.TabPage index={0} lazy>{FirstRoute()}</TabController.TabPage>    
-          <TabController.TabPage index={1} lazy>{SecondRoute()}</TabController.TabPage>    
-          <TabController.TabPage index={2} lazy>{ThirdRoute()}</TabController.TabPage>    
+          <TabController.TabPage index={2} lazy>{SecondRoute()}</TabController.TabPage>    
         </View>
       </TabController>
     </View>    
