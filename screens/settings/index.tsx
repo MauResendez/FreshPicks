@@ -4,8 +4,8 @@ import { signOut } from "firebase/auth";
 import { arrayRemove, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Alert, Platform, ScrollView, Share } from "react-native";
-import { Colors, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
+import { Alert, Platform, Share } from "react-native";
+import { Colors, KeyboardAwareScrollView, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
@@ -153,7 +153,7 @@ const Settings = () => {
   
   return (
     <View useSafeArea flex style={global.white}>
-      <ScrollView showsVerticalScrollIndicator={Platform.OS == "web"}>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={Platform.OS == "web"}>
         {user?.vendor && (
           <ListItem
             activeOpacity={0.3}
@@ -179,7 +179,7 @@ const Settings = () => {
               ]);
             }}
           >
-            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+            <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
                 Switch to Admin Role
               </Text>
@@ -198,7 +198,7 @@ const Settings = () => {
               ]);
             }}
           >
-            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+            <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
                 Switch to {user.role === "Vendor" ? "Customer Role" : "Vendor Role"}
               </Text>
@@ -222,7 +222,7 @@ const Settings = () => {
           height={60}
           onPress={share}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+          <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
               Report an issue
             </Text>
@@ -234,7 +234,7 @@ const Settings = () => {
           height={60}
           onPress={share}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+          <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
               Share with your friends
             </Text>
@@ -245,7 +245,7 @@ const Settings = () => {
           backgroundColor={Colors.grey60}
           height={60}
         >
-          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+          <ListItem.Part containerStyle={{ paddingHorizontal: 16 }}>
             <Text text65 marginV-4 numberOfLines={1}>
               Account
             </Text>
@@ -257,7 +257,7 @@ const Settings = () => {
           height={60}
           onPress={() => navigation.navigate("Change Phone")}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+          <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
               Change Phone
             </Text>
@@ -269,7 +269,7 @@ const Settings = () => {
           height={60}
           onPress={() => navigation.navigate("Link Account")}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+          <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
               Link Account
             </Text>
@@ -279,7 +279,7 @@ const Settings = () => {
           backgroundColor={Colors.white}
           activeOpacity={0.3}
           height={60}
-          onPress={() => navigation.navigate("Personal Information")}
+          onPress={() => navigation.navigate("Account Information")}
         >
           <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
@@ -292,7 +292,7 @@ const Settings = () => {
           backgroundColor={Colors.grey60}
           height={60}
         >
-          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+          <ListItem.Part containerStyle={{ paddingHorizontal: 16 }}>
             <Text text65 marginV-4 numberOfLines={1}>
               Customer
             </Text>
@@ -304,7 +304,7 @@ const Settings = () => {
           height={60}
           onPress={() => navigation.navigate("Order History")}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+          <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
               My Order History
             </Text>
@@ -315,7 +315,7 @@ const Settings = () => {
           backgroundColor={Colors.grey60}
           height={60}
         >
-          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+          <ListItem.Part containerStyle={{ paddingHorizontal: 16 }}>
             <Text text65 marginV-4 numberOfLines={1}>
               Vendor
             </Text>
@@ -328,7 +328,7 @@ const Settings = () => {
             height={60}
             onPress={() => navigation.navigate("Add Your Business")}
           >
-            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+            <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
                 Add Your Business
               </Text>
@@ -349,7 +349,7 @@ const Settings = () => {
               ]);
             }}
           >
-            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+            <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
               Delete Your Business
               </Text>
@@ -363,7 +363,7 @@ const Settings = () => {
             height={60}
             onPress={() => navigation.navigate("Vendor Preview", { id: auth.currentUser.uid })}
           >
-            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+            <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
                 Preview Your Profile
               </Text>
@@ -377,7 +377,7 @@ const Settings = () => {
             height={60}
             onPress={() => navigation.navigate("Vendor Information")}
           >
-            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+            <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
                 Update Vendor Information
               </Text>
@@ -391,7 +391,7 @@ const Settings = () => {
             height={60}
             onPress={() => navigation.navigate("Vendor Location")}
           >
-            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+            <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
                 Update Vendor Location
               </Text>
@@ -405,7 +405,7 @@ const Settings = () => {
             height={60}
             onPress={() => navigation.navigate("Vendor Schedule")}
           >
-            <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+            <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
                 Update Vendor Schedule
               </Text>
@@ -417,7 +417,7 @@ const Settings = () => {
           backgroundColor={Colors.grey60}
           height={60}
         >
-          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+          <ListItem.Part containerStyle={{ paddingHorizontal: 16 }}>
             <Text text65 marginV-4 numberOfLines={1}>
               UTRGV
             </Text>
@@ -429,7 +429,7 @@ const Settings = () => {
           height={60}
           onPress={share}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+          <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
               About Us
             </Text>
@@ -440,7 +440,7 @@ const Settings = () => {
           backgroundColor={Colors.grey60}
           height={60}
         >
-          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+          <ListItem.Part containerStyle={{ paddingHorizontal: 16 }}>
             <Text text65 marginV-4 numberOfLines={1}>
               Other
             </Text>
@@ -457,7 +457,7 @@ const Settings = () => {
             ]);
           }}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+          <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
               Log Out
             </Text>
@@ -476,13 +476,13 @@ const Settings = () => {
             ]);
           }}
         >
-          <ListItem.Part column containerStyle={[{backgroundColor: Colors.white, paddingHorizontal: 16}]}>
+          <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
               Delete Account
             </Text>
           </ListItem.Part>
         </ListItem>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </View>
   );
 }

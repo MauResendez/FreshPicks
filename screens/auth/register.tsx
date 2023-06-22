@@ -482,7 +482,7 @@ const Register = () => {
         {Buttons()}  
       </View> 
       // <MapView
-      //   style={{ flex: 1 }}
+      //   style={global.flex}
       //   region={region}
       //   moveOnMarkerPress={true}
       //   mapType={"standard"}

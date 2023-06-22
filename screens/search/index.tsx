@@ -2,12 +2,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
-  Platform,
-  ScrollView
+  Platform
 } from "react-native";
 import Ionicon from "react-native-vector-icons/Ionicons";
 
-import { Colors, LoaderScreen, TextField, View } from "react-native-ui-lib";
+import { Colors, KeyboardAwareScrollView, LoaderScreen, TextField, View } from "react-native-ui-lib";
 import ProductList from "../../components/search/product-list";
 import VendorList from "../../components/search/vendor-list";
 import { auth, db } from "../../firebase";
@@ -111,13 +110,13 @@ const Search = () => {
         <TextField fieldStyle={{ backgroundColor: Colors.grey60, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Vendors, produce, subscriptions, etc." placeholderTextColor={Colors.grey30} leadingAccessory={<Ionicon name="search" color={Colors.grey30} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>
 
-      <ScrollView
+      <KeyboardAwareScrollView
         contentContainerStyle={{ paddingBottom: 16 }}
         showsVerticalScrollIndicator={Platform.OS == "web"}
       >
         <VendorList title={"Vendors"} description={"Available Vendors"} vendors={ff} />
         <ProductList title={"Products"} description={"Available Products"} products={fp} />
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </View>
   )
 }

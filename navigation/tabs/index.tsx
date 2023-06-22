@@ -8,6 +8,8 @@ import { auth, db } from "../../firebase";
 
 import { Platform } from "react-native";
 import { Colors, LoaderScreen } from "react-native-ui-lib";
+import { useSelector } from "react-redux";
+import { selectOrderItems } from "../../features/order-slice";
 import Instructions from "../../screens/instructions";
 import BasketStack from "../stack/basket-stack";
 import DashboardStack from "../stack/dashboard-stack";
@@ -24,6 +26,8 @@ const Tab = createBottomTabNavigator();
 const MainTabs = () => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const items = useSelector(selectOrderItems);
+
 
   // useEffect(() => {
   //   // Check if the user is logging in for the first time
@@ -101,6 +105,7 @@ const MainTabs = () => {
                 color={color}
               />
             ),
+            tabBarBadge: (user?.role === "Customer" && items.length > 0) ? items.length : null,
             tabBarItemStyle: { paddingVertical: Platform.OS === "android" ? 4 : 0},
             tabBarLabel: routeName,
             unmountOnBlur: false

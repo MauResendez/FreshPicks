@@ -66,8 +66,8 @@ const VendorLocation = () => {
   });
 
   return (
-		<View useSafeArea flex>
-      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
+		<KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]} style={global.white}>
+			<TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
 				<Formik 
 					enableReinitialize={true}
 					initialValues={{ address: user.address, location: user.location } || { address: "", location: "" }}
@@ -147,7 +147,7 @@ const VendorLocation = () => {
 						// 		/>
 						// 	</View>
 						// </MapView>
-						<KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]} keyboardShouldPersistTaps="always">
+						<View flex>
 							<Text text65 marginV-4>Business Address *</Text>
 							<GooglePlacesAutocomplete
 								textInputProps={{
@@ -207,11 +207,12 @@ const VendorLocation = () => {
 								onPress={() => handleSubmit()}
 								disabled={!values.location}
 							/>
-						</KeyboardAwareScrollView>
+						</View>
+							
 					)}
 				</Formik>
 			</TouchableWithoutFeedback>
-		</View>
+			</KeyboardAwareScrollView>
   );
 };
 

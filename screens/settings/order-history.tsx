@@ -44,7 +44,7 @@ const OrderHistory = () => {
   }
 
 	return (
-		<View useSafeArea flex style={global.white}>
+		<View useSafeArea style={global.white}>
       <FlashList 
         data={orders}
         keyExtractor={(item: any) => item.id}

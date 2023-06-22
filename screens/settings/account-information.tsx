@@ -50,61 +50,59 @@ const AccountInformation = () => {
   });
 
   return (
-    <View useSafeArea flex>
-      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAwareScrollView contentContainerStyle={global.flex}>
-          <Formik 
-            enableReinitialize={true}
-            initialValues={{ name: user.name, email: user.email } || { name: "", email: "" }} 
-            onSubmit={onSubmit}
-            validationSchema={validate}
-          >
-					  {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-              <View flex style={global.container}>
-                <View style={global.field}>
-                  <Text text65 marginV-4>Full Name *</Text>
-                  <TextField 
-                    value={values.name}
-                    onChangeText={handleChange('name')}
-                    onBlur={handleBlur('name')}
-                    style={global.input} 
-                    autoComplete="name" 
-                    migrate 
-                    validate={'required'} 
-                  />
-                </View>
-                {errors.name && touched.name && <Text style={{ color: Colors.red30 }}>{errors.name}</Text>}
-
-                <View style={global.field}>
-                  <Text text65 marginV-4>Email *</Text>
-                  <TextField 
-                    value={values.email}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')} 
-                    style={global.input} 
-                    autoComplete="email" 
-                    migrate 
-                    validate={'required'} 
-                  />
-                </View>
-                {errors.email && touched.email && <Text style={{ color: Colors.red30 }}>{errors.email}</Text>}
-
-                <View flexG />
-
-                <Button 
-                  backgroundColor={Colors.primary}
-                  color={Colors.white}
-                  label={"Update Personal Information"} 
-                  labelStyle={{ fontWeight: '600', padding: 8 }} 
-                  style={global.button} 
-                  onPress={() => handleSubmit()}                
+    <KeyboardAwareScrollView contentContainerStyle={global.flex} style={global.white}>
+      <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
+        <Formik 
+          enableReinitialize={true}
+          initialValues={{ name: user.name, email: user.email } || { name: "", email: "" }} 
+          onSubmit={onSubmit}
+          validationSchema={validate}
+        >
+          {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
+            <View flex style={global.container}>
+              <View style={global.field}>
+                <Text text65 marginV-4>Full Name *</Text>
+                <TextField 
+                  value={values.name}
+                  onChangeText={handleChange('name')}
+                  onBlur={handleBlur('name')}
+                  style={global.input} 
+                  autoComplete="name" 
+                  migrate 
+                  validate={'required'} 
                 />
               </View>
-            )}
-          </Formik>
-        </KeyboardAwareScrollView>
+              {errors.name && touched.name && <Text style={{ color: Colors.red30 }}>{errors.name}</Text>}
+
+              <View style={global.field}>
+                <Text text65 marginV-4>Email *</Text>
+                <TextField 
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')} 
+                  style={global.input} 
+                  autoComplete="email" 
+                  migrate 
+                  validate={'required'} 
+                />
+              </View>
+              {errors.email && touched.email && <Text style={{ color: Colors.red30 }}>{errors.email}</Text>}
+
+              <View flexG />
+
+              <Button 
+                backgroundColor={Colors.primary}
+                color={Colors.white}
+                label={"Update Account Information"} 
+                labelStyle={{ fontWeight: '600', padding: 8 }} 
+                style={global.button} 
+                onPress={() => handleSubmit()}                
+              />
+            </View>
+          )}
+        </Formik>
       </TouchableWithoutFeedback>
-    </View>
+    </KeyboardAwareScrollView>
   )
 }
 

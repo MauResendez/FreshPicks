@@ -2,8 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Linking from 'expo-linking';
 import { addDoc, collection, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { ScrollView } from "react-native";
-import { Button, Carousel, Chip, Colors, Image, LoaderScreen, Text, View } from "react-native-ui-lib";
+import { Carousel, Chip, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { useSelector } from "react-redux";
 import ProfileRow from "../../components/profile/profile-row";
 import { selectOrderItems } from "../../features/order-slice";
@@ -73,12 +72,6 @@ const VendorPreview = ({ route }) => {
     }
   }, [chat]);
 
-  // useLayoutEffect(() => {
-  //   parent.setOptions({
-  //     headerShown: isFocused ? false : true
-  //   });
-  // }, [isFocused]);
-
   if (loading) {
     return (
       <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
@@ -86,67 +79,52 @@ const VendorPreview = ({ route }) => {
   }
 
   return (
-    <View useSafeArea flex style={global.white}>
-      <ScrollView style={global.flex} contentContainerStyle={global.flex}>
-        <Carousel
-          containerStyle={{
-            height: 200
-          }}
-        >
-          {vendor.images?.map((image, i) => {
-            return (
-              <View flex centerV key={i}>
-                <Image
-                  overlayType={Image.overlayTypes.BOTTOM}
-                  style={{flex: 1}}
-                  source={{
-                    uri: image
-                  }}
-                  cover
-                />
-              </View>
-            );
-          })}
-        </Carousel>
+    <KeyboardAwareScrollView style={global.white}>
+      <Carousel
+        containerStyle={{
+          height: 200
+        }}
+      >
+        {vendor.images?.map((image, i) => {
+          return (
+            <View flex centerV key={i}>
+              <Image
+                overlayType={Image.overlayTypes.BOTTOM}
+                style={global.flex}
+                source={{
+                  uri: image
+                }}
+                cover
+              />
+            </View>
+          );
+        })}
+      </Carousel>
 
-        <View padding-16>
-          <View row>
-            <Text text65 marginV-4>{vendor.business}</Text>
-          </View>
-
-          <View row>
-            <Text text80M grey30 marginV-4>{vendor.address}</Text>
-          </View>
-
-          <View row>
-            <Text text80M grey30 marginV-4>{vendor.description}</Text>
-          </View>
-
-          <View row spread style={global.flexWrap}>
-            <Chip backgroundColor={Colors.primary} containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${vendor.name}`} labelStyle={{ color: Colors.white }} onPress={handleChat}/>
-            <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`tel:${vendor.phone}`) }}/>
-            <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`mailto:${vendor.email}`) }}/>
-          </View>
+      <View padding-16>
+        <View row>
+          <Text text65 marginV-4>{vendor.business}</Text>
         </View>
 
-        {products.map((item) => (
-          <ProfileRow item={item} vendor={vendor} customer={customer} />
-        ))}
-
-        <View flexG />
-
-        <View padding-16>
-          <Button 
-            backgroundColor={items.length == 0 ? Colors.disabled : Colors.primary}
-            color={Colors.white}
-            label={items.length != 0 ? "Go to Basket" : "Add items to Basket"} 
-            labelStyle={{ fontWeight: '600', padding: 8 }} 
-            style={global.button}
-            onPress={() => items.length != 0 && navigation.navigate("Second", { screen: "Basket" })}               
-          />
+        <View row>
+          <Text text80M grey30 marginV-4>{vendor.address}</Text>
         </View>
-      </ScrollView>
-    </View>
+
+        <View row>
+          <Text text80M grey30 marginV-4>{vendor.description}</Text>
+        </View>
+
+        <View row spread style={global.flexWrap}>
+          <Chip backgroundColor={Colors.primary} containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${vendor.name}`} labelStyle={{ color: Colors.white }} onPress={handleChat}/>
+          <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`tel:${vendor.phone}`) }}/>
+          <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`mailto:${vendor.email}`) }}/>
+        </View>
+      </View>
+
+      {products.map((item) => (
+        <ProfileRow item={item} vendor={vendor} customer={customer} />
+      ))}
+    </KeyboardAwareScrollView>
   );
 }
 
