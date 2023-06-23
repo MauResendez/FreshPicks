@@ -3,7 +3,6 @@ import React from "react";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChangePhone from "../../screens/auth/change-phone";
-import Conversation from "../../screens/chat/conversation";
 import Settings from "../../screens/settings";
 import AccountInformation from "../../screens/settings/account-information";
 import AddBusiness from "../../screens/settings/add-business";
@@ -30,7 +29,6 @@ const SettingStack = () => {
       }}
     >
       <Stack.Screen name="Settings" component={Settings} />
-      <Stack.Screen name="Conversation" component={Conversation} />
       <Stack.Screen name="Change Phone" component={ChangePhone} />
       <Stack.Screen name="Add Your Business" component={AddBusiness} />
       <Stack.Screen name="Link Account" component={LinkAccount} />

@@ -5,7 +5,8 @@ export const orderSlice = createSlice({
   initialState: {
     items: [],
     vendor: null,
-    customer: null
+    customer: null,
+    date: new Date().toLocaleTimeString()
   },
   reducers: {
     addToOrder: (state, action) => {
@@ -33,11 +34,14 @@ export const orderSlice = createSlice({
     clearOrder: (state) => {
       state.items = [];
       state.vendor = null;
-    }
+    },
+    setOrderDate: (state, action) => {
+      state.date = action.payload.date;
+    },
   }
 });
 
-export const { addToOrder, removeFromOrder, clearOrder } = orderSlice.actions
+export const { addToOrder, removeFromOrder, clearOrder, setOrderDate } = orderSlice.actions
 
 export const selectOrderItems = (state) => state.order.items;
 
@@ -50,5 +54,7 @@ export const selectOrderTotal = (state) => state.order.items.reduce((total, item
 export const getOrderVendor = (state) => state.order.vendor;
 
 export const getOrderCustomer = (state) => state.order.customer;
+
+export const getOrderDate = (state) => state.order.date;
 
 export default orderSlice.reducer

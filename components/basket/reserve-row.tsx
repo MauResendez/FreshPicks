@@ -21,10 +21,11 @@ const ReserveRow = (props) => {
 				<View row spread centerV>
 					<View>
 						<Text text65 marginV-4 numberOfLines={1}>Date</Text>
-						<Text text80M grey30 marginV-4>{item.address}</Text>
+						<Text text80M grey30 marginV-4>{item}</Text>
 					</View>
 					<View>
 						<Button color={'grey'} title={'Select'} onPress={buttonPressed} />
+						{/* <DateTimePicker title={'Select time'} placeholder={'Placeholder'} mode={'time'} />					 */}
 					</View>
 				</View> 
       </ListItem.Part>

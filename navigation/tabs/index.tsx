@@ -28,7 +28,32 @@ const MainTabs = () => {
   const [loading, setLoading] = useState(true);
   const items = useSelector(selectOrderItems);
 
+  const result = items.reduce(function(acc, curr) {
+    // Check if there exist an object in empty array whose CategoryId matches
+    let isElemExist = acc.findIndex(function(item) {
+      return item.id === curr.id;
+    });
 
+    if (isElemExist === -1) {
+      let obj: any = {};
+      obj.id = curr.id;
+      obj.count = 1;
+      obj.description = curr.description;
+      obj.vendor = curr.user;
+      obj.images = curr.images;
+      obj.price = curr.price;
+      obj.title = curr.title;
+      obj.quantity = curr.quantity;
+      acc.push(obj)
+    } else {
+      acc[isElemExist].count += 1
+    }
+
+    console.log(acc);
+
+    return acc;
+  }, []);
+  
   // useEffect(() => {
   //   // Check if the user is logging in for the first time
   //   const isFirstLogin = auth.currentUser.metadata.creationTime === auth.currentUser.metadata.lastSignInTime;
@@ -105,7 +130,7 @@ const MainTabs = () => {
                 color={color}
               />
             ),
-            tabBarBadge: (user?.role === "Customer" && items.length > 0) ? items.length : null,
+            tabBarBadge: (user?.role === "Customer" && result.length > 0) ? result.length : null,
             tabBarItemStyle: { paddingVertical: Platform.OS === "android" ? 4 : 0},
             tabBarLabel: routeName,
             unmountOnBlur: false

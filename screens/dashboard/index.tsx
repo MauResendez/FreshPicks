@@ -127,11 +127,11 @@ const Dashboard = () => {
   return (
     <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
       <View>
-        <KeyboardAwareScrollView showsVerticalScrollIndicator={Platform.OS == "web"}>
+        <KeyboardAwareScrollView style={global.white} showsVerticalScrollIndicator={Platform.OS == "web"}>
           <ListItem
             activeOpacity={0.3}
+            backgroundColor={Colors.grey60}
             height={60}
-            key={1}
           >
             <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
               <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
@@ -175,8 +175,8 @@ const Dashboard = () => {
 
           <ListItem
             activeOpacity={0.3}
+            backgroundColor={Colors.grey60}
             height={60}
-            key={2}
           >
             <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
               <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>

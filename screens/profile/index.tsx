@@ -98,8 +98,9 @@ const Profile = ({ route }) => {
       </Carousel>
 
       <View padding-16>
-        <View row>
+        <View row spread centerV>
           <Text text65 marginV-4>{vendor.business}</Text>
+          {/* <MCIcon name={"star"} size={24} color={Colors.black} /> */}
         </View>
 
         <View row>
@@ -115,6 +116,12 @@ const Profile = ({ route }) => {
           <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`tel:${vendor.phone}`) }}/>
           <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`mailto:${vendor.email}`) }}/>
         </View>
+
+        {/* <View row spread style={global.flexWrap}>
+          <Chip backgroundColor={Colors.primary} containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Review`} labelStyle={{ color: Colors.white }} onPress={handleChat}/>
+          <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Report`} labelStyle={{ color: Colors.white }} onPress={() => { navigation.navigate("Report") }}/>
+          <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Block`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`mailto:${vendor.email}`) }}/>
+        </View> */}
       </View>
 
       {products.map((item) => (
