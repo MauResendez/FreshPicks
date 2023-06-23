@@ -26,7 +26,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-
 initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage)
 });
@@ -34,9 +33,7 @@ initializeAuth(app, {
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
-// const geo = geofirestore.initializeApp(db);
 const storage = getStorage(app);
 const RecaptchaVerifier = auth.RecaptchaVerifier;
 
 export { RecaptchaVerifier, analytics, app, auth, db, firebaseConfig, storage };
-

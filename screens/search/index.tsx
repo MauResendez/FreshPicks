@@ -1,3 +1,4 @@
+import * as Location from "expo-location";
 import * as SplashScreen from 'expo-splash-screen';
 import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
@@ -22,6 +23,19 @@ const Search = () => {
   const [products, setProducts] = useState(null);
   const [fp, setFP] = useState(null);
   const [ff, setFF] = useState(null);
+  const [location, setLocation] = useState(null);
+
+  const getLocation = async () => {
+    let {status} = await Location.requestForegroundPermissionsAsync();
+
+    if (status !== "granted") {
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync();
+
+    setLocation(location);
+  }
 
   const shuffle = (array) => {
     let currentIndex = array.length;
@@ -42,6 +56,8 @@ const Search = () => {
   }
 
   useEffect(() => {
+    getLocation();
+
     const subscriber = onSnapshot(query(collection(db, "Users"), where("vendor", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
       setVendors(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     })
@@ -91,12 +107,12 @@ const Search = () => {
   }, [vendors, products, search]);
 
   useEffect(() => {
-    if (ff && fp) {
+    if (ff && fp && location) {
       setLoading(false);
       console.log("3");
       SplashScreen.hideAsync();
     }
-  }, [ff, fp]);
+  }, [ff, fp, location]);
 
   if (loading) {
     return (
