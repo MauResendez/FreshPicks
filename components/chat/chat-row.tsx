@@ -63,7 +63,6 @@ const ChatRow = (props) => {
       onPress={conversation}
     >
       <ListItem.Part column>
-        <Text>djslkfjsdfl</Text>
         <Text text65 marginV-4 numberOfLines={1}>{vendor.business}</Text>
         <Text text80M grey30 marginV-4>{chat.messages?.length === 0 ? "No messages" : `${chat.messages[0]?.user.name === auth.currentUser.displayName ? "You" : chat.messages[0]?.user.name}: ${chat.messages[0]?.text}`}</Text>
       </ListItem.Part>

@@ -186,7 +186,7 @@ const Conversation = ({ route }) => {
   useLayoutEffect(() => {
     if (chat && customer && vendor && messages) {
       navigation.setOptions({
-        headerTitle: chat?.customer == auth.currentUser.uid ? customer.name : vendor.name,
+        headerTitle: chat?.customer == auth.currentUser.uid ? vendor.name : customer.name,
         headerRight: () => (
           <View row>
             <Ionicon 

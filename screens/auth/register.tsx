@@ -463,7 +463,7 @@ const Register = () => {
             setFieldValue('location', geopoint);
           }}
           fetchDetails={true}
-          minLength={4}
+          minLength={10}
           enablePoweredByContainer={false}
           placeholder="Enter your address here"
           debounce={1000}

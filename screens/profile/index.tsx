@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Linking from 'expo-linking';
 import { addDoc, collection, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Carousel, Chip, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Text, View } from "react-native-ui-lib";
+import { Carousel, Chip, Colors, Image, KeyboardAwareScrollView, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { useSelector } from "react-redux";
 import ProfileRow from "../../components/profile/profile-row";
 import { selectOrderItems } from "../../features/order-slice";
@@ -12,6 +12,7 @@ import { global } from "../../style";
 const Profile = ({ route }) => {
   const navigation = useNavigation<any>();
   const [products, setProducts] = useState([]);
+  const [subscriptions, setSubscriptions] = useState([]);
   const [chat, setChat] = useState(null);
   const [customer, setCustomer] = useState(null);
   const [vendor, setVendor] = useState(null);
@@ -54,8 +55,15 @@ const Profile = ({ route }) => {
       setProducts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
 
+    const subscriber2 = onSnapshot(query(collection(db, "Subscriptions"), where("user", "==", route.params.id)), async (snapshot) => {
+      setSubscriptions(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+    });
+
     // Unsubscribe from events when no longer in use
-    return () => subscriber();
+    return () => {
+      subscriber();
+      subscriber2();
+    } 
   }, []);
 
   useEffect(() => {
@@ -67,10 +75,10 @@ const Profile = ({ route }) => {
   }, [customer, vendor]);
 
   useEffect(() => {
-    if (chat) {
+    if (chat && products && subscriptions) {
       setLoading(false);
     }
-  }, [chat]);
+  }, [chat, products, subscriptions]);
 
   if (loading) {
     return (
@@ -123,10 +131,39 @@ const Profile = ({ route }) => {
           <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Block`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`mailto:${vendor.email}`) }}/>
         </View> */}
       </View>
-
-      {products.map((item) => (
-        <ProfileRow item={item} vendor={vendor} customer={customer} />
-      ))}
+      <View marginB-8>
+        <ListItem
+          activeOpacity={0.3}
+          backgroundColor={Colors.grey60}
+          height={60}
+        >
+          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+            <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
+              Products
+            </Text>
+          </ListItem.Part>
+        </ListItem>
+        {products.map((item) => (
+          <ProfileRow item={item} vendor={vendor} customer={customer} />
+        ))}
+      </View>
+      <View marginB-8>
+        <ListItem
+          activeOpacity={0.3}
+          backgroundColor={Colors.grey60}
+          height={60}
+        >
+          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+            <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
+              Subscriptions
+            </Text>
+          </ListItem.Part>
+        </ListItem>
+        {subscriptions.map((item) => (
+          <ProfileRow item={item} vendor={vendor} customer={customer} />
+        ))}
+      </View>
+      
     </KeyboardAwareScrollView>
   );
 }

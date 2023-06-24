@@ -161,7 +161,7 @@ const CreateProduct = () => {
   const validate = Yup.object().shape({
     title: Yup.string().required('Title is required'),
     description: Yup.string().required('Description is required'),
-    price: Yup.number().min(1, 'Price is required'),
+    price: Yup.number().min(0.01, 'Price is required'),
     quantity: Yup.number().min(1, 'Quantity is required'),
   });
 

@@ -50,16 +50,16 @@ const Basket = () => {
       obj.price = curr.price;
       obj.title = curr.title;
       obj.quantity = curr.quantity;
-      acc.push(obj)
+      obj.frequency = curr.frequency;
+      acc.push(obj);
     } else {
-      acc[isElemExist].count += 1
+      acc[isElemExist].count += 1;
     }
 
     console.log(acc);
 
     return acc;
   }, []);
-
 
   const createOrder = async () => {
     await addDoc(collection(db, "Orders"), {
@@ -169,7 +169,7 @@ const Basket = () => {
           <Button 
             backgroundColor={Colors.primary}
             color={Colors.white}
-            label={"Send Order"} 
+            label={`Send Order ($${orderTotal.toFixed(2)})`} 
             labelStyle={{ fontWeight: '600', padding: 8 }} 
             style={global.button} 
             onPress={createOrder}          
