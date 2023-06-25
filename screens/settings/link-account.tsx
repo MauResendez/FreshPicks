@@ -4,7 +4,6 @@ import { doc, getDoc } from 'firebase/firestore';
 import { Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
 import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
-import PhoneInput from 'react-native-phone-input';
 import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from 'react-native-ui-lib';
 import * as Yup from 'yup';
 import { auth, db } from '../../firebase';
@@ -27,12 +26,15 @@ const LinkAccount = () => {
 				const user = credential.user;
 				console.log("Linked email to phone number:", user);
 				navigation.goBack();
-			});
+			}).catch((error) => {
+        alert(error.message);
+        console.log(error);
+      });
 		} catch (error) {
       alert(error.message);
 			console.log(error);
+      console.log("HI")
 		}
-		
 	}
 
 	useEffect(() => {
@@ -54,10 +56,14 @@ const LinkAccount = () => {
     )
   }
 
-  const validate = Yup.object().shape({ 
-    email: Yup.string().email("Email must be a valid email").required('Email is required'), 
-    password: Yup.string().required('Password is required'),
-		phone: Yup.string().required('Phone number is required'), 
+  const validate = Yup.object().shape({
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    password: Yup.string()
+      .min(8, 'Password must be at least 8 characters')
+      .required('Password is required'),
+    confirm: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .required('Confirm Password is required'),
   });
 
 	return (
@@ -65,67 +71,61 @@ const LinkAccount = () => {
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex}>
           <Formik 
-            initialValues={{ email: user.email, password: "", phone: user.phone } || { email: "", password: "", phone: "" }} 
+            initialValues={{ email: "", password: "", confirm: "" }} 
             onSubmit={onSubmit}
             validationSchema={validate}
             enableReinitialize={true}
           >
             {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-              <View flex>
-                <View flex style={global.container}>
-									<View style={global.field}>
-										<Text text65 marginV-4>Phone Number</Text>
-										<PhoneInput
-											initialValue={values.phone}
-											ref={phoneRef}
-											initialCountry={'us'}
-											style={global.input}
-											onChangePhoneNumber={handleChange('phone')}
-											textProps={{
-												placeholder: 'Enter a phone number...'
-											}}
-                      disabled={true}
-										/>
-									</View>
-                  {errors.phone && touched.phone && <Text style={{ color: Colors.red30 }}>{errors.phone}</Text>}
-
-                  <View style={global.field}>
-                    <Text text65 marginV-4>Email *</Text>
-                    <TextField
-                      value={values.email}
-                      onChangeText={handleChange('email')}
-                      onBlur={handleBlur('email')}
-                      style={global.input}
-                      migrate
-											editable={false}
-                    />
-                  </View>
-                  {errors.email && touched.email && <Text style={{ color: Colors.red30 }}>{errors.email}</Text>}
-                  
-                  <View style={global.field}>
-                    <Text text65 marginV-4>Password *</Text>
-                    <TextField
-                      value={values.password}
-                      onChangeText={handleChange('password')}
-                      onBlur={handleBlur('password')}
-                      style={global.input}
-											secureTextEntry
-                      migrate
-                    />
-                  </View>
-                  {errors.password && touched.password && <Text style={{ color: Colors.red30 }}>{errors.password}</Text>}
-
-                  <View flexG />
-
-                  <Button 
-                    backgroundColor={Colors.primary}
-                    color={Colors.white}
-                    label={"Link Account"} 
-                    labelStyle={{ fontWeight: '600', padding: 8 }} 
-                    style={global.button} 
-                    onPress={() => handleSubmit()}                
+              <View flex style={global.container}>
+                <View style={global.field}>
+                  <Text text65 marginV-4>Email *</Text>
+                  <TextField
+                    value={values.email}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    style={global.input}
+                    migrate
                   />
                 </View>
+                {errors.email && touched.email && <Text style={{ color: Colors.red30 }}>{errors.email}</Text>}
+                
+                <View style={global.field}>
+                  <Text text65 marginV-4>Password *</Text>
+                  <TextField
+                    value={values.password}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    style={global.input}
+                    secureTextEntry
+                    migrate
+                  />
+                </View>
+                {errors.password && touched.password && <Text style={{ color: Colors.red30 }}>{errors.password}</Text>}
+
+                <View style={global.field}>
+                  <Text text65 marginV-4>Confirm Password *</Text>
+                  <TextField
+                    value={values.confirm}
+                    onChangeText={handleChange('confirm')}
+                    onBlur={handleBlur('confirm')}
+                    style={global.input}
+                    secureTextEntry
+                    migrate
+                  />
+                </View>
+                {errors.confirm && touched.confirm && <Text style={{ color: Colors.red30 }}>{errors.confirm}</Text>}
+
+                <View flexG />
+
+                <Button 
+                  backgroundColor={Colors.primary}
+                  color={Colors.white}
+                  label={"Link Account"} 
+                  labelStyle={{ fontWeight: '600', padding: 8 }} 
+                  style={global.button} 
+                  onPress={() => handleSubmit()}                
+                />
               </View>
             )}
           </Formik>
