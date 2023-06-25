@@ -1,6 +1,7 @@
 import * as Location from "expo-location";
 import * as SplashScreen from 'expo-splash-screen';
-import { collection, documentId, onSnapshot, query, where } from "firebase/firestore";
+import { collection, documentId, endAt, getDocs, onSnapshot, orderBy, query, startAt, where } from "firebase/firestore";
+import * as geofire from 'geofire-common';
 import React, { useEffect, useState } from "react";
 import {
   Platform
@@ -9,6 +10,7 @@ import Ionicon from "react-native-vector-icons/Ionicons";
 
 import { Colors, KeyboardAwareScrollView, LoaderScreen, TextField, View } from "react-native-ui-lib";
 import ProductList from "../../components/search/product-list";
+import RecommendedList from "../../components/search/recommended-list";
 import SubscriptionList from "../../components/search/subscription-list";
 import VendorList from "../../components/search/vendor-list";
 import { auth, db } from "../../firebase";
@@ -20,9 +22,11 @@ import { global } from "../../style";
 const Search = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [recommended, setRecommended] = useState(null);
   const [vendors, setVendors] = useState(null);
   const [products, setProducts] = useState(null);
   const [subscriptions, setSubscriptions] = useState(null);
+  const [fr, setFR] = useState(null);
   const [fp, setFP] = useState(null);
   const [ff, setFF] = useState(null);
   const [fs, setFS] = useState(null);
@@ -82,23 +86,67 @@ const Search = () => {
   }, []);
 
   useEffect(() => {
+    // Function to perform a geoquery
+    const performGeoquery = async (radius) => {
+      const center = [location.coords.latitude, location.coords.longitude] as geofire.Geopoint;
+      const radiusInM = radius * 1000; // Convert radius from kilometers to meters
+
+      // Calculate the range of geohashes covering the specified area
+      const bounds = geofire.geohashQueryBounds(center, radiusInM);
+
+      // iterate over all bounds returned from query
+      const geohashes = bounds.map((bound) => { return getDocs(query(collection(db, "Users"), orderBy("geohash"), startAt(bound[0]), endAt(bound[1]))) });
+
+      // Collect all the query results together into a single list
+      Promise.all(geohashes).then((snapshots) => {
+        const matchingDocs = [];
+
+        snapshots.map((snap) => {
+          snap.docs.map((doc) => {
+            const lat = doc.data().location.latitude;
+            const lng = doc.data().location.longitude;
+
+            // We have to filter out a few false positives due to GeoHash
+            // accuracy, but most will match
+            const distanceInKm = geofire.distanceBetween([lat, lng], center);
+            const distanceInM = distanceInKm * 1000;
+            if (distanceInM <= radiusInM) {
+              matchingDocs.push({...doc.data(), id: doc.id});
+            }
+          })
+        });
+
+        setRecommended(matchingDocs);
+      });
+
+    };
+
+    // Call the function to perform the geoquery
+    performGeoquery(15); // Example: Query for places within 15 kilometers of your location
+  }, [location]);
+
+  useEffect(() => {
     try {
-      if (!vendors || !products || !subscriptions) {
+      if (!recommended || !vendors || !products || !subscriptions) {
         return;
       }
 
-      console.log(subscriptions);
-
       if (search.length == 0) {
+        const fr = shuffle(recommended);
         const ff = shuffle(vendors);
         const fp = shuffle(products);
         const fs = shuffle(subscriptions);
 
+        setFR(fr);
         setFF(ff);
         setFP(fp);
         setFS(fs);
       } else {
-        const fr = vendors.filter(result => {
+        const rr = recommended.filter(result => {
+          return (result.business.toLowerCase().indexOf(search.toLowerCase()) !== -1 || result.address.toLowerCase().indexOf(search.toLowerCase()) !== -1);
+        });
+
+        const vr = vendors.filter(result => {
           return (result.business.toLowerCase().indexOf(search.toLowerCase()) !== -1 || result.address.toLowerCase().indexOf(search.toLowerCase()) !== -1);
         });
     
@@ -110,10 +158,12 @@ const Search = () => {
           return result.title.toLowerCase().indexOf(search.toLowerCase()) !== -1;
         });
   
-        const ff = shuffle(fr);
+        const fr = shuffle(rr);
+        const ff = shuffle(vr);
         const fp = shuffle(pr);
         const fs = shuffle(sr);
     
+        setFR(fr);
         setFF(ff);
         setFP(fp);
         setFS(fs);
@@ -122,15 +172,14 @@ const Search = () => {
       alert(error.message);
       console.log(error);
     }
-  }, [vendors, products, subscriptions, search]);
+  }, [recommended, vendors, products, subscriptions, search]);
 
   useEffect(() => {
-    if (ff && fp && fs && location) {
+    if (fr && ff && fp && fs && location) {
       setLoading(false);
-      console.log("3");
       SplashScreen.hideAsync();
     }
-  }, [ff, fp, fs, location]);
+  }, [fr, ff, fp, fs, location]);
 
   if (loading) {
     return (
@@ -145,6 +194,7 @@ const Search = () => {
       </View>
 
       <KeyboardAwareScrollView contentContainerStyle={{ paddingBottom: 16 }} showsVerticalScrollIndicator={Platform.OS == "web"}>
+        <RecommendedList title={"Recommended"} description={"Recommended vendors that are near you"} recommended={fr} />
         <VendorList title={"Vendors"} description={"Available Vendors"} vendors={ff} />
         <ProductList title={"Products"} description={"Available Products"} products={fp} />
         <SubscriptionList title={"Subscriptions"} description={"Available Subscriptions"} subscriptions={fs} />
