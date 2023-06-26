@@ -121,8 +121,10 @@ const Search = () => {
 
     };
 
-    // Call the function to perform the geoquery
-    performGeoquery(15); // Example: Query for places within 15 kilometers of your location
+    if (location) {
+      // Call the function to perform the geoquery
+      performGeoquery(15); // Example: Query for places within 15 kilometers of your location
+    }
   }, [location]);
 
   useEffect(() => {

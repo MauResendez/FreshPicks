@@ -5,18 +5,21 @@ import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 import { Button, Colors, KeyboardAwareScrollView, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ProductRow from "../../components/dashboard/product-row";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
 const Dashboard = () => {
   const navigation = useNavigation<any>();
   const [transactions, setTransactions] = useState(null);
+  const [products, setProducts] = useState(null);
   const [allTime, setAllTime] = useState(null);
   const [allTimeSum, setAllTimeSum] = useState(null);
   const [ytd, setYTD] = useState(null);
   const [ytdSum, setYTDSum] = useState(null);
   const [month, setMonth] = useState(null);
   const [monthSum, setMonthSum] = useState(null);
+  const [cpp, setCPP] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const exportTransactions = useCallback(async () => {
@@ -58,8 +61,15 @@ const Dashboard = () => {
       setTransactions(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
     });
 
+    const subscriber2 = onSnapshot(query(collection(db, "Products"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
+      setProducts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+    });
+
     // Unsubscribe from events when no longer in use
-    return () => subscriber();
+    return () => {
+      subscriber();
+      subscriber2();
+    }
   }, []);
 
   useEffect(() => {
@@ -113,10 +123,30 @@ const Dashboard = () => {
   }, [transactions]);
 
   useEffect(() => {
-    if (transactions && ytd && month && allTime) {
+    if (products) {
+      const cpp = [];
+      
+      products.map((product) => {
+        const pt = transactions.filter(element => {return element.product == product.id});
+
+        const sum = pt.reduce((acc, item) => item.type == "Revenue" ? acc + item.price : acc - item.price, 0);
+
+        console.log(sum);
+
+        cpp.push({...product, sum: sum});
+      });
+      
+      const c = cpp.sort((a, b) => b.sum - a.sum)
+
+      setCPP(c);
+    }
+  }, [products]);
+
+  useEffect(() => {
+    if (transactions && ytd && month && allTime && products && cpp) {
       setLoading(false);
     }
-  }, [transactions, ytd, month, allTime]);
+  }, [transactions, ytd, month, allTime, products, cpp]);
 
   if (loading) {
     return (
@@ -135,7 +165,7 @@ const Dashboard = () => {
           >
             <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
               <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
-                Your Cashflow
+                Your Cashflow ({new Date().toLocaleDateString()} - {new Date().toLocaleDateString()})
               </Text>
             </ListItem.Part>
           </ListItem>
@@ -185,100 +215,11 @@ const Dashboard = () => {
             </ListItem.Part>
           </ListItem>
 
-          <ListItem
-            activeOpacity={0.3}
-            backgroundColor={Colors.white}
-            style={{ padding: 8, height: "auto" }}
-          >
-            <ListItem.Part column>
-              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
-              <Text text80M grey30 marginV-4>45</Text>
-            </ListItem.Part>
-          </ListItem>
+          {cpp.map((item) => (
+            <ProductRow item={item} />
+          ))}
 
-          <ListItem
-            activeOpacity={0.3}
-            backgroundColor={Colors.white}
-            style={{ padding: 8, height: "auto" }}
-            key={4}
-          >
-            <ListItem.Part column>
-              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
-              <Text text80M grey30 marginV-4>45</Text>
-            </ListItem.Part>
-          </ListItem>
-
-          <ListItem
-            activeOpacity={0.3}
-            backgroundColor={Colors.white}
-            style={{ padding: 8, height: "auto" }}
-            key={5}
-          >
-            <ListItem.Part column>
-              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
-              <Text text80M grey30 marginV-4>45</Text>
-            </ListItem.Part>
-          </ListItem>
-
-          <ListItem
-            activeOpacity={0.3}
-            backgroundColor={Colors.white}
-            style={{ padding: 8, height: "auto" }}
-            key={6}
-          >
-            <ListItem.Part column>
-              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
-              <Text text80M grey30 marginV-4>45</Text>
-            </ListItem.Part>
-          </ListItem>
-
-          <ListItem
-            activeOpacity={0.3}
-            backgroundColor={Colors.white}
-            style={{ padding: 8, height: "auto" }}
-            key={7}
-          >
-            <ListItem.Part column>
-              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
-              <Text text80M grey30 marginV-4>45</Text>
-            </ListItem.Part>
-          </ListItem>
-
-          <ListItem
-            activeOpacity={0.3}
-            backgroundColor={Colors.white}
-            style={{ padding: 8, height: "auto" }}
-            key={8}
-          >
-            <ListItem.Part column>
-              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
-              <Text text80M grey30 marginV-4>45</Text>
-            </ListItem.Part>
-          </ListItem>
-
-          <ListItem
-            activeOpacity={0.3}
-            backgroundColor={Colors.white}
-            style={{ padding: 8, height: "auto" }}
-            key={9}
-          >
-            <ListItem.Part column>
-              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
-              <Text text80M grey30 marginV-4>45</Text>
-            </ListItem.Part>
-          </ListItem>
-
-          <ListItem
-            activeOpacity={0.3}
-            backgroundColor={Colors.white}
-            style={{ padding: 8, height: "auto" }}
-            key={10}
-          >
-            <ListItem.Part column>
-              <Text text65 marginV-4 numberOfLines={1}>Bananas</Text>
-              <Text text80M grey30 marginV-4>45</Text>
-            </ListItem.Part>
-          </ListItem>
+          
           <Button onPress={exportTransactions} />
 
         </KeyboardAwareScrollView>
