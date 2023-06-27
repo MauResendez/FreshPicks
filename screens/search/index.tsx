@@ -1,6 +1,6 @@
 import * as Location from "expo-location";
 import * as SplashScreen from 'expo-splash-screen';
-import { collection, documentId, endAt, getDocs, onSnapshot, orderBy, query, startAt, where } from "firebase/firestore";
+import { collection, documentId, endAt, getDocs, limit, onSnapshot, orderBy, query, startAt, where } from "firebase/firestore";
 import * as geofire from 'geofire-common';
 import React, { useEffect, useState } from "react";
 import {
@@ -65,15 +65,15 @@ const Search = () => {
   useEffect(() => {
     getLocation();
 
-    const subscriber = onSnapshot(query(collection(db, "Users"), where("vendor", "==", true), where(documentId(), "!=", auth.currentUser.uid)), async (snapshot) => {
+    const subscriber = onSnapshot(query(collection(db, "Users"), where("vendor", "==", true), where(documentId(), "!=", auth.currentUser.uid), limit(10)), async (snapshot) => {
       setVendors(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     })
 
-    const subscriber2 = onSnapshot(query(collection(db, "Products"), where("user", "!=", auth.currentUser.uid)), async (snapshot) => {
+    const subscriber2 = onSnapshot(query(collection(db, "Products"), where("user", "!=", auth.currentUser.uid), limit(10)), async (snapshot) => {
       setProducts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
 
-    const subscriber3 = onSnapshot(query(collection(db, "Subscriptions"), where("user", "!=", auth.currentUser.uid)), async (snapshot) => {
+    const subscriber3 = onSnapshot(query(collection(db, "Subscriptions"), where("user", "!=", auth.currentUser.uid), limit(10)), async (snapshot) => {
       setSubscriptions(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
 

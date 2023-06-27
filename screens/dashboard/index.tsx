@@ -156,8 +156,8 @@ const Dashboard = () => {
 
   return (
     <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-      <View>
-        <KeyboardAwareScrollView style={global.white} showsVerticalScrollIndicator={Platform.OS == "web"}>
+      <View flex>
+        <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }} style={global.white} showsVerticalScrollIndicator={Platform.OS == "web"}>
           <ListItem
             activeOpacity={0.3}
             backgroundColor={Colors.grey60}

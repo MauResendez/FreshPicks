@@ -8,6 +8,8 @@ import AccountInformation from "../../screens/settings/account-information";
 import AddBusiness from "../../screens/settings/add-business";
 import LinkAccount from "../../screens/settings/link-account";
 import OrderHistory from "../../screens/settings/order-history";
+import PrivacyPolicy from "../../screens/settings/privacy-policy";
+import TermsAndConditions from "../../screens/settings/terms-and-conditions";
 import VendorInformation from "../../screens/settings/vendor-information";
 import VendorLocation from "../../screens/settings/vendor-location";
 import VendorPreview from "../../screens/settings/vendor-preview";
@@ -38,6 +40,8 @@ const SettingStack = () => {
       <Stack.Screen name="Vendor Schedule" component={VendorSchedule} />
       <Stack.Screen name="Vendor Preview" component={VendorPreview} />
       <Stack.Screen name="Order History" component={OrderHistory} />
+      <Stack.Screen name="Terms and Conditions" component={TermsAndConditions} />
+      <Stack.Screen name="Privacy Policy" component={PrivacyPolicy} />
     </Stack.Navigator>
   )
 }

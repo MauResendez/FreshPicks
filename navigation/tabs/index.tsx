@@ -20,6 +20,7 @@ import ScheduleStack from "../stack/schedule-stack";
 import SearchStack from "../stack/search-stack";
 import SettingStack from "../stack/setting-stack";
 import TransactionStack from "../stack/transaction-stack";
+import AdminTabs from "./admin-tabs";
 
 const Tab = createBottomTabNavigator();
 
@@ -82,6 +83,12 @@ const MainTabs = () => {
   if (loading) {
     return (
       <LoaderScreen color={Colors.tertiary} backgroundColor={Colors.white} overlay />    
+    );
+  }
+
+  if (user?.role === "Admin") {
+    return (
+      <AdminTabs />   
     );
   }
 

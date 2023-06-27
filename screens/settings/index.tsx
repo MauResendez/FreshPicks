@@ -241,6 +241,30 @@ const Settings = () => {
           </ListItem.Part>
         </ListItem>
         <ListItem
+          backgroundColor={Colors.white}
+          activeOpacity={0.3}
+          height={60}
+          onPress={() => navigation.navigate("Terms and Conditions")}
+        >
+          <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
+            <Text text80M grey30 marginV-4 numberOfLines={1}>
+              Terms and Conditions
+            </Text>
+          </ListItem.Part>
+        </ListItem>
+        <ListItem
+          backgroundColor={Colors.white}
+          activeOpacity={0.3}
+          height={60}
+          onPress={() => navigation.navigate("Privacy Policy")}
+        >
+          <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
+            <Text text80M grey30 marginV-4 numberOfLines={1}>
+              Privacy Policy
+            </Text>
+          </ListItem.Part>
+        </ListItem>
+        <ListItem
           activeOpacity={0.3}
           backgroundColor={Colors.grey60}
           height={60}
