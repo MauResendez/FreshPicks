@@ -4,7 +4,7 @@ import { global } from '../../style'
 
 const TermsAndConditions = () => {
 	return (
-		<KeyboardAwareScrollView contentContainerStyle={[global.container, global.white]} style={global.flexGrow}>
+		<KeyboardAwareScrollView contentContainerStyle={[global.container, global.flexGrow]} style={global.white}>
 			<Text text65 marginV-4>Last updated: 2023-06-27</Text>
 
 			<View style={global.field}>

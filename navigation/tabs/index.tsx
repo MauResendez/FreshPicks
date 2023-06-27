@@ -127,7 +127,7 @@ const MainTabs = () => {
         name={"Second"}
         component={user?.role === "Vendor" ? ProductStack : BasketStack}
         options={({ route }) => {
-          let routeName = user?.role === "Vendor" ? "Products" : "Basket";
+          let routeName = user?.role === "Vendor" ? "Listings" : "Basket";
           
           return {
             tabBarIcon: ({ color }) => (

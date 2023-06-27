@@ -4,9 +4,9 @@ import { Platform } from 'react-native';
 import { Colors } from 'react-native-ui-lib';
 import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import Instructions from '../../screens/instructions';
-import DashboardStack from '../stack/dashboard-stack';
+import AccountStack from '../stack/account-stack';
+import ContentStack from '../stack/content-stack';
 import IssueStack from '../stack/issue-stack';
-import ProductStack from '../stack/product-stack';
 import ReportStack from '../stack/report-stack';
 import SettingStack from '../stack/setting-stack';
 
@@ -27,7 +27,7 @@ const AdminTabs = () => {
     >
       <Tab.Screen
         name={"First"}
-        component={DashboardStack}
+        component={AccountStack}
         options={({ route }) => {
           return {
             tabBarIcon: ({ color }) => (
@@ -44,7 +44,7 @@ const AdminTabs = () => {
       />
       <Tab.Screen
         name={"Second"}
-        component={ProductStack}
+        component={ContentStack}
         options={({ route }) => {
           return {
             tabBarIcon: ({ color }) => (
@@ -55,7 +55,7 @@ const AdminTabs = () => {
               />
             ),
             tabBarItemStyle: { paddingVertical: Platform.OS === "android" ? 4 : 0},
-            tabBarLabel: "Products",
+            tabBarLabel: "Content",
           };
         }}
       />

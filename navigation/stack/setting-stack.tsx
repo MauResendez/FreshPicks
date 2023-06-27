@@ -9,6 +9,7 @@ import AddBusiness from "../../screens/settings/add-business";
 import LinkAccount from "../../screens/settings/link-account";
 import OrderHistory from "../../screens/settings/order-history";
 import PrivacyPolicy from "../../screens/settings/privacy-policy";
+import ReportIssue from "../../screens/settings/report-issue";
 import TermsAndConditions from "../../screens/settings/terms-and-conditions";
 import VendorInformation from "../../screens/settings/vendor-information";
 import VendorLocation from "../../screens/settings/vendor-location";
@@ -42,6 +43,7 @@ const SettingStack = () => {
       <Stack.Screen name="Order History" component={OrderHistory} />
       <Stack.Screen name="Terms and Conditions" component={TermsAndConditions} />
       <Stack.Screen name="Privacy Policy" component={PrivacyPolicy} />
+      <Stack.Screen name="Report Issue" component={ReportIssue} />
     </Stack.Navigator>
   )
 }

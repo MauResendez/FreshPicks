@@ -234,7 +234,7 @@ const EditSubscription = ({ route }) => {
                   label={"Edit Subscription"} 
                   labelStyle={{ fontWeight: '600', padding: 8 }} 
                   style={global.button} 
-                  onPress={() => handleSubmit()}                
+                  onPress={handleSubmit}                
                 />
 
                 <ActionSheet

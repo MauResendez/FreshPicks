@@ -1,40 +1,21 @@
 import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
-import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { collection, onSnapshot, query } from "firebase/firestore";
 import React, { useCallback, useEffect, useState } from "react";
 import { useWindowDimensions } from "react-native";
-import { FloatingAction } from "react-native-floating-action";
 import { Colors, LoaderScreen, TabController, Text, View } from "react-native-ui-lib";
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProductRow from "../../components/products/product-row";
 import SubscriptionRow from "../../components/products/subscription-row";
-import { auth, db } from "../../firebase";
+import { db } from "../../firebase";
 import { global } from "../../style";
 
-const Products = () => {
+const Content = () => {
   const navigation = useNavigation<any>();
   const layout = useWindowDimensions();
   const width = layout.width/3;
   const [products, setProducts] = useState<any>(null);
   const [subscriptions, setSubscriptions] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-
-  const actions = [
-    {
-      text: "Create Product",
-      icon: <MCIcon name="apple" color={Colors.white} size={24} />,
-      name: "Create Product",
-      position: 1,
-      color: Colors.tertiary
-    },
-    {
-      text: "Create Subscription",
-      icon: <MCIcon name="apple" color={Colors.white} size={24} />,
-      name: "Create Subscription",
-      position: 2,
-      color: Colors.tertiary
-    }
-  ];
 
   const renderProduct = useCallback(({item}) => {
     return (
@@ -59,13 +40,6 @@ const Products = () => {
           />
         : <Text text65 marginV-4>No products made</Text>
       }
-      <FloatingAction
-        actions={actions}
-        color={Colors.tertiary}
-        tintColor={Colors.tertiary}
-        distanceToEdge={16}
-        onPressItem={(name) => navigation.navigate(name)}
-      />
     </View>
   );
 
@@ -80,22 +54,15 @@ const Products = () => {
           />
         : <Text text65 marginV-4>No subscriptions made</Text>
       }
-      <FloatingAction
-        actions={actions}
-        color={Colors.tertiary}
-        tintColor={Colors.tertiary}
-        distanceToEdge={16}
-        onPressItem={(name) => navigation.navigate(name)}
-      />
     </View>
   );
 
   useEffect(() => {
-    const subscriber = onSnapshot(query(collection(db, "Products"), where("user", "==", auth.currentUser?.uid), orderBy("quantity", "asc")), async (snapshot) => {
+    const subscriber = onSnapshot(query(collection(db, "Products")), async (snapshot) => {
       setProducts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
     });
 
-    const subscriber2 = onSnapshot(query(collection(db, "Subscriptions"), where("user", "==", auth.currentUser?.uid), orderBy("quantity", "asc")), async (snapshot) => {
+    const subscriber2 = onSnapshot(query(collection(db, "Subscriptions")), async (snapshot) => {
       setSubscriptions(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
     });
 
@@ -136,4 +103,4 @@ const Products = () => {
   );
 }
 
-export default Products
+export default Content

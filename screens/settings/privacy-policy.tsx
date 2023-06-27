@@ -5,11 +5,11 @@ import { global } from '../../style'
 
 const PrivacyPolicy = () => {
 	return (
-		<KeyboardAwareScrollView contentContainerStyle={[global.container, global.white]} style={global.flexGrow}>
+		<KeyboardAwareScrollView contentContainerStyle={[global.container, global.flexGrow]} style={global.white}>
 			<Text text65 marginV-4>Effective date: 2023-06-27</Text>
 			<View style={global.field}>
 				<Text text65 marginV-4>1. Introduction</Text>
-				<Text text80M grey30 marginV-4>Welcome to  Fresh Picks.</Text>
+				<Text text80M grey30 marginV-4>Welcome to Fresh Picks.</Text>
 				<Text text80M grey30 marginV-4>Fresh Picks (“us”, “we”, or “our”) operates freshpicks.web.app (hereinafter referred to as “Service”).</Text>
 				<Text text80M grey30 marginV-4>Our Privacy Policy governs your visit to freshpicks.web.app, and explains how we collect, safeguard and disclose information that results from your use of our Service.</Text>
 				<Text text80M grey30 marginV-4>We use your data to provide and improve Service. By using Service, you agree to the collection and use of information in accordance with this policy. Unless otherwise defined in this Privacy Policy, the terms used in this Privacy Policy have the same meanings as in our Terms and Conditions.</Text>

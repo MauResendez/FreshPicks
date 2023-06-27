@@ -125,7 +125,7 @@ const VendorLocation = () => {
 								label={"Update Vendor Location"} 
 								labelStyle={{ fontWeight: '600', padding: 8 }} 
 								style={global.button} 
-								onPress={() => handleSubmit()}
+								onPress={handleSubmit}
 								disabled={!values.location}
 							/>
 						</View>

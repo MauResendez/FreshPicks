@@ -181,7 +181,7 @@ const Settings = () => {
           >
             <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
-                Switch to Admin Role
+                Switch to Admin role
               </Text>
             </ListItem.Part>
           </ListItem>
@@ -200,7 +200,7 @@ const Settings = () => {
           >
             <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
-                Switch to {user.role === "Vendor" ? "Customer Role" : "Vendor Role"}
+                Switch to {user.role === "Vendor" ? "Customer role" : "Vendor role"}
               </Text>
             </ListItem.Part>
           </ListItem>
@@ -220,11 +220,23 @@ const Settings = () => {
           backgroundColor={Colors.white}
           activeOpacity={0.3}
           height={60}
-          onPress={share}
+          onPress={() => navigation.navigate("Privacy Policy")}
         >
           <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
-              Report an issue
+              Privacy policy
+            </Text>
+          </ListItem.Part>
+        </ListItem>
+        <ListItem
+          backgroundColor={Colors.white}
+          activeOpacity={0.3}
+          height={60}
+          onPress={() => navigation.navigate("Report Issue")}
+        >
+          <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
+            <Text text80M grey30 marginV-4 numberOfLines={1}>
+              Report issue
             </Text>
           </ListItem.Part>
         </ListItem>
@@ -236,7 +248,7 @@ const Settings = () => {
         >
           <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
-              Share with your friends
+              Share the app
             </Text>
           </ListItem.Part>
         </ListItem>
@@ -248,19 +260,7 @@ const Settings = () => {
         >
           <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
-              Terms and Conditions
-            </Text>
-          </ListItem.Part>
-        </ListItem>
-        <ListItem
-          backgroundColor={Colors.white}
-          activeOpacity={0.3}
-          height={60}
-          onPress={() => navigation.navigate("Privacy Policy")}
-        >
-          <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
-            <Text text80M grey30 marginV-4 numberOfLines={1}>
-              Privacy Policy
+              Terms and conditions
             </Text>
           </ListItem.Part>
         </ListItem>
@@ -283,7 +283,7 @@ const Settings = () => {
         >
           <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
-              Change Phone
+              Change phone
             </Text>
           </ListItem.Part>
         </ListItem>
@@ -295,7 +295,7 @@ const Settings = () => {
         >
           <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
-              Link Account
+              Link account to email
             </Text>
           </ListItem.Part>
         </ListItem>
@@ -307,7 +307,7 @@ const Settings = () => {
         >
           <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
-              Update Account Information
+              Update account information
             </Text>
           </ListItem.Part>
         </ListItem>
@@ -330,7 +330,7 @@ const Settings = () => {
         >
           <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
-              My Order History
+              My order history
             </Text>
           </ListItem.Part>
         </ListItem>
@@ -354,7 +354,7 @@ const Settings = () => {
           >
             <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
-                Add Your Business
+                Add your business
               </Text>
             </ListItem.Part>
           </ListItem>
@@ -375,7 +375,7 @@ const Settings = () => {
           >
             <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
-              Delete Your Business
+                Delete your business
               </Text>
             </ListItem.Part>
           </ListItem>
@@ -389,7 +389,7 @@ const Settings = () => {
           >
             <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
-                Preview Your Profile
+                Preview your profile
               </Text>
             </ListItem.Part>
           </ListItem>
@@ -403,7 +403,7 @@ const Settings = () => {
           >
             <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
-                Update Vendor Information
+                Update vendor information
               </Text>
             </ListItem.Part>
           </ListItem>
@@ -417,7 +417,7 @@ const Settings = () => {
           >
             <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
-                Update Vendor Location
+                Update vendor location
               </Text>
             </ListItem.Part>
           </ListItem>
@@ -431,7 +431,7 @@ const Settings = () => {
           >
             <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
-                Update Vendor Schedule
+                Update vendor schedule
               </Text>
             </ListItem.Part>
           </ListItem>
@@ -455,7 +455,7 @@ const Settings = () => {
         >
           <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
-              About Us
+              About us
             </Text>
           </ListItem.Part>
         </ListItem>
@@ -483,7 +483,7 @@ const Settings = () => {
         >
           <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
-              Log Out
+              Log out
             </Text>
           </ListItem.Part>
         </ListItem>
@@ -502,7 +502,7 @@ const Settings = () => {
         >
           <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
             <Text text80M grey30 marginV-4 numberOfLines={1}>
-              Delete Account
+              Delete account
             </Text>
           </ListItem.Part>
         </ListItem>

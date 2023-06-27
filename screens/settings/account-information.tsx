@@ -96,7 +96,7 @@ const AccountInformation = () => {
                 label={"Update Account Information"} 
                 labelStyle={{ fontWeight: '600', padding: 8 }} 
                 style={global.button} 
-                onPress={() => handleSubmit()}                
+                onPress={handleSubmit}                
               />
             </View>
           )}

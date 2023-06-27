@@ -2,21 +2,21 @@ import { FlashList } from '@shopify/flash-list';
 import { collection, onSnapshot, query } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Colors, LoaderScreen, Text, View } from 'react-native-ui-lib';
-import IssueRow from '../../components/issues/issue-row';
+import AccountRow from '../../components/accounts/account-row';
 import { db } from '../../firebase';
 import { global } from '../../style';
 
-const Issues = () => {
-	const [issues, setIssues] = useState<any>(null);
+const Accounts = () => {
+	const [users, setUsers] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
 	const renderItem = useCallback(({item}: any) => {
-    return <IssueRow item={item} />;
+    return <AccountRow item={item} />;
   }, []);
 
 	useEffect(() => {
-    const subscriber = onSnapshot(query(collection(db, "Issues")), async (snapshot) => {
-      setIssues(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+    const subscriber = onSnapshot(query(collection(db, "Users")), async (snapshot) => {
+      setUsers(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
     });
 
     // Unsubscribe from events when no longer in use
@@ -24,10 +24,10 @@ const Issues = () => {
   }, []);
 
 	useEffect(() => {
-    if (issues) {
+    if (users) {
       setLoading(false);
     }
-  }, [issues]);
+  }, [users]);
 
 	if (loading) {
     return (
@@ -35,10 +35,10 @@ const Issues = () => {
     )
   }
 
-  if (issues.length == 0) {
+  if (users.length == 0) {
     return (
       <View useSafeArea flex style={[global.white, global.center, global.container]}>
-        <Text text65 marginV-4>No issues created yet</Text>
+        <Text text65 marginV-4>No users created yet</Text>
       </View>
     )
   }
@@ -46,13 +46,13 @@ const Issues = () => {
 	return (
 		<View useSafeArea flex style={global.white}>
       <FlashList 
-        data={issues}
+        data={users}
         keyExtractor={(item: any) => item.id}
-        estimatedItemSize={issues.length != 0 ? issues.length : 150}
+        estimatedItemSize={users.length != 0 ? users.length : 150}
         renderItem={renderItem}
       />
     </View>
 	)
 }
 
-export default Issues
+export default Accounts
