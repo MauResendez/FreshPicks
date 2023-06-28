@@ -186,7 +186,7 @@ const Settings = () => {
             </ListItem.Part>
           </ListItem>
         )}
-        {user?.vendor && (
+        {(user?.vendor && user?.role !== "Customer") && (
           <ListItem
             backgroundColor={Colors.white}
             activeOpacity={0.3}
@@ -194,13 +194,32 @@ const Settings = () => {
             onPress={() => {
               Alert.alert("Switch Roles", "Would you like to switch roles?", [
                 {text: 'Cancel', style: 'cancel'},
-                {text: 'OK', onPress: () => { user.role === "Vendor" ? switchRoles("Customer") : switchRoles("Vendor")}},
+                {text: 'OK', onPress: () => switchRoles("Customer")},
               ]);
             }}
           >
             <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
-                Switch to {user.role === "Vendor" ? "Customer role" : "Vendor role"}
+                Switch to Customer role
+              </Text>
+            </ListItem.Part>
+          </ListItem>
+        )}
+        {(user?.vendor && user?.role !== "Vendor") && (
+          <ListItem
+            backgroundColor={Colors.white}
+            activeOpacity={0.3}
+            height={60}
+            onPress={() => {
+              Alert.alert("Switch Roles", "Would you like to switch roles?", [
+                {text: 'Cancel', style: 'cancel'},
+                {text: 'OK', onPress: () => switchRoles("Vendor")},
+              ]);
+            }}
+          >
+            <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
+              <Text text80M grey30 marginV-4 numberOfLines={1}>
+                Switch to Vendor role
               </Text>
             </ListItem.Part>
           </ListItem>
