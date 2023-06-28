@@ -1,16 +1,12 @@
-import { useNavigation } from "@react-navigation/native";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
-import { FloatingAction } from "react-native-floating-action";
-import { Button, Colors, KeyboardAwareScrollView, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Colors, KeyboardAwareScrollView, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import ProductRow from "../../components/dashboard/product-row";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
 const Dashboard = () => {
-  const navigation = useNavigation<any>();
   const [transactions, setTransactions] = useState(null);
   const [products, setProducts] = useState(null);
   const [allTime, setAllTime] = useState(null);
@@ -21,40 +17,6 @@ const Dashboard = () => {
   const [monthSum, setMonthSum] = useState(null);
   const [cpp, setCPP] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const exportTransactions = useCallback(async () => {
-    try {
-      await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/exportTransactions", {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          'uid': auth.currentUser.uid
-        }),
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
-  const actions = [
-    {
-      text: "View Cashflow",
-      icon: <MCIcon name="file-document" color={Colors.white} size={24} />,
-      name: "Cashflow",
-      position: 1,
-      color: Colors.tertiary
-    },
-    {
-      text: "View Products",
-      icon: <MCIcon name="file-document" color={Colors.white} size={24} />,
-      name: "Products",
-      position: 2,
-      color: Colors.tertiary
-    }
-  ];
 
   useEffect(() => {
     const subscriber = onSnapshot(query(collection(db, "Transactions"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
@@ -218,19 +180,7 @@ const Dashboard = () => {
           {cpp.map((item) => (
             <ProductRow item={item} />
           ))}
-
-          
-          <Button onPress={exportTransactions} />
-
         </KeyboardAwareScrollView>
-        <FloatingAction
-          actions={actions}
-          color={Colors.tertiary}
-          tintColor={Colors.tertiary}
-          distanceToEdge={16}
-          onPressItem={(name) => navigation.navigate(name)}
-        />
-
       </View>
     </TouchableWithoutFeedback>
   );

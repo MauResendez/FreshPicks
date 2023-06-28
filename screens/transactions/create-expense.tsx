@@ -24,6 +24,7 @@ const CreateExpense = () => {
     {label: "Product Expense", value: "Product Expense"},
     {label: "Rent", value: "Rent"},
     {label: "Storage", value: "Storage"},
+    {label: "Subscription Expense", value: "Subscription Expense"},
     {label: "Vehicle", value: "Vehicle"},
   ]
   const [products, setProducts] = useState<any>(null);

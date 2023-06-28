@@ -6,6 +6,7 @@ import CreateExpense from "../../screens/transactions/create-expense";
 import CreateRevenue from "../../screens/transactions/create-revenue";
 import CreateTransaction from "../../screens/transactions/create-transaction";
 import EditTransaction from "../../screens/transactions/edit-transaction";
+import ExportCSV from "../../screens/transactions/export-csv";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ const TransactionStack = () => {
       <Stack.Screen name="Create Expense" component={CreateExpense} />
       <Stack.Screen name="Create Revenue" component={CreateRevenue} />
       <Stack.Screen name="Edit Transaction" component={EditTransaction} />
+      <Stack.Screen name="Export CSV" component={ExportCSV} />
     </Stack.Navigator>
   )
 }

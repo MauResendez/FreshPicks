@@ -185,13 +185,6 @@ const App = () => {
     <GestureHandlerRootView style={global.flex} onLayout={onLayoutRootView}>
       <Provider store={store}>
         <StatusBar style={"auto"} animated />
-        {/* <BannerAd
-          unitId={adUnitId}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: true,
-          }}
-        /> */}
         <ConnectionStatusBar />
         {user ? <MainStack /> : <AuthStack />}
       </Provider>

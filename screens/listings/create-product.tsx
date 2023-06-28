@@ -138,7 +138,9 @@ const CreateProduct = () => {
       price: values.price,
       title: values.title,
       user: values.user,
-      quantity: values.quantity
+      quantity: values.quantity,
+      frequency: "Order",
+      createdAt: new Date()
     }).then(() => {
       console.log("Data saved!");
       navigation.goBack();

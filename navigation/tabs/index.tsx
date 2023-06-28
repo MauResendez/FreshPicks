@@ -13,9 +13,9 @@ import { selectOrderItems } from "../../features/order-slice";
 import Instructions from "../../screens/instructions";
 import BasketStack from "../stack/basket-stack";
 import DashboardStack from "../stack/dashboard-stack";
+import ListingStack from "../stack/listing-stack";
 import MapStack from "../stack/map-stack";
 import OrderStack from "../stack/order-stack";
-import ProductStack from "../stack/product-stack";
 import ScheduleStack from "../stack/schedule-stack";
 import SearchStack from "../stack/search-stack";
 import SettingStack from "../stack/setting-stack";
@@ -125,7 +125,7 @@ const MainTabs = () => {
       />
       <Tab.Screen
         name={"Second"}
-        component={user?.role === "Vendor" ? ProductStack : BasketStack}
+        component={user?.role === "Vendor" ? ListingStack : BasketStack}
         options={({ route }) => {
           let routeName = user?.role === "Vendor" ? "Listings" : "Basket";
           

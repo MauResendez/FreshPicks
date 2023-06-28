@@ -5,8 +5,8 @@ import { Colors } from 'react-native-ui-lib';
 import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import Instructions from '../../screens/instructions';
 import DashboardStack from '../stack/dashboard-stack';
+import ProductStack from '../stack/listing-stack';
 import OrderStack from '../stack/order-stack';
-import ProductStack from '../stack/product-stack';
 import SettingStack from '../stack/setting-stack';
 import TransactionStack from '../stack/transaction-stack';
 

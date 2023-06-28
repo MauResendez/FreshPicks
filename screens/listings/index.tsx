@@ -11,7 +11,7 @@ import SubscriptionRow from "../../components/products/subscription-row";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
-const Products = () => {
+const Listings = () => {
   const navigation = useNavigation<any>();
   const layout = useWindowDimensions();
   const width = layout.width/3;
@@ -136,4 +136,4 @@ const Products = () => {
   );
 }
 
-export default Products
+export default Listings

@@ -1,10 +1,10 @@
 import React from "react";
 
-import EditSubscription from "../../screens/products/edit-subscription";
+import EditSubscription from "../../screens/listings/edit-subscription";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Content from "../../screens/content";
-import EditProduct from "../../screens/products/edit-product";
+import EditProduct from "../../screens/listings/edit-product";
 
 const Stack = createNativeStackNavigator();
 

@@ -36,7 +36,7 @@ const Transactions = () => {
     {
       text: "Send CSV to your email",
       icon: <MCIcon name="email" color={Colors.white} size={24} />,
-      name: "Create Expense",
+      name: "Export CSV",
       position: 3,
       color: Colors.tertiary
     }
@@ -84,29 +84,6 @@ const Transactions = () => {
     }
   }, [transactions]);
 
-  // useEffect(() => {
-  //   if (transactions) {
-  //     const fetchData = async () => {
-  //       try {
-  //         const csvData = Papa.unparse(transactions);
-  
-  //         // Save the CSV file
-  //         const fileUri = FileSystem.documentDirectory + 'data.csv';
-  //         await FileSystem.writeAsStringAsync(fileUri, csvData);
-  
-  //         console.log('CSV file saved successfully.');
-
-  //         FileSystem.getInfoAsync(fileUri);
-  //       } catch (error) {
-  //         console.error('Error exporting Firestore collection:', error);
-  //       }
-  //     };
-  
-  //     fetchData();
-  //   }
-    
-  // }, [transactions]);
-
   useEffect(() => {
     if (transactions && revenue && expenses) {
       setLoading(false);
@@ -128,7 +105,13 @@ const Transactions = () => {
           color={Colors.tertiary}
           tintColor={Colors.tertiary}
           distanceToEdge={16}
-          onPressItem={(name) => navigation.navigate(name)}
+          onPressItem={(name) =>{
+            if (name === "Export CSV") {
+              exportTransactions();
+            } else {
+              navigation.navigate(name);
+            }
+          }}
         />
       </View>
     )
@@ -147,7 +130,13 @@ const Transactions = () => {
         color={Colors.tertiary}
         tintColor={Colors.tertiary}
         distanceToEdge={16}
-        onPressItem={(name) => navigation.navigate(name)}
+        onPressItem={(name) =>{
+          if (name === "Export CSV") {
+            exportTransactions();
+          } else {
+            navigation.navigate(name);
+          }
+        }}
       />
     </View>
 	)

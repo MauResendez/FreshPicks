@@ -106,7 +106,8 @@ const CreateSubscription = () => {
       title: values.title,
       user: values.user,
       quantity: values.quantity,
-      frequency: values.frequency
+      frequency: values.frequency,
+      createdAt: new Date()
     }).then(() => {
       console.log("Data saved!");
       navigation.goBack();

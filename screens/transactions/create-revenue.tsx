@@ -18,6 +18,7 @@ const CreateRevenue = () => {
     {label: "Gov Ag Program Payments", value: "Gov Ag Program Payments"},
     {label: "Insurance", value: "Insurance"},
     {label: "Product Purchase", value: "Product Purchase"},
+    {label: "Subscription Purchase", value: "Subscription Purchase"},
     {label: "Rent Received", value: "Rent Received"},
     {label: "Other", value: "Other"}
   ]

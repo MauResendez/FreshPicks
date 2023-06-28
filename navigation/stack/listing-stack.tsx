@@ -1,16 +1,16 @@
 import React from "react";
 
-import Dashboard from "../../screens/products";
-import CreateSubscription from "../../screens/products/create-subscription";
-import EditSubscription from "../../screens/products/edit-subscription";
+import CreateSubscription from "../../screens/listings/create-subscription";
+import EditSubscription from "../../screens/listings/edit-subscription";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import CreateProduct from "../../screens/products/create-product";
-import EditProduct from "../../screens/products/edit-product";
+import Listings from "../../screens/listings";
+import CreateProduct from "../../screens/listings/create-product";
+import EditProduct from "../../screens/listings/edit-product";
 
 const Stack = createNativeStackNavigator();
 
-const ProductStack = () => { 
+const ListingStack = () => { 
   return (
     <Stack.Navigator 
       initialRouteName="Products" 
@@ -22,7 +22,7 @@ const ProductStack = () => {
         }, 
       }}
     >
-      <Stack.Screen name="Products" component={Dashboard} />
+      <Stack.Screen name="Listings" component={Listings} />
       <Stack.Screen name="Create Product" component={CreateProduct} />
       <Stack.Screen name="Create Subscription" component={CreateSubscription} />
       <Stack.Screen name="Edit Product" component={EditProduct} />
@@ -31,4 +31,4 @@ const ProductStack = () => {
   )
 }
 
-export default ProductStack
+export default ListingStack;
