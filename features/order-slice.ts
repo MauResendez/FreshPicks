@@ -6,7 +6,7 @@ export const orderSlice = createSlice({
     items: [],
     vendor: null,
     customer: null,
-    date: new Date().toLocaleTimeString()
+    date: null
   },
   reducers: {
     addToOrder: (state, action) => {

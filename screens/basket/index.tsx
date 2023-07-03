@@ -56,8 +56,6 @@ const Basket = () => {
       acc[isElemExist].count += 1;
     }
 
-    console.log(acc);
-
     return acc;
   }, []);
 

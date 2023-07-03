@@ -8,7 +8,7 @@ const ReserveRow = (props) => {
 	const navigation = useNavigation<any>();
 
 	const buttonPressed = useCallback(() => {
-    console.log(item.id)
+    // console.log(item.id)
     navigation.navigate("Reserve");
   }, []);
 
@@ -21,7 +21,7 @@ const ReserveRow = (props) => {
 				<View row spread centerV>
 					<View>
 						<Text text65 marginV-4 numberOfLines={1}>Date</Text>
-						<Text text80M grey30 marginV-4>{item}</Text>
+						<Text text80M grey30 marginV-4>{item ? item.toLocaleTimeString() : "No date reserved yet"}</Text>
 					</View>
 					<View>
 						<Button color={'grey'} title={'Select'} onPress={buttonPressed} />

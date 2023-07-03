@@ -63,7 +63,7 @@ export const global = StyleSheet.create({
     borderColor: "rgba(0, 0, 0, 0.2)",
     borderRadius: 8,
     borderWidth: 1,
-    height: 24,
+    height: 48,
     paddingHorizontal: 8,
   },
   otp: {
@@ -87,14 +87,24 @@ export const global = StyleSheet.create({
   underline: {
     borderColor: "#03DAC6",
   },
+  // item: {
+  //   marginVertical: 16,
+  //   paddingHorizontal: 16,
+  //   backgroundColor: 'white',
+  //   borderBottomWidth: 1,
+  //   borderBottomColor: 'lightgrey',
+  //   flexDirection: 'row',
+  //   alignItems: "center",
+  // },
   item: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
     backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderBottomColor: 'lightgrey',
-    flexDirection: 'row',
-    alignItems: "center",
+    flex: 1,
+    borderRadius: 8,
+    justifyContent: "center",
+    padding: 12,
+    marginRight: 16,
+    marginVertical: 12,
+    height: 90
   },
   itemHourText: {
     color: 'black'

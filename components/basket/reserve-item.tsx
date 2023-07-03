@@ -1,17 +1,22 @@
 import React from 'react';
-import { Button, Text, TouchableOpacity, View } from 'react-native';
+import { Button, TouchableOpacity } from 'react-native';
+import { Text, View } from 'react-native-ui-lib';
 import { global } from '../../style';
 
 const ReserveItem = (props) => {
 	const {item} = props;
-
+  
 	return (
 		<TouchableOpacity style={global.item}>
       {/* <Text style={styles.itemHourText}>{item.meetAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text> */}
-			<Text style={global.itemHourText}>Test</Text>
-      <Text style={global.itemTitleText}>Test</Text>
-      <View style={global.itemButtonContainer}>
+
+      <View row spread centerV>
+        <View>
+          <Text text65 marginV-4 numberOfLines={1}>{item.name}</Text>
+          <Text text80M grey30 marginV-4>{item.name}</Text>
+        </View>
         <Button color={'grey'} title={'Info'} />
+
       </View>
     </TouchableOpacity>
 	)
