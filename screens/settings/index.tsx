@@ -6,6 +6,8 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { Alert, Platform, Share } from "react-native";
 import { Colors, KeyboardAwareScrollView, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
+import { useDispatch } from "react-redux";
+import { clearOrder } from "../../features/order-slice";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
@@ -16,6 +18,7 @@ const Settings = () => {
   const [user, setUser] = useState<any>(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState<any>(true);
+  const dispatch = useDispatch();
   const url = "https://www.utrgv.edu";
 
   const getToken = async () => {
@@ -124,6 +127,7 @@ const Settings = () => {
 
   const switchRoles = async (role) => {
     await updateDoc(doc(db, "Users", auth.currentUser.uid), { role: role });
+    dispatch(clearOrder);
   }
   
   useEffect(() => {

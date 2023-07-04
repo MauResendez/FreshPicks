@@ -44,11 +44,11 @@ const HistoryRow = (props) => {
     >
       <ListItem.Part middle column>
         <View row spread>
-          <Text text65 marginV-4>{vendor.business}</Text>
-          <Text text65 marginV-4>Cost: ${item.total.toFixed(2)}</Text>
+          <Text text65 marginV-4>Order {item.id}</Text>
+          <Text text65 marginV-4>${item.total.toFixed(2)}</Text>
         </View>
         <View row spread>
-          <Text text80M grey30 marginV-4>{vendor?.address}</Text>
+          <Text text80M grey30 marginV-4>{vendor.business}</Text>
           <Text text80M grey30 marginV-4>{item.status}</Text>
         </View>
       </ListItem.Part>

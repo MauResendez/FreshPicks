@@ -33,11 +33,9 @@ const Profile = ({ route }) => {
       customer: customer.id,
       vendor: vendor.id,
       messages: []
-    })
-    .then((doc) => {
+    }).then((doc) => {
       navigation.navigate("Conversation", { id: doc?.id })
-    })
-    .catch(e => alert(e.message));
+    }).catch(e => alert(e.message));
   }
 
   useEffect(() => {

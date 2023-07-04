@@ -28,10 +28,7 @@ const ProfileRow = (props) => {
     if (value < items.length && items.length == 0) return;
 
 		if (value > items.length) {
-      console.log(item);
 			dispatch(addToOrder({ product: item, vendor: vendor, customer: customer }));
-      console.log(vendor);
-      console.log(customer);
 		} else if (value < items.length) {
 			dispatch(removeFromOrder(item));
 		}

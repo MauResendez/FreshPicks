@@ -21,7 +21,7 @@ const ReserveRow = (props) => {
 				<View row spread centerV>
 					<View>
 						<Text text65 marginV-4 numberOfLines={1}>Date</Text>
-						<Text text80M grey30 marginV-4>{item ? item.toLocaleTimeString() : "No date reserved yet"}</Text>
+						<Text text80M grey30 marginV-4>{item ? item.toLocaleString('en-US', { timeZone: 'America/Chicago' }) : "No date reserved yet"}</Text>
 					</View>
 					<View>
 						<Button color={'grey'} title={'Select'} onPress={buttonPressed} />

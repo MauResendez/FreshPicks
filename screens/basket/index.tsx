@@ -67,6 +67,7 @@ const Basket = () => {
       total: Number(orderTotal.toFixed(2)),
       status: "Pending",
       createdAt: new Date(),
+      date: orderDate,
       title: `Order for ${orderCustomer.name}`,
     }).then(async () => {
       handleChat();

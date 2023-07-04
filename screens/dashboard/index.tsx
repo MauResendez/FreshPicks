@@ -9,6 +9,8 @@ import { global } from "../../style";
 const Dashboard = () => {
   const [transactions, setTransactions] = useState(null);
   const [products, setProducts] = useState(null);
+  const [subscriptions, setSubscriptions] = useState([]);
+  const [selectedRange, setRange] = useState({});
   const [allTime, setAllTime] = useState(null);
   const [allTimeSum, setAllTimeSum] = useState(null);
   const [ytd, setYTD] = useState(null);
@@ -16,6 +18,7 @@ const Dashboard = () => {
   const [month, setMonth] = useState(null);
   const [monthSum, setMonthSum] = useState(null);
   const [cpp, setCPP] = useState(null);
+  const [cps, setCPS] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,10 +30,15 @@ const Dashboard = () => {
       setProducts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
     });
 
+    const subscriber3 = onSnapshot(query(collection(db, "Subscriptions"), where("user", "==", auth.currentUser?.uid)), async (snapshot) => {
+      setSubscriptions(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+    });
+
     // Unsubscribe from events when no longer in use
     return () => {
       subscriber();
       subscriber2();
+      subscriber3();
     }
   }, []);
 
@@ -105,10 +113,30 @@ const Dashboard = () => {
   }, [products]);
 
   useEffect(() => {
-    if (transactions && ytd && month && allTime && products && cpp) {
+    if (subscriptions) {
+      const cps = [];
+      
+      subscriptions.map((subscription) => {
+        const pt = transactions.filter(element => {return element.product == subscription.id});
+
+        const sum = pt.reduce((acc, item) => item.type == "Revenue" ? acc + item.price : acc - item.price, 0);
+
+        console.log(sum);
+
+        cps.push({...subscription, sum: sum});
+      });
+      
+      const c = cps.sort((a, b) => b.sum - a.sum)
+
+      setCPS(c);
+    }
+  }, [setSubscriptions]);
+
+  useEffect(() => {
+    if (transactions && ytd && month && allTime && cpp && cps) {
       setLoading(false);
     }
-  }, [transactions, ytd, month, allTime, products, cpp]);
+  }, [transactions, ytd, month, allTime, products, cpp, cps]);
 
   if (loading) {
     return (
@@ -127,7 +155,19 @@ const Dashboard = () => {
           >
             <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
               <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
-                Your Cashflow ({new Date().toLocaleDateString()} - {new Date().toLocaleDateString()})
+                Your Cashflow
+              </Text>
+            </ListItem.Part>
+          </ListItem>
+
+          <ListItem
+            activeOpacity={0.3}
+            backgroundColor={Colors.grey60}
+            height={60}
+          >
+            <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+              <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
+                From {new Date().toLocaleDateString()} - {new Date().toLocaleDateString()}
               </Text>
             </ListItem.Part>
           </ListItem>
@@ -178,6 +218,22 @@ const Dashboard = () => {
           </ListItem>
 
           {cpp.map((item) => (
+            <ProductRow item={item} />
+          ))}
+
+          <ListItem
+            activeOpacity={0.3}
+            backgroundColor={Colors.grey60}
+            height={60}
+          >
+            <ListItem.Part containerStyle={{ paddingHorizontal: 16 }}>
+              <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
+                Cashflow per Subscriptions
+              </Text>
+            </ListItem.Part>
+          </ListItem>
+
+          {cps.map((item) => (
             <ProductRow item={item} />
           ))}
         </KeyboardAwareScrollView>

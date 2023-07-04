@@ -34,6 +34,7 @@ export const orderSlice = createSlice({
     clearOrder: (state) => {
       state.items = [];
       state.vendor = null;
+      state.date = null;
     },
     setOrderDate: (state, action) => {
       state.date = action.payload.date;

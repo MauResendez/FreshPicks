@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Alert, StyleSheet, TouchableOpacity } from 'react-native';
-import { Agenda, AgendaEntry, AgendaSchedule, DateData } from 'react-native-calendars';
+import { Agenda, AgendaSchedule, DateData } from 'react-native-calendars';
 import { Text } from 'react-native-ui-lib';
 import { useSelector } from 'react-redux';
 import ReserveItem from '../../components/basket/reserve-item';
@@ -13,11 +13,6 @@ import { getOrderVendor } from '../../features/order-slice';
 const Reserve = () => {
   const [items, setItems] = useState<any>({});
   const orderVendor = useSelector(getOrderVendor);
-
-  const renderReserve = useCallback((item: any) => {
-    console.log(item);
-    return <ReserveItem item={item} />;
-  }, []);
 
   const timeToNumber = (timeString) => {
     // Split the time string into hours, minutes, and AM/PM parts
@@ -49,8 +44,11 @@ const Reserve = () => {
       for (let i = -15; i < 85; i++) {
         // Get start and end time from vendor's schedule depending on the day and save them as variables with a switch case
         
-        const time = date.timestamp + i * 24 * 60 * 60 * 1000;
+        const time = (date.timestamp + i * 24 * 60 * 60 * 1000); // in milliseconds
+        console.log("Time:", time);
         const datetime = new Date(time);
+
+        console.log("DT:", datetime);
         const strTime = datetime.toISOString().split('T')[0];
         let enable;
         let start;
@@ -96,13 +94,18 @@ const Reserve = () => {
             console.log(s);
             console.log(e);
             for (let minute = s; minute < e; minute += interval) {
-              console.log("Minute:", minute);
+              const current = (date.timestamp + i * 24 * 60 * 60 * 1000) + (minute * 60 * 1000) + (18000000); // in milliseconds
   
-              dates[strTime].push({
-                name: `Reserve order for ${minute/60} - ${(minute + 30)/60}`,
-                height: 90,
-                day: strTime
-              });
+              // if current isn't greater or equal to now, skip it
+
+              if (new Date(current) >= new Date()) {
+                dates[strTime].push({
+                  name: `Reserve order for ${minute/60} - ${(minute + 30)/60}`,
+                  height: 90,
+                  day: strTime,
+                  date: new Date(current)
+                });
+              }
             }
           }
         }
@@ -118,19 +121,9 @@ const Reserve = () => {
     }, 1000);
   }
 
-  const renderItem = (reservation: AgendaEntry) => {
-    const fontSize = 16;
-    const color = 'black';
-
-    return (
-      <TouchableOpacity
-        style={[styles.item, {height: reservation.height}]}
-        onPress={() => Alert.alert(reservation.name)}
-      >
-        <Text style={{fontSize, color}}>{reservation.name}</Text>
-      </TouchableOpacity>
-    );
-  }
+  const renderItem = useCallback((item: any) => {
+    return <ReserveItem item={item} />;
+  }, []);
 
   const renderEmptyDate = () => {
     const fontSize = 16;
@@ -151,7 +144,7 @@ const Reserve = () => {
       date={new Date()}
       items={items}
       loadItemsForMonth={loadItems}
-      renderItem={renderReserve}
+      renderItem={renderItem}
       renderEmptyDate={renderEmptyDate}
     />
   );

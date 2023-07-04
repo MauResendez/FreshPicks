@@ -44,14 +44,12 @@ const OrderHistory = () => {
   }
 
 	return (
-		<View useSafeArea style={global.white}>
-      <FlashList 
-        data={orders}
-        keyExtractor={(item: any) => item.id}
-        estimatedItemSize={orders.length != 0 ? orders.length : 150}
-        renderItem={renderHistory}
-      />
-    </View>
+    <FlashList 
+      data={orders}
+      keyExtractor={(item: any) => item.id}
+      estimatedItemSize={orders.length != 0 ? orders.length : 150}
+      renderItem={renderHistory}
+    />
 	)
 }
 
