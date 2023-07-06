@@ -13,6 +13,7 @@ import ReportIssue from "../../screens/settings/report-issue";
 import TermsAndConditions from "../../screens/settings/terms-and-conditions";
 import VendorInformation from "../../screens/settings/vendor-information";
 import VendorLocation from "../../screens/settings/vendor-location";
+import VendorPayments from "../../screens/settings/vendor-payments";
 import VendorPreview from "../../screens/settings/vendor-preview";
 import VendorSchedule from "../../screens/settings/vendor-schedule";
 
@@ -38,8 +39,9 @@ const SettingStack = () => {
       <Stack.Screen name="Account Information" component={AccountInformation} />
       <Stack.Screen name="Vendor Information" component={VendorInformation} />
       <Stack.Screen name="Vendor Location" component={VendorLocation} />
-      <Stack.Screen name="Vendor Schedule" component={VendorSchedule} />
+      <Stack.Screen name="Vendor Payments" component={VendorPayments} />
       <Stack.Screen name="Vendor Preview" component={VendorPreview} />
+      <Stack.Screen name="Vendor Schedule" component={VendorSchedule} />
       <Stack.Screen name="Order History" component={OrderHistory} />
       <Stack.Screen name="Terms and Conditions" component={TermsAndConditions} />
       <Stack.Screen name="Privacy Policy" component={PrivacyPolicy} />

@@ -55,7 +55,7 @@ const VendorLocation = () => {
   });
 
   return (
-		<KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]} style={global.white}>
+		<KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]} style={global.gray}>
 			<TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
 				<Formik 
 					enableReinitialize={true}

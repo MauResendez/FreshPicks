@@ -1,45 +1,38 @@
-import { useNavigation } from '@react-navigation/native';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
-import { FirebaseRecaptchaBanner, FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 import * as ImageManipulator from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 import * as Notifications from 'expo-notifications';
-import { PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { GeoPoint, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Formik } from 'formik';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import PhoneInput from 'react-native-phone-input';
 import { Button, Carousel, Checkbox, Colors, DateTimePicker, Image, KeyboardAwareScrollView, LoaderScreen, PageControl, Text, TextField, View, Wizard } from 'react-native-ui-lib';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Yup from 'yup';
-import { app, auth, db, storage } from '../../firebase';
+import { auth, db, storage } from '../../firebase';
 import { global } from '../../style';
 
 const Register = () => {
-  const navigation = useNavigation<any>();
-  const phoneRef = useRef<any>(null);
   const appConfig = require("../../app.json");
   const projectId = appConfig?.expo?.extra?.eas?.projectId;
-  const recaptchaVerifier = useRef<any>(null);
-  const attemptInvisibleVerification = true;
-
+  
+  const [start, setStart] = useState<string>('');
+  const [end, setEnd] = useState<string>('');
   const [active, setActive] = useState(0);
   const [completedStep, setCompletedStep] = useState(undefined);
   const [vid, setVID] = useState<any>();
   const [vendor, setVendor] = useState<boolean>(false);
-  const [monday, setMonday] = useState<any>({ enable: false, start: null, end: null });
-  const [tuesday, setTuesday] = useState<any>({ enable: false, start: null, end: null });
-  const [wednesday, setWednesday] = useState<any>({ enable: false, start: null, end: null });
-  const [thursday, setThursday] = useState<any>({ enable: false, start: null, end: null });
-  const [friday, setFriday] = useState<any>({ enable: false, start: null, end: null });
-  const [saturday, setSaturday] = useState<any>({ enable: false, start: null, end: null });
-  const [sunday, setSunday] = useState<any>({ enable: false, start: null, end: null });
+  const [monday, setMonday] = useState<any>({ enable: false, start: new Date(), end: new Date() });
+  const [tuesday, setTuesday] = useState<any>({ enable: false, start: new Date(), end: new Date() });
+  const [wednesday, setWednesday] = useState<any>({ enable: false, start: new Date(), end: new Date() });
+  const [thursday, setThursday] = useState<any>({ enable: false, start: new Date(), end: new Date() });
+  const [friday, setFriday] = useState<any>({ enable: false, start: new Date(), end: new Date() });
+  const [saturday, setSaturday] = useState<any>({ enable: false, start: new Date(), end: new Date() });
+  const [sunday, setSunday] = useState<any>({ enable: false, start: new Date(), end: new Date() });
   const [visible, setVisible] = useState<boolean>(false);
   const [token, setToken] = useState<any>(null);
-  const [coordinates, setCoordinates] = useState({ latitude: 26.212379, longitude: -98.318153 });
   const [region, setRegion] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -136,26 +129,6 @@ const Register = () => {
     return url;
   }
 
-  const verifyPhone = async (phone) => {
-    try {
-      const i = await checkIfUserExists(phone);
-
-      if (!i.result.exists) {
-        const phoneProvider = new PhoneAuthProvider(auth);
-        const vid = await phoneProvider.verifyPhoneNumber(phone, recaptchaVerifier.current);
-        setVID(vid);
-      } else {
-        Alert.alert("User already exists", "There's a user that registered with this phone number.\n\n Would you like to login with it?", [
-          {text: 'Cancel', style: 'cancel'},
-          {text: 'OK', onPress: () => navigation.navigate("Login")},
-        ]);
-      }
-    } catch (error: any) {
-      alert(error.message);
-      console.log(error.message);
-    }
-  }
-
   const checkIfImageIsAppropriate = async (images) => {
     try {
       const response = await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/checkIfImageIsAppropriate", {
@@ -183,53 +156,54 @@ const Register = () => {
     }
   };
 
-  const checkIfUserExists = async (phone) => {
-    try {
-      const response = await fetch("https://us-central1-utrgvfreshpicks.cloudfunctions.net/checkIfUserExists", {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          'data': {
-            'phoneNumber': phone,
-          }
-        }),
-      });
-
-      // console.log(response);
-
-      const json = await response.json();
-
-      // console.log(json);
-
-      return json;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const createUser = async (values, user, images) => {
     try {
-      await setDoc(doc(db, "Users", user.uid), {
-        name: values.name,
-        phone: values.phone,
-        role: vendor ? "Vendor" : "Customer",
-        admin: false,
-        vendor: vendor,
-        email: values.email,
-        address: values.address,
-        location: values.location,
-        images: images,
-        business: values.business,
-        description: values.description,
-        website: values.website.length != 0 ? values.website : null,
-        schedule: {
-          monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday, sunday: sunday
-        },
-        token: [token],
-      });
+      console.log(monday);
+
+      if (vendor) {
+        await setDoc(doc(db, "Users", user.uid), {
+          createdAt: new Date(),
+          name: values.name,
+          role: vendor ? "Vendor" : "Customer",
+          admin: false,
+          vendor: vendor,
+          email: values.email,
+          address: values.address,
+          location: values.location,
+          images: images,
+          business: values.business,
+          description: values.description,
+          website: values.website.length != 0 ? values.website : null,
+          schedule: {
+            monday: { enable: monday.enable, start: monday.start.toLocaleTimeString(), end: monday.end.toLocaleTimeString() }, 
+            tuesday: { enable: tuesday.enable, start: tuesday.start.toLocaleTimeString(), end: tuesday.end.toLocaleTimeString() }, 
+            wednesday: { enable: wednesday.enable, start: wednesday.start.toLocaleTimeString(), end: wednesday.end.toLocaleTimeString() }, 
+            thursday: { enable: thursday.enable, start: thursday.start.toLocaleTimeString(), end: thursday.end.toLocaleTimeString() }, 
+            friday: { enable: friday.enable, start: friday.start.toLocaleTimeString(), end: friday.end.toLocaleTimeString() }, 
+            saturday: { enable: saturday.enable, start: saturday.start.toLocaleTimeString(), end: saturday.end.toLocaleTimeString() }, 
+            sunday: { enable: sunday.enable, start: sunday.start.toLocaleTimeString(), end: sunday.end.toLocaleTimeString() }
+          },
+          payments: {
+            paypal: values.paypal,
+            cashapp: values.cashapp,
+            venmo: values.venmo,
+            zelle: values.zelle,
+          },
+          tokens: [token],
+        });
+      } else {
+        await setDoc(doc(db, "Users", user.uid), {
+          createdAt: new Date(),
+          name: values.name,
+          role: vendor ? "Vendor" : "Customer",
+          admin: false,
+          vendor: vendor,
+          email: values.email,
+          tokens: [token],
+        });
+      }
+      
+      
     } catch (error) {
       console.error('Error uploading images', error);
     }
@@ -237,9 +211,9 @@ const Register = () => {
 
   const handleSubmit = async (values) => {
     try {
-      const credential = PhoneAuthProvider.credential(vid, values.sms);
+      console.log(values.email, values.password);
+      const auth_credential = await createUserWithEmailAndPassword(auth, values.email, values.password);
 
-      const auth_credential = await signInWithCredential(auth, credential);
       const user = auth_credential.user;
       const imgs = vendor ? await uploadImages(values.images) : [];
       await createUser(values, user, imgs);
@@ -279,25 +253,27 @@ const Register = () => {
     }
   };
 
-  const Next = () => {
+  const Next = (props) => {
+    const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
+
     return (
       <View>
-        {vendor 
-          ? <Button style={active !== 4 && {backgroundColor: Colors.primary}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 4} />
-          : <Button style={active !== 1 && {backgroundColor: Colors.primary}} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} disabled={active === 1} />
+        {vendor && active !== 5 || !vendor && active !== 1
+          ? <Button style={{ backgroundColor: Colors.primary }} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} />
+          : <Button style={{ backgroundColor: Colors.primary }} iconSource={() => <MCIcon name={"check"} size={48} color={Colors.white} />} onPress={handleSubmit} />
         }
       </View>
     );
   };
 
-  const Buttons = () => {
+  const Buttons = (props) => {
     return (
       <View style={global.field}>
         <View row spread centerV>
           {Prev()}
           {/* <Text>{active}</Text> */}
-          <PageControl numOfPages={vendor ? 5 : 2} currentPage={active} color={Colors.primary} />
-          {Next()}
+          <PageControl numOfPages={vendor ? 6 : 2} currentPage={active} color={Colors.primary} />
+          {Next(props)}
         </View>
       </View>
     )
@@ -332,23 +308,11 @@ const Register = () => {
         </View>
         {errors.name && touched.name && <Text style={{ color: Colors.red30 }}>{errors.name}</Text>}
 
-        <View style={global.field}>
-          <Text text65 marginV-4>Email *</Text>
-          <TextField 
-            style={global.input} 
-            value={values.email} 
-            onChangeText={handleChange('email')} 
-            onBlur={handleBlur('email')}
-            autoComplete="email" 
-            placeholder="Enter your email address" 
-            migrate 
-          />
-        </View>
-        {errors.email && touched.email && <Text style={{ color: Colors.red30 }}>{errors.email}</Text>}
-
         <View flexG />
           
-        {Buttons()}
+        <View style={global.field}>
+          {Buttons(props)}
+        </View>
       </View>
     )
   }
@@ -413,7 +377,9 @@ const Register = () => {
 
           <View flexG />
 
-          {Buttons()}
+          <View style={global.field}>
+            {Buttons(props)}
+          </View>
         </View>
       </View>
     );
@@ -478,74 +444,11 @@ const Register = () => {
             useOnPlatform: "web"
           }}
         />
-        
-        {Buttons()}  
+                  
+        <View style={global.field}>
+          {Buttons(props)}  
+        </View>
       </View> 
-      // <MapView
-      //   style={global.flex}
-      //   region={region}
-      //   moveOnMarkerPress={true}
-      //   mapType={"standard"}
-      //   showsTraffic
-      // >
-      //     <GooglePlacesAutocomplete
-      //       textInputProps={{
-      //         onChange(text) {
-      //           setFieldValue('address', text);
-      //           setFieldValue('location', null);
-      //         },
-      //         autoCapitalize: "none",
-      //         autoCorrect: false,
-      //         value: values.address
-      //       }}
-      //       styles={{
-      //         textInput: {
-      //           height: 50,
-      //           width: "100%",
-      //           borderWidth: 1,
-      //           borderColor: "rgba(0, 0, 0, 0.2)",
-      //           borderRadius: 8,
-      //           paddingHorizontal: 8,
-      //           backgroundColor: Colors.white,
-      //         },
-      //         textInputContainer: {
-      //           paddingHorizontal: 16,
-      //           paddingTop: 16
-      //         },
-      //         listView: {
-      //           paddingHorizontal: 16
-      //         }
-      //       }}
-      //       onPress={(data, details) => {
-      //         if (!data || !details) return;
-
-      //         const geopoint = new GeoPoint(details.geometry.location.lat, details.geometry.location.lng);
-          
-      //         setFieldValue('address', data.description);
-      //         setFieldValue('location', geopoint);
-
-      //         const { lat, lng } = details.geometry.location;
-      //         setCoordinates({ latitude: lat, longitude: lng });
-              
-      //       }}
-      //       fetchDetails={true}
-      //       minLength={4}
-      //       enablePoweredByContainer={false}
-      //       placeholder="Enter your address here"
-      //       debounce={1000}
-      //       nearbyPlacesAPI="GooglePlacesSearch"
-      //       keepResultsAfterBlur={true}
-      //       query={{
-      //         key: "AIzaSyDyXlBNmFl5OTBrrc8YyGRyPoEnoi3fMTc",
-      //         language: "en",
-      //       }}
-      //       requestUrl={{
-      //         url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
-      //         useOnPlatform: "web"
-      //       }}
-      //     />
-      //     <Marker coordinate={coordinates} />
-      // </MapView>
     );
   };
 
@@ -554,7 +457,7 @@ const Register = () => {
 
     return (
       <View flex padding-24>
-        <View row spread paddingV-16>
+        <View row spread centerV height={72}>
           <Checkbox
             label={<Text text65 marginV-4>Monday</Text>}
             value={monday.enable} 
@@ -570,26 +473,27 @@ const Register = () => {
 
           {monday.enable && <View row spread centerV style={global.time}>
             <DateTimePicker
-              value={monday.start || new Date()}
-              onChange={(date) => setMonday({ ...monday, start: date.toTimeString() })}
-              mode="time" 
-              timeFormat={'hh:mm A'}
               display="clock"
+              mode="time"
+              onChange={(date) => setMonday({ ...monday, start: date })}
+              timeFormat={'hh:mm A'}
+              value={monday.start}
             />
 
             <Text> - </Text>
 
             <DateTimePicker
-              value={monday.end || new Date()}
-              onChange={(date) => setMonday({ ...monday, end: date })}
-              mode="time" 
-              timeFormat={'hh:mm A'}
               display="clock"
+              minimumDate={monday.start}
+              mode="time"
+              onChange={(date) => setMonday({ ...monday, end: date })}
+              timeFormat={'hh:mm A'}
+              value={monday.end}
             />
           </View>}
         </View>
 
-        <View row spread paddingV-16>
+        <View row spread centerV height={72}>
           <Checkbox
             label={<Text text65 marginV-4>Tuesday</Text>} 
             value={tuesday.enable} 
@@ -605,26 +509,27 @@ const Register = () => {
 
           {tuesday.enable && <View row spread centerV style={global.time}>
             <DateTimePicker
-              value={tuesday.start || new Date()}
-              onChange={(date) => setTuesday({ ...tuesday, start: date })}
-              mode="time" 
-              timeFormat={'hh:mm A'} 
               display="clock"
+              mode="time" 
+              onChange={(date) => setTuesday({ ...tuesday, start: date })}
+              timeFormat={'hh:mm A'} 
+              value={tuesday.start}
             />
 
             <Text> - </Text>
 
             <DateTimePicker
-              value={tuesday.end || new Date()}
-              onChange={(date) => setTuesday({ ...tuesday, end: date })}
-              mode="time" 
-              timeFormat={'hh:mm A'}
               display="clock"
+              minimumDate={tuesday.start}
+              mode="time" 
+              onChange={(date) => setTuesday({ ...tuesday, end: date })}
+              timeFormat={'hh:mm A'} 
+              value={tuesday.start}
             />
           </View>}
         </View>
 
-        <View row spread paddingV-16>
+        <View row spread centerV height={72}>
           <Checkbox
             label={<Text text65 marginV-4>Wednesday</Text>} 
             value={wednesday.enable} 
@@ -659,7 +564,7 @@ const Register = () => {
           </View>}
         </View>
 
-        <View row spread paddingV-16>
+        <View row spread centerV height={72}>
           <Checkbox 
             label={<Text text65 marginV-4>Thursday</Text>} 
             value={thursday.enable} 
@@ -694,7 +599,7 @@ const Register = () => {
           </View>}
         </View>
 
-        <View row spread paddingV-16>
+        <View row spread centerV height={72}>
           <Checkbox
             label={<Text text65 marginV-4>Friday</Text>} 
             value={friday.enable} 
@@ -729,7 +634,7 @@ const Register = () => {
           </View>}
         </View>
 
-        <View row spread paddingV-16>
+        <View row spread centerV height={72}>
           <Checkbox
             label={<Text text65 marginV-4>Saturday</Text>} 
             value={saturday.enable} 
@@ -764,7 +669,7 @@ const Register = () => {
           </View>}
         </View>
 
-        <View row spread paddingV-16>
+        <View row spread centerV height={72}>
           <Checkbox
             label={<Text text65 marginV-4>Sunday</Text>} 
             value={sunday.enable} 
@@ -801,7 +706,71 @@ const Register = () => {
 
         <View flexG />
 
-        {Buttons()}
+        <View style={global.field}>
+          {Buttons(props)}
+        </View>
+      </View>
+    );
+  };
+
+  const VendorPayments = (props) => {
+    const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
+
+    return (
+      <View flex padding-24>
+        <View style={global.field}>
+          <Text text65 marginV-4>PayPal</Text>
+          <TextField
+            value={values.paypal}
+            onChangeText={handleChange('paypal')}
+            onBlur={handleBlur('paypal')}
+            style={global.input}
+            migrate
+          />
+        </View>
+        {errors.paypal && touched.paypal && <Text style={{ color: Colors.red30 }}>{errors.paypal}</Text>}
+        
+        <View style={global.field}>
+          <Text text65 marginV-4>CashApp</Text>
+          <TextField
+            value={values.cashapp}
+            onChangeText={handleChange('cashapp')}
+            onBlur={handleBlur('cashapp')}
+            style={global.input}
+            migrate
+          />
+        </View>
+        {errors.cashapp && touched.cashapp && <Text style={{ color: Colors.red30 }}>{errors.cashapp}</Text>}
+
+        <View style={global.field}>
+          <Text text65 marginV-4>Venmo</Text>
+          <TextField
+            value={values.venmo}
+            onChangeText={handleChange('venmo')}
+            onBlur={handleBlur('venmo')}
+            style={global.input}
+            migrate
+          />
+        </View>
+        {errors.venmo && touched.venmo && <Text style={{ color: Colors.red30 }}>{errors.venmo}</Text>}
+
+        <View style={global.field}>
+          <Text text65 marginV-4>Zelle</Text>
+          <TextField
+            value={values.zelle}
+            onChangeText={handleChange('zelle')}
+            onBlur={handleBlur('zelle')}
+            style={global.input}
+            migrate
+          />
+        </View>
+        {errors.zelle && touched.zelle && <Text style={{ color: Colors.red30 }}>{errors.zelle}</Text>}
+        
+        <View flexG />
+        
+        <View style={global.field}>
+          {Buttons(props)}
+        </View>
       </View>
     );
   };
@@ -812,66 +781,37 @@ const Register = () => {
     return (
       <View flex padding-24>
         <View style={global.field}>
-          <Image
-            style={{ width: "auto", height: 100 }}
-            source={require("../../assets/images/logo.png")}
-            resizeMode="contain"
-          />
-          <FirebaseRecaptchaVerifierModal
-            ref={recaptchaVerifier}
-            firebaseConfig={app.options}
-            attemptInvisibleVerification={attemptInvisibleVerification}
+          <Text text65 marginV-4>Email *</Text>
+          <TextField
+            value={values.email}
+            onChangeText={handleChange('email')}
+            onBlur={handleBlur('email')}
+            style={global.input}
+            placeholder="Enter your email address" 
+            migrate
           />
         </View>
+        {errors.email && touched.email && <Text style={{ color: Colors.red30 }}>{errors.email}</Text>}
         
         <View style={global.field}>
-          <Text text65 marginV-4>Phone Number</Text>
-          <PhoneInput
-            initialValue={values.phone}
-            ref={phoneRef}
-            initialCountry={'us'}
+          <Text text65 marginV-4>Password *</Text>
+          <TextField
+            value={values.password}
+            onChangeText={handleChange('password')}
+            onBlur={handleBlur('password')}
             style={global.input}
-            onChangePhoneNumber={(phone) => setFieldValue('phone', phone)}
-            textProps={{
-              placeholder: 'Enter a phone number...'
-            }}
+            secureTextEntry
+            placeholder="Enter your password" 
+            migrate
           />
         </View>
-        {errors.phone && touched.phone && <Text style={{ color: Colors.red30 }}>{errors.phone}</Text>}
-
-        <View style={global.field}>
-          <Button 
-            backgroundColor={Colors.primary}
-            color={Colors.white}
-            label={"Send Verification Code"} 
-            labelStyle={{ fontWeight: '600', padding: 8 }}
-            style={global.button} 
-            onPress={() => verifyPhone(values.phone)}                
-          />
-        </View>
-
-        <View style={global.field}>
-          <Text text65 marginV-4>Verify SMS Code</Text>
-          <OTPInputView
-            style={{width: '100%', height: 50}}
-            pinCount={6}
-            code={values.sms}
-            onCodeChanged={handleChange("sms")}
-            autoFocusOnLoad={false}
-            codeInputFieldStyle={global.otp}
-            codeInputHighlightStyle={{ borderColor: "#03DAC6" }}
-            onCodeFilled={() => handleSubmit()}
-          />
-        </View>
-        {errors.sms && touched.sms && <Text style={{ color: Colors.red30 }}>{errors.sms}</Text>}
-
-        <View style={global.field}>
-          {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
-        </View>  
+        {errors.password && touched.password && <Text style={{ color: Colors.red30 }}>{errors.password}</Text>}
 
         <View flexG />
 
-        {Buttons()}   
+        <View style={global.field}>
+          {Buttons(props)}
+        </View>   
       </View>
     );
   };
@@ -890,6 +830,8 @@ const Register = () => {
       case 3:
         return VendorSchedule(props);
       case 4:
+        return VendorPayments(props);
+      case 5:
         return AccountInformation(props);
     }
   };
@@ -915,18 +857,7 @@ const Register = () => {
 
   useEffect(() => {
     getToken();
-  }, [])
-
-  useEffect(() => {
-    if (coordinates) {
-      setRegion({
-        latitude: coordinates.latitude,
-        longitude: coordinates.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      });
-    }
-  }, [coordinates]);
+  }, []);
 
   useEffect(() => {
     if (token) {
@@ -958,7 +889,10 @@ const Register = () => {
 
   const validation = Yup.object().shape({
     name: Yup.string().required('Name is required'), 
-    email: Yup.string().email("Email must be a valid email").required('Email is required'), 
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    password: Yup.string()
+      .min(8, 'Password must be at least 8 characters')
+      .required('Password is required'),
     address: Yup.string().when([], {
       is: () => vendor,
       then: (schema) => schema.required('Address is required'),
@@ -979,20 +913,18 @@ const Register = () => {
       is: () => vendor,
       then: (schema) => schema.notRequired(),
     }),
-    phone: Yup.string().required('Phone is required'), 
-    sms: Yup.string().required('SMS is required'), 
     // images: Yup.array().required('Images is required')
   });
 
   return (
     <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}> 
       <Formik 
-        initialValues={{ name: "", email: "", address: "", location: "", business: "", description: "", website: "", phone: "", sms: "", images: [] }} 
-        validationSchema={validation}
+        initialValues={{ name: "", email: "", password: "", address: "", location: "", business: "", description: "", website: "", images: [], paypal: "", cashapp: "", venmo: "", zelle: "" }} 
         onSubmit={handleSubmit}
+        // validationSchema={validation}
       >
           {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values, isSubmitting, submitCount }) => (
-          <View useSafeArea flex>
+          <View useSafeArea flex style={global.gray}>
             <KeyboardAwareScrollView contentContainerStyle={global.flex}>
               {Current({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values })}
             </KeyboardAwareScrollView>

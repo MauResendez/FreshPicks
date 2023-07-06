@@ -209,7 +209,7 @@ const VendorInformation = () => {
                   </View>
                 </TouchableOpacity>
               </Carousel>
-              <View flex style={global.container}>
+              <View flex style={[global.container, global.gray]}>
                 <View style={global.field}>
                   <Text text65 marginV-4>Business Name *</Text>
                   <TextField

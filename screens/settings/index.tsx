@@ -29,7 +29,7 @@ const Settings = () => {
 
   const logOut = async () => {
     await updateDoc(doc(db, "Users", auth.currentUser.uid), {
-      token: arrayRemove(token)
+      tokens: arrayRemove(token)
     });
 
     await signOut(auth);
@@ -441,6 +441,20 @@ const Settings = () => {
             <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
               <Text text80M grey30 marginV-4 numberOfLines={1}>
                 Update vendor location
+              </Text>
+            </ListItem.Part>
+          </ListItem>
+        )}
+        {user?.vendor && (
+          <ListItem
+            backgroundColor={Colors.white}
+            activeOpacity={0.3}
+            height={60}
+            onPress={() => navigation.navigate("Vendor Payments")}
+          >
+            <ListItem.Part column containerStyle={{ paddingHorizontal: 16 }}>
+              <Text text80M grey30 marginV-4 numberOfLines={1}>
+                Update vendor payments
               </Text>
             </ListItem.Part>
           </ListItem>

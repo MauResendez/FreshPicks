@@ -31,6 +31,9 @@ export const global = StyleSheet.create({
   white: {
     backgroundColor: Colors.white
   },
+  gray: {
+    backgroundColor: Colors.grey60
+  },
   button: {
     borderRadius: 8,
     marginVertical: 8,

@@ -63,9 +63,9 @@ const Basket = () => {
     await addDoc(collection(db, "Orders"), {
       customer: orderCustomer.id,
       vendor: orderVendor.id,
-      products: result,
+      listings: result,
       total: Number(orderTotal.toFixed(2)),
-      status: "Pending",
+      status: "Ongoing",
       createdAt: new Date(),
       date: orderDate,
       title: `Order for ${orderCustomer.name}`,
