@@ -216,7 +216,7 @@ const AddBusiness = () => {
 
     return (
       <View>
-        {active !== 2
+        {active !== 3
           ? <Button style={{ backgroundColor: Colors.primary }} iconSource={() => <MCIcon name={"chevron-right"} size={48} color={Colors.white} />} onPress={goToNextStep} />
           : <Button style={{ backgroundColor: Colors.primary }} iconSource={() => <MCIcon name={"check"} size={48} color={Colors.white} />} onPress={handleSubmit} />
         }
@@ -230,7 +230,7 @@ const AddBusiness = () => {
         <View row spread centerV>
           {Prev()}
           {/* <Text>{active}</Text> */}
-          <PageControl numOfPages={3} currentPage={active} color={Colors.primary} />
+          <PageControl numOfPages={4} currentPage={active} color={Colors.primary} />
           {Next(props)}
         </View>
       </View>
@@ -623,6 +623,68 @@ const AddBusiness = () => {
     );
   };
 
+  const VendorPayments = (props) => {
+    const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
+
+    return (
+      <View flex padding-24>
+        <View style={global.field}>
+          <Text text65 marginV-4>PayPal</Text>
+          <TextField
+            value={values.paypal}
+            onChangeText={handleChange('paypal')}
+            onBlur={handleBlur('paypal')}
+            style={global.input}
+            migrate
+          />
+        </View>
+        {errors.paypal && touched.paypal && <Text style={{ color: Colors.red30 }}>{errors.paypal}</Text>}
+        
+        <View style={global.field}>
+          <Text text65 marginV-4>CashApp</Text>
+          <TextField
+            value={values.cashapp}
+            onChangeText={handleChange('cashapp')}
+            onBlur={handleBlur('cashapp')}
+            style={global.area}
+            multiline
+            maxLength={100}
+            migrate
+          />
+        </View>
+        {errors.cashapp && touched.cashapp && <Text style={{ color: Colors.red30 }}>{errors.cashapp}</Text>}
+
+        <View style={global.field}>
+          <Text text65 marginV-4>Venmo</Text>
+          <TextField
+            value={values.venmo}
+            onChangeText={handleChange('venmo')}
+            onBlur={handleBlur('venmo')}
+            style={global.input}
+            migrate
+          />
+        </View>
+        {errors.venmo && touched.venmo && <Text style={{ color: Colors.red30 }}>{errors.venmo}</Text>}
+
+        <View style={global.field}>
+          <Text text65 marginV-4>Zelle</Text>
+          <TextField
+            value={values.zelle}
+            onChangeText={handleChange('zelle')}
+            onBlur={handleBlur('zelle')}
+            style={global.input}
+            migrate
+          />
+        </View>
+        {errors.zelle && touched.zelle && <Text style={{ color: Colors.red30 }}>{errors.zelle}</Text>}
+        
+        <View flexG />
+
+        {Buttons(props)}
+      </View>
+    );
+  };
+
   const Current = (props) => {
     switch (active) {
       case 0:
@@ -631,6 +693,8 @@ const AddBusiness = () => {
         return VendorAddress(props);
       case 2:
         return VendorSchedule(props);
+      case 3:
+        return VendorPayments(props);
     }
   };
 
@@ -682,7 +746,7 @@ const AddBusiness = () => {
     <View useSafeArea flex>
       <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}> 
         <Formik 
-          initialValues={{ vendor: false, name: "", email: "", address: "", location: "", business: "", description: "", website: "", phone: "", sms: "", images: [] }} 
+          initialValues={{ vendor: false, name: "", email: "", address: "", location: "", business: "", description: "", website: "", phone: "", sms: "", images: [], paypal: "", cashapp: "", venmo: "", zelle: "" }} 
           validationSchema={validate}
           onSubmit={handleSubmit}
         >
