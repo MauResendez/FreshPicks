@@ -4,7 +4,6 @@ import { FirebaseRecaptchaBanner, FirebaseRecaptchaVerifierModal } from "expo-fi
 import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
 import * as React from "react";
 import { useRef, useState } from "react";
-import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
 import PhoneInput from 'react-native-phone-input';
 import { Button, Colors, Text, View } from "react-native-ui-lib";
 import { app, auth } from "../../firebase";
@@ -89,7 +88,6 @@ const ChangePhone = () => {
 
   return (
     <View useSafeArea flex>
-      <TouchableWithoutFeedback onPress={Platform.OS !== "web" && Keyboard.dismiss}>
         <View flex style={global.container}>
           <View>
             <FirebaseRecaptchaVerifierModal
@@ -140,7 +138,6 @@ const ChangePhone = () => {
 
           {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
         </View>
-      </TouchableWithoutFeedback>
     </View>
   );
 }

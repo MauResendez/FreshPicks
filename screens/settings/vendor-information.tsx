@@ -5,7 +5,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { Alert, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Alert, TouchableOpacity } from "react-native";
 import { Button, Carousel, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib";
 import * as Yup from 'yup';
 import { auth, db, storage } from "../../firebase";
@@ -186,83 +186,81 @@ const VendorInformation = () => {
   
   return (
     <KeyboardAwareScrollView contentContainerStyle={global.flex} style={global.white}>
-      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <Formik
-          enableReinitialize={true} 
-          initialValues={{ business: user.business, description: user.description, website: user.website, address: user.address, images: user.images } || { business: "", description: "", website: "", images: [] }} 
-          onSubmit={onSubmit}
-          validationSchema={validate}
-        >
-          {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-            <View flex>
-              <Carousel containerStyle={{ height: 200 }}>
-                <TouchableOpacity style={global.flex} onPress={() => Alert.alert("Delete Chat", "Would you like to delete this post?", [
-                  {text: 'Cancel', style: 'cancel'},
-                  {text: 'Camera', onPress: async () => await camera(setFieldValue)},
-                  {text: 'Gallery', onPress: async () => await gallery(setFieldValue)},
-                ])}>
-                  <View flex centerV>
-                    {values.images.length == 0
-                      ? <Image style={global.flex} source={require("../../assets/images/default.png")} overlayType={Image.overlayTypes.BOTTOM} />
-                      : <Image style={global.flex} source={{ uri: values.images[0] }} cover overlayType={Image.overlayTypes.BOTTOM} />
-                    }
-                  </View>
-                </TouchableOpacity>
-              </Carousel>
-              <View flex style={[global.container, global.gray]}>
-                <View style={global.field}>
-                  <Text text65 marginV-4>Business Name *</Text>
-                  <TextField
-                    value={values.business}
-                    onChangeText={handleChange('business')}
-                    onBlur={handleBlur('business')}
-                    style={global.input}
-                    migrate
-                  />
+      <Formik
+        enableReinitialize={true} 
+        initialValues={{ business: user.business, description: user.description, website: user.website, address: user.address, images: user.images } || { business: "", description: "", website: "", images: [] }} 
+        onSubmit={onSubmit}
+        validationSchema={validate}
+      >
+        {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
+          <View flex>
+            <Carousel containerStyle={{ height: 200 }}>
+              <TouchableOpacity style={global.flex} onPress={() => Alert.alert("Delete Chat", "Would you like to delete this post?", [
+                {text: 'Cancel', style: 'cancel'},
+                {text: 'Camera', onPress: async () => await camera(setFieldValue)},
+                {text: 'Gallery', onPress: async () => await gallery(setFieldValue)},
+              ])}>
+                <View flex centerV>
+                  {values.images.length == 0
+                    ? <Image style={global.flex} source={require("../../assets/images/default.png")} overlayType={Image.overlayTypes.BOTTOM} />
+                    : <Image style={global.flex} source={{ uri: values.images[0] }} cover overlayType={Image.overlayTypes.BOTTOM} />
+                  }
                 </View>
-                {errors.business && touched.business && <Text style={{ color: Colors.red30 }}>{errors.business}</Text>}
-                
-                <View style={global.field}>
-                  <Text text65 marginV-4>Describe your business *</Text>
-                  <TextField
-                    value={values.description}
-                    onChangeText={handleChange('description')}
-                    onBlur={handleBlur('description')}
-                    style={global.area}
-                    multiline
-                    maxLength={100}
-                    migrate
-                  />
-                </View>
-                {errors.description && touched.description && <Text style={{ color: Colors.red30 }}>{errors.description}</Text>}
-
-                <View style={global.field}>
-                  <Text text65 marginV-4>Website</Text>
-                  <TextField
-                    value={values.website}
-                    onChangeText={handleChange('website')}
-                    onBlur={handleBlur('website')}
-                    style={global.input}
-                    migrate
-                  />
-                </View>
-                {errors.website && touched.website && <Text style={{ color: Colors.red30 }}>{errors.website}</Text>}
-
-                <View flexG />
-
-                <Button 
-                  backgroundColor={Colors.primary}
-                  color={Colors.white}
-                  label={"Update Vendor Information"} 
-                  labelStyle={{ fontWeight: '600', padding: 8 }} 
-                  style={global.button} 
-                  onPress={handleSubmit}                
+              </TouchableOpacity>
+            </Carousel>
+            <View flex style={[global.container, global.white]}>
+              <View style={global.field}>
+                <Text text65 marginV-4>Business Name *</Text>
+                <TextField
+                  value={values.business}
+                  onChangeText={handleChange('business')}
+                  onBlur={handleBlur('business')}
+                  style={global.input}
+                  migrate
                 />
               </View>
+              {errors.business && touched.business && <Text style={{ color: Colors.red30 }}>{errors.business}</Text>}
+              
+              <View style={global.field}>
+                <Text text65 marginV-4>Describe your business *</Text>
+                <TextField
+                  value={values.description}
+                  onChangeText={handleChange('description')}
+                  onBlur={handleBlur('description')}
+                  style={global.area}
+                  multiline
+                  maxLength={100}
+                  migrate
+                />
+              </View>
+              {errors.description && touched.description && <Text style={{ color: Colors.red30 }}>{errors.description}</Text>}
+
+              <View style={global.field}>
+                <Text text65 marginV-4>Website</Text>
+                <TextField
+                  value={values.website}
+                  onChangeText={handleChange('website')}
+                  onBlur={handleBlur('website')}
+                  style={global.input}
+                  migrate
+                />
+              </View>
+              {errors.website && touched.website && <Text style={{ color: Colors.red30 }}>{errors.website}</Text>}
+
+              <View flexG />
+
+              <Button 
+                backgroundColor={Colors.primary}
+                color={Colors.white}
+                label={"Update Vendor Information"} 
+                labelStyle={{ fontWeight: '600', padding: 8 }} 
+                style={global.button} 
+                onPress={handleSubmit}                
+              />
             </View>
-          )}
-        </Formik>
-      </TouchableWithoutFeedback>
+          </View>
+        )}
+      </Formik>
     </KeyboardAwareScrollView>
   );
 }

@@ -6,7 +6,7 @@ import { GeoPoint, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { Alert, Keyboard, Platform, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Alert, TouchableOpacity } from "react-native";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Button, Carousel, Checkbox, Colors, DateTimePicker, Image, KeyboardAwareScrollView, LoaderScreen, PageControl, Text, TextField, View, Wizard } from 'react-native-ui-lib';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -917,21 +917,19 @@ const Register = () => {
   });
 
   return (
-    <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}> 
-      <Formik 
-        initialValues={{ name: "", email: "", password: "", address: "", location: "", business: "", description: "", website: "", images: [], paypal: "", cashapp: "", venmo: "", zelle: "" }} 
-        onSubmit={handleSubmit}
-        // validationSchema={validation}
-      >
-          {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values, isSubmitting, submitCount }) => (
-          <View useSafeArea flex style={global.gray}>
-            <KeyboardAwareScrollView contentContainerStyle={global.flex}>
-              {Current({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values })}
-            </KeyboardAwareScrollView>
-          </View>
-        )}
-      </Formik>
-    </TouchableWithoutFeedback>
+    <Formik 
+      initialValues={{ name: "", email: "", password: "", address: "", location: "", business: "", description: "", website: "", images: [], paypal: "", cashapp: "", venmo: "", zelle: "" }} 
+      onSubmit={handleSubmit}
+      // validationSchema={validation}
+    >
+        {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values, isSubmitting, submitCount }) => (
+        <View useSafeArea flex style={global.white}>
+          <KeyboardAwareScrollView contentContainerStyle={global.flex}>
+            {Current({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values })}
+          </KeyboardAwareScrollView>
+        </View>
+      )}
+    </Formik>
   );
 }
 

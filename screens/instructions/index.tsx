@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { ImageBackground, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from "react-native";
+import { ImageBackground, KeyboardAvoidingView, Platform } from "react-native";
 import { Button, Colors, Text, View } from 'react-native-ui-lib';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { global } from '../../style';
@@ -158,13 +158,11 @@ const Instructions = () => {
 
   return (
     <View useSafeArea flex style={global.white}>
-      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAvoidingView style={global.flex} behavior={Platform.OS == "ios" ? "padding" : "height"}>
-          <View style={global.flex}>
-            {Current()}
-          </View>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
+      <KeyboardAvoidingView style={global.flex} behavior={Platform.OS == "ios" ? "padding" : "height"}>
+        <View style={global.flex}>
+          {Current()}
+        </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }

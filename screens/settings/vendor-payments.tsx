@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
 import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
@@ -49,79 +48,77 @@ const VendorPayments = () => {
   }
 
 	return (
-		<KeyboardAwareScrollView contentContainerStyle={global.flex} style={global.gray}>
-      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <Formik
-          enableReinitialize={true} 
-          initialValues={{ paypal: user.payments.paypal, cashapp: user.payments.cashapp, venmo: user.payments.venmo, zelle: user.payments.zelle } || { paypal: "", cashapp: "", venmo: "", zelle: "" }} 
-          onSubmit={onSubmit}
-        >
-          {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-            <View flex style={global.container}>
-              <View style={global.field}>
-                <Text text65 marginV-4>PayPal</Text>
-                <TextField
-                  value={values.paypal}
-                  onChangeText={handleChange('paypal')}
-                  onBlur={handleBlur('paypal')}
-                  style={global.input}
-                  migrate
-                />
-              </View>
-              {errors.paypal && touched.paypal && <Text style={{ color: Colors.red30 }}>{errors.paypal}</Text>}
-              
-              <View style={global.field}>
-                <Text text65 marginV-4>CashApp</Text>
-                <TextField
-                  value={values.cashapp}
-                  onChangeText={handleChange('cashapp')}
-                  onBlur={handleBlur('cashapp')}
-                  style={global.input}
-                  migrate
-                />
-              </View>
-              {errors.cashapp && touched.cashapp && <Text style={{ color: Colors.red30 }}>{errors.cashapp}</Text>}
-
-              <View style={global.field}>
-                <Text text65 marginV-4>Venmo</Text>
-                <TextField
-                  value={values.venmo}
-                  onChangeText={handleChange('venmo')}
-                  onBlur={handleBlur('venmo')}
-                  style={global.input}
-                  migrate
-                />
-              </View>
-              {errors.venmo && touched.venmo && <Text style={{ color: Colors.red30 }}>{errors.venmo}</Text>}
-
-              <View style={global.field}>
-                <Text text65 marginV-4>Zelle</Text>
-                <TextField
-                  value={values.zelle}
-                  onChangeText={handleChange('zelle')}
-                  onBlur={handleBlur('zelle')}
-                  style={global.input}
-                  migrate
-                />
-              </View>
-              {errors.zelle && touched.zelle && <Text style={{ color: Colors.red30 }}>{errors.zelle}</Text>}
-
-              <View flexG />
-
-              <View style={global.field}>
-                <Button 
-                  backgroundColor={Colors.primary}
-                  color={Colors.white}
-                  label={"Update Vendor Payments"} 
-                  labelStyle={{ fontWeight: '600', padding: 8 }} 
-                  style={global.button} 
-                  onPress={handleSubmit}                
-                />
-              </View>
+		<KeyboardAwareScrollView contentContainerStyle={global.flex} style={global.white}>
+      <Formik
+        enableReinitialize={true} 
+        initialValues={{ paypal: user.payments.paypal, cashapp: user.payments.cashapp, venmo: user.payments.venmo, zelle: user.payments.zelle } || { paypal: "", cashapp: "", venmo: "", zelle: "" }} 
+        onSubmit={onSubmit}
+      >
+        {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
+          <View flex style={global.container}>
+            <View style={global.field}>
+              <Text text65 marginV-4>PayPal</Text>
+              <TextField
+                value={values.paypal}
+                onChangeText={handleChange('paypal')}
+                onBlur={handleBlur('paypal')}
+                style={global.input}
+                migrate
+              />
             </View>
-          )}
-        </Formik>
-      </TouchableWithoutFeedback>
+            {errors.paypal && touched.paypal && <Text style={{ color: Colors.red30 }}>{errors.paypal}</Text>}
+            
+            <View style={global.field}>
+              <Text text65 marginV-4>CashApp</Text>
+              <TextField
+                value={values.cashapp}
+                onChangeText={handleChange('cashapp')}
+                onBlur={handleBlur('cashapp')}
+                style={global.input}
+                migrate
+              />
+            </View>
+            {errors.cashapp && touched.cashapp && <Text style={{ color: Colors.red30 }}>{errors.cashapp}</Text>}
+
+            <View style={global.field}>
+              <Text text65 marginV-4>Venmo</Text>
+              <TextField
+                value={values.venmo}
+                onChangeText={handleChange('venmo')}
+                onBlur={handleBlur('venmo')}
+                style={global.input}
+                migrate
+              />
+            </View>
+            {errors.venmo && touched.venmo && <Text style={{ color: Colors.red30 }}>{errors.venmo}</Text>}
+
+            <View style={global.field}>
+              <Text text65 marginV-4>Zelle</Text>
+              <TextField
+                value={values.zelle}
+                onChangeText={handleChange('zelle')}
+                onBlur={handleBlur('zelle')}
+                style={global.input}
+                migrate
+              />
+            </View>
+            {errors.zelle && touched.zelle && <Text style={{ color: Colors.red30 }}>{errors.zelle}</Text>}
+
+            <View flexG />
+
+            <View style={global.field}>
+              <Button 
+                backgroundColor={Colors.primary}
+                color={Colors.white}
+                label={"Update Vendor Payments"} 
+                labelStyle={{ fontWeight: '600', padding: 8 }} 
+                style={global.button} 
+                onPress={handleSubmit}                
+              />
+            </View>
+          </View>
+        )}
+      </Formik>
     </KeyboardAwareScrollView>
 	)
 }

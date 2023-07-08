@@ -4,7 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from "expo-status-bar";
 import { onAuthStateChanged, User } from "firebase/auth";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Platform } from "react-native";
+import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Colors, ConnectionStatusBar, ThemeManager } from "react-native-ui-lib";
 import { Provider } from "react-redux";
@@ -183,11 +183,13 @@ const App = () => {
 
   return (
     <GestureHandlerRootView style={global.flex} onLayout={onLayoutRootView}>
-      <Provider store={store}>
-        <StatusBar style={"auto"} animated />
-        <ConnectionStatusBar />
-        {user ? <MainStack /> : <AuthStack />}
-      </Provider>
+      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
+        <Provider store={store}>
+          <StatusBar style={"auto"} animated />
+          <ConnectionStatusBar />
+          {user ? <MainStack /> : <AuthStack />}
+        </Provider>
+      </TouchableWithoutFeedback>
     </GestureHandlerRootView>
   );
 }

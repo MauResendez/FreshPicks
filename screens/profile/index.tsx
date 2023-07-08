@@ -2,9 +2,10 @@ import { useNavigation } from "@react-navigation/native";
 import * as Linking from 'expo-linking';
 import { addDoc, collection, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Carousel, Chip, Colors, Image, KeyboardAwareScrollView, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
+import { Carousel, Chip, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { useSelector } from "react-redux";
-import ProfileRow from "../../components/profile/profile-row";
+import Products from "../../components/profile/products";
+import Subscriptions from "../../components/profile/subscriptions";
 import { selectOrderItems } from "../../features/order-slice";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
@@ -129,39 +130,8 @@ const Profile = ({ route }) => {
           <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Block`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`mailto:${vendor.email}`) }}/>
         </View> */}
       </View>
-      <View marginB-8>
-        <ListItem
-          activeOpacity={0.3}
-          backgroundColor={Colors.grey60}
-          height={60}
-        >
-          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
-            <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
-              Products
-            </Text>
-          </ListItem.Part>
-        </ListItem>
-        {products.map((item) => (
-          <ProfileRow item={item} vendor={vendor} customer={customer} />
-        ))}
-      </View>
-      <View marginB-8>
-        <ListItem
-          activeOpacity={0.3}
-          backgroundColor={Colors.grey60}
-          height={60}
-        >
-          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
-            <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
-              Subscriptions
-            </Text>
-          </ListItem.Part>
-        </ListItem>
-        {subscriptions.map((item) => (
-          <ProfileRow item={item} vendor={vendor} customer={customer} />
-        ))}
-      </View>
-      
+      <Products products={products} vendor={vendor} customer={customer} />
+      <Subscriptions subscriptions={subscriptions} vendor={vendor} customer={customer} />
     </KeyboardAwareScrollView>
   );
 }

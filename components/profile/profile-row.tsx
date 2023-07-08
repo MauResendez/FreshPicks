@@ -62,7 +62,7 @@ const ProfileRow = (props) => {
         activeOpacity={0.3}
         backgroundColor={Colors.white}
         onPress={() => setIsPressed(!isPressed)}
-        style={{ borderRadius: 8, paddingHorizontal: 8, height: "auto" }}
+        style={{ borderRadius: 8, paddingHorizontal: 8, height: "auto", marginBottom: 8 }}
       >
         <ListItem.Part middle column>
           <Stepper value={items.length} onValueChange={(value) => updateItemCount(value)} useCustomTheme={true} minValue={0} maxValue={item.quantity} />

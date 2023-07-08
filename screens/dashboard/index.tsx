@@ -1,6 +1,6 @@
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
+import { Platform } from "react-native";
 import { Colors, KeyboardAwareScrollView, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
 import ProductRow from "../../components/dashboard/product-row";
 import { auth, db } from "../../firebase";
@@ -145,7 +145,6 @@ const Dashboard = () => {
   }
 
   return (
-    <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
       <View flex>
         <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }} style={global.white} showsVerticalScrollIndicator={Platform.OS == "web"}>
           <ListItem
@@ -238,7 +237,6 @@ const Dashboard = () => {
           ))}
         </KeyboardAwareScrollView>
       </View>
-    </TouchableWithoutFeedback>
   );
 }
 

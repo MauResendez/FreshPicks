@@ -3,7 +3,6 @@ import { EmailAuthProvider, linkWithCredential } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
-import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
 import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from 'react-native-ui-lib';
 import * as Yup from 'yup';
 import { auth, db } from '../../firebase';
@@ -68,69 +67,67 @@ const LinkAccount = () => {
 
 	return (
 		<View useSafeArea flex>
-      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex}>
-          <Formik 
-            initialValues={{ email: "", password: "", confirm: "" }} 
-            onSubmit={onSubmit}
-            validationSchema={validate}
-            enableReinitialize={true}
-          >
-            {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-              <View flex style={global.container}>
-                <View style={global.field}>
-                  <Text text65 marginV-4>Email *</Text>
-                  <TextField
-                    value={values.email}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    style={global.input}
-                    migrate
-                  />
-                </View>
-                {errors.email && touched.email && <Text style={{ color: Colors.red30 }}>{errors.email}</Text>}
-                
-                <View style={global.field}>
-                  <Text text65 marginV-4>Password *</Text>
-                  <TextField
-                    value={values.password}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    style={global.input}
-                    secureTextEntry
-                    migrate
-                  />
-                </View>
-                {errors.password && touched.password && <Text style={{ color: Colors.red30 }}>{errors.password}</Text>}
-
-                <View style={global.field}>
-                  <Text text65 marginV-4>Confirm Password *</Text>
-                  <TextField
-                    value={values.confirm}
-                    onChangeText={handleChange('confirm')}
-                    onBlur={handleBlur('confirm')}
-                    style={global.input}
-                    secureTextEntry
-                    migrate
-                  />
-                </View>
-                {errors.confirm && touched.confirm && <Text style={{ color: Colors.red30 }}>{errors.confirm}</Text>}
-
-                <View flexG />
-
-                <Button 
-                  backgroundColor={Colors.primary}
-                  color={Colors.white}
-                  label={"Link Account"} 
-                  labelStyle={{ fontWeight: '600', padding: 8 }} 
-                  style={global.button} 
-                  onPress={handleSubmit}                
+      <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex}>
+        <Formik 
+          initialValues={{ email: "", password: "", confirm: "" }} 
+          onSubmit={onSubmit}
+          validationSchema={validate}
+          enableReinitialize={true}
+        >
+          {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
+            <View flex style={global.container}>
+              <View style={global.field}>
+                <Text text65 marginV-4>Email *</Text>
+                <TextField
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  style={global.input}
+                  migrate
                 />
               </View>
-            )}
-          </Formik>
-        </KeyboardAwareScrollView>
-      </TouchableWithoutFeedback>
+              {errors.email && touched.email && <Text style={{ color: Colors.red30 }}>{errors.email}</Text>}
+              
+              <View style={global.field}>
+                <Text text65 marginV-4>Password *</Text>
+                <TextField
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  style={global.input}
+                  secureTextEntry
+                  migrate
+                />
+              </View>
+              {errors.password && touched.password && <Text style={{ color: Colors.red30 }}>{errors.password}</Text>}
+
+              <View style={global.field}>
+                <Text text65 marginV-4>Confirm Password *</Text>
+                <TextField
+                  value={values.confirm}
+                  onChangeText={handleChange('confirm')}
+                  onBlur={handleBlur('confirm')}
+                  style={global.input}
+                  secureTextEntry
+                  migrate
+                />
+              </View>
+              {errors.confirm && touched.confirm && <Text style={{ color: Colors.red30 }}>{errors.confirm}</Text>}
+
+              <View flexG />
+
+              <Button 
+                backgroundColor={Colors.primary}
+                color={Colors.white}
+                label={"Link Account"} 
+                labelStyle={{ fontWeight: '600', padding: 8 }} 
+                style={global.button} 
+                onPress={handleSubmit}                
+              />
+            </View>
+          )}
+        </Formik>
+      </KeyboardAwareScrollView>
     </View>
 	)
 }

@@ -1,6 +1,6 @@
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
+import { Platform } from "react-native";
 import { Button, Colors, KeyboardAwareScrollView, ListItem, LoaderScreen, Text, View } from 'react-native-ui-lib';
 import AddressRow from '../../components/basket/address-row';
 import BasketRow from '../../components/basket/basket-row';
@@ -53,52 +53,50 @@ const Order = ({ route }) => {
 
   return (
     <View useSafeArea flex>
-      <TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
-        <KeyboardAwareScrollView contentContainerStyle={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
-          <ListItem
-            activeOpacity={0.3}
-            height={60}
-          >
-            <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
-              <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
-                Order
-              </Text>
-            </ListItem.Part>
-          </ListItem>
+      <KeyboardAwareScrollView contentContainerStyle={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
+        <ListItem
+          activeOpacity={0.3}
+          height={60}
+        >
+          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+            <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
+              Order
+            </Text>
+          </ListItem.Part>
+        </ListItem>
 
-          <BusinessRow item={vendor} />
+        <BusinessRow item={vendor} />
 
-          <AddressRow item={vendor} />
-          
-          <ListItem
-            activeOpacity={0.3}
-            height={60}
-          >
-            <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
-              <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
-                Your items
-              </Text>
-            </ListItem.Part>
-          </ListItem>
+        <AddressRow item={vendor} />
+        
+        <ListItem
+          activeOpacity={0.3}
+          height={60}
+        >
+          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+            <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
+              Your items
+            </Text>
+          </ListItem.Part>
+        </ListItem>
 
-          {order.products.map((item: any) => (
-            <BasketRow item={item} count={item.count} />
-          ))}
+        {order.products.map((item: any) => (
+          <BasketRow item={item} count={item.count} />
+        ))}
 
-          <View flexG />
+        <View flexG />
 
-          <View padding-16>
-            <Button 
-              backgroundColor={Colors.primary}
-              color={Colors.white}
-              label={"Send Meeting Request"} 
-              labelStyle={{ fontWeight: '600', padding: 8 }} 
-              style={global.button} 
-              // onPress={createOrder}          
-            />
-          </View>
-        </KeyboardAwareScrollView>
-      </TouchableWithoutFeedback>
+        <View padding-16>
+          <Button 
+            backgroundColor={Colors.primary}
+            color={Colors.white}
+            label={"Send Meeting Request"} 
+            labelStyle={{ fontWeight: '600', padding: 8 }} 
+            style={global.button} 
+            // onPress={createOrder}          
+          />
+        </View>
+      </KeyboardAwareScrollView>
     </View>
   );
 }

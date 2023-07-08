@@ -3,7 +3,6 @@ import { GeoPoint, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { Formik } from 'formik';
 import * as geofire from 'geofire-common';
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, View } from 'react-native-ui-lib';
 import * as Yup from 'yup';
@@ -55,8 +54,7 @@ const VendorLocation = () => {
   });
 
   return (
-		<KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]} style={global.gray}>
-			<TouchableWithoutFeedback style={global.flex} onPress={Platform.OS !== "web" && Keyboard.dismiss}>
+		<KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]} style={global.white}>
 				<Formik 
 					enableReinitialize={true}
 					initialValues={{ address: user.address, location: user.location, geohash: user.geohash } || { address: "", location: "", hash: "" }}
@@ -132,8 +130,7 @@ const VendorLocation = () => {
 							
 					)}
 				</Formik>
-			</TouchableWithoutFeedback>
-			</KeyboardAwareScrollView>
+		</KeyboardAwareScrollView>
   );
 };
 
