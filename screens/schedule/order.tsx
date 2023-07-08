@@ -52,7 +52,7 @@ const Order = ({ route }) => {
   }
 
   return (
-    <View useSafeArea flex>
+    <View useSafeArea flex backgroundColor={Colors.white}>
       <KeyboardAwareScrollView contentContainerStyle={global.flex} showsVerticalScrollIndicator={Platform.OS == "web"}>
         <ListItem
           activeOpacity={0.3}

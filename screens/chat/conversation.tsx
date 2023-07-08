@@ -238,7 +238,7 @@ const Conversation = ({ route }) => {
   }
 
   return (
-    <View useSafeArea flex>
+    <View useSafeArea flex backgroundColor={Colors.white}>
       <GiftedChat
         messages={messages}
         onSend={messages => onSend(messages)}

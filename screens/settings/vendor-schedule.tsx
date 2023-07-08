@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Platform } from 'react-native';
 import { Button, Colors, DateTimePicker, KeyboardAwareScrollView, Switch, Text, View } from 'react-native-ui-lib';
 import { global } from '../../style';
 
@@ -12,8 +13,8 @@ const VendorSchedule = () => {
   const [sunday, setSunday] = useState<any>({ enable: false, start: null, end: null });
 
   return (
-    <View useSafeArea flex>
-      <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
+    <View useSafeArea flex backgroundColor={Colors.white}>
+      <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flexGrow]} showsVerticalScrollIndicator={Platform.OS == "web"}>
         <View style={global.field}>
           <View row spread>
             <Text text65 marginV-4>Monday</Text>

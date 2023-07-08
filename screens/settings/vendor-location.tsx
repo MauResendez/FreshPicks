@@ -3,6 +3,7 @@ import { GeoPoint, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { Formik } from 'formik';
 import * as geofire from 'geofire-common';
 import React, { useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, View } from 'react-native-ui-lib';
 import * as Yup from 'yup';
@@ -54,83 +55,83 @@ const VendorLocation = () => {
   });
 
   return (
-		<KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]} style={global.white}>
-				<Formik 
-					enableReinitialize={true}
-					initialValues={{ address: user.address, location: user.location, geohash: user.geohash } || { address: "", location: "", hash: "" }}
-					onSubmit={onSubmit}
-					validationSchema={validate}
-				>
-					{({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-						<View flex>
-							<Text text65 marginV-4>Business Address *</Text>
-							<GooglePlacesAutocomplete
-								textInputProps={{
-									onChange(text) {
-										setFieldValue('address', text);
-										setFieldValue('location', null);
-									},
-									autoCapitalize: "none",
-									autoCorrect: false,
-									value: values.address
-								}}
-								styles={{
-									textInput: {
-										height: 50,
-										width: "100%",
-										borderWidth: 1,
-										borderColor: "rgba(0, 0, 0, 0.2)",
-										borderRadius: 8,
-										paddingHorizontal: 8,
-										backgroundColor: Colors.white,
-									}
-								}}
-								onPress={(data, details) => {
-									if (!data || !details) return;
+		<Formik 
+			enableReinitialize={true}
+			initialValues={{ address: user.address, location: user.location, geohash: user.geohash } || { address: "", location: "", hash: "" }}
+			onSubmit={onSubmit}
+			validationSchema={validate}
+		>
+			{({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
+				<View useSafeArea flex backgroundColor={Colors.white}>
+					<KeyboardAwareScrollView contentContainerStyle={[global.container, global.flexGrow]} showsVerticalScrollIndicator={Platform.OS == "web"}>
+						<Text text65 marginV-4>Business Address *</Text>
+						<GooglePlacesAutocomplete
+							textInputProps={{
+								onChange(text) {
+									setFieldValue('address', text);
+									setFieldValue('location', null);
+								},
+								autoCapitalize: "none",
+								autoCorrect: false,
+								value: values.address
+							}}
+							styles={{
+								textInput: {
+									height: 50,
+									width: "100%",
+									borderWidth: 1,
+									borderColor: "rgba(0, 0, 0, 0.2)",
+									borderRadius: 8,
+									paddingHorizontal: 8,
+									backgroundColor: Colors.white,
+								}
+							}}
+							onPress={(data, details) => {
+								if (!data || !details) return;
 
-									const geopoint = new GeoPoint(details.geometry.location.lat, details.geometry.location.lng);
+								const geopoint = new GeoPoint(details.geometry.location.lat, details.geometry.location.lng);
 
-									const { lat, lng } = details.geometry.location;
+								const { lat, lng } = details.geometry.location;
 
-									const geohash = geofire.geohashForLocation([lat, lng]);
+								const geohash = geofire.geohashForLocation([lat, lng]);
 
-									setFieldValue('address', data.description);
-									setFieldValue('location', geopoint);
-									setFieldValue('geohash', geohash);
+								setFieldValue('address', data.description);
+								setFieldValue('location', geopoint);
+								setFieldValue('geohash', geohash);
 
-									console.log(geohash);
-								}}
-								fetchDetails={true}
-								minLength={10}
-								enablePoweredByContainer={false}
-								placeholder="Enter your address here"
-								debounce={1000}
-								nearbyPlacesAPI="GooglePlacesSearch"
-								keepResultsAfterBlur={true}
-								query={{
-									key: "AIzaSyDyXlBNmFl5OTBrrc8YyGRyPoEnoi3fMTc",
-									language: "en",
-								}}
-								requestUrl={{
-									url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
-									useOnPlatform: "web"
-								}}
-							/>
+								console.log(geohash);
+							}}
+							fetchDetails={true}
+							minLength={10}
+							enablePoweredByContainer={false}
+							placeholder="Enter your address here"
+							debounce={1000}
+							nearbyPlacesAPI="GooglePlacesSearch"
+							keepResultsAfterBlur={true}
+							query={{
+								key: "AIzaSyDyXlBNmFl5OTBrrc8YyGRyPoEnoi3fMTc",
+								language: "en",
+							}}
+							requestUrl={{
+								url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
+								useOnPlatform: "web"
+							}}
+						/>
 
-							<Button 
-								backgroundColor={Colors.primary}
-								color={Colors.white}
-								label={"Update Vendor Location"} 
-								labelStyle={{ fontWeight: '600', padding: 8 }} 
-								style={global.button} 
-								onPress={handleSubmit}
-								disabled={!values.location}
-							/>
-						</View>
-							
-					)}
-				</Formik>
-		</KeyboardAwareScrollView>
+						<Button 
+							backgroundColor={Colors.primary}
+							color={Colors.white}
+							label={"Update Vendor Location"} 
+							labelStyle={{ fontWeight: '600', padding: 8 }} 
+							style={global.button} 
+							onPress={handleSubmit}
+							disabled={!values.location}
+						/>
+					</KeyboardAwareScrollView>
+				</View>
+					
+			)}
+		</Formik>
   );
 };
 

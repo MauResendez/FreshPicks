@@ -37,19 +37,21 @@ const OrderHistory = () => {
 
   if (orders.length == 0) {
     return (
-      <View useSafeArea flex style={[global.white, global.center, global.container]}>
-        <Text text65 marginV-4>No orders created yet</Text>
+      <View useSafeArea flex backgroundColor={Colors.white} style={[global.center, global.container]}>
+        <Text text65 marginV-4>No orders made yet</Text>
       </View>
     )
   }
 
 	return (
-    <FlashList 
-      data={orders}
-      keyExtractor={(item: any) => item.id}
-      estimatedItemSize={orders.length != 0 ? orders.length : 150}
-      renderItem={renderHistory}
-    />
+    <View useSafeArea flex backgroundColor={Colors.white}>      
+      <FlashList 
+        data={orders}
+        keyExtractor={(item: any) => item.id}
+        estimatedItemSize={orders.length != 0 ? orders.length : 150}
+        renderItem={renderHistory}
+      />
+    </View>
 	)
 }
 

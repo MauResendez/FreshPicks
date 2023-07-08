@@ -14,7 +14,6 @@ import RecommendedList from "../../components/search/recommended-list";
 import SubscriptionList from "../../components/search/subscription-list";
 import VendorList from "../../components/search/vendor-list";
 import { auth, db } from "../../firebase";
-import { global } from "../../style";
 
 // Keep the splash screen visible while we fetch resources
 // SplashScreen.preventAutoHideAsync();
@@ -190,7 +189,7 @@ const Search = () => {
   }
 
   return (
-    <View useSafeArea flex style={global.white}>
+    <View useSafeArea flex backgroundColor={Colors.white}>
       <View padding-8>
         <TextField fieldStyle={{ backgroundColor: Colors.grey60, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Vendors, produce, subscriptions, etc." placeholderTextColor={Colors.grey30} leadingAccessory={<Ionicon name="search" color={Colors.grey30} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>

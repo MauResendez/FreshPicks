@@ -91,7 +91,7 @@ const Map = () => {
   }
 
   return (
-    <View useSafeArea flex style={global.white}>
+    <View useSafeArea flex backgroundColor={Colors.white}>
       <View flex>
         <MapView
           ref={map => (this.map = map)} 

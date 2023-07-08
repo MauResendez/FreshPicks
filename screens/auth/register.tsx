@@ -6,7 +6,7 @@ import { GeoPoint, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { Alert, TouchableOpacity } from "react-native";
+import { Alert, Platform, TouchableOpacity } from "react-native";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Button, Carousel, Checkbox, Colors, DateTimePicker, Image, KeyboardAwareScrollView, LoaderScreen, PageControl, Text, TextField, View, Wizard } from 'react-native-ui-lib';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -922,9 +922,9 @@ const Register = () => {
       onSubmit={handleSubmit}
       // validationSchema={validation}
     >
-        {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values, isSubmitting, submitCount }) => (
-        <View useSafeArea flex style={global.white}>
-          <KeyboardAwareScrollView contentContainerStyle={global.flex}>
+      {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values, isSubmitting, submitCount }) => (
+        <View useSafeArea flex backgroundColor={Colors.white}>
+          <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flexGrow]} showsVerticalScrollIndicator={Platform.OS == "web"}>
             {Current({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values })}
           </KeyboardAwareScrollView>
         </View>

@@ -98,7 +98,7 @@ const Transactions = () => {
 
   if (transactions.length == 0) {
     return (
-      <View useSafeArea flex style={[global.white, global.center, global.container]}>
+      <View useSafeArea flex backgroundColor={Colors.white} style={[global.center, global.container]}>
         <Text text65 marginV-4>No transactions made</Text>
         <FloatingAction
           actions={actions}
@@ -118,7 +118,7 @@ const Transactions = () => {
   }
 	
 	return (
-    <View useSafeArea flex style={global.white}>
+    <View useSafeArea flex backgroundColor={Colors.white}>
       <FlashList 
         data={transactions}
         keyExtractor={(item: any) => item.id}

@@ -156,8 +156,8 @@ const Settings = () => {
   }
   
   return (
-    <View useSafeArea flex style={global.white}>
-      <KeyboardAwareScrollView showsVerticalScrollIndicator={Platform.OS == "web"}>
+    <View useSafeArea flex backgroundColor={Colors.white}>
+      <KeyboardAwareScrollView contentContainerStyle={global.flexGrow} showsVerticalScrollIndicator={Platform.OS == "web"}> 
         {user?.vendor && (
           <ListItem
             activeOpacity={0.3}

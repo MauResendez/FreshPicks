@@ -64,14 +64,14 @@ const Chat = () => {
 
   if (chats.length == 0) {
     return (
-      <View useSafeArea flex style={[global.white, global.center, global.container]}>
+      <View useSafeArea flex backgroundColor={Colors.white} style={[global.center, global.container]}>
         <Text text65 marginV-4>Your inbox is empty</Text>
       </View>
     )
   }
 
   return (
-    <View useSafeArea flex>
+    <View useSafeArea flex backgroundColor={Colors.white}>      
       <FlashList 
         data={chats}
         keyExtractor={(item: any) => item.id}

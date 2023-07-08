@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
+import { Platform } from "react-native";
 import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
@@ -48,14 +49,14 @@ const VendorPayments = () => {
   }
 
 	return (
-		<KeyboardAwareScrollView contentContainerStyle={global.flex} style={global.white}>
-      <Formik
-        enableReinitialize={true} 
-        initialValues={{ paypal: user.payments.paypal, cashapp: user.payments.cashapp, venmo: user.payments.venmo, zelle: user.payments.zelle } || { paypal: "", cashapp: "", venmo: "", zelle: "" }} 
-        onSubmit={onSubmit}
-      >
-        {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-          <View flex style={global.container}>
+    <Formik
+      enableReinitialize={true} 
+      initialValues={{ paypal: user.payments.paypal, cashapp: user.payments.cashapp, venmo: user.payments.venmo, zelle: user.payments.zelle } || { paypal: "", cashapp: "", venmo: "", zelle: "" }} 
+      onSubmit={onSubmit}
+    >
+      {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
+        <View useSafeArea flex backgroundColor={Colors.white}>
+          <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flexGrow]} showsVerticalScrollIndicator={Platform.OS == "web"}>
             <View style={global.field}>
               <Text text65 marginV-4>PayPal</Text>
               <TextField
@@ -116,10 +117,10 @@ const VendorPayments = () => {
                 onPress={handleSubmit}                
               />
             </View>
-          </View>
-        )}
-      </Formik>
-    </KeyboardAwareScrollView>
+          </KeyboardAwareScrollView>
+        </View>
+      )}
+    </Formik>
 	)
 }
 

@@ -5,10 +5,9 @@ import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { Formik } from "formik"
 import React, { useEffect, useState } from "react"
-import { TouchableOpacity } from "react-native"
+import { Platform, TouchableOpacity } from "react-native"
 import CurrencyInput from "react-native-currency-input"
-import { ActionSheet, Button, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { Button, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib"
 import * as Yup from 'yup'
 import { auth, db, storage } from "../../firebase"
 import { global } from "../../style"
@@ -161,94 +160,83 @@ const EditSubscription = ({ route }) => {
   });
 
   return (
-    <View useSafeArea flex>
-      <KeyboardAwareScrollView>
-        <Formik 
-          initialValues={subscription || { title: "", description: "", price: 1, type: "" }} 
-          onSubmit={handleSubmit}
-          validationSchema={validate}
-          enableReinitialize={true}
-        >
-          {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-            <View flex style={global.container}>
-              <View style={global.field}>
-                <Text text65 marginV-4>Title</Text>
-                <TextField
-                  style={global.input}
-                  placeholder="Enter the subscription title here"
-                  onChangeText={handleChange('title')}
-                  value={values.title}
-                  migrate
-                />
-              </View>
-              {errors.title && touched.title && <Text style={{ color: Colors.red30}}>{errors.title}</Text>}
-
-              <View style={global.field}>
-                <Text text65 marginV-4>Description</Text>
-                <TextField
-                  style={global.area}
-                  placeholder="Enter the subscription description here"
-                  multiline
-                  maxLength={100}
-                  onChangeText={handleChange('description')}
-                  value={values.description}
-                  migrate
-                />
-              </View>
-              {errors.description && touched.description && <Text style={{ color: Colors.red30}}>{errors.description}</Text>}
-
-              <View style={global.field}>
-                <Text text65 marginV-4>Price</Text>
-                <CurrencyInput
-                  value={values.price}
-                  onChangeValue={(price) => setFieldValue("price", price)}
-                  style={global.input}
-                  prefix={"$ "}
-                  delimiter=","
-                  separator="."
-                  precision={2}
-                  minValue={0}
-                  onChangeText={(formattedValue) => {
-                    console.log(formattedValue); // R$ +2.310,46
-                  }}
-                />
-              </View>
-              {errors.price && touched.price && <Text style={{ color: Colors.red30}}>{errors.price}</Text>}
-
-              <View style={global.field}>
-                <Text text65 marginV-4>Image</Text>
-                <TouchableOpacity onPress={() => setVisible(true)}>
-                  {values.image.length == 0
-                    ? <Image style={{ width: "100%", height: 150 }} source={require("../../assets/images/default.png")} />
-                    : <Image style={{ width: "100%", height: 150 }} source={{ uri: values.image[0] }} />
-                  }
-                </TouchableOpacity>
-              </View>
-
-              <View flexG />
-              
-              <Button 
-                backgroundColor={Colors.primary}
-                color={Colors.white}
-                label={"Edit Subscription"} 
-                labelStyle={{ fontWeight: '600', padding: 8 }} 
-                style={global.button} 
-                onPress={handleSubmit}                
-              />
-
-              <ActionSheet
-                containerStyle={{ height: 192 }}
-                dialogStyle={{ borderRadius: 8 }}
-                title={'Select Photo Option'} 
-                options={[{label: 'Camera', onPress: async () => camera(setFieldValue), icon: () => <MCIcon name={"camera"} size={24} color={Colors.black} style={{ marginRight: 8 }} />}, {label: 'Gallery', onPress: async () => gallery(setFieldValue), icon: () => <MCIcon name={"image"} size={24} color={Colors.black} style={{ marginRight: 8 }} />}]}
-                visible={visible}
-                onDismiss={() => {console.log("HERE"); setVisible(false)}}
+    <Formik 
+      initialValues={subscription || { title: "", description: "", price: 1, type: "" }} 
+      onSubmit={handleSubmit}
+      validationSchema={validate}
+      enableReinitialize={true}
+    >
+      {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
+        <View useSafeArea flex backgroundColor={Colors.white}>
+          <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flexGrow]} showsVerticalScrollIndicator={Platform.OS == "web"}>  
+            <View style={global.field}>
+              <Text text65 marginV-4>Title</Text>
+              <TextField
+                style={global.input}
+                placeholder="Enter the subscription title here"
+                onChangeText={handleChange('title')}
+                value={values.title}
+                migrate
               />
             </View>
-          )}
-        </Formik>
-      </KeyboardAwareScrollView>
-    </View>
+            {errors.title && touched.title && <Text style={{ color: Colors.red30 }}>{errors.title}</Text>}
+
+            <View style={global.field}>
+              <Text text65 marginV-4>Description</Text>
+              <TextField
+                style={global.area}
+                placeholder="Enter the subscription description here"
+                multiline
+                maxLength={100}
+                onChangeText={handleChange('description')}
+                value={values.description}
+                migrate
+              />
+            </View>
+            {errors.description && touched.description && <Text style={{ color: Colors.red30 }}>{errors.description}</Text>}
+
+            <View style={global.field}>
+              <Text text65 marginV-4>Price</Text>
+              <CurrencyInput
+                value={values.price}
+                onChangeValue={(price) => setFieldValue("price", price)}
+                style={global.input}
+                prefix={"$ "}
+                delimiter=","
+                separator="."
+                precision={2}
+                minValue={0}
+                onChangeText={(formattedValue) => {
+                  console.log(formattedValue); // R$ +2.310,46
+                }}
+              />
+            </View>
+            {errors.price && touched.price && <Text style={{ color: Colors.red30 }}>{errors.price}</Text>}
+
+            <View style={global.field}>
+              <Text text65 marginV-4>Image</Text>
+              <TouchableOpacity onPress={() => setVisible(true)}>
+                {values.image.length == 0
+                  ? <Image style={{ width: "100%", height: 150 }} source={require("../../assets/images/default.png")} />
+                  : <Image style={{ width: "100%", height: 150 }} source={{ uri: values.image[0] }} />
+                }
+              </TouchableOpacity>
+            </View>
+
+            <View flexG />
+            
+            <Button 
+              backgroundColor={Colors.primary}
+              color={Colors.white}
+              label={"Edit Subscription"} 
+              labelStyle={{ fontWeight: '600', padding: 8 }} 
+              style={global.button} 
+              onPress={handleSubmit}                
+            />
+          </KeyboardAwareScrollView>
+        </View>
+      )}
+    </Formik>
   );
 }
 

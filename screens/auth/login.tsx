@@ -4,6 +4,7 @@ import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { Formik } from "formik";
 import * as React from "react";
 import { useEffect, useState } from "react";
+import { Platform } from 'react-native';
 import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib";
 import * as Yup from 'yup';
 import { auth, db } from "../../firebase";
@@ -69,8 +70,8 @@ const Login = () => {
       validationSchema={validation}
     >
       {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values, isSubmitting, submitCount }) => (
-        <View useSafeArea flex padding-24>
-          <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flex]}>
+        <View useSafeArea flex backgroundColor={Colors.white}>
+          <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flexGrow]} showsVerticalScrollIndicator={Platform.OS == "web"}>
             <View style={global.field}>
               <Text text65 marginV-4>Email *</Text>
               <TextField

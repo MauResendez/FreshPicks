@@ -189,7 +189,7 @@ const Orders = () => {
   }
 
   return (
-    <View useSafeArea flex style={global.white}>
+    <View useSafeArea flex backgroundColor={Colors.white}>
       <TabController items={[{label: 'Orders'}, {label: 'Chats'}]}>  
         <TabController.TabBar
           indicatorInsets={0}

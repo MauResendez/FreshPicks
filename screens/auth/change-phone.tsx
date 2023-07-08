@@ -87,57 +87,57 @@ const ChangePhone = () => {
   };
 
   return (
-    <View useSafeArea flex>
-        <View flex style={global.container}>
-          <View>
-            <FirebaseRecaptchaVerifierModal
-              ref={recaptchaVerifier}
-              firebaseConfig={app.options}
-              attemptInvisibleVerification={attemptInvisibleVerification}
-            />
-          </View>
-
-          <View style={global.field}>
-            <Text text65 marginV-4>Phone Number</Text>
-            <PhoneInput
-              ref={phoneRef}
-              initialCountry={'us'}
-              style={global.input}
-              onChangePhoneNumber={(phone) => {
-                setPhone(phone);
-                console.log(phone);
-              }}
-              textProps={{
-                placeholder: 'Enter a phone number...'
-              }}
-            />
-          </View>
-
-          <Button 
-            backgroundColor={Colors.primary}
-            color={Colors.white}
-            label={"Send Verification Code"} 
-            labelStyle={{ fontWeight: '600', padding: 8 }} 
-            style={global.button} 
-            onPress={verifyPhone}          
+    <View useSafeArea flex backgroundColor={Colors.white}>      
+      <View flex style={global.container}>
+        <View>
+          <FirebaseRecaptchaVerifierModal
+            ref={recaptchaVerifier}
+            firebaseConfig={app.options}
+            attemptInvisibleVerification={attemptInvisibleVerification}
           />
-
-          <View style={global.field}>
-            <Text text65 marginV-4>Verify SMS Code</Text>
-            <OTPInputView
-              style={{width: '100%', height: 50}}
-              pinCount={6}
-              code={sms}
-              onCodeChanged={code => setSMS(code)}
-              autoFocusOnLoad={false}
-              codeInputFieldStyle={global.otp}
-              codeInputHighlightStyle={global.underline}
-              onCodeFilled={code => onSubmit(code)}
-            />
-          </View>          
-
-          {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
         </View>
+
+        <View style={global.field}>
+          <Text text65 marginV-4>Phone Number</Text>
+          <PhoneInput
+            ref={phoneRef}
+            initialCountry={'us'}
+            style={global.input}
+            onChangePhoneNumber={(phone) => {
+              setPhone(phone);
+              console.log(phone);
+            }}
+            textProps={{
+              placeholder: 'Enter a phone number...'
+            }}
+          />
+        </View>
+
+        <Button 
+          backgroundColor={Colors.primary}
+          color={Colors.white}
+          label={"Send Verification Code"} 
+          labelStyle={{ fontWeight: '600', padding: 8 }} 
+          style={global.button} 
+          onPress={verifyPhone}          
+        />
+
+        <View style={global.field}>
+          <Text text65 marginV-4>Verify SMS Code</Text>
+          <OTPInputView
+            style={{width: '100%', height: 50}}
+            pinCount={6}
+            code={sms}
+            onCodeChanged={code => setSMS(code)}
+            autoFocusOnLoad={false}
+            codeInputFieldStyle={global.otp}
+            codeInputHighlightStyle={global.underline}
+            onCodeFilled={code => onSubmit(code)}
+          />
+        </View>          
+
+        {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
+      </View>
     </View>
   );
 }

@@ -188,7 +188,7 @@ const Schedule = () => {
   }
 
   return (
-    <View useSafeArea flex style={global.white}>
+    <View useSafeArea flex backgroundColor={Colors.white}>
       <TabController items={[{label: 'Schedule'}, {label: 'Inbox'}]}>  
         <TabController.TabBar
           indicatorInsets={0}

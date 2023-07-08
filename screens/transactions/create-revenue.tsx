@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native"
 import { addDoc, collection, onSnapshot, query, where } from "firebase/firestore"
 import { Formik } from 'formik'
 import React, { useEffect, useState } from "react"
+import { Platform } from "react-native"
 import CurrencyInput from "react-native-currency-input"
 import { Button, Colors, DateTimePicker, KeyboardAwareScrollView, LoaderScreen, Picker, Text, TextField, View } from "react-native-ui-lib"
 import * as Yup from 'yup'
@@ -71,118 +72,103 @@ const CreateRevenue = () => {
   });
 
   return (
-    <View useSafeArea flex style={global.white}>
-      <KeyboardAwareScrollView style={global.container} contentContainerStyle={global.flex}>
-        <Formik
-          initialValues={{ user: auth.currentUser.uid, party: '', type: 'Revenue', price: 0.00, product: '', label: '', category: '', notes: '', createdAt: new Date(), date: new Date() }}
-          onSubmit={onSubmit}
-          validationSchema={validate}
-        >
-          {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-            <View flex>
-              <View row spread style={{ paddingVertical: 8 }}>
-                <View style={{ width: "47.5%" }}>
-                  <Text text65 marginV-4>Price *</Text>
-                  <CurrencyInput
-                    value={values.price}
-                    onChangeValue={(price) => setFieldValue("price", price)}
-                    style={global.input}
-                    prefix={values.type == 'Expense' ? "- $ " : "+ $ "}
-                    delimiter=","
-                    separator="."
-                    precision={2}
-                    minValue={0}
-                    onChangeText={(formattedValue) => {
-                      console.log(formattedValue); // R$ +2.310,46
-                    }}
-                  />
-                </View>
-
-                <View style={{ width: "47.5%" }}>
-                  <Text text65 marginV-4>Category *</Text>
-                  <Picker 
-                    numberOfLines = { 1 }  
-                    value={values.category}
-                    style={[global.input, { marginBottom: -16 }]}
-                    onChange={handleChange('category')}
-                    onBlur={handleBlur('category')}
-                    useSafeArea={true} 
-                    topBarProps={{ title: 'Categories' }} 
-                  >  
-                    {revenue.map((category) => (   
-                      <Picker.Item key={category.value} value={category.value} label={category.label} />
-                    ))}
-                  </Picker>
-                </View>
+    <Formik
+      initialValues={{ user: auth.currentUser.uid, party: '', type: 'Revenue', price: 0.00, product: '', label: '', category: '', notes: '', createdAt: new Date(), date: new Date() }}
+      onSubmit={onSubmit}
+      validationSchema={validate}
+    >
+      {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
+        <View useSafeArea flex backgroundColor={Colors.white}>
+          <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flexGrow]} showsVerticalScrollIndicator={Platform.OS == "web"}>
+            <View row spread style={{ paddingVertical: 8 }}>
+              <View style={{ width: "47.5%" }}>
+                <Text text65 marginV-4>Price *</Text>
+                <CurrencyInput
+                  value={values.price}
+                  onChangeValue={(price) => setFieldValue("price", price)}
+                  style={global.input}
+                  prefix={values.type == 'Expense' ? "- $ " : "+ $ "}
+                  delimiter=","
+                  separator="."
+                  precision={2}
+                  minValue={0}
+                  onChangeText={(formattedValue) => {
+                    console.log(formattedValue); // R$ +2.310,46
+                  }}
+                />
               </View>
 
-              <View row spread style={{ paddingVertical: 8 }}>
-                <View style={{ width: "47.5%" }}>
-                  <Text text65 marginV-4>Customer *</Text>
-                  <TextField
-                    style={global.input}
-                    onChangeText={handleChange('party')}
-                    onBlur={handleBlur('party')}
-                    value={values.party}
-                    migrate
-                  />
-                  {errors.party && touched.party && <Text style={{ color: Colors.red30 }}>{errors.party}</Text>}
-                </View>
+              <View style={{ width: "47.5%" }}>
+                <Text text65 marginV-4>Category *</Text>
+                <Picker 
+                  numberOfLines = { 1 }  
+                  value={values.category}
+                  style={[global.input, { marginBottom: -16 }]}
+                  onChange={handleChange('category')}
+                  onBlur={handleBlur('category')}
+                  useSafeArea={true} 
+                  topBarProps={{ title: 'Categories' }} 
+                >  
+                  {revenue.map((category) => (   
+                    <Picker.Item key={category.value} value={category.value} label={category.label} />
+                  ))}
+                </Picker>
+              </View>
+            </View>
 
-                <View style={{ width: "47.5%" }}>
-                  <Text text65 marginV-4>Date *</Text>
-                  <DateTimePicker 
-                    value={values.date} 
-                    onChange={(date) => setFieldValue("date", date)} 
-                    style={global.input} 
-                    placeholder="Transaction Date" 
-                    pm 
-                  />
-                  {errors.type && touched.type && <Text style={{ color: Colors.red30 }}>{errors.type}</Text>}
-                </View>
+            <View row spread style={{ paddingVertical: 8 }}>
+              <View style={{ width: "47.5%" }}>
+                <Text text65 marginV-4>Customer *</Text>
+                <TextField
+                  style={global.input}
+                  onChangeText={handleChange('party')}
+                  onBlur={handleBlur('party')}
+                  value={values.party}
+                  migrate
+                />
+                {errors.party && touched.party && <Text style={{ color: Colors.red30 }}>{errors.party}</Text>}
               </View>
 
-              <View row spread style={{ paddingVertical: 8 }}>
-                <View style={{ width: "47.5%" }}>
-                  <Text text65 marginV-4>Product *</Text>
-                  <Picker  
-                    value={values.product}
-                    style={[global.input, { marginBottom: -16 }]}
-                    onChange={handleChange("product")}
-                    onBlur={handleBlur("product")}
-                    useSafeArea={true} 
-                    topBarProps={{ title: 'Products' }} 
-                  >  
-                    {products.map((product) => (   
-                      <Picker.Item 
-                        key={product.id} 
-                        value={product.id} 
-                        label={product.title} 
-                        onPress={() => {
-                          setFieldValue("product", product.id);
-                          setFieldValue("label", product.title);
-                        }}
-                      />
-                    ))}
-                  </Picker>
-                  {errors.product && touched.product && <Text style={{ color: Colors.red30 }}>{errors.product}</Text>}
-                </View>
+              <View style={{ width: "47.5%" }}>
+                <Text text65 marginV-4>Date *</Text>
+                <DateTimePicker 
+                  value={values.date} 
+                  onChange={(date) => setFieldValue("date", date)} 
+                  style={global.input} 
+                  placeholder="Transaction Date" 
+                  pm 
+                />
+                {errors.type && touched.type && <Text style={{ color: Colors.red30 }}>{errors.type}</Text>}
+              </View>
+            </View>
 
-                <View style={{ width: "47.5%" }}>
-                  <Text text65 marginV-4>Notes</Text>
-                  <TextField
-                    style={global.area}
-                    multiline
-                    maxLength={100}
-                    onChangeText={handleChange('notes')}
-                    onBlur={handleBlur('notes')}
-                    value={values.notes}
-                    migrate
-                  />
-                </View>
+            <View row spread style={{ paddingVertical: 8 }}>
+              <View style={{ width: "47.5%" }}>
+                <Text text65 marginV-4>Product *</Text>
+                <Picker  
+                  value={values.product}
+                  style={[global.input, { marginBottom: -16 }]}
+                  onChange={handleChange("product")}
+                  onBlur={handleBlur("product")}
+                  useSafeArea={true} 
+                  topBarProps={{ title: 'Products' }} 
+                >  
+                  {products.map((product) => (   
+                    <Picker.Item 
+                      key={product.id} 
+                      value={product.id} 
+                      label={product.title} 
+                      onPress={() => {
+                        setFieldValue("product", product.id);
+                        setFieldValue("label", product.title);
+                      }}
+                    />
+                  ))}
+                </Picker>
+                {errors.product && touched.product && <Text style={{ color: Colors.red30 }}>{errors.product}</Text>}
               </View>
 
-              <View style={global.field}>
+              <View style={{ width: "47.5%" }}>
                 <Text text65 marginV-4>Notes</Text>
                 <TextField
                   style={global.area}
@@ -194,22 +180,35 @@ const CreateRevenue = () => {
                   migrate
                 />
               </View>
+            </View>
 
-              <View flexG />
-
-              <Button 
-                backgroundColor={Colors.primary}
-                color={Colors.white}
-                label={"Create Transaction"} 
-                labelStyle={{ fontWeight: '600', padding: 8 }} 
-                style={global.button} 
-                onPress={handleSubmit}                
+            <View style={global.field}>
+              <Text text65 marginV-4>Notes</Text>
+              <TextField
+                style={global.area}
+                multiline
+                maxLength={100}
+                onChangeText={handleChange('notes')}
+                onBlur={handleBlur('notes')}
+                value={values.notes}
+                migrate
               />
             </View>
-          )}
-        </Formik>
-      </KeyboardAwareScrollView>
-    </View>
+
+            <View flexG />
+
+            <Button 
+              backgroundColor={Colors.primary}
+              color={Colors.white}
+              label={"Create Transaction"} 
+              labelStyle={{ fontWeight: '600', padding: 8 }} 
+              style={global.button} 
+              onPress={handleSubmit}                
+            />
+          </KeyboardAwareScrollView>
+        </View>
+      )}
+    </Formik>
   );
 }
 

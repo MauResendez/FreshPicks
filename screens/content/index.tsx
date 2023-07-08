@@ -30,7 +30,7 @@ const Content = () => {
   }, []);
 
   const FirstRoute = () => (
-    <View useSafeArea flex style={products.length == 0 && [global.center, global.container]}>
+    <View useSafeArea flex backgroundColor={Colors.white} style={products.length == 0 && [global.center, global.container]}>
       {products.length != 0 
         ? <FlashList 
             data={products}
@@ -44,7 +44,7 @@ const Content = () => {
   );
 
   const SecondRoute = () => (
-    <View useSafeArea flex style={subscriptions.length == 0 && [global.center, global.container]}>
+    <View useSafeArea flex backgroundColor={Colors.white} style={subscriptions.length == 0 && [global.center, global.container]}>
       {subscriptions.length != 0 
         ? <FlashList 
             data={subscriptions}
@@ -86,7 +86,7 @@ const Content = () => {
   }
 
   return (
-    <View useSafeArea flex style={global.white}>
+    <View useSafeArea flex backgroundColor={Colors.white}>
       <TabController items={[{label: 'Products'}, {label: 'Subscriptions'}]}>  
         <TabController.TabBar 
           indicatorInsets={0}

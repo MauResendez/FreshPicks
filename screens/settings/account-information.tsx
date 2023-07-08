@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from 'react-native-ui-lib';
 import * as Yup from 'yup';
 import { auth, db } from '../../firebase';
@@ -49,15 +50,15 @@ const AccountInformation = () => {
   });
 
   return (
-    <KeyboardAwareScrollView contentContainerStyle={global.flex} style={global.white}>
-      <Formik 
-        enableReinitialize={true}
-        initialValues={{ name: user.name, email: user.email } || { name: "", email: "" }} 
-        onSubmit={onSubmit}
-        validationSchema={validate}
-      >
-        {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-          <View flex style={global.container}>
+    <Formik 
+      enableReinitialize={true}
+      initialValues={{ name: user.name, email: user.email } || { name: "", email: "" }} 
+      onSubmit={onSubmit}
+      validationSchema={validate}
+    >
+      {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
+        <View useSafeArea flex backgroundColor={Colors.white}>
+          <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flexGrow]} showsVerticalScrollIndicator={Platform.OS == "web"}>   
             <View style={global.field}>
               <Text text65 marginV-4>Full Name *</Text>
               <TextField 
@@ -96,10 +97,10 @@ const AccountInformation = () => {
               style={global.button} 
               onPress={handleSubmit}                
             />
-          </View>
-        )}
-      </Formik>
-    </KeyboardAwareScrollView>
+          </KeyboardAwareScrollView>
+        </View>
+      )}
+    </Formik>
   )
 }
 

@@ -3,6 +3,7 @@ import { EmailAuthProvider, linkWithCredential } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
+import { Platform } from 'react-native';
 import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from 'react-native-ui-lib';
 import * as Yup from 'yup';
 import { auth, db } from '../../firebase';
@@ -66,8 +67,8 @@ const LinkAccount = () => {
   });
 
 	return (
-		<View useSafeArea flex>
-      <KeyboardAwareScrollView style={global.flex} contentContainerStyle={global.flex}>
+		<View useSafeArea flex backgroundColor={Colors.white}>
+      <KeyboardAwareScrollView contentContainerStyle={global.flexGrow} showsVerticalScrollIndicator={Platform.OS == "web"}> 
         <Formik 
           initialValues={{ email: "", password: "", confirm: "" }} 
           onSubmit={onSubmit}

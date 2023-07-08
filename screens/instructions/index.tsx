@@ -157,7 +157,7 @@ const Instructions = () => {
   };
 
   return (
-    <View useSafeArea flex style={global.white}>
+    <View useSafeArea flex backgroundColor={Colors.white}>
       <KeyboardAvoidingView style={global.flex} behavior={Platform.OS == "ios" ? "padding" : "height"}>
         <View style={global.flex}>
           {Current()}

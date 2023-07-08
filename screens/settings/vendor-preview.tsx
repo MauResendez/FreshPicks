@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Linking from 'expo-linking';
 import { addDoc, collection, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import { Platform } from "react-native";
 import { Carousel, Chip, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Text, View } from "react-native-ui-lib";
 import { useSelector } from "react-redux";
 import ProfileRow from "../../components/profile/profile-row";
@@ -79,52 +80,54 @@ const VendorPreview = ({ route }) => {
   }
 
   return (
-    <KeyboardAwareScrollView style={global.white}>
-      <Carousel
-        containerStyle={{
-          height: 200
-        }}
-      >
-        {vendor.images?.map((image, i) => {
-          return (
-            <View flex centerV key={i}>
-              <Image
-                overlayType={Image.overlayTypes.BOTTOM}
-                style={global.flex}
-                source={{
-                  uri: image
-                }}
-                cover
-              />
-            </View>
-          );
-        })}
-      </Carousel>
+    <View useSafeArea flex backgroundColor={Colors.white}>
+      <KeyboardAwareScrollView contentContainerStyle={global.flexGrow} showsVerticalScrollIndicator={Platform.OS == "web"}>
+        <Carousel
+          containerStyle={{
+            height: 200
+          }}
+        >
+          {vendor.images?.map((image, i) => {
+            return (
+              <View flex centerV key={i}>
+                <Image
+                  overlayType={Image.overlayTypes.BOTTOM}
+                  style={global.flex}
+                  source={{
+                    uri: image
+                  }}
+                  cover
+                />
+              </View>
+            );
+          })}
+        </Carousel>
 
-      <View padding-16>
-        <View row>
-          <Text text65 marginV-4>{vendor.business}</Text>
+        <View padding-16>
+          <View row>
+            <Text text65 marginV-4>{vendor.business}</Text>
+          </View>
+
+          <View row>
+            <Text text80M grey30 marginV-4>{vendor.address}</Text>
+          </View>
+
+          <View row>
+            <Text text80M grey30 marginV-4>{vendor.description}</Text>
+          </View>
+
+          <View row spread style={global.flexWrap}>
+            <Chip backgroundColor={Colors.primary} containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${vendor.name}`} labelStyle={{ color: Colors.white }} onPress={handleChat}/>
+            <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`tel:${vendor.phone}`) }}/>
+            <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`mailto:${vendor.email}`) }}/>
+          </View>
         </View>
 
-        <View row>
-          <Text text80M grey30 marginV-4>{vendor.address}</Text>
-        </View>
-
-        <View row>
-          <Text text80M grey30 marginV-4>{vendor.description}</Text>
-        </View>
-
-        <View row spread style={global.flexWrap}>
-          <Chip backgroundColor={Colors.primary} containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Chat with ${vendor.name}`} labelStyle={{ color: Colors.white }} onPress={handleChat}/>
-          <Chip backgroundColor="blue" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Call`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`tel:${vendor.phone}`) }}/>
-          <Chip backgroundColor="red" containerStyle={{ paddingVertical: 8, marginVertical: 8 }} label={`Email`} labelStyle={{ color: Colors.white }} onPress={() => { Linking.openURL(`mailto:${vendor.email}`) }}/>
-        </View>
-      </View>
-
-      {products.map((item) => (
-        <ProfileRow item={item} vendor={vendor} customer={customer} />
-      ))}
-    </KeyboardAwareScrollView>
+        {products.map((item) => (
+          <ProfileRow item={item} vendor={vendor} customer={customer} />
+        ))}
+      </KeyboardAwareScrollView>
+    </View>
   );
 }
 

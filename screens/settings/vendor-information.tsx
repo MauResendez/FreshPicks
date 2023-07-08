@@ -5,7 +5,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { Alert, TouchableOpacity } from "react-native";
+import { Alert, Platform, TouchableOpacity } from "react-native";
 import { Button, Carousel, Colors, Image, KeyboardAwareScrollView, LoaderScreen, Text, TextField, View } from "react-native-ui-lib";
 import * as Yup from 'yup';
 import { auth, db, storage } from "../../firebase";
@@ -185,15 +185,15 @@ const VendorInformation = () => {
   });
   
   return (
-    <KeyboardAwareScrollView contentContainerStyle={global.flex} style={global.white}>
-      <Formik
-        enableReinitialize={true} 
-        initialValues={{ business: user.business, description: user.description, website: user.website, address: user.address, images: user.images } || { business: "", description: "", website: "", images: [] }} 
-        onSubmit={onSubmit}
-        validationSchema={validate}
-      >
-        {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
-          <View flex>
+    <Formik
+      enableReinitialize={true} 
+      initialValues={{ business: user.business, description: user.description, website: user.website, address: user.address, images: user.images } || { business: "", description: "", website: "", images: [] }} 
+      onSubmit={onSubmit}
+      validationSchema={validate}
+    >
+      {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values }) => (
+        <View useSafeArea flex backgroundColor={Colors.white}>
+          <KeyboardAwareScrollView contentContainerStyle={global.flexGrow} showsVerticalScrollIndicator={Platform.OS == "web"}>
             <Carousel containerStyle={{ height: 200 }}>
               <TouchableOpacity style={global.flex} onPress={() => Alert.alert("Delete Chat", "Would you like to delete this post?", [
                 {text: 'Cancel', style: 'cancel'},
@@ -258,10 +258,10 @@ const VendorInformation = () => {
                 onPress={handleSubmit}                
               />
             </View>
-          </View>
-        )}
-      </Formik>
-    </KeyboardAwareScrollView>
+          </KeyboardAwareScrollView>
+        </View>
+      )}
+    </Formik>
   );
 }
 

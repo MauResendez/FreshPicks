@@ -119,61 +119,63 @@ const Basket = () => {
 
   if (items.length == 0) {
     return (
-      <View useSafeArea flex style={[global.white, global.center, global.container]}>
+      <View useSafeArea flex backgroundColor={Colors.white} style={[global.center, global.container]}>
         <Text text65 marginV-4>Basket is empty</Text>
       </View>
     )
   }
 
   return (
-    <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }} style={global.white} showsVerticalScrollIndicator={Platform.OS == "web"}>
-      <ListItem
-        activeOpacity={0.3}
-        backgroundColor={Colors.grey60}
-        height={60}
-      >
-        <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
-          <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
-            Basket
-          </Text>
-        </ListItem.Part>
-      </ListItem>
+    <View useSafeArea flex backgroundColor={Colors.white}>
+      <KeyboardAwareScrollView contentContainerStyle={global.flexGrow} showsVerticalScrollIndicator={Platform.OS == "web"}>
+        <ListItem
+          activeOpacity={0.3}
+          backgroundColor={Colors.grey60}
+          height={60}
+        >
+          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+            <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
+              Basket
+            </Text>
+          </ListItem.Part>
+        </ListItem>
 
-      <BusinessRow item={orderVendor} />
+        <BusinessRow item={orderVendor} />
 
-      <AddressRow item={orderVendor} />
+        <AddressRow item={orderVendor} />
 
-      <ReserveRow item={orderDate} />
-      
-      <ListItem
-        activeOpacity={0.3}
-        backgroundColor={Colors.grey60}
-        height={60}
-      >
-        <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
-          <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
-            Your items
-          </Text>
-        </ListItem.Part>
-      </ListItem>
+        <ReserveRow item={orderDate} />
+        
+        <ListItem
+          activeOpacity={0.3}
+          backgroundColor={Colors.grey60}
+          height={60}
+        >
+          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
+            <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
+              Your items
+            </Text>
+          </ListItem.Part>
+        </ListItem>
 
-      {Object.entries(groupedItems).map(([key, items]: any) => (
-        <BasketRow key={key} item={items[0]} count={items.length} />
-      ))}
+        {Object.entries(groupedItems).map(([key, items]: any) => (
+          <BasketRow key={key} item={items[0]} count={items.length} />
+        ))}
 
-      <View flexG />
+        <View flexG />
 
-      <View padding-16>
-        <Button 
-          backgroundColor={Colors.primary}
-          color={Colors.white}
-          label={`Send Order ($${orderTotal.toFixed(2)})`} 
-          labelStyle={{ fontWeight: '600', padding: 8 }} 
-          style={global.button} 
-          onPress={createOrder}          
-        />
-      </View>
-    </KeyboardAwareScrollView>
+        <View padding-16>
+          <Button 
+            backgroundColor={Colors.primary}
+            color={Colors.white}
+            label={`Send Order ($${orderTotal.toFixed(2)})`} 
+            labelStyle={{ fontWeight: '600', padding: 8 }} 
+            style={global.button} 
+            onPress={createOrder}          
+          />
+        </View>
+      </KeyboardAwareScrollView>
+    </View>
   );
 }
 

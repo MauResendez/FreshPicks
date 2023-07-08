@@ -37,14 +37,14 @@ const Reports = () => {
 
   if (reports.length == 0) {
     return (
-      <View useSafeArea flex style={[global.white, global.center, global.container]}>
-        <Text text65 marginV-4>No issues created yet</Text>
+      <View useSafeArea flex backgroundColor={Colors.white} style={[global.center, global.container]}>
+        <Text text65 marginV-4>No reports made yet</Text>
       </View>
     )
   }
 
 	return (
-		<View useSafeArea flex style={global.white}>
+		<View useSafeArea flex backgroundColor={Colors.white}>
       <FlashList 
         data={reports}
         keyExtractor={(item: any) => item.id}
