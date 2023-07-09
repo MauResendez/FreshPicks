@@ -1,7 +1,8 @@
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Platform } from "react-native";
-import { Colors, KeyboardAwareScrollView, LoaderScreen, View } from "react-native-ui-lib";
+import DatePicker from 'react-native-neat-date-picker';
+import { Button, Colors, KeyboardAwareScrollView, LoaderScreen, View } from "react-native-ui-lib";
 import Cashflow from "../../components/dashboard/cashflow";
 import Products from "../../components/dashboard/products";
 import Subscriptions from "../../components/dashboard/subscriptions";
@@ -9,16 +10,27 @@ import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
 const Dashboard = () => {
+  const [showCalendar, setShowCalendar] = useState(false);
+
+  const openDatePickerRange = () => setShowCalendar(true)
+
+  const onCancelRange = () => {
+    setShowCalendar(false)
+  }
+
+  const onConfirmRange = (output) => {
+    setShowCalendar(false)
+    setStartDate(output.startDate)
+    setEndDate(output.endDate)
+  }
+  
   const [transactions, setTransactions] = useState(null);
   const [products, setProducts] = useState(null);
   const [subscriptions, setSubscriptions] = useState([]);
-  const [selectedRange, setRange] = useState({});
-  const [allTime, setAllTime] = useState(null);
-  const [allTimeSum, setAllTimeSum] = useState(null);
-  const [ytd, setYTD] = useState(null);
-  const [ytdSum, setYTDSum] = useState(null);
-  const [month, setMonth] = useState(null);
-  const [monthSum, setMonthSum] = useState(null);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [filtered, setFiltered] = useState(null);
+  const [filteredSum, setFilteredSum] = useState(null);
   const [cpp, setCPP] = useState(null);
   const [cps, setCPS] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -47,12 +59,8 @@ const Dashboard = () => {
   useEffect(() => {
     if (transactions) {
       if (transactions.length == 0) {
-        setAllTime([]);
-        setAllTimeSum(0);
-        setYTD([]);
-        setYTDSum(0);
-        setMonth([]);
-        setMonthSum(0);
+        setFiltered([]);
+        setFilteredSum(0);
         return;
       }
 
@@ -69,30 +77,30 @@ const Dashboard = () => {
       }, null);
 
       // Get the start of the year
-      const startOfAt = new Date(oldestElement.date.toDate());
-      const startOfYear = new Date(today.getFullYear(), 0, 1);
-      const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      const oldest = new Date(oldestElement.date.toDate());
 
       // Filter elements based on date being between start of year and today
-      const at = transactions.filter(element => {return new Date(element.date.toDate()) >= startOfAt && new Date(element.date.toDate()) <= today});
-      const atSum = at.reduce((acc, item) => item.type == "Revenue" ? acc + item.price : acc - item.price, 0);
+      const f = transactions.filter(element => {return new Date(element.date.toDate()) >= oldest && new Date(element.date.toDate()) <= today});
+      const fs = f.reduce((acc, item) => item.type == "Revenue" ? acc + item.price : acc - item.price, 0);
 
-      // Filter elements based on date being between start of year and today
-      const ytd = transactions.filter(element => {return new Date(element.date.toDate()) >= startOfYear && new Date(element.date.toDate()) <= today});
-      const ytdSum = ytd.reduce((acc, item) => item.type == "Revenue" ? acc + item.price : acc - item.price, 0);
-
-      // Filter elements based on date being between start of year and today
-      const month = transactions.filter(element => {return new Date(element.date.toDate()) >= startOfMonth && new Date(element.date.toDate()) <= today});
-      const monthSum = month.reduce((acc, item) => item.type == "Revenue" ? acc + item.price : acc - item.price, 0);
-      
-      setAllTime(at);
-      setAllTimeSum(atSum);
-      setYTD(ytd);
-      setYTDSum(ytdSum);
-      setMonth(month);
-      setMonthSum(monthSum);
+      setStartDate(oldest);
+      setEndDate(today);
+      setFiltered(f);
+      setFilteredSum(fs);
     }
   }, [transactions]);
+
+  useEffect(() => {
+    if (startDate && endDate && transactions) {
+      // Filter elements based on date being between start date and end date
+      
+      const f = transactions.filter(element => {return new Date(element.date.toDate()) >= startDate && new Date(element.date.toDate()) <= endDate});
+      const fs = f.reduce((acc, item) => item.type == "Revenue" ? acc + item.price : acc - item.price, 0);
+
+      setFiltered(f);
+      setFilteredSum(fs);
+    }
+  }, [startDate, endDate, transactions]);
 
   useEffect(() => {
     if (products) {
@@ -102,8 +110,6 @@ const Dashboard = () => {
         const pt = transactions.filter(element => {return element.product == product.id});
 
         const sum = pt.reduce((acc, item) => item.type == "Revenue" ? acc + item.price : acc - item.price, 0);
-
-        console.log(sum);
 
         cpp.push({...product, sum: sum});
       });
@@ -123,8 +129,6 @@ const Dashboard = () => {
 
         const sum = pt.reduce((acc, item) => item.type == "Revenue" ? acc + item.price : acc - item.price, 0);
 
-        console.log(sum);
-
         cps.push({...subscription, sum: sum});
       });
       
@@ -135,10 +139,10 @@ const Dashboard = () => {
   }, [setSubscriptions]);
 
   useEffect(() => {
-    if (transactions && ytd && month && allTime && cpp && cps) {
+    if (transactions && filtered && startDate && endDate && cpp && cps) {
       setLoading(false);
     }
-  }, [transactions, ytd, month, allTime, products, cpp, cps]);
+  }, [transactions, filtered, startDate, endDate, products, cpp, cps]);
 
   if (loading) {
     return (
@@ -149,9 +153,16 @@ const Dashboard = () => {
   return (
     <View useSafeArea flex backgroundColor={Colors.white}>
       <KeyboardAwareScrollView contentContainerStyle={global.flexGrow} showsVerticalScrollIndicator={Platform.OS == "web"}>
-        <Cashflow allTimeSum={allTimeSum} ytdSum={ytdSum} monthSum={monthSum} />
+        <Cashflow sum={filteredSum} start={startDate} end={endDate} />
         <Products cpp={cpp} />
         <Subscriptions cps={cps} />
+        <Button title={'range'} onPress={openDatePickerRange} />
+        <DatePicker
+          isVisible={showCalendar}
+          mode={'range'}
+          onCancel={onCancelRange}
+          onConfirm={onConfirmRange}
+        />
       </KeyboardAwareScrollView>
     </View>
   );
