@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import React, { useCallback } from "react";
 import { Text, View } from "react-native-ui-lib";
-import Ionicon from "react-native-vector-icons/Ionicons";
+import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import ProductCard from "./product-card";
 
 const SubscriptionList = ({ title, description, subscriptions }) => {
@@ -22,7 +22,7 @@ const SubscriptionList = ({ title, description, subscriptions }) => {
           <Text text90L marginV-4>{description}</Text>
         </View>
 
-        <Ionicon name={"arrow-forward"} size={32} onPress={() => navigation.navigate("Subscriptions")}/>
+        <MCIcon name={"arrow-right"} size={32} onPress={() => navigation.navigate("Subscriptions")}/>
       </View>
 
 

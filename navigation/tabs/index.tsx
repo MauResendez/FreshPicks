@@ -100,7 +100,7 @@ const MainTabs = () => {
         tabBarActiveBackgroundColor: Colors.white,
         tabBarActiveTintColor: Colors.tertiary,
         tabBarInactiveTintColor: Colors.grey40,
-        tabBarShowLabel: true,
+        tabBarShowLabel: false,
         unmountOnBlur: false
       }}
     >
@@ -113,7 +113,7 @@ const MainTabs = () => {
           return {
             tabBarIcon: ({ color }) => (
               <MCIcon 
-                name={user?.role === "Vendor" ? "google-analytics" : "home"}
+                name={user?.role === "Vendor" ? "google-analytics" : "magnify"}
                 size={24} 
                 color={color} 
               />

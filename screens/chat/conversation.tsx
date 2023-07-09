@@ -1,12 +1,12 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { deleteDoc, doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { Alert, Platform } from "react-native";
+import { Platform } from "react-native";
 import { Bubble, GiftedChat, Send } from "react-native-gifted-chat";
 import { QuickReplies } from "react-native-gifted-chat/lib/QuickReplies";
 import { Colors, LoaderScreen, Text, View } from "react-native-ui-lib";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Ionicon from "react-native-vector-icons/Ionicons";
+import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { auth, db } from "../../firebase";
 
 const Conversation = ({ route }) => {
@@ -82,9 +82,9 @@ const Conversation = ({ route }) => {
     return (
       <Send {...props}>
         <View>
-          <Ionicon name="send" size={24} style={{
-            marginBottom: 10,
-            marginRight: 10
+          <MCIcon name="send" size={24} style={{
+            marginBottom: 8,
+            marginRight: 12
           }}/>
         </View>
       </Send>
@@ -187,19 +187,19 @@ const Conversation = ({ route }) => {
     if (chat && customer && vendor && messages) {
       navigation.setOptions({
         headerTitle: chat?.customer == auth.currentUser.uid ? vendor.name : customer.name,
-        headerRight: () => (
-          <View row>
-            <Ionicon 
-              name={"ellipsis-vertical"} 
-              size={24} 
-              color={Colors.black} 
-              onPress={() => Alert.alert("Delete Chat", "Would you like to delete this chat?", [
-                {text: 'Cancel', style: 'cancel'},
-                {text: 'OK', onPress: () => deleteChat(id)},
-              ])} 
-            />
-          </View>
-        ),
+        // headerRight: () => (
+        //   <View row>
+        //     <MCIcon 
+        //       name={"ellipsis-vertical"} 
+        //       size={24} 
+        //       color={Colors.black} 
+        //       onPress={() => Alert.alert("Delete Chat", "Would you like to delete this chat?", [
+        //         {text: 'Cancel', style: 'cancel'},
+        //         {text: 'OK', onPress: () => deleteChat(id)},
+        //       ])} 
+        //     />
+        //   </View>
+        // ),
       });
 
       setLoading(false);

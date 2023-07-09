@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import {
   Platform
 } from "react-native";
-import Ionicon from "react-native-vector-icons/Ionicons";
+import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { Colors, KeyboardAwareScrollView, LoaderScreen, TextField, View } from "react-native-ui-lib";
 import ProductList from "../../components/search/product-list";
@@ -191,7 +191,7 @@ const Search = () => {
   return (
     <View useSafeArea flex backgroundColor={Colors.white}>
       <View padding-8>
-        <TextField fieldStyle={{ backgroundColor: Colors.grey60, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Vendors, produce, subscriptions, etc." placeholderTextColor={Colors.grey30} leadingAccessory={<Ionicon name="search" color={Colors.grey30} size={20} style={{ marginRight: 8 }} />} migrate />
+        <TextField fieldStyle={{ backgroundColor: Colors.grey60, borderRadius: 8, margin: 8, padding: 12 }} value={search} onChangeText={(value) => setSearch(value)} placeholder="Vendors, produce, subscriptions, etc." placeholderTextColor={Colors.grey30} leadingAccessory={<MCIcon name="magnify" color={Colors.grey30} size={20} style={{ marginRight: 8 }} />} migrate />
       </View>
 
       <KeyboardAwareScrollView contentContainerStyle={{ paddingBottom: 16 }} showsVerticalScrollIndicator={Platform.OS == "web"}>
