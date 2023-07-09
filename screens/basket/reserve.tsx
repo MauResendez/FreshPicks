@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import { Agenda, AgendaSchedule, DateData } from 'react-native-calendars';
-import { Text } from 'react-native-ui-lib';
+import { Text, View } from 'react-native-ui-lib';
 import { useSelector } from 'react-redux';
 import ReserveItem from '../../components/basket/reserve-item';
 import { getOrderVendor } from '../../features/order-slice';
@@ -140,13 +140,15 @@ const Reserve = () => {
   }
 
   return (
-    <Agenda
-      date={new Date()}
-      items={items}
-      loadItemsForMonth={loadItems}
-      renderItem={renderItem}
-      renderEmptyDate={renderEmptyDate}
-    />
+    <View useSafeArea flex>
+      <Agenda
+        date={new Date()}
+        items={items}
+        loadItemsForMonth={loadItems}
+        renderItem={renderItem}
+        renderEmptyDate={renderEmptyDate}
+      />
+    </View>
   );
 }
 

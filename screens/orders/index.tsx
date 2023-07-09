@@ -107,10 +107,6 @@ const Orders = () => {
 
   const FirstRoute = () => (
     <View useSafeArea flex>
-      {/* <AgendaList
-        sections={items}
-        renderItem={renderOrder}
-      /> */}
       <Agenda
         date={new Date()}
         items={items}

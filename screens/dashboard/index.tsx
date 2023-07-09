@@ -1,8 +1,10 @@
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Platform } from "react-native";
-import { Colors, KeyboardAwareScrollView, ListItem, LoaderScreen, Text, View } from "react-native-ui-lib";
-import ProductRow from "../../components/dashboard/product-row";
+import { Colors, KeyboardAwareScrollView, LoaderScreen, View } from "react-native-ui-lib";
+import Cashflow from "../../components/dashboard/cashflow";
+import Products from "../../components/dashboard/products";
+import Subscriptions from "../../components/dashboard/subscriptions";
 import { auth, db } from "../../firebase";
 import { global } from "../../style";
 
@@ -147,94 +149,9 @@ const Dashboard = () => {
   return (
     <View useSafeArea flex backgroundColor={Colors.white}>
       <KeyboardAwareScrollView contentContainerStyle={global.flexGrow} showsVerticalScrollIndicator={Platform.OS == "web"}>
-        <ListItem
-          activeOpacity={0.3}
-          backgroundColor={Colors.grey60}
-          height={60}
-        >
-          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
-            <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
-              Your Cashflow
-            </Text>
-          </ListItem.Part>
-        </ListItem>
-
-        <ListItem
-          activeOpacity={0.3}
-          backgroundColor={Colors.grey60}
-          height={60}
-        >
-          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
-            <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
-              From {new Date().toLocaleDateString()} - {new Date().toLocaleDateString()}
-            </Text>
-          </ListItem.Part>
-        </ListItem>
-
-        <ListItem
-          activeOpacity={0.3}
-          backgroundColor={Colors.white}
-          style={{ padding: 8, height: "auto" }}
-        >
-          <ListItem.Part column>
-            <Text text65 marginV-4 numberOfLines={1}>All Time</Text>
-            <Text text80M grey30 marginV-4>{allTimeSum.toLocaleString('en-US', { style: 'currency', currency: 'USD'})}</Text>
-          </ListItem.Part>
-        </ListItem>
-
-        <ListItem
-          activeOpacity={0.3}
-          backgroundColor={Colors.white}
-          style={{ padding: 8, height: "auto" }} 
-        >
-          <ListItem.Part column>
-            <Text text65 marginV-4 numberOfLines={1}>YTD</Text>
-            <Text text80M grey30 marginV-4>{ytdSum.toLocaleString('en-US', { style: 'currency', currency: 'USD'})}</Text>
-          </ListItem.Part>
-        </ListItem>
-
-        <ListItem
-          activeOpacity={0.3}
-          backgroundColor={Colors.white}
-          style={{ padding: 8, height: "auto" }}
-        >
-          <ListItem.Part column>
-            <Text text65 marginV-4 numberOfLines={1}>This Month</Text>
-            <Text text80M grey30 marginV-4>{monthSum.toLocaleString('en-US', { style: 'currency', currency: 'USD'})}</Text>
-          </ListItem.Part>
-        </ListItem>
-
-        <ListItem
-          activeOpacity={0.3}
-          backgroundColor={Colors.grey60}
-          height={60}
-        >
-          <ListItem.Part containerStyle={[{paddingHorizontal: 16}]}>
-            <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
-              Cashflow per Product
-            </Text>
-          </ListItem.Part>
-        </ListItem>
-
-        {cpp.map((item) => (
-          <ProductRow item={item} />
-        ))}
-
-        <ListItem
-          activeOpacity={0.3}
-          backgroundColor={Colors.grey60}
-          height={60}
-        >
-          <ListItem.Part containerStyle={{ paddingHorizontal: 16 }}>
-            <Text text65 marginV-4 numberOfLines={1} style={{ color: Colors.black }}>
-              Cashflow per Subscriptions
-            </Text>
-          </ListItem.Part>
-        </ListItem>
-
-        {cps.map((item) => (
-          <ProductRow item={item} />
-        ))}
+        <Cashflow allTimeSum={allTimeSum} ytdSum={ytdSum} monthSum={monthSum} />
+        <Products cpp={cpp} />
+        <Subscriptions cps={cps} />
       </KeyboardAwareScrollView>
     </View>
   );

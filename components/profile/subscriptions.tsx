@@ -2,7 +2,6 @@ import React from 'react';
 import { Colors, ListItem, Text, View } from 'react-native-ui-lib';
 import ProfileRow from './profile-row';
 
-
 const Subscriptions = (props) => {
 	const { subscriptions, vendor, customer } = props;
 
