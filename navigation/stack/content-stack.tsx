@@ -12,7 +12,8 @@ const ContentStack = () => {
   return (
     <Stack.Navigator 
       initialRouteName="Content" 
-      screenOptions={{ 
+      screenOptions={{
+        headerShadowVisible: false,
         headerShown: true,
         headerTitleAlign: "center",
         headerTitleStyle: {

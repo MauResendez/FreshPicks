@@ -12,6 +12,7 @@ const ScheduleStack = () => {
     <Stack.Navigator 
       initialRouteName="Orders" 
       screenOptions={{ 
+        headerShadowVisible: false,
         headerShown: true,
         headerTitleAlign: "center",
         headerTitleStyle: {

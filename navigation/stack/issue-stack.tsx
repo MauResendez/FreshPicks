@@ -11,6 +11,7 @@ const IssueStack = () => {
     <Stack.Navigator 
       initialRouteName="Issues" 
       screenOptions={{
+        headerShadowVisible: false,
         headerShown: true,
         headerTitleAlign: "center",
         headerTitleStyle: {

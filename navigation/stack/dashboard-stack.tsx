@@ -12,6 +12,7 @@ const DashboardStack = () => {
     <Stack.Navigator 
       initialRouteName="Dashboard" 
       screenOptions={{
+        headerShadowVisible: false,
         headerShown: true,
         headerTitleAlign: "center",
         headerTitleStyle: {

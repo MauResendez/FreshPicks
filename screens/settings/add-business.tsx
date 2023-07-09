@@ -229,7 +229,6 @@ const AddBusiness = () => {
       <View style={global.field}>
         <View row spread centerV>
           {Prev()}
-          {/* <Text>{active}</Text> */}
           <PageControl numOfPages={4} currentPage={active} color={Colors.primary} />
           {Next(props)}
         </View>
@@ -257,7 +256,7 @@ const AddBusiness = () => {
           </TouchableOpacity>
         </Carousel>
         
-        <View flexG style={{ padding: 24 }}>
+        <View flexG>
           <View style={global.field}>
             <Text text65 marginV-4>Business Name *</Text>
             <TextField 
@@ -307,7 +306,7 @@ const AddBusiness = () => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
-      <View flex padding-24>
+      <View flex>
         <Text text65 marginV-4>Business Address *</Text>
         <GooglePlacesAutocomplete
           textInputProps={{
@@ -368,7 +367,7 @@ const AddBusiness = () => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
-      <View flex padding-24>
+      <View flex>
         <Text text65 marginV-4>Business Schedule *</Text>
 
         <View row spread paddingV-16>
@@ -627,7 +626,7 @@ const AddBusiness = () => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
-      <View flex padding-24>
+      <View flex>
         <View style={global.field}>
           <Text text65 marginV-4>PayPal</Text>
           <TextField

@@ -11,6 +11,7 @@ const ReportStack = () => {
     <Stack.Navigator 
       initialRouteName="Reports" 
       screenOptions={{
+        headerShadowVisible: false,
         headerShown: true,
         headerTitleAlign: "center",
         headerTitleStyle: {

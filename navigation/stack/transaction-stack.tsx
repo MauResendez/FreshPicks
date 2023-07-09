@@ -15,6 +15,7 @@ const TransactionStack = () => {
     <Stack.Navigator 
       initialRouteName="Transactions" 
       screenOptions={{ 
+        headerShadowVisible: false,
         headerShown: true,
         headerTitleAlign: "center",
         headerTitleStyle: {

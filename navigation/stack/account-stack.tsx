@@ -11,6 +11,7 @@ const AccountStack = () => {
     <Stack.Navigator 
       initialRouteName="Content" 
       screenOptions={{ 
+        headerShadowVisible: false,
         headerShown: true,
         headerTitleAlign: "center",
         headerTitleStyle: {

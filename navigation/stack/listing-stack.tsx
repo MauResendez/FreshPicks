@@ -15,6 +15,7 @@ const ListingStack = () => {
     <Stack.Navigator 
       initialRouteName="Products" 
       screenOptions={{ 
+        headerShadowVisible: false,
         headerShown: true,
         headerTitleAlign: "center",
         headerTitleStyle: {

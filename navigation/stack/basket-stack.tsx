@@ -11,6 +11,7 @@ const BasketStack = () => {
     <Stack.Navigator 
       initialRouteName="Basket" 
       screenOptions={{ 
+        headerShadowVisible: false,
         headerShown: true,
         headerTitleAlign: "center",
         headerTitleStyle: {

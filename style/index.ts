@@ -3,7 +3,7 @@ import { Colors } from "react-native-ui-lib";
 
 export const global = StyleSheet.create({
   container: {
-    padding: 24
+    padding: 16
   },
   center: {
     alignItems: "center",

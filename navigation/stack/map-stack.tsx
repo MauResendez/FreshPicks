@@ -12,6 +12,7 @@ const MapStack = () => {
     <Stack.Navigator 
       initialRouteName="Map" 
       screenOptions={{ 
+        headerShadowVisible: false,
         headerShown: true,
         headerTitleAlign: "center",
         headerTitleStyle: {

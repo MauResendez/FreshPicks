@@ -55,7 +55,7 @@ const Conversation = ({ route }) => {
             backgroundColor: Colors.tertiary,
           },
           left: {
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.grey70,
           }
         }}
         textStyle={{
