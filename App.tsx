@@ -9,9 +9,9 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Colors, ConnectionStatusBar, ThemeManager } from "react-native-ui-lib";
 import { Provider } from "react-redux";
 import { auth } from "./firebase";
-import AuthStack from "./navigation/stack/auth-stack";
-import MainStack from "./navigation/stack/main-stack";
-import { store } from "./redux/store";
+import AuthStack from "./src/navigation/stack/auth-stack";
+import MainStack from "./src/navigation/stack/main-stack";
+import { store } from "./src/store";
 import { global } from "./style";
 
 Colors.loadColors({  
