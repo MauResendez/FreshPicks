@@ -337,7 +337,7 @@ const Register = () => {
           </TouchableOpacity>
         </Carousel>
         
-        <View flexG style={{ padding: 24 }}>
+        <View flexG style={{ padding: 16 }}>
           <View style={global.field}>
             <Text text65 marginV-4>Business Name *</Text>
             <TextField 
@@ -436,11 +436,11 @@ const Register = () => {
           nearbyPlacesAPI="GooglePlacesSearch"
           keepResultsAfterBlur={true}
           query={{
-            key: "AIzaSyDdDiIwvLlEcpjOK3DVEmbO-ydkrMOS1cM",
+            key: "API_KEY",
             language: "en",
           }}
           requestUrl={{
-            url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
+            url: "PROXY_API",
             useOnPlatform: "web"
           }}
         />
@@ -456,7 +456,7 @@ const Register = () => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
-      <View flex padding-24>
+      <View flex padding-16>
         <View row spread centerV height={72}>
           <Checkbox
             label={<Text text65 marginV-4>Monday</Text>}
@@ -717,7 +717,7 @@ const Register = () => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
-      <View flex padding-24>
+      <View flex padding-16>
         <View style={global.field}>
           <Text text65 marginV-4>PayPal</Text>
           <TextField
@@ -779,7 +779,7 @@ const Register = () => {
     const { errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values } = props;
 
     return (
-      <View flex padding-24>
+      <View flex padding-16>
         <View style={global.field}>
           <Text text65 marginV-4>Email *</Text>
           <TextField
@@ -924,7 +924,7 @@ const Register = () => {
     >
       {({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values, isSubmitting, submitCount }) => (
         <View useSafeArea flex backgroundColor={Colors.white}>
-          <KeyboardAwareScrollView contentContainerStyle={[global.container, global.flexGrow]} showsVerticalScrollIndicator={Platform.OS == "web"}>
+          <KeyboardAwareScrollView contentContainerStyle={[global.flexGrow]} showsVerticalScrollIndicator={Platform.OS == "web"}>
             {Current({ errors, handleChange, handleBlur, handleSubmit, setFieldValue, touched, values })}
           </KeyboardAwareScrollView>
         </View>

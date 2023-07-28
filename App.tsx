@@ -24,16 +24,6 @@ Colors.loadColors({
 Colors.loadDesignTokens({ primaryColor: Colors.primary });
 
 ThemeManager.setComponentTheme('Card', (props, context) => {
-  const style = {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 16,
-  };
   return {
     shadowColor: "#000",
     shadowOffset: {

@@ -109,13 +109,13 @@ const VendorLocation = () => {
 							nearbyPlacesAPI="GooglePlacesSearch"
 							keepResultsAfterBlur={true}
 							query={{
-								key: "AIzaSyDyXlBNmFl5OTBrrc8YyGRyPoEnoi3fMTc",
+								key: "API_KEY",
 								language: "en",
-							}}
-							requestUrl={{
-								url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
+							  }}
+							  requestUrl={{
+								url: "PROXY_API",
 								useOnPlatform: "web"
-							}}
+							  }}
 						/>
 
 						<Button 

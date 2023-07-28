@@ -349,11 +349,11 @@ const AddBusiness = () => {
           nearbyPlacesAPI="GooglePlacesSearch"
           keepResultsAfterBlur={true}
           query={{
-            key: "AIzaSyDdDiIwvLlEcpjOK3DVEmbO-ydkrMOS1cM",
+            key: "API_KEY",
             language: "en",
           }}
           requestUrl={{
-            url: "https://proxy-jfnvyeyyea-uc.a.run.app/https://maps.googleapis.com/maps/api",
+            url: "PROXY_API",
             useOnPlatform: "web"
           }}
         />
